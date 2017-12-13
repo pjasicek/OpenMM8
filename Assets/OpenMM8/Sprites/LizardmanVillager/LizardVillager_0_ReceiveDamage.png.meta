@@ -1,0 +1,451 @@
+fileFormatVersion: 2
+guid: 45b40495415005e47a325e19dd0f8525
+timeCreated: 1512750282
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: ReceiveDamage_Back_0.
+    21300002: ReceiveDamage_Back_1.
+    21300004: ReceiveDamage_Back_2.
+    21300006: ReceiveDamage_Back_3.
+    21300008: ReceiveDamage_Back_4.
+    21300010: ReceiveDamage_BackRight_0.
+    21300012: ReceiveDamage_BackRight_1.
+    21300014: ReceiveDamage_BackRight_2.
+    21300016: ReceiveDamage_BackRight_3.
+    21300018: ReceiveDamage_BackRight_4.
+    21300020: ReceiveDamage_Front_0.
+    21300022: ReceiveDamage_Front_1.
+    21300024: ReceiveDamage_Front_2.
+    21300026: ReceiveDamage_Front_3.
+    21300028: ReceiveDamage_Front_4.
+    21300030: ReceiveDamage_FrontRight_0.
+    21300032: ReceiveDamage_FrontRight_1.
+    21300034: ReceiveDamage_FrontRight_2.
+    21300036: ReceiveDamage_FrontRight_3.
+    21300038: ReceiveDamage_FrontRight_4.
+    21300040: ReceiveDamage_Right_0.
+    21300042: ReceiveDamage_Right_1.
+    21300044: ReceiveDamage_Right_2.
+    21300046: ReceiveDamage_Right_3.
+    21300048: ReceiveDamage_Right_4.
+  externalObjects: {}
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: ReceiveDamage_Back_0.
+      rect:
+        serializedVersion: 2
+        x: 542
+        y: 630
+        width: 142
+        height: 195
+      alignment: 9
+      pivot: {x: 0.5492958, y: 0.6564103}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_Back_1.
+      rect:
+        serializedVersion: 2
+        x: 489
+        y: 229
+        width: 184
+        height: 191
+      alignment: 9
+      pivot: {x: 0.42391303, y: 0.6701571}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_Back_2.
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 808
+        width: 127
+        height: 215
+      alignment: 9
+      pivot: {x: 0.61417323, y: 0.59534883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_Back_3.
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 610
+        width: 116
+        height: 202
+      alignment: 9
+      pivot: {x: 0.49137932, y: 0.63366336}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_Back_4.
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 626
+        width: 126
+        height: 196
+      alignment: 9
+      pivot: {x: 0.45238096, y: 0.6530612}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_BackRight_0.
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 422
+        width: 141
+        height: 196
+      alignment: 9
+      pivot: {x: 0.47517732, y: 0.6530612}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_BackRight_1.
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 11
+        width: 145
+        height: 196
+      alignment: 9
+      pivot: {x: 0.6896552, y: 0.6530612}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_BackRight_2.
+      rect:
+        serializedVersion: 2
+        x: 269
+        y: 620
+        width: 143
+        height: 200
+      alignment: 9
+      pivot: {x: 0.7622378, y: 0.64}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_BackRight_3.
+      rect:
+        serializedVersion: 2
+        x: 479
+        y: 827
+        width: 98
+        height: 196
+      alignment: 9
+      pivot: {x: 0.6530612, y: 0.6530612}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_BackRight_4.
+      rect:
+        serializedVersion: 2
+        x: 579
+        y: 828
+        width: 100
+        height: 195
+      alignment: 9
+      pivot: {x: 0.37, y: 0.6564103}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_Front_0.
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 829
+        width: 134
+        height: 194
+      alignment: 9
+      pivot: {x: 0.4477612, y: 0.6597938}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_Front_1.
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 185
+        width: 162
+        height: 203
+      alignment: 9
+      pivot: {x: 0.5, y: 0.63054186}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_Front_2.
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 597
+        width: 148
+        height: 209
+      alignment: 9
+      pivot: {x: 0.33783785, y: 0.61244017}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_Front_3.
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 390
+        width: 131
+        height: 205
+      alignment: 9
+      pivot: {x: 0.48854962, y: 0.62439024}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_Front_4.
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 9
+        width: 117
+        height: 197
+      alignment: 9
+      pivot: {x: 0.5470086, y: 0.6497462}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_FrontRight_0.
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 183
+        width: 111
+        height: 205
+      alignment: 9
+      pivot: {x: 0.5225225, y: 0.62439024}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_FrontRight_1.
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 408
+        width: 145
+        height: 200
+      alignment: 9
+      pivot: {x: 0.6413793, y: 0.64}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_FrontRight_2.
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 814
+        width: 125
+        height: 209
+      alignment: 9
+      pivot: {x: 0.584, y: 0.61244017}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_FrontRight_3.
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 822
+        width: 113
+        height: 201
+      alignment: 9
+      pivot: {x: 0.539823, y: 0.6368159}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_FrontRight_4.
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 208
+        width: 102
+        height: 198
+      alignment: 9
+      pivot: {x: 0.48039216, y: 0.64646465}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_Right_0.
+      rect:
+        serializedVersion: 2
+        x: 382
+        y: 209
+        width: 105
+        height: 197
+      alignment: 9
+      pivot: {x: 0.6, y: 0.6497462}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_Right_1.
+      rect:
+        serializedVersion: 2
+        x: 548
+        y: 439
+        width: 120
+        height: 189
+      alignment: 9
+      pivot: {x: 0.65, y: 0.67724866}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_Right_2.
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 392
+        width: 122
+        height: 203
+      alignment: 9
+      pivot: {x: 0.6557377, y: 0.63054186}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_Right_3.
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 824
+        width: 105
+        height: 199
+      alignment: 9
+      pivot: {x: 0.6, y: 0.6432161}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ReceiveDamage_Right_4.
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 10
+        width: 89
+        height: 197
+      alignment: 9
+      pivot: {x: 0.41573033, y: 0.6497462}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    outline: []
+    physicsShape: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

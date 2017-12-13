@@ -1,0 +1,601 @@
+fileFormatVersion: 2
+guid: c1ef9b9945a74304c8bf41a658594031
+timeCreated: 1512752479
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Attack_Back_0.
+    21300002: Attack_Back_1.
+    21300004: Attack_Back_2.
+    21300006: Attack_Back_3.
+    21300008: Attack_Back_4.
+    21300010: Attack_Back_5.
+    21300012: Attack_Back_6.
+    21300014: Attack_BackRight_0.
+    21300016: Attack_BackRight_1.
+    21300018: Attack_BackRight_2.
+    21300020: Attack_BackRight_3.
+    21300022: Attack_BackRight_4.
+    21300024: Attack_BackRight_5.
+    21300026: Attack_BackRight_6.
+    21300028: Attack_Front_0.
+    21300030: Attack_Front_1.
+    21300032: Attack_Front_2.
+    21300034: Attack_Front_3.
+    21300036: Attack_Front_4.
+    21300038: Attack_Front_5.
+    21300040: Attack_Front_6.
+    21300042: Attack_FrontRight_0.
+    21300044: Attack_FrontRight_1.
+    21300046: Attack_FrontRight_2.
+    21300048: Attack_FrontRight_3.
+    21300050: Attack_FrontRight_4.
+    21300052: Attack_FrontRight_5.
+    21300054: Attack_FrontRight_6.
+    21300056: Attack_Right_0.
+    21300058: Attack_Right_1.
+    21300060: Attack_Right_2.
+    21300062: Attack_Right_3.
+    21300064: Attack_Right_4.
+    21300066: Attack_Right_5.
+    21300068: Attack_Right_6.
+  externalObjects: {}
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Attack_Back_0.
+      rect:
+        serializedVersion: 2
+        x: 223
+        y: 7
+        width: 105
+        height: 198
+      alignment: 9
+      pivot: {x: 0.3809524, y: 0.64646465}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_Back_1.
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 817
+        width: 91
+        height: 206
+      alignment: 9
+      pivot: {x: 0.48351648, y: 0.6213592}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_Back_2.
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 607
+        width: 94
+        height: 206
+      alignment: 9
+      pivot: {x: 0.42553192, y: 0.6213592}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_Back_3.
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 207
+        width: 126
+        height: 198
+      alignment: 9
+      pivot: {x: 0.5952381, y: 0.64646465}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_Back_4.
+      rect:
+        serializedVersion: 2
+        x: 921
+        y: 835
+        width: 97
+        height: 188
+      alignment: 9
+      pivot: {x: 0.5051546, y: 0.68085104}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_Back_5.
+      rect:
+        serializedVersion: 2
+        x: 820
+        y: 645
+        width: 85
+        height: 189
+      alignment: 9
+      pivot: {x: 0.45882353, y: 0.67724866}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_Back_6.
+      rect:
+        serializedVersion: 2
+        x: 582
+        y: 435
+        width: 89
+        height: 192
+      alignment: 9
+      pivot: {x: 0.4494382, y: 0.6666667}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_BackRight_0.
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 610
+        width: 86
+        height: 205
+      alignment: 9
+      pivot: {x: 0.3255814, y: 0.62439024}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_BackRight_1.
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 810
+        width: 81
+        height: 213
+      alignment: 9
+      pivot: {x: 0.39506173, y: 0.600939}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_BackRight_2.
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 387
+        width: 83
+        height: 207
+      alignment: 9
+      pivot: {x: 0.24096386, y: 0.6183575}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_BackRight_3.
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 430
+        width: 92
+        height: 195
+      alignment: 9
+      pivot: {x: 0.54347825, y: 0.6564103}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_BackRight_4.
+      rect:
+        serializedVersion: 2
+        x: 527
+        y: 236
+        width: 94
+        height: 192
+      alignment: 9
+      pivot: {x: 0.4574468, y: 0.6666667}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_BackRight_5.
+      rect:
+        serializedVersion: 2
+        x: 603
+        y: 637
+        width: 97
+        height: 191
+      alignment: 9
+      pivot: {x: 0.29896906, y: 0.6701571}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_BackRight_6.
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 1
+        width: 104
+        height: 191
+      alignment: 9
+      pivot: {x: 0.30769232, y: 0.6701571}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_Front_0.
+      rect:
+        serializedVersion: 2
+        x: 427
+        y: 217
+        width: 98
+        height: 197
+      alignment: 9
+      pivot: {x: 0.6020408, y: 0.6497462}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_Front_1.
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 596
+        width: 82
+        height: 212
+      alignment: 9
+      pivot: {x: 0.5731707, y: 0.6037736}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_Front_2.
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 194
+        width: 89
+        height: 204
+      alignment: 9
+      pivot: {x: 0.56179774, y: 0.627451}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_Front_3.
+      rect:
+        serializedVersion: 2
+        x: 269
+        y: 615
+        width: 138
+        height: 200
+      alignment: 9
+      pivot: {x: 0.44927537, y: 0.64}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_Front_4.
+      rect:
+        serializedVersion: 2
+        x: 820
+        y: 836
+        width: 99
+        height: 187
+      alignment: 9
+      pivot: {x: 0.4949495, y: 0.684492}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_Front_5.
+      rect:
+        serializedVersion: 2
+        x: 535
+        y: 45
+        width: 86
+        height: 189
+      alignment: 9
+      pivot: {x: 0.53488374, y: 0.67724866}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_Front_6.
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 215
+        width: 89
+        height: 198
+      alignment: 9
+      pivot: {x: 0.53932583, y: 0.64646465}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_FrontRight_0.
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 7
+        width: 104
+        height: 198
+      alignment: 9
+      pivot: {x: 0.52884614, y: 0.64646465}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_FrontRight_1.
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 400
+        width: 99
+        height: 205
+      alignment: 9
+      pivot: {x: 0.5050505, y: 0.62439024}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_FrontRight_2.
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 823
+        width: 108
+        height: 200
+      alignment: 9
+      pivot: {x: 0.4722222, y: 0.64}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_FrontRight_3.
+      rect:
+        serializedVersion: 2
+        x: 531
+        y: 830
+        width: 167
+        height: 193
+      alignment: 9
+      pivot: {x: 0.38323355, y: 0.6632124}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_FrontRight_4.
+      rect:
+        serializedVersion: 2
+        x: 700
+        y: 833
+        width: 118
+        height: 190
+      alignment: 9
+      pivot: {x: 0.44915253, y: 0.67368424}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_FrontRight_5.
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 416
+        width: 102
+        height: 197
+      alignment: 9
+      pivot: {x: 0.48039216, y: 0.6497462}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_FrontRight_6.
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 415
+        width: 104
+        height: 198
+      alignment: 9
+      pivot: {x: 0.4903846, y: 0.64646465}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_Right_0.
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 407
+        width: 89
+        height: 201
+      alignment: 9
+      pivot: {x: 0.48314607, y: 0.6368159}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_Right_1.
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 815
+        width: 91
+        height: 208
+      alignment: 9
+      pivot: {x: 0.5934066, y: 0.61538464}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_Right_2.
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 180
+        width: 114
+        height: 205
+      alignment: 9
+      pivot: {x: 0.45614034, y: 0.62439024}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_Right_3.
+      rect:
+        serializedVersion: 2
+        x: 380
+        y: 825
+        width: 149
+        height: 198
+      alignment: 9
+      pivot: {x: 0.30872482, y: 0.64646465}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_Right_4.
+      rect:
+        serializedVersion: 2
+        x: 409
+        y: 627
+        width: 100
+        height: 196
+      alignment: 9
+      pivot: {x: 0.39, y: 0.6530612}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_Right_5.
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 22
+        width: 97
+        height: 193
+      alignment: 9
+      pivot: {x: 0.39175257, y: 0.6632124}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Attack_Right_6.
+      rect:
+        serializedVersion: 2
+        x: 511
+        y: 629
+        width: 90
+        height: 194
+      alignment: 9
+      pivot: {x: 0.42222223, y: 0.6597938}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    outline: []
+    physicsShape: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
