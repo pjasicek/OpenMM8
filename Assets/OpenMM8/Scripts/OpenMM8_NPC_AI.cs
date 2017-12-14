@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
-using System.Linq;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(BoxCollider))]
@@ -11,7 +14,7 @@ using System.Linq;
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(OpenMM8_NPC_Stats))]
 
-public class OpenMM8_NPC_AI : MonoBehaviour
+public class OpenMM8_NPC_AI : MonoBehaviour, OpenMM8_IObjectRangeListener
 {
     public enum NPCType { Villager, Guard, Enemy }
     public enum NPCState { Idle, Walking, MeleeAttacking, RangedAttacking, Stunned, Dying, Dead, Fidgeting }
@@ -35,6 +38,8 @@ public class OpenMM8_NPC_AI : MonoBehaviour
     public NPCType m_NPCType = NPCType.Villager;
 
     // Private
+    private GameObject m_Player;
+
     private OpenMM8_NPC_Stats m_Stats;
 
     public Vector3 m_SpawnPosition;
@@ -59,6 +64,8 @@ public class OpenMM8_NPC_AI : MonoBehaviour
     bool m_CanPatrol;
     bool m_CanAttack;
 
+    bool m_IsPlayerInMeleeRange = false;
+
     //-------------------------------------------------------------------------
     // Unity Overrides
     //-------------------------------------------------------------------------
@@ -66,6 +73,12 @@ public class OpenMM8_NPC_AI : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+        m_Player = GameObject.FindWithTag("Player");
+        if (m_Player == null)
+        {
+            Debug.LogError("Could not find \"Player\" in scene !");
+        }
+
         m_SpawnPosition = transform.position;
         m_NavMeshAgent = GetComponent<NavMeshAgent>();
 
@@ -97,6 +110,11 @@ public class OpenMM8_NPC_AI : MonoBehaviour
             // 3c) Else move to a point within its patrol area
             // ----- [Event] OnDamaged - Start running from that unit if not already running from it
             // ----- [Event] OnEnemyEnteredAgroRange - Start running away from that unit
+
+            if (m_IsPlayerInMeleeRange)
+            {
+                return;
+            }
 
             // 1)
             if (IsOnMove())
@@ -189,4 +207,80 @@ public class OpenMM8_NPC_AI : MonoBehaviour
     {
         // TODO
     }
+
+    // OpenMM8_IEventListener implementation
+
+    public void OnObjectEnteredMeleeRange(GameObject other)
+    {
+        Debug.Log("Object entered melee range: " + other.name);
+
+        if (other.name == "Player")
+        {
+            m_NavMeshAgent.Stop();
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            m_IsPlayerInMeleeRange = true;
+        }
+    }
+
+    public void OnObjectLeftMeleeRange(GameObject other)
+    {
+        Debug.Log("Object left melee range: " + other.name);
+
+        if (other.name == "Player")
+        {
+            m_IsPlayerInMeleeRange = false;
+            m_NavMeshAgent.ResetPath();
+        }
+    }
+
+    public void OnObjectEnteredAgroRange(GameObject other)
+    {
+        Debug.Log("Object entered agro range: " + other.name);
+    }
+    
+    public void OnObjectLeftAgroRange(GameObject other)
+    {
+        Debug.Log("Object left agro range: " + other.name);
+    }
 }
+
+//============================================================
+// EDITOR
+//============================================================
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(OpenMM8_NPC_AI))]
+public class OpenMM8_NPC_AI_Editor : Editor
+{
+    OpenMM8_NPC_AI m_TargetObject;
+
+    public void OnSceneGUI()
+    {
+        m_TargetObject = this.target as OpenMM8_NPC_AI;
+
+        Handles.color = new Color(0, 1.0f, 0, 0.1f);
+        if (EditorApplication.isPlaying)
+        {
+            Handles.DrawSolidDisc(m_TargetObject.m_SpawnPosition, Vector3.up, m_TargetObject.m_WanderRadius);
+        }
+        else
+        {
+            Handles.DrawSolidDisc(m_TargetObject.transform.position, Vector3.up, m_TargetObject.m_WanderRadius);
+        }
+
+        MeleeRangeTrigger mrt = m_TargetObject.GetComponentInChildren<MeleeRangeTrigger>();
+        if (mrt != null)
+        {
+            Handles.color = new Color(1.0f, 0.0f, 0, 0.15f);
+            Handles.DrawSolidDisc(m_TargetObject.transform.position, Vector3.up, mrt.m_MeleeRangeRadius);
+        }
+
+        AgroRangeTrigger art = m_TargetObject.GetComponentInChildren<AgroRangeTrigger>();
+        if (art != null)
+        {
+            Handles.color = new Color(1.0f, 1.0f, 0, 0.15f);
+            Handles.DrawSolidDisc(m_TargetObject.transform.position, Vector3.up, art.m_AgroRangeRadius);
+        }
+    }
+}
+#endif
