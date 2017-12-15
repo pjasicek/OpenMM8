@@ -362,6 +362,77 @@ ModelImporter:
     4300136: well1E
     4300138: well1E_1
     4300140: well1N
+    6400000: 01alchemistE
+    6400002: 01armor_shop03_S
+    6400004: 01bankS
+    6400006: 01chiefs_house
+    6400008: 01hut_1E
+    6400010: 01hut_1E_1
+    6400012: 01hut_1E_2
+    6400014: 01hut_1E_3
+    6400016: 01hut_1N
+    6400018: 01hut_1S
+    6400020: 01hut_1W
+    6400022: 01hut_1W_1
+    6400024: 01hut_2E
+    6400026: 01hut_2N
+    6400028: 01hut_2N_1
+    6400030: 01hut_2W
+    6400032: 01hut_2W_1
+    6400034: 01hut_3N
+    6400036: 01hut_3S
+    6400038: 01hut_3W
+    6400040: 01hut_4S
+    6400042: 01hut_5S
+    6400044: 01hut_5S_1
+    6400046: 01inn_W
+    6400048: 01magic_shopE
+    6400050: 01taverninn_E
+    6400052: 01tel_ncN
+    6400054: 01tel_ncN_1
+    6400056: 01tel_ncN_2
+    6400058: 01tel_ncN_3
+    6400060: 01tel_ncS
+    6400062: 01tel_ncS_1
+    6400064: 01tel_ncS_2
+    6400066: 01tel_ncW
+    6400068: 01temple_new_W
+    6400070: 01trainingS
+    6400072: 3Chests
+    6400074: _Ground_
+    6400076: Boat3RTex_Etr
+    6400078: Boat3RTex_Etr_1
+    6400080: Boat3RTex_Wtr
+    6400082: Boat3RTex_Wtr_1
+    6400084: Cannon_E
+    6400086: Cannon_N
+    6400088: Cannon_S
+    6400090: Cannon_S_1
+    6400092: cannonA_W
+    6400094: CannonB_W
+    6400096: chest_N
+    6400098: chest_N_1
+    6400100: chest_N_2
+    6400102: chest_N_3
+    6400104: chest_S
+    6400106: chest_S_1
+    6400108: d05entrance
+    6400110: d05exit
+    6400112: d06entrance_S
+    6400114: d40out_E
+    6400116: Dock_W
+    6400118: Fountain
+    6400120: gw_earth_N
+    6400122: Obelisk
+    6400124: Out01BlackS02_W
+    6400126: Skiff_E
+    6400128: Skiff_W
+    6400130: Wagon_E
+    6400132: Wagon_E_1
+    6400134: Wagon_N
+    6400136: well1E
+    6400138: well1E_1
+    6400140: well1N
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -1547,9 +1618,9 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0.01
     meshCompression: 0
-    addColliders: 0
+    addColliders: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1

@@ -12,7 +12,7 @@ public class CameraFacingBillboard : MonoBehaviour
 
     private Quaternion origRotation;
 
-    void Awake()
+    void Start()
     {
         if (autoInit == true)
         {
@@ -47,12 +47,12 @@ public class CameraFacingBillboard : MonoBehaviour
 
     public void MyOnPreRender(Camera cam)
     {
+        origRotation = transform.rotation;
+
         if (amActive)
         {
             transform.LookAt(parentTransform.position + m_Camera.transform.rotation * Vector3.back, m_Camera.transform.rotation * Vector3.up);
         }
-
-        origRotation = transform.rotation;
     }
 
     public void MyOnPostRender(Camera cam)

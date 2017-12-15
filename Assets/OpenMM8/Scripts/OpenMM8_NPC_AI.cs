@@ -13,11 +13,11 @@ using UnityEditor;
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(OpenMM8_NPC_Stats))]
+[RequireComponent(typeof(Animator))]
 
-public class OpenMM8_NPC_AI : MonoBehaviour, OpenMM8_IObjectRangeListener
+public abstract class OpenMM8_NPC_AI : MonoBehaviour
 {
-    public enum NPCType { Villager, Guard, Enemy }
-    public enum NPCState { Idle, Walking, MeleeAttacking, RangedAttacking, Stunned, Dying, Dead, Fidgeting }
+    public enum NPCState { Walking, Idle, MeleeAttacking, RangedAttacking, Stunned, Dying, Dead, Fidgeting }
 
     //-------------------------------------------------------------------------
     // Variables
@@ -30,48 +30,48 @@ public class OpenMM8_NPC_AI : MonoBehaviour, OpenMM8_IObjectRangeListener
     public float m_MaxWanderIdleTime = 2.0f;
     public float m_WanderRadius = 15.0f;
 
-    bool m_DrawWaypoint = true;
+    public bool m_DrawWaypoint = true;
 
     public float m_AgroRange; // Agro on Y axis is not taken into account
     public float m_MeleeRange;
 
-    public NPCType m_NPCType = NPCType.Villager;
+    public Vector3 m_SpawnPosition;
 
     // Private
-    private GameObject m_Player;
+    protected GameObject m_Player;
 
-    private OpenMM8_NPC_Stats m_Stats;
+    protected Animator m_Animator;
+    protected NavMeshAgent m_NavMeshAgent;
 
-    public Vector3 m_SpawnPosition;
-    private NavMeshAgent m_NavMeshAgent;
-    private Vector3 m_CurrentDestination;
+    protected OpenMM8_NPC_Stats m_Stats;
+    
+    protected Vector3 m_CurrentDestination;
 
-    private float m_RemainingWanderIdleTime = 2.0f;
+    protected float m_RemainingWanderIdleTime = 2.0f;
 
-    private GameObject m_CurrentWaypoint;
+    protected GameObject m_CurrentWaypoint;
 
-    private NPCState m_State = NPCState.Idle;
+    protected NPCState m_State = NPCState.Idle;
 
-    private List<GameObject> m_EnemiesInMeleeRange = new List<GameObject>();
-    private List<GameObject> m_EnemiesInAgroRange = new List<GameObject>();
+    protected List<GameObject> m_EnemiesInMeleeRange = new List<GameObject>();
+    protected List<GameObject> m_EnemiesInAgroRange = new List<GameObject>();
 
-    private GameObject m_Target;
+    protected GameObject m_Target;
 
     // State members
-    string m_Faction;
-    int m_FleeHealthPercantage;
+    protected string m_Faction;
+    protected int m_FleeHealthPercantage;
 
-    bool m_CanPatrol;
-    bool m_CanAttack;
+    protected bool m_IsPlayerInMeleeRange = false;
 
-    bool m_IsPlayerInMeleeRange = false;
+    protected bool m_IsWalking = false;
 
     //-------------------------------------------------------------------------
     // Unity Overrides
     //-------------------------------------------------------------------------
 
     // Use this for initialization
-    void Start ()
+    public void OnStart ()
     {
         m_Player = GameObject.FindWithTag("Player");
         if (m_Player == null)
@@ -81,6 +81,7 @@ public class OpenMM8_NPC_AI : MonoBehaviour, OpenMM8_IObjectRangeListener
 
         m_SpawnPosition = transform.position;
         m_NavMeshAgent = GetComponent<NavMeshAgent>();
+        m_Animator = GetComponent<Animator>();
 
         // Create debug waypoint
         m_CurrentWaypoint = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -89,96 +90,34 @@ public class OpenMM8_NPC_AI : MonoBehaviour, OpenMM8_IObjectRangeListener
         m_CurrentWaypoint.name = this.gameObject.name + " Waypoint";
         m_CurrentWaypoint.GetComponent<SphereCollider>().enabled = false;
     }
-	
-	// Update is called once per frame
-	void Update ()
-    {
-        if (!m_NavMeshAgent.enabled)
-        {
-            return;
-        }
 
-        m_CurrentWaypoint.SetActive(m_DrawWaypoint);
+    /**** If NPC is a Guard ****/
+    // 1) If it is attacking, do nothing (Waiting for AttackEnded frame event)
+    // 2) If it is moving, do nothing (May be interrupted if enemy enters its melee range)
+    // 3) If it has hostile unit(s) in range, move to its closest one
+    // 4) Else If this unit can Patrol, move to its point within patrol area
+    // 5) Else do nothing (Idle)
+    // ----- [Event] OnAttackEnded - after attack ends, it will check if it is within melee range of any hostile unit,
+    //                           if it is, then it will attack it again, if it is not, it will choose some strafe
+    //                           location - e.g. Shoot - Move - Shoot - Move, etc.
+    // ------ [Event] If enemy enters its attack range, it will attack immediately
+    // ------ [Event] OnDamaged - If it was attacked by a unit which was previously friendly, change this unit to Hostile
+    //                            and query all nearby Guards / Villagers of the same affiliation to be hostile towards
+    //                            that unit too
 
-        if (m_NPCType == NPCType.Villager)
-        {
-            /**** If NPC is a Villager ****/
-            // 1) If it is moving, do nothing
-            // 2) Check if a hostile unit is in range
-            // 3a) If it is in range, then then move away from the closest hostile unit - Calculate angle have a minimal move distance
-            // 3b) Else If it has idle timer, do nothing
-            // 3c) Else move to a point within its patrol area
-            // ----- [Event] OnDamaged - Start running from that unit if not already running from it
-            // ----- [Event] OnEnemyEnteredAgroRange - Start running away from that unit
-
-            if (m_IsPlayerInMeleeRange)
-            {
-                return;
-            }
-
-            // 1)
-            if (IsOnMove())
-            {
-                return;
-            }
-
-            if (m_RemainingWanderIdleTime > 0.0f)
-            {
-                m_RemainingWanderIdleTime -= Time.deltaTime;
-                return;
-            }
-
-            if (m_EnemiesInAgroRange.Count > 0)
-            {
-                // Find closest hostile unit
-                // Move away from that unit
-
-                GameObject closestEnemy = m_EnemiesInAgroRange.OrderBy(t => (t.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
-                WanderAwayFromEnemy(closestEnemy);
-
-                // I dont want to stop when running away from enemy, so this is left commented out as a reminder
-                // m_RemainingWanderIdleTime = Random.Range(m_MinWanderIdleTime, m_MaxWanderIdleTime);
-            }
-            else
-            {
-                // Wander
-                WanderWithinSpawnArea();
-                m_RemainingWanderIdleTime = Random.Range(m_MinWanderIdleTime, m_MaxWanderIdleTime);
-            }
-        }
-        else if (m_NPCType == NPCType.Guard)
-        {
-            /**** If NPC is a Guard ****/
-            // 1) If it is attacking, do nothing (Waiting for AttackEnded frame event)
-            // 2) If it is moving, do nothing (May be interrupted if enemy enters its melee range)
-            // 3) If it has hostile unit(s) in range, move to its closest one
-            // 4) Else If this unit can Patrol, move to its point within patrol area
-            // 5) Else do nothing (Idle)
-            // ----- [Event] OnAttackEnded - after attack ends, it will check if it is within melee range of any hostile unit,
-            //                           if it is, then it will attack it again, if it is not, it will choose some strafe
-            //                           location - e.g. Shoot - Move - Shoot - Move, etc.
-            // ------ [Event] If enemy enters its attack range, it will attack immediately
-            // ------ [Event] OnDamaged - If it was attacked by a unit which was previously friendly, change this unit to Hostile
-            //                            and query all nearby Guards / Villagers of the same affiliation to be hostile towards
-            //                            that unit too
-        }
-        else if (m_NPCType == NPCType.Enemy)
-        {
-            /**** If NPC is Enemy ****/
-            // 1) If it is attacking, do nothing (Waiting for AttackEnded frame event)
-            // 2) If it is moving, do nothing (May be interrupted if enemy enters its melee range)
-            // ----- [Event] OnAttackEnded - after attack ends, it will check if it is within melee range of any hostile unit,
-            //                           if it is, then it will attack it again, if it is not, it will choose some strafe
-            //                           location - e.g. Shoot - Move - Shoot - Move, etc.
-            // ------ [Event] If enemy enters its attack range, it will attack immediately
-        }
-	}
+    /**** If NPC is Enemy ****/
+    // 1) If it is attacking, do nothing (Waiting for AttackEnded frame event)
+    // 2) If it is moving, do nothing (May be interrupted if enemy enters its melee range)
+    // ----- [Event] OnAttackEnded - after attack ends, it will check if it is within melee range of any hostile unit,
+    //                           if it is, then it will attack it again, if it is not, it will choose some strafe
+    //                           location - e.g. Shoot - Move - Shoot - Move, etc.
+    // ------ [Event] If enemy enters its attack range, it will attack immediately
 
     //-------------------------------------------------------------------------
     // Methods
     //-------------------------------------------------------------------------
 
-    private bool IsOnMove()
+    public bool IsOnMove()
     {
         if (!m_NavMeshAgent.pathPending)
         {
@@ -193,7 +132,7 @@ public class OpenMM8_NPC_AI : MonoBehaviour, OpenMM8_IObjectRangeListener
         return true;
     }
 
-    private void WanderWithinSpawnArea()
+    public void WanderWithinSpawnArea()
     {
         m_CurrentDestination = m_SpawnPosition + new Vector3(Random.Range((int) - m_WanderRadius * 0.5f - 2, (int)m_WanderRadius * 0.5f + 2), 0, Random.Range((int) - m_WanderRadius * 0.5f - 2, (int)m_WanderRadius * 0.5f + 2));
         m_NavMeshAgent.ResetPath();
@@ -201,46 +140,15 @@ public class OpenMM8_NPC_AI : MonoBehaviour, OpenMM8_IObjectRangeListener
         m_NavMeshAgent.SetDestination(m_CurrentDestination);
 
         m_CurrentWaypoint.transform.position = m_CurrentDestination;
+
+        Vector3 direction = (m_CurrentDestination - transform.position).normalized;
+        transform.rotation = Quaternion.LookRotation(direction);
+        //transform.rotation = Quaternion.Slerp(transform.rotation, qDir, Time.deltaTime * rotSpeed);
     }
 
-    private void WanderAwayFromEnemy(GameObject enemy)
+    public void WanderAwayFromEnemy(GameObject enemy)
     {
         // TODO
-    }
-
-    // OpenMM8_IEventListener implementation
-
-    public void OnObjectEnteredMeleeRange(GameObject other)
-    {
-        Debug.Log("Object entered melee range: " + other.name);
-
-        if (other.name == "Player")
-        {
-            m_NavMeshAgent.Stop();
-            GetComponent<Rigidbody>().velocity = Vector3.zero;
-            m_IsPlayerInMeleeRange = true;
-        }
-    }
-
-    public void OnObjectLeftMeleeRange(GameObject other)
-    {
-        Debug.Log("Object left melee range: " + other.name);
-
-        if (other.name == "Player")
-        {
-            m_IsPlayerInMeleeRange = false;
-            m_NavMeshAgent.ResetPath();
-        }
-    }
-
-    public void OnObjectEnteredAgroRange(GameObject other)
-    {
-        Debug.Log("Object entered agro range: " + other.name);
-    }
-    
-    public void OnObjectLeftAgroRange(GameObject other)
-    {
-        Debug.Log("Object left agro range: " + other.name);
     }
 }
 
