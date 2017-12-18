@@ -1,0 +1,901 @@
+fileFormatVersion: 2
+guid: 9c33dcebc3204aa4d94dfac9e52d9839
+timeCreated: 1513502113
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: asiL00
+    21300002: asiL01
+    21300004: asiL02
+    21300006: asiL03
+    21300008: asiL04
+    21300010: asiL05
+    21300012: asiL06
+    21300014: asiL07
+    21300016: asiL08
+    21300018: asiL09
+    21300020: asiL10
+    21300022: asiR00
+    21300024: asiR01
+    21300026: asiR02
+    21300028: asiR03
+    21300030: asiR04
+    21300032: asiR05
+    21300034: asiR06
+    21300036: asiR07
+    21300038: Basebar
+    21300040: butn1d
+    21300042: butn1u
+    21300044: butn2d
+    21300046: butn2u
+    21300048: butn3d
+    21300050: butn3u
+    21300052: butn4d
+    21300054: butn4u
+    21300056: compcovr
+    21300058: ERADCATE
+    21300060: FACEMASK
+    21300062: IBshield01
+    21300064: IBshield02
+    21300066: IBshield03
+    21300068: IBshield04
+    21300070: ManaG
+    21300072: manar
+    21300074: manaY
+    21300076: map+dn
+    21300078: map+ht
+    21300080: map+up
+    21300082: map-dn
+    21300084: map-ht
+    21300086: mapframe
+    21300088: selring
+    21300090: statBL
+    21300092: statG
+    21300094: statR
+    21300096: statY
+    21300098: topbar
+    21300100: topbar2
+    21300102: IB-COMP-a
+    21300104: scoreBG
+    21300106: manaB
+    21300108: manaFRM
+  externalObjects: {}
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: asiL00
+      rect:
+        serializedVersion: 2
+        x: 804
+        y: 168
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: asiL01
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 3
+        width: 15
+        height: 16
+      alignment: 9
+      pivot: {x: 2.0666666, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: asiL02
+      rect:
+        serializedVersion: 2
+        x: 1012
+        y: 23
+        width: 11
+        height: 17
+      alignment: 9
+      pivot: {x: 2.909091, y: 0.05882353}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: asiL03
+      rect:
+        serializedVersion: 2
+        x: 978
+        y: 8
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.78125, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: asiL04
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 24
+        width: 12
+        height: 16
+      alignment: 9
+      pivot: {x: -0.6666667, y: -1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: asiL05
+      rect:
+        serializedVersion: 2
+        x: 978
+        y: 50
+        width: 25
+        height: 28
+      alignment: 9
+      pivot: {x: -0.24, y: -0.14285715}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: asiL06
+      rect:
+        serializedVersion: 2
+        x: 389
+        y: 69
+        width: 13
+        height: 14
+      alignment: 9
+      pivot: {x: -1.2307693, y: 0.85714287}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: asiL07
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 13
+        width: 22
+        height: 27
+      alignment: 9
+      pivot: {x: 0.09090909, y: 0.2962963}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: asiL08
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 21
+        width: 21
+        height: 37
+      alignment: 9
+      pivot: {x: 1.2380953, y: 0.1891892}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: asiL09
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 5
+        width: 22
+        height: 43
+      alignment: 9
+      pivot: {x: 0.27272728, y: 0.5813953}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: asiL10
+      rect:
+        serializedVersion: 2
+        x: 912
+        y: 105
+        width: 54
+        height: 24
+      alignment: 9
+      pivot: {x: 0.4814815, y: 1.3333334}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: asiR00
+      rect:
+        serializedVersion: 2
+        x: 912
+        y: 14
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: asiR01
+      rect:
+        serializedVersion: 2
+        x: 970
+        y: 80
+        width: 44
+        height: 60
+      alignment: 9
+      pivot: {x: 0.47727272, y: 0.46666667}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: asiR02
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 3
+        width: 18
+        height: 16
+      alignment: 9
+      pivot: {x: 0.44444445, y: 0.75}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: asiR03
+      rect:
+        serializedVersion: 2
+        x: 1009
+        y: 176
+        width: 14
+        height: 26
+      alignment: 9
+      pivot: {x: 1.4285715, y: 0.53846157}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: asiR04
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 42
+        width: 37
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5135135, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: asiR05
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 21
+        width: 58
+        height: 26
+      alignment: 9
+      pivot: {x: 0.44827586, y: -0.23076923}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: asiR06
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 50
+        width: 63
+        height: 33
+      alignment: 9
+      pivot: {x: 0.4920635, y: 0.45454547}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: asiR07
+      rect:
+        serializedVersion: 2
+        x: 804
+        y: 143
+        width: 63
+        height: 23
+      alignment: 9
+      pivot: {x: 0.50793654, y: 1.3913044}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Basebar
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 141
+        width: 640
+        height: 114
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: butn1d
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 27
+        width: 36
+        height: 21
+      alignment: 9
+      pivot: {x: 0.5277778, y: 0.42857143}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: butn1u
+      rect:
+        serializedVersion: 2
+        x: 984
+        y: 144
+        width: 38
+        height: 17
+      alignment: 9
+      pivot: {x: 0.5263158, y: 0.3529412}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: butn2d
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 2
+        width: 29
+        height: 23
+      alignment: 9
+      pivot: {x: 0.41379312, y: 0.47826087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: butn2u
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 13
+        width: 29
+        height: 21
+      alignment: 9
+      pivot: {x: 0.41379312, y: 0.42857143}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: butn3d
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 60
+        width: 60
+        height: 23
+      alignment: 9
+      pivot: {x: 0.5, y: 0.47826087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: butn3u
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 60
+        width: 60
+        height: 23
+      alignment: 9
+      pivot: {x: 0.5, y: 0.47826087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: butn4d
+      rect:
+        serializedVersion: 2
+        x: 912
+        y: 81
+        width: 50
+        height: 22
+      alignment: 9
+      pivot: {x: 0.5, y: 0.45454547}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: butn4u
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 36
+        width: 50
+        height: 22
+      alignment: 9
+      pivot: {x: 0.5, y: 0.45454547}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: compcovr
+      rect:
+        serializedVersion: 2
+        x: 933
+        y: 142
+        width: 49
+        height: 19
+      alignment: 9
+      pivot: {x: 0.5, y: 0.47368422}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ERADCATE
+      rect:
+        serializedVersion: 2
+        x: 190
+        y: 4
+        width: 59
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: FACEMASK
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 49
+        width: 60
+        height: 80
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: IB-COMP-a
+      rect:
+        serializedVersion: 2
+        x: 643
+        y: 131
+        width: 325
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: IBshield01
+      rect:
+        serializedVersion: 2
+        x: 940
+        y: 163
+        width: 67
+        height: 92
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: IBshield02
+      rect:
+        serializedVersion: 2
+        x: 643
+        y: 37
+        width: 67
+        height: 92
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: IBshield03
+      rect:
+        serializedVersion: 2
+        x: 712
+        y: 37
+        width: 67
+        height: 92
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: IBshield04
+      rect:
+        serializedVersion: 2
+        x: 781
+        y: 37
+        width: 67
+        height: 92
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: manaB
+      rect:
+        serializedVersion: 2
+        x: 1016
+        y: 93
+        width: 3
+        height: 49
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: manaFRM
+      rect:
+        serializedVersion: 2
+        x: 1009
+        y: 204
+        width: 10
+        height: 51
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ManaG
+      rect:
+        serializedVersion: 2
+        x: 933
+        y: 183
+        width: 3
+        height: 49
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: manar
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 9
+        width: 3
+        height: 49
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: manaY
+      rect:
+        serializedVersion: 2
+        x: 1016
+        y: 42
+        width: 3
+        height: 49
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: map+dn
+      rect:
+        serializedVersion: 2
+        x: 314
+        y: 68
+        width: 13
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: map+ht
+      rect:
+        serializedVersion: 2
+        x: 329
+        y: 68
+        width: 13
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: map+up
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 68
+        width: 13
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: map-dn
+      rect:
+        serializedVersion: 2
+        x: 359
+        y: 68
+        width: 13
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: map-ht
+      rect:
+        serializedVersion: 2
+        x: 374
+        y: 68
+        width: 13
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: mapframe
+      rect:
+        serializedVersion: 2
+        x: 643
+        y: 142
+        width: 159
+        height: 113
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: scoreBG
+      rect:
+        serializedVersion: 2
+        x: 804
+        y: 234
+        width: 134
+        height: 21
+      alignment: 9
+      pivot: {x: 0.6044776, y: 0.45238096}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: selring
+      rect:
+        serializedVersion: 2
+        x: 870
+        y: 152
+        width: 61
+        height: 80
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: statBL
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 11
+        width: 19
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: statG
+      rect:
+        serializedVersion: 2
+        x: 251
+        y: 60
+        width: 19
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: statR
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 60
+        width: 19
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: statY
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 60
+        width: 19
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: topbar
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 110
+        width: 640
+        height: 29
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: topbar2
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 85
+        width: 640
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    outline: []
+    physicsShape: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

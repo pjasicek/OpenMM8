@@ -34,7 +34,7 @@ public class OpenMM8_NPC_AI_Villager : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListe
         // ----- [Event] OnDamaged - Start running from that unit if not already running from it
         // ----- [Event] OnEnemyEnteredAgroRange - Start running away from that unit
 
-        if (m_IsPlayerInMeleeRange)
+        if (m_IsPlayerInMeleeRange && !m_EnemiesInAgroRange.Contains(m_Player))
         {
             transform.LookAt(transform.position + m_Player.transform.rotation * Vector3.back, m_Player.transform.rotation * Vector3.up);
             m_Animator.SetInteger("State", (int)NPCState.Idle);
@@ -46,7 +46,7 @@ public class OpenMM8_NPC_AI_Villager : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListe
             return;
         }
 
-        if (m_RemainingWanderIdleTime > 0.0f)
+        if ((m_RemainingWanderIdleTime > 0.0f) && (m_EnemiesInAgroRange.Count == 0))
         {
             m_RemainingWanderIdleTime -= Time.deltaTime;
             // TODO: Change, need an "event" to tell me when he started being idle
@@ -61,6 +61,8 @@ public class OpenMM8_NPC_AI_Villager : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListe
 
             GameObject closestEnemy = m_EnemiesInAgroRange.OrderBy(t => (t.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
             WanderAwayFromEnemy(closestEnemy);
+
+            m_Animator.SetInteger("State", (int)NPCState.Walking);
 
             // I dont want to stop when running away from enemy, so this is left commented out as a reminder
             // m_RemainingWanderIdleTime = Random.Range(m_MinWanderIdleTime, m_MaxWanderIdleTime);
@@ -83,33 +85,68 @@ public class OpenMM8_NPC_AI_Villager : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListe
 
         if (other.name == "Player")
         {
-            m_NavMeshAgent.isStopped = true;
-            GetComponent<Rigidbody>().velocity = Vector3.zero;
             m_IsPlayerInMeleeRange = true;
 
-            transform.LookAt(transform.position + other.transform.rotation * Vector3.back, other.transform.rotation * Vector3.up);
+            if (!m_EnemiesInAgroRange.Contains(other))
+            {
+                m_NavMeshAgent.isStopped = true;
+                GetComponent<Rigidbody>().velocity = Vector3.zero;
+                transform.LookAt(transform.position + other.transform.rotation * Vector3.back, other.transform.rotation * Vector3.up);
+            }
         }
     }
 
     public void OnObjectLeftMeleeRange(GameObject other)
     {
-        Debug.Log("Object left melee range: " + other.name);
+        //Debug.Log("Object left melee range: " + other.name);
 
         if (other.name == "Player")
         {
             m_IsPlayerInMeleeRange = false;
-            m_NavMeshAgent.ResetPath();
+            if (!m_EnemiesInAgroRange.Contains(other))
+            {
+                m_NavMeshAgent.ResetPath();
+            }
         }
     }
 
     public void OnObjectEnteredAgroRange(GameObject other)
     {
-        Debug.Log("Object entered agro range: " + other.name);
+        //Debug.Log("Object entered agro range: " + other.name);
+
+        bool isEnemy = false;
+        OpenMM8_NPC_AI otherAI = other.GetComponent<OpenMM8_NPC_AI>();
+        if (otherAI != null)
+        {
+            if (otherAI.m_HostilityType == HostilityType.Hostile)
+            {
+                isEnemy = true;
+            }
+        }
+        else if (other.name == "Player")
+        {
+            if (m_IsHostileToPlayer)
+            {
+                isEnemy = true;
+            }
+        }
+
+        if (isEnemy)
+        {
+            if (m_EnemiesInAgroRange.Count == 0)
+            {
+                WanderAwayFromEnemy(other);
+                m_Animator.SetInteger("State", (int)NPCState.Walking);
+            }
+            m_EnemiesInAgroRange.Add(other);
+        }
     }
 
     public void OnObjectLeftAgroRange(GameObject other)
     {
-        Debug.Log("Object left agro range: " + other.name);
+        //Debug.Log("Object left agro range: " + other.name);
+
+        m_EnemiesInAgroRange.Remove(other);
     }
 }
 

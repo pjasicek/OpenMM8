@@ -17,7 +17,8 @@ using UnityEditor;
 
 public abstract class OpenMM8_NPC_AI : MonoBehaviour
 {
-    public enum NPCState { Walking, Idle, MeleeAttacking, RangedAttacking, Stunned, Dying, Dead, Fidgeting }
+    public enum NPCState { Walking, Idle, MeleeAttacking, ReceivingDamage, Dying, Dead }
+    public enum HostilityType { Friendly, Hostile };
 
     //-------------------------------------------------------------------------
     // Variables
@@ -36,6 +37,9 @@ public abstract class OpenMM8_NPC_AI : MonoBehaviour
     public float m_MeleeRange;
 
     public Vector3 m_SpawnPosition;
+
+    public HostilityType m_HostilityType;
+    public bool m_IsHostileToPlayer;
 
     // Private
     protected GameObject m_Player;
@@ -89,6 +93,8 @@ public abstract class OpenMM8_NPC_AI : MonoBehaviour
         m_CurrentWaypoint.GetComponent<Renderer>().material.color = Color.red;
         m_CurrentWaypoint.name = this.gameObject.name + " Waypoint";
         m_CurrentWaypoint.GetComponent<SphereCollider>().enabled = false;
+
+        m_IsHostileToPlayer = m_HostilityType == HostilityType.Hostile;
     }
 
     /**** If NPC is a Guard ****/
@@ -134,7 +140,10 @@ public abstract class OpenMM8_NPC_AI : MonoBehaviour
 
     public void WanderWithinSpawnArea()
     {
-        m_CurrentDestination = m_SpawnPosition + new Vector3(Random.Range((int) - m_WanderRadius * 0.5f - 2, (int)m_WanderRadius * 0.5f + 2), 0, Random.Range((int) - m_WanderRadius * 0.5f - 2, (int)m_WanderRadius * 0.5f + 2));
+        m_CurrentDestination = m_SpawnPosition + new Vector3(
+            Random.Range((int) - m_WanderRadius * 0.5f - 2, (int)m_WanderRadius * 0.5f + 2), 
+            0, 
+            Random.Range((int) - m_WanderRadius * 0.5f - 2, (int)m_WanderRadius * 0.5f + 2));
         m_NavMeshAgent.ResetPath();
 
         m_NavMeshAgent.SetDestination(m_CurrentDestination);
@@ -148,7 +157,17 @@ public abstract class OpenMM8_NPC_AI : MonoBehaviour
 
     public void WanderAwayFromEnemy(GameObject enemy)
     {
-        // TODO
+        Vector3 heading = enemy.transform.position - transform.position;
+        heading.Normalize();
+
+        m_CurrentDestination = transform.position - heading * 6.0f;
+        m_NavMeshAgent.ResetPath();
+        m_NavMeshAgent.SetDestination(m_CurrentDestination);
+
+        m_CurrentWaypoint.transform.position = m_CurrentDestination;
+
+        Vector3 direction = (m_CurrentDestination - transform.position).normalized;
+        transform.rotation = Quaternion.LookRotation(direction);
     }
 }
 
