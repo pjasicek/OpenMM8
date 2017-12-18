@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TestOffset : MonoBehaviour 
+public class Minimap : MonoBehaviour 
 {
     public Vector2 m_MinimapScale = new Vector2(0.2f, 0.2f);
 
