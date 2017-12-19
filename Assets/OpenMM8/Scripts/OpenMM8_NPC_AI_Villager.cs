@@ -87,7 +87,7 @@ public class OpenMM8_NPC_AI_Villager : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListe
         {
             m_IsPlayerInMeleeRange = true;
 
-            if (!m_EnemiesInAgroRange.Contains(other))
+            if (!m_HostilityResolver.IsHostileTo(other))
             {
                 m_NavMeshAgent.isStopped = true;
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -103,7 +103,7 @@ public class OpenMM8_NPC_AI_Villager : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListe
         if (other.name == "Player")
         {
             m_IsPlayerInMeleeRange = false;
-            if (!m_EnemiesInAgroRange.Contains(other))
+            if (!m_HostilityResolver.IsHostileTo(other))
             {
                 m_NavMeshAgent.ResetPath();
             }
@@ -112,26 +112,7 @@ public class OpenMM8_NPC_AI_Villager : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListe
 
     public void OnObjectEnteredAgroRange(GameObject other)
     {
-        //Debug.Log("Object entered agro range: " + other.name);
-
-        bool isEnemy = false;
-        OpenMM8_NPC_AI otherAI = other.GetComponent<OpenMM8_NPC_AI>();
-        if (otherAI != null)
-        {
-            if (otherAI.m_HostilityType == HostilityType.Hostile)
-            {
-                isEnemy = true;
-            }
-        }
-        else if (other.name == "Player")
-        {
-            if (m_IsHostileToPlayer)
-            {
-                isEnemy = true;
-            }
-        }
-
-        if (isEnemy)
+        if (m_HostilityResolver.IsHostileTo(other))
         {
             if (m_EnemiesInAgroRange.Count == 0)
             {
@@ -146,7 +127,10 @@ public class OpenMM8_NPC_AI_Villager : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListe
     {
         //Debug.Log("Object left agro range: " + other.name);
 
-        m_EnemiesInAgroRange.Remove(other);
+        if (m_HostilityResolver.IsHostileTo(other))
+        {
+            m_EnemiesInAgroRange.Remove(other);
+        }
     }
 }
 

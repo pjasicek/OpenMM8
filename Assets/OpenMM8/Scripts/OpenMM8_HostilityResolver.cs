@@ -76,10 +76,22 @@ public class OpenMM8_HostilityResolver : MonoBehaviour
         OpenMM8_HostilityResolver toWhatResolver = what.GetComponent<OpenMM8_HostilityResolver>();
         if (toWhatResolver)
         {
+            // TODO: Clarify if when hostile monsters attack eachother
             if (m_HostilityType == HostilityType.Hostile && 
                 toWhatResolver.m_HostilityType == HostilityType.Hostile)
             {
+                return false;
+            }
 
+            if (m_HostilityType == HostilityType.Friendly &&
+                toWhatResolver.m_HostilityType == HostilityType.Hostile)
+            {
+                return true;
+            }
+            if (m_HostilityType == HostilityType.Hostile &&
+                toWhatResolver.m_HostilityType == HostilityType.Friendly)
+            {
+                return true;
             }
         }
 
@@ -95,12 +107,6 @@ public class OpenMM8_HostilityResolver : MonoBehaviour
 
 	// Use this for initialization
 	void Start ()
-    {
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
     {
 		
 	}

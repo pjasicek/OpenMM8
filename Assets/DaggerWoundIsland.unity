@@ -399,8 +399,9 @@ GameObject:
   - component: {fileID: 172736394}
   - component: {fileID: 172736384}
   - component: {fileID: 172736395}
-  - component: {fileID: 172736391}
   - component: {fileID: 172736390}
+  - component: {fileID: 172736396}
+  - component: {fileID: 172736391}
   - component: {fileID: 172736388}
   - component: {fileID: 172736387}
   - component: {fileID: 172736386}
@@ -432,8 +433,6 @@ MonoBehaviour:
   m_AgroRange: 0
   m_MeleeRange: 0
   m_SpawnPosition: {x: 0, y: 0, z: 0}
-  m_HostilityType: 0
-  m_IsHostileToPlayer: 0
 --- !u!195 &172736385
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -781,6 +780,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_RefreshRate: 50
+--- !u!114 &172736396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 172736383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca1024ce08ae67e43b8b18daef203f40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HostilityType: 2
+  m_Race: 0
+  m_SpecialHostileTo: 
+  m_SpecialFriendlyTo: 
+  m_IsHostileToPlayer: 0
 --- !u!1 &175601147
 GameObject:
   m_ObjectHideFlags: 0

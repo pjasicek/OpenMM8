@@ -14,6 +14,7 @@ using UnityEditor;
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(OpenMM8_NPC_Stats))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(OpenMM8_HostilityResolver))]
 
 public abstract class OpenMM8_NPC_AI : MonoBehaviour
 {
@@ -38,16 +39,13 @@ public abstract class OpenMM8_NPC_AI : MonoBehaviour
 
     public Vector3 m_SpawnPosition;
 
-    public HostilityType m_HostilityType;
-    public bool m_IsHostileToPlayer;
-
     // Private
     protected GameObject m_Player;
 
     protected Animator m_Animator;
     protected NavMeshAgent m_NavMeshAgent;
-
     protected OpenMM8_NPC_Stats m_Stats;
+    protected OpenMM8_HostilityResolver m_HostilityResolver;
     
     protected Vector3 m_CurrentDestination;
 
@@ -86,6 +84,7 @@ public abstract class OpenMM8_NPC_AI : MonoBehaviour
         m_SpawnPosition = transform.position;
         m_NavMeshAgent = GetComponent<NavMeshAgent>();
         m_Animator = GetComponent<Animator>();
+        m_HostilityResolver = GetComponent<OpenMM8_HostilityResolver>();
 
         // Create debug waypoint
         m_CurrentWaypoint = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -93,8 +92,6 @@ public abstract class OpenMM8_NPC_AI : MonoBehaviour
         m_CurrentWaypoint.GetComponent<Renderer>().material.color = Color.red;
         m_CurrentWaypoint.name = this.gameObject.name + " Waypoint";
         m_CurrentWaypoint.GetComponent<SphereCollider>().enabled = false;
-
-        m_IsHostileToPlayer = m_HostilityType == HostilityType.Hostile;
     }
 
     /**** If NPC is a Guard ****/
