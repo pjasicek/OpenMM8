@@ -34,27 +34,24 @@ public class OpenMM8_NPC_AI_Villager : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListe
         // ----- [Event] OnDamaged - Start running from that unit if not already running from it
         // ----- [Event] OnEnemyEnteredAgroRange - Start running away from that unit
 
-        if (m_IsPlayerInMeleeRange && !m_EnemiesInAgroRange.Contains(m_Player))
+        if (m_IsPlayerInMeleeRange && !m_HostilityResolver.IsHostileTo(m_Player))
         {
             transform.LookAt(transform.position + m_Player.transform.rotation * Vector3.back, m_Player.transform.rotation * Vector3.up);
             m_Animator.SetInteger("State", (int)NPCState.Idle);
-            return;
         }
-
-        if (IsOnMove())
+        else if (IsOnMove())
         {
-            return;
+            // Walking - either wandering or fleeing, let it reach its destination
         }
-
-        if ((m_RemainingWanderIdleTime > 0.0f) && (m_EnemiesInAgroRange.Count == 0))
+        else if ((m_RemainingWanderIdleTime > 0.0f) && (m_EnemiesInAgroRange.Count == 0))
         {
+            // Villager has some time left to be idle
+
             m_RemainingWanderIdleTime -= Time.deltaTime;
             // TODO: Change, need an "event" to tell me when he started being idle
             m_Animator.SetInteger("State", (int)NPCState.Idle);
-            return;
         }
-
-        if (m_EnemiesInAgroRange.Count > 0)
+        else if (m_EnemiesInAgroRange.Count > 0)
         {
             // Find closest hostile unit
             // Move away from that unit
@@ -75,13 +72,15 @@ public class OpenMM8_NPC_AI_Villager : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListe
 
             m_RemainingWanderIdleTime = Random.Range(m_MinWanderIdleTime, m_MaxWanderIdleTime);
         }
+
+        m_State = (NPCState)m_Animator.GetInteger("State");
     }
 
     // OpenMM8_IEventListener implementation
 
     public void OnObjectEnteredMeleeRange(GameObject other)
     {
-        Debug.Log("Object entered melee range: " + other.name);
+        //Debug.Log("Object entered melee range: " + other.name);
 
         if (other.name == "Player")
         {

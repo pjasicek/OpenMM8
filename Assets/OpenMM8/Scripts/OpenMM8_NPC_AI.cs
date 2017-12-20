@@ -18,7 +18,7 @@ using UnityEditor;
 
 public abstract class OpenMM8_NPC_AI : MonoBehaviour
 {
-    public enum NPCState { Walking, Idle, MeleeAttacking, ReceivingDamage, Dying, Dead }
+    public enum NPCState { Walking, Idle, Attacking, ReceivingDamage, Dying, Dead }
     public enum HostilityType { Friendly, Hostile };
 
     //-------------------------------------------------------------------------
@@ -67,6 +67,8 @@ public abstract class OpenMM8_NPC_AI : MonoBehaviour
     protected bool m_IsPlayerInMeleeRange = false;
 
     protected bool m_IsWalking = false;
+    protected bool m_IsFleeing = false;
+    protected bool m_IsAttacking = false;
 
     //-------------------------------------------------------------------------
     // Unity Overrides
@@ -108,13 +110,7 @@ public abstract class OpenMM8_NPC_AI : MonoBehaviour
     //                            and query all nearby Guards / Villagers of the same affiliation to be hostile towards
     //                            that unit too
 
-    /**** If NPC is Enemy ****/
-    // 1) If it is attacking, do nothing (Waiting for AttackEnded frame event)
-    // 2) If it is moving, do nothing (May be interrupted if enemy enters its melee range)
-    // ----- [Event] OnAttackEnded - after attack ends, it will check if it is within melee range of any hostile unit,
-    //                           if it is, then it will attack it again, if it is not, it will choose some strafe
-    //                           location - e.g. Shoot - Move - Shoot - Move, etc.
-    // ------ [Event] If enemy enters its attack range, it will attack immediately
+    
 
     //-------------------------------------------------------------------------
     // Methods
@@ -165,6 +161,31 @@ public abstract class OpenMM8_NPC_AI : MonoBehaviour
 
         Vector3 direction = (m_CurrentDestination - transform.position).normalized;
         transform.rotation = Quaternion.LookRotation(direction);
+    }
+
+    public void ChaseTarget(GameObject target)
+    {
+        m_Target = target;
+
+        m_CurrentDestination = target.transform.position;
+        m_NavMeshAgent.ResetPath();
+
+        m_NavMeshAgent.SetDestination(m_CurrentDestination);
+
+        m_CurrentWaypoint.transform.position = m_CurrentDestination;
+
+        Vector3 direction = (m_CurrentDestination - transform.position).normalized;
+        transform.rotation = Quaternion.LookRotation(direction);
+    }
+
+    public void StopMoving()
+    {
+        m_NavMeshAgent.ResetPath();
+    }
+
+    public void TurnToObject(GameObject go)
+    {
+        transform.LookAt(transform.position + go.transform.rotation * Vector3.back, go.transform.rotation * Vector3.up);
     }
 }
 

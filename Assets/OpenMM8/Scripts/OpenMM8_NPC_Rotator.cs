@@ -34,7 +34,7 @@ public class OpenMM8_NPC_Rotator : MonoBehaviour
     {
         m_LookDirection = current;
 
-        Debug.Log("Look direction changed to: " + current);
+        //Debug.Log("Look direction changed to: " + current);
 
         m_Renderer.flipX = false;
 
