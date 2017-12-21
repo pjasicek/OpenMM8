@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OpenMM8_HostilityResolver : MonoBehaviour
+public class HostilityChecker : MonoBehaviour
 {
     public enum HostilityType { Friendly, Hostile, Undefined };
     public enum NPCRace
@@ -73,28 +73,28 @@ public class OpenMM8_HostilityResolver : MonoBehaviour
             return m_IsHostileToPlayer;
         }
 
-        OpenMM8_HostilityResolver toWhatResolver = what.GetComponent<OpenMM8_HostilityResolver>();
-        if (toWhatResolver == this)
+        HostilityChecker otherChecker = what.GetComponent<HostilityChecker>();
+        if (otherChecker == this)
         {
             return false;
         }
 
-        if (toWhatResolver)
+        if (otherChecker)
         {
             // TODO: Clarify if when hostile monsters attack eachother
-            if (m_HostilityType == HostilityType.Hostile && 
-                toWhatResolver.m_HostilityType == HostilityType.Hostile)
+            if (m_HostilityType == HostilityType.Hostile &&
+                otherChecker.m_HostilityType == HostilityType.Hostile)
             {
                 return false;
             }
 
             if (m_HostilityType == HostilityType.Friendly &&
-                toWhatResolver.m_HostilityType == HostilityType.Hostile)
+                otherChecker.m_HostilityType == HostilityType.Hostile)
             {
                 return true;
             }
             if (m_HostilityType == HostilityType.Hostile &&
-                toWhatResolver.m_HostilityType == HostilityType.Friendly)
+                otherChecker.m_HostilityType == HostilityType.Friendly)
             {
                 return true;
             }

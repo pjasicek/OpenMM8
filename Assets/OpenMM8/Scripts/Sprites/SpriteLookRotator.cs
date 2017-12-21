@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Animator))]
-public class OpenMM8_NPC_Rotator : MonoBehaviour
+public class SpriteLookRotator : MonoBehaviour
 {
     // Relative to camera
     enum LookDirection { Front, FrontRight, Right, BackRight, Back, BackLeft, Left, FrontLeft };
@@ -87,17 +87,6 @@ public class OpenMM8_NPC_Rotator : MonoBehaviour
     // Instead of Update to not drain CPU
     void AlignRotation()
     {
-        // Get Main Camera angle
-        // Get this NPC's Angle
-        // Substract
-        // Get LookDirection from gotten angle between Main Camera and NPC
-        // Check if LookDirection changed
-        // If it did change, set current to new one
-        //     and get current animation's state - 0.0f - 1.0f scaled time which
-        //     elapsed from animation's start
-        //   Set new animation with respect to current LookDirection
-        //   Set new animation's scaled time from last animation to keep it consistent
-
         //Debug.Log("Object rotation: " + transform.rotation.eulerAngles);
         //Debug.Log("Camera rotation: " + m_CameraTransform.rotation.eulerAngles);
 

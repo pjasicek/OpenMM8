@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-public class OpenMM8_NPC_AI_Enemy : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListener
+public class EnemyNpc : BaseNpc
 {
     // Use this for initialization
     void Start()
@@ -36,6 +37,7 @@ public class OpenMM8_NPC_AI_Enemy : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListener
         //                           location - e.g. Shoot - Move - Shoot - Move, etc.
         // ------ [Event] If enemy enters its attack range, it will attack immediately
 
+        //m_State = (NPCState)m_Animator.GetInteger("State");
         if (m_State == NPCState.Attacking)
         {
             if (m_Target == null)
@@ -44,7 +46,9 @@ public class OpenMM8_NPC_AI_Enemy : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListener
             }
             else
             {
+                Debug.Log("Turning to target");
                 TurnToObject(m_Target);
+                Debug.Log("Attacking: " + m_Target.name);
             }
         }
         else if (m_State == NPCState.Walking)
@@ -68,9 +72,7 @@ public class OpenMM8_NPC_AI_Enemy : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListener
         }
     }
 
-    // OpenMM8_IEventListener implementation
-
-    public void OnObjectEnteredMeleeRange(GameObject other)
+    public override void OnObjectEnteredMeleeRange(GameObject other)
     {
         if (m_HostilityResolver.IsHostileTo(other))
         {
@@ -92,7 +94,7 @@ public class OpenMM8_NPC_AI_Enemy : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListener
         }
     }
 
-    public void OnObjectLeftMeleeRange(GameObject other)
+    public override void OnObjectLeftMeleeRange(GameObject other)
     {
         if (m_HostilityResolver.IsHostileTo(other))
         {
@@ -118,7 +120,7 @@ public class OpenMM8_NPC_AI_Enemy : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListener
         }
     }
 
-    public void OnObjectEnteredAgroRange(GameObject other)
+    public override void OnObjectEnteredAgroRange(GameObject other)
     {
         Debug.Log("Entered: " + other.name);
         if (m_HostilityResolver.IsHostileTo(other))
@@ -136,7 +138,7 @@ public class OpenMM8_NPC_AI_Enemy : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListener
         }
     }
 
-    public void OnObjectLeftAgroRange(GameObject other)
+    public override void OnObjectLeftAgroRange(GameObject other)
     {
         if (m_HostilityResolver.IsHostileTo(other))
         {
@@ -198,7 +200,7 @@ public class OpenMM8_NPC_AI_Enemy : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListener
 //============================================================
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(OpenMM8_NPC_AI_Enemy))]
+[CustomEditor(typeof(EnemyNpc))]
 public class OpenMM8_NPC_AI_Enemy_Editor : OpenMM8_NPC_AI_Editor
 {
 

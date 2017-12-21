@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class FPSTempTest : MonoBehaviour
+public class GroundChecker : MonoBehaviour
 {
     //========== PUBLIC ==========
     public float m_GroundTexturePollInterval = 50.0f;

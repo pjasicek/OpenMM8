@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -12,11 +13,11 @@ using UnityEditor;
 [RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(OpenMM8_NPC_Stats))]
+[RequireComponent(typeof(NpcData))]
 [RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(OpenMM8_HostilityResolver))]
+[RequireComponent(typeof(HostilityChecker))]
 
-public abstract class OpenMM8_NPC_AI : MonoBehaviour
+public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 {
     public enum NPCState { Walking, Idle, Attacking, ReceivingDamage, Dying, Dead }
     public enum HostilityType { Friendly, Hostile };
@@ -44,8 +45,8 @@ public abstract class OpenMM8_NPC_AI : MonoBehaviour
 
     protected Animator m_Animator;
     protected NavMeshAgent m_NavMeshAgent;
-    protected OpenMM8_NPC_Stats m_Stats;
-    protected OpenMM8_HostilityResolver m_HostilityResolver;
+    protected NpcData m_Stats;
+    protected HostilityChecker m_HostilityResolver;
     
     protected Vector3 m_CurrentDestination;
 
@@ -86,7 +87,7 @@ public abstract class OpenMM8_NPC_AI : MonoBehaviour
         m_SpawnPosition = transform.position;
         m_NavMeshAgent = GetComponent<NavMeshAgent>();
         m_Animator = GetComponent<Animator>();
-        m_HostilityResolver = GetComponent<OpenMM8_HostilityResolver>();
+        m_HostilityResolver = GetComponent<HostilityChecker>();
 
         // Create debug waypoint
         m_CurrentWaypoint = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -134,9 +135,9 @@ public abstract class OpenMM8_NPC_AI : MonoBehaviour
     public void WanderWithinSpawnArea()
     {
         m_CurrentDestination = m_SpawnPosition + new Vector3(
-            Random.Range((int) - m_WanderRadius * 0.5f - 2, (int)m_WanderRadius * 0.5f + 2), 
-            0, 
-            Random.Range((int) - m_WanderRadius * 0.5f - 2, (int)m_WanderRadius * 0.5f + 2));
+            UnityEngine.Random.Range((int) - m_WanderRadius * 0.5f - 2, (int)m_WanderRadius * 0.5f + 2), 
+            0,
+            UnityEngine.Random.Range((int) - m_WanderRadius * 0.5f - 2, (int)m_WanderRadius * 0.5f + 2));
         m_NavMeshAgent.ResetPath();
 
         m_NavMeshAgent.SetDestination(m_CurrentDestination);
@@ -185,8 +186,57 @@ public abstract class OpenMM8_NPC_AI : MonoBehaviour
 
     public void TurnToObject(GameObject go)
     {
-        transform.LookAt(transform.position + go.transform.rotation * Vector3.back, go.transform.rotation * Vector3.up);
+        if (go.CompareTag("Player"))
+        {
+            transform.LookAt(transform.position + go.transform.rotation * Vector3.back, go.transform.rotation * Vector3.up);
+        }
+        else
+        {
+            transform.LookAt(go.transform);
+        }
     }
+
+    public void OnObjectEnteredMyTrigger(GameObject other, TriggerType triggerType)
+    {
+        switch (triggerType)
+        {
+            case TriggerType.MeleeRange:
+                OnObjectEnteredMeleeRange(other);
+                break;
+
+            case TriggerType.AgroRange:
+                OnObjectEnteredAgroRange(other);
+                break;
+
+            default:
+                Debug.LogError("Unhandled Trigger Type: " + triggerType);
+                break;
+        }
+    }
+
+    public void OnObjectLeftMyTrigger(GameObject other, TriggerType triggerType)
+    {
+        switch (triggerType)
+        {
+            case TriggerType.MeleeRange:
+                OnObjectLeftMeleeRange(other);
+                break;
+
+            case TriggerType.AgroRange:
+                OnObjectLeftAgroRange(other);
+                break;
+
+            default:
+                Debug.LogError("Unhandled Trigger Type: " + triggerType);
+                break;
+        }
+    }
+
+    abstract public void OnObjectEnteredMeleeRange(GameObject other);
+    abstract public void OnObjectEnteredAgroRange(GameObject other);
+
+    abstract public void OnObjectLeftMeleeRange(GameObject other);
+    abstract public void OnObjectLeftAgroRange(GameObject other);
 }
 
 //============================================================
@@ -194,14 +244,14 @@ public abstract class OpenMM8_NPC_AI : MonoBehaviour
 //============================================================
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(OpenMM8_NPC_AI))]
+[CustomEditor(typeof(BaseNpc))]
 public class OpenMM8_NPC_AI_Editor : Editor
 {
-    OpenMM8_NPC_AI m_TargetObject;
+    BaseNpc m_TargetObject;
 
     public void OnSceneGUI()
     {
-        m_TargetObject = this.target as OpenMM8_NPC_AI;
+        m_TargetObject = this.target as BaseNpc;
 
         Handles.color = new Color(0, 1.0f, 0, 0.1f);
         if (EditorApplication.isPlaying)
@@ -211,20 +261,6 @@ public class OpenMM8_NPC_AI_Editor : Editor
         else
         {
             Handles.DrawSolidDisc(m_TargetObject.transform.position, Vector3.up, m_TargetObject.m_WanderRadius);
-        }
-
-        MeleeRangeTrigger mrt = m_TargetObject.GetComponentInChildren<MeleeRangeTrigger>();
-        if (mrt != null)
-        {
-            Handles.color = new Color(1.0f, 0.0f, 0, 0.15f);
-            Handles.DrawSolidDisc(m_TargetObject.transform.position, Vector3.up, mrt.m_MeleeRangeRadius);
-        }
-
-        AgroRangeTrigger art = m_TargetObject.GetComponentInChildren<AgroRangeTrigger>();
-        if (art != null)
-        {
-            Handles.color = new Color(1.0f, 1.0f, 0, 0.15f);
-            Handles.DrawSolidDisc(m_TargetObject.transform.position, Vector3.up, art.m_AgroRangeRadius);
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OpenMM8_NPC_Stats : MonoBehaviour
+public class NpcData : MonoBehaviour
 {
     public enum AIType { Coward, Normal, Aggressive, Suicidal };
     public enum MovementSpeedType { Low, Medium, High };

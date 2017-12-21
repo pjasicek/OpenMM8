@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-public class OpenMM8_NPC_AI_Villager : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListener
+public class VillagerNpc : BaseNpc
 {
     // Use this for initialization
     void Start()
@@ -76,12 +76,10 @@ public class OpenMM8_NPC_AI_Villager : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListe
         m_State = (NPCState)m_Animator.GetInteger("State");
     }
 
-    // OpenMM8_IEventListener implementation
+    // Trigger events
 
-    public void OnObjectEnteredMeleeRange(GameObject other)
+    public override void OnObjectEnteredMeleeRange(GameObject other)
     {
-        //Debug.Log("Object entered melee range: " + other.name);
-
         if (other.name == "Player")
         {
             m_IsPlayerInMeleeRange = true;
@@ -95,10 +93,8 @@ public class OpenMM8_NPC_AI_Villager : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListe
         }
     }
 
-    public void OnObjectLeftMeleeRange(GameObject other)
+    public override void OnObjectLeftMeleeRange(GameObject other)
     {
-        //Debug.Log("Object left melee range: " + other.name);
-
         if (other.name == "Player")
         {
             m_IsPlayerInMeleeRange = false;
@@ -109,7 +105,7 @@ public class OpenMM8_NPC_AI_Villager : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListe
         }
     }
 
-    public void OnObjectEnteredAgroRange(GameObject other)
+    public override void OnObjectEnteredAgroRange(GameObject other)
     {
         if (m_HostilityResolver.IsHostileTo(other))
         {
@@ -122,10 +118,8 @@ public class OpenMM8_NPC_AI_Villager : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListe
         }
     }
 
-    public void OnObjectLeftAgroRange(GameObject other)
+    public override void OnObjectLeftAgroRange(GameObject other)
     {
-        //Debug.Log("Object left agro range: " + other.name);
-
         if (m_HostilityResolver.IsHostileTo(other))
         {
             m_EnemiesInAgroRange.Remove(other);
@@ -138,7 +132,7 @@ public class OpenMM8_NPC_AI_Villager : OpenMM8_NPC_AI, OpenMM8_IObjectRangeListe
 //============================================================
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(OpenMM8_NPC_AI_Villager))]
+[CustomEditor(typeof(VillagerNpc))]
 public class OpenMM8_NPC_AI_Villager_Editor : OpenMM8_NPC_AI_Editor
 {
 
