@@ -15,12 +15,14 @@ public class EnemyNpc : BaseNpc
     {
         base.OnStart();
 
-        m_Animator.SetInteger("State", (int)NPCState.Idle);
-        m_State = NPCState.Idle;
+        m_Animator.SetInteger("State", (int)NpcState.Idle);
+        m_State = NpcState.Idle;
+
+        InvokeRepeating("EnterBestState", 0.0f, m_UpdateIntervalMs / 1000.0f);
     }
 
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
         if (!m_NavMeshAgent.enabled)
         {
@@ -29,68 +31,122 @@ public class EnemyNpc : BaseNpc
 
         m_CurrentWaypoint.SetActive(m_DrawWaypoint);
 
-        /**** If NPC is Enemy ****/
-        // 1) If it is attacking, do nothing (Waiting for AttackEnded frame event)
-        // 2) If it is moving, do nothing (May be interrupted if enemy enters its melee range)
-        // ----- [Event] OnAttackEnded - after attack ends, it will check if it is within melee range of any hostile unit,
-        //                           if it is, then it will attack it again, if it is not, it will choose some strafe
-        //                           location - e.g. Shoot - Move - Shoot - Move, etc.
-        // ------ [Event] If enemy enters its attack range, it will attack immediately
+        EnterBestState();
+    }*/
 
-        //m_State = (NPCState)m_Animator.GetInteger("State");
-        if (m_State == NPCState.Attacking)
+    public NpcState EnterBestState()
+    {
+        NpcState currState = (NpcState)m_Animator.GetInteger("State");
+
+        // If it is attacking do not force it to do anything else
+        if (currState == NpcState.Attacking)
         {
+            if (m_Target != null)
+            {
+                TurnToObject(m_Target);
+            }
+            return currState;
+        }
+        
+        if (m_EnemiesInMeleeRange.Count == 0 && m_EnemiesInAgroRange.Count == 0)
+        {
+            if (m_Target != null)
+            {
+                m_Target = null;
+                StopMoving();
+            }
+
+            if (!IsWalking())
+            {
+                if (m_DoWander)
+                {
+                    if (m_RemainingWanderIdleTime > 0.0f)
+                    {
+                        m_RemainingWanderIdleTime -= Time.deltaTime;
+                        m_Animator.SetInteger("State", (int)NpcState.Idle);
+                    }
+                    else
+                    {
+                        WanderWithinSpawnArea(m_WanderRadius);
+                        m_Animator.SetInteger("State", (int)NpcState.Walking);
+                        m_RemainingWanderIdleTime = UnityEngine.Random.Range(m_MinWanderIdleTime, m_MaxWanderIdleTime);
+                    }
+                }
+            }
+        }
+        else if (m_IsFleeing)
+        {
+            // TODO
+        }
+        else if (m_EnemiesInMeleeRange.Count > 0)
+        {
+            // NPC is not attacking in this block
+
+            m_Target = m_EnemiesInMeleeRange.OrderBy(
+                t => (t.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
             if (m_Target == null)
             {
-
+                m_EnemiesInMeleeRange.Remove(m_Target);
             }
             else
             {
-                Debug.Log("Turning to target");
+                StopMoving();
                 TurnToObject(m_Target);
-                Debug.Log("Attacking: " + m_Target.name);
+                m_Animator.SetInteger("State", (int)NpcState.Attacking);
             }
         }
-        else if (m_State == NPCState.Walking)
+        else if (m_EnemiesInAgroRange.Count > 0)
         {
-            if (m_EnemiesInAgroRange.Count > 0)
+            // NPC is not attacking in this block
+
+            if (m_IsRanged)
             {
-                GameObject closestEnemy = m_EnemiesInAgroRange.OrderBy(t => (t.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
-                m_Target = closestEnemy;
-                if (m_Target == null)
+                if (!IsWalking())
                 {
-                    m_EnemiesInAgroRange.Remove(m_Target);
-                    StopMoving();
-                    m_Animator.SetInteger("State", (int)NPCState.Idle);
-                    m_State = NPCState.Idle;
-                }
-                else
-                {
-                    ChaseTarget(m_Target);
+                    // Ranged and not walking -> find and attack target
+                    GameObject closestTarget = GetClosestTarget(m_EnemiesInAgroRange);
+                    AttackTarget(closestTarget);
+
+                    // Moving after shooting has to be handled in OnAttackFrame event
                 }
             }
+            else
+            {
+                GameObject closestTarget = GetClosestTarget(m_EnemiesInAgroRange);
+                ChaseTarget(closestTarget);
+            }
         }
+
+        return (NpcState)m_Animator.GetInteger("State");
+    }
+
+    GameObject GetClosestTarget(List<GameObject> targets)
+    {
+        GameObject closest = targets.OrderBy(
+                t => (t.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
+        return closest;
+    }
+
+    bool AttackTarget(GameObject target)
+    {
+        if (target != null)
+        {
+            m_Target = target;
+
+            StopMoving();
+            TurnToObject(m_Target);
+            m_Animator.SetInteger("State", (int)NpcState.Attacking);
+        }
+
+        return target != null;
     }
 
     public override void OnObjectEnteredMeleeRange(GameObject other)
     {
         if (m_HostilityResolver.IsHostileTo(other))
         {
-            if (m_State != NPCState.Attacking)
-            {
-                if (m_EnemiesInMeleeRange.Count == 0)
-                {
-                    m_Animator.SetInteger("State", (int)NPCState.Attacking);
-                    m_State = NPCState.Attacking;
-                    m_Target = other;
-                    Debug.Log("Attacking: " + m_Target.name);
-                    TurnToObject(m_Target);
-                    StopMoving();
-                }
-            }
-
-            Debug.Log("Entered melee !");
             m_EnemiesInMeleeRange.Add(other);
+            EnterBestState();
         }
     }
 
@@ -100,23 +156,7 @@ public class EnemyNpc : BaseNpc
         {
             Debug.Log("Left melee !");
             m_EnemiesInMeleeRange.Remove(other);
-
-            if (m_State != NPCState.Attacking)
-            {
-                if (m_EnemiesInMeleeRange.Count == 0)
-                {
-                    if (m_EnemiesInAgroRange.Count > 0)
-                    {
-                        GameObject closestEnemy = m_EnemiesInAgroRange.OrderBy(t => (t.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
-                        ChaseTarget(closestEnemy);
-                    }
-                }
-                else
-                {
-                    GameObject closestEnemy = m_EnemiesInMeleeRange.OrderBy(t => (t.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
-                    m_Target = closestEnemy;
-                }
-            }
+            EnterBestState();
         }
     }
 
@@ -125,16 +165,8 @@ public class EnemyNpc : BaseNpc
         Debug.Log("Entered: " + other.name);
         if (m_HostilityResolver.IsHostileTo(other))
         {
-            Debug.Log("Entered hostile: " + other.name);
-            if (m_EnemiesInAgroRange.Count == 0)
-            {
-                Debug.Log("Other name: " + other.name);
-                m_Target = other;
-                ChaseTarget(m_Target);
-                m_Animator.SetInteger("State", (int)NPCState.Walking);
-                m_State = NPCState.Walking;
-            }
             m_EnemiesInAgroRange.Add(other);
+            EnterBestState();
         }
     }
 
@@ -143,19 +175,7 @@ public class EnemyNpc : BaseNpc
         if (m_HostilityResolver.IsHostileTo(other))
         {
             m_EnemiesInAgroRange.Remove(other);
-
-            if (m_EnemiesInAgroRange.Count == 0)
-            {
-                m_NavMeshAgent.isStopped = true;
-                m_Animator.SetInteger("State", (int)NPCState.Idle);
-                m_State = NPCState.Idle;
-                m_Target = null;
-            }
-            else if (m_Target == other)
-            {
-                GameObject closestEnemy = m_EnemiesInAgroRange.OrderBy(t => (t.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
-                ChaseTarget(closestEnemy);
-            }
+            EnterBestState();
         }
     }
 
@@ -169,29 +189,9 @@ public class EnemyNpc : BaseNpc
     {
         Debug.Log("END ATTACK !");
 
-        if (m_EnemiesInMeleeRange.Count > 0)
-        {
-            GameObject closestEnemy = m_EnemiesInMeleeRange.OrderBy(t => (t.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
-            m_Target = closestEnemy;
-            Debug.Log("Attacking: " + m_Target.name);
-        }
-        else
-        {
-            if (m_EnemiesInAgroRange.Count > 0)
-            {
-                GameObject closestEnemy = m_EnemiesInAgroRange.OrderBy(t => (t.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
-                ChaseTarget(closestEnemy);
-                m_Animator.SetInteger("State", (int)NPCState.Walking);
-                m_State = NPCState.Walking;
-            }
-            else
-            {
-                StopMoving();
-                m_Animator.SetInteger("State", (int)NPCState.Idle);
-                m_State = NPCState.Idle;
-                m_Target = null;
-            }
-        }
+        StopMoving();
+        m_Animator.SetInteger("State", (int)NpcState.Idle);
+        EnterBestState();
     }
 }
 
@@ -201,7 +201,7 @@ public class EnemyNpc : BaseNpc
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(EnemyNpc))]
-public class OpenMM8_NPC_AI_Enemy_Editor : OpenMM8_NPC_AI_Editor
+public class EnemyNpcEditor : BaseNpcEditor
 {
 
 }

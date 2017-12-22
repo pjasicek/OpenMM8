@@ -21,8 +21,7 @@ public class Trigger : MonoBehaviour
     [SerializeField]
     private float m_Height;
 
-    // Use this for initialization
-    void Start()
+    void Awake()
     {
         UnityEngine.Assertions.Assert.AreNotEqual(TriggerType.None, m_TriggerType, "Valid Trigger Type must be set");
 
@@ -52,7 +51,7 @@ public class Trigger : MonoBehaviour
                 break;
         }
         trigger.GetComponent<Collider>().isTrigger = true;
-        
+
 
         TriggerDispatcher td = trigger.AddComponent(typeof(TriggerDispatcher)) as TriggerDispatcher;
         td.m_TriggerType = m_TriggerType;
@@ -61,6 +60,12 @@ public class Trigger : MonoBehaviour
 
         trigger.gameObject.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         trigger.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
+    }
+
+    // Use this for initialization
+    void Start()
+    {
+        
     }
 }
 

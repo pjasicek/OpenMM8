@@ -37,9 +37,9 @@ public class VillagerNpc : BaseNpc
         if (m_IsPlayerInMeleeRange && !m_HostilityResolver.IsHostileTo(m_Player))
         {
             transform.LookAt(transform.position + m_Player.transform.rotation * Vector3.back, m_Player.transform.rotation * Vector3.up);
-            m_Animator.SetInteger("State", (int)NPCState.Idle);
+            m_Animator.SetInteger("State", (int)NpcState.Idle);
         }
-        else if (IsOnMove())
+        else if (IsWalking())
         {
             // Walking - either wandering or fleeing, let it reach its destination
         }
@@ -49,7 +49,7 @@ public class VillagerNpc : BaseNpc
 
             m_RemainingWanderIdleTime -= Time.deltaTime;
             // TODO: Change, need an "event" to tell me when he started being idle
-            m_Animator.SetInteger("State", (int)NPCState.Idle);
+            m_Animator.SetInteger("State", (int)NpcState.Idle);
         }
         else if (m_EnemiesInAgroRange.Count > 0)
         {
@@ -59,7 +59,7 @@ public class VillagerNpc : BaseNpc
             GameObject closestEnemy = m_EnemiesInAgroRange.OrderBy(t => (t.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
             WanderAwayFromEnemy(closestEnemy);
 
-            m_Animator.SetInteger("State", (int)NPCState.Walking);
+            m_Animator.SetInteger("State", (int)NpcState.Walking);
 
             // I dont want to stop when running away from enemy, so this is left commented out as a reminder
             // m_RemainingWanderIdleTime = Random.Range(m_MinWanderIdleTime, m_MaxWanderIdleTime);
@@ -67,13 +67,13 @@ public class VillagerNpc : BaseNpc
         else
         {
             // Wander
-            WanderWithinSpawnArea();
-            m_Animator.SetInteger("State", (int)NPCState.Walking);
+            WanderWithinSpawnArea(m_WanderRadius);
+            m_Animator.SetInteger("State", (int)NpcState.Walking);
 
             m_RemainingWanderIdleTime = Random.Range(m_MinWanderIdleTime, m_MaxWanderIdleTime);
         }
 
-        m_State = (NPCState)m_Animator.GetInteger("State");
+        m_State = (NpcState)m_Animator.GetInteger("State");
     }
 
     // Trigger events
@@ -112,7 +112,7 @@ public class VillagerNpc : BaseNpc
             if (m_EnemiesInAgroRange.Count == 0)
             {
                 WanderAwayFromEnemy(other);
-                m_Animator.SetInteger("State", (int)NPCState.Walking);
+                m_Animator.SetInteger("State", (int)NpcState.Walking);
             }
             m_EnemiesInAgroRange.Add(other);
         }
@@ -133,8 +133,24 @@ public class VillagerNpc : BaseNpc
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(VillagerNpc))]
-public class OpenMM8_NPC_AI_Villager_Editor : OpenMM8_NPC_AI_Editor
+public class VillagerNpcEditor : BaseNpcEditor
 {
+    VillagerNpc m_TargetObject;
+    public void OnSceneGUI()
+    {
+        base.OnSceneGUI();
 
+        m_TargetObject = this.target as VillagerNpc;
+
+        Handles.color = new Color(0, 1.0f, 0, 0.1f);
+        if (EditorApplication.isPlaying)
+        {
+            Handles.DrawSolidDisc(m_TargetObject.m_SpawnPosition, Vector3.up, m_TargetObject.m_WanderRadius);
+        }
+        else
+        {
+            Handles.DrawSolidDisc(m_TargetObject.transform.position, Vector3.up, m_TargetObject.m_WanderRadius);
+        }
+    }
 }
 #endif

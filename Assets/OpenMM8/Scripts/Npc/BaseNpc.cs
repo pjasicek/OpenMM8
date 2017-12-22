@@ -19,7 +19,7 @@ using UnityEditor;
 
 public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 {
-    public enum NPCState { Walking, Idle, Attacking, ReceivingDamage, Dying, Dead }
+    public enum NpcState { Walking, Idle, Attacking, ReceivingDamage, Dying, Dead, None }
     public enum HostilityType { Friendly, Hostile };
 
     //-------------------------------------------------------------------------
@@ -29,14 +29,18 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
     // Public - Editor accessible
     public float m_StoppingDistance = 0.5f;
 
+    public bool m_IsRanged = false;
+    public bool m_DoWander = false;
     public float m_MinWanderIdleTime = 1.0f;
     public float m_MaxWanderIdleTime = 2.0f;
     public float m_WanderRadius = 15.0f;
 
     public bool m_DrawWaypoint = true;
 
-    public float m_AgroRange; // Agro on Y axis is not taken into account
-    public float m_MeleeRange;
+    public float m_UpdateIntervalMs = 50.0f;
+
+    /*public float m_AgroRange; // Agro on Y axis is not taken into account
+    public float m_MeleeRange;*/
 
     public Vector3 m_SpawnPosition;
 
@@ -54,9 +58,10 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
     protected GameObject m_CurrentWaypoint;
 
-    protected NPCState m_State = NPCState.Idle;
+    protected NpcState m_State = NpcState.Idle;
 
     protected List<GameObject> m_EnemiesInMeleeRange = new List<GameObject>();
+    // Agro range is also Ranged range for archers/casters
     protected List<GameObject> m_EnemiesInAgroRange = new List<GameObject>();
 
     protected GameObject m_Target;
@@ -64,12 +69,9 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
     // State members
     protected string m_Faction;
     protected int m_FleeHealthPercantage;
+    protected bool m_IsFleeing = false;
 
     protected bool m_IsPlayerInMeleeRange = false;
-
-    protected bool m_IsWalking = false;
-    protected bool m_IsFleeing = false;
-    protected bool m_IsAttacking = false;
 
     //-------------------------------------------------------------------------
     // Unity Overrides
@@ -117,7 +119,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
     // Methods
     //-------------------------------------------------------------------------
 
-    public bool IsOnMove()
+    public bool IsWalking()
     {
         if (!m_NavMeshAgent.pathPending)
         {
@@ -132,12 +134,12 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         return true;
     }
 
-    public void WanderWithinSpawnArea()
+    public void WanderWithinSpawnArea(float wanderRadius)
     {
         m_CurrentDestination = m_SpawnPosition + new Vector3(
-            UnityEngine.Random.Range((int) - m_WanderRadius * 0.5f - 2, (int)m_WanderRadius * 0.5f + 2), 
+            UnityEngine.Random.Range((int) - wanderRadius * 0.5f - 2, (int)wanderRadius * 0.5f + 2), 
             0,
-            UnityEngine.Random.Range((int) - m_WanderRadius * 0.5f - 2, (int)m_WanderRadius * 0.5f + 2));
+            UnityEngine.Random.Range((int) - wanderRadius * 0.5f - 2, (int)wanderRadius * 0.5f + 2));
         m_NavMeshAgent.ResetPath();
 
         m_NavMeshAgent.SetDestination(m_CurrentDestination);
@@ -177,6 +179,8 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
         Vector3 direction = (m_CurrentDestination - transform.position).normalized;
         transform.rotation = Quaternion.LookRotation(direction);
+
+        m_Animator.SetInteger("State", (int)NpcState.Walking);
     }
 
     public void StopMoving()
@@ -186,6 +190,12 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
     public void TurnToObject(GameObject go)
     {
+        if (go == null)
+        {
+            Debug.LogError("Cannot turn to null object !");
+            return;
+        }
+
         if (go.CompareTag("Player"))
         {
             transform.LookAt(transform.position + go.transform.rotation * Vector3.back, go.transform.rotation * Vector3.up);
@@ -245,23 +255,13 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(BaseNpc))]
-public class OpenMM8_NPC_AI_Editor : Editor
+public class BaseNpcEditor : Editor
 {
     BaseNpc m_TargetObject;
 
     public void OnSceneGUI()
     {
-        m_TargetObject = this.target as BaseNpc;
-
-        Handles.color = new Color(0, 1.0f, 0, 0.1f);
-        if (EditorApplication.isPlaying)
-        {
-            Handles.DrawSolidDisc(m_TargetObject.m_SpawnPosition, Vector3.up, m_TargetObject.m_WanderRadius);
-        }
-        else
-        {
-            Handles.DrawSolidDisc(m_TargetObject.transform.position, Vector3.up, m_TargetObject.m_WanderRadius);
-        }
+        
     }
 }
 #endif

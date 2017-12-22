@@ -2,30 +2,72 @@ version: 2
 importPivots: 1
 tpsheetFileNames:
 - Assets/codeandweb.com/Example/SpriteSheet/sprites.tpsheet
-- Assets/OpenMM8/Sprites/LizardmanVillager/LizardVillager_0_Attack.tpsheet
-- Assets/OpenMM8/Sprites/LizardmanVillager/LizardVillager_0_BlockDamage.tpsheet
-- Assets/OpenMM8/Sprites/LizardmanVillager/LizardVillager_0_Death.tpsheet
-- Assets/OpenMM8/Sprites/LizardmanVillager/LizardVillager_0_DeathFinal.tpsheet
-- Assets/OpenMM8/Sprites/LizardmanVillager/LizardVillager_0_Idle.tpsheet
-- Assets/OpenMM8/Sprites/LizardmanVillager/LizardVillager_0_ReceiveDamage.tpsheet
-- Assets/OpenMM8/Sprites/LizardmanVillager/LizardVillager_0_Walk.tpsheet
+- Assets/OpenMM8/Sprites/m400_LizardmanVillager/LizardVillager_0_Attack.tpsheet
+- Assets/OpenMM8/Sprites/m400_LizardmanVillager/LizardVillager_0_BlockDamage.tpsheet
+- Assets/OpenMM8/Sprites/m400_LizardmanVillager/LizardVillager_0_Death.tpsheet
+- Assets/OpenMM8/Sprites/m400_LizardmanVillager/LizardVillager_0_DeathFinal.tpsheet
+- Assets/OpenMM8/Sprites/m400_LizardmanVillager/LizardVillager_0_Idle.tpsheet
+- Assets/OpenMM8/Sprites/m400_LizardmanVillager/LizardVillager_0_ReceiveDamage.tpsheet
+- Assets/OpenMM8/Sprites/m400_LizardmanVillager/LizardVillager_0_Walk.tpsheet
+- Assets/OpenMM8/Sprites/m404_LizardmanWarrior/LizardmanWarrior_Attack.tpsheet
+- Assets/OpenMM8/Sprites/m404_LizardmanWarrior/LizardmanWarrior_BlockDamage.tpsheet
+- Assets/OpenMM8/Sprites/m404_LizardmanWarrior/LizardmanWarrior_Death.tpsheet
+- Assets/OpenMM8/Sprites/m404_LizardmanWarrior/LizardmanWarrior_DeathFinal.tpsheet
+- Assets/OpenMM8/Sprites/m404_LizardmanWarrior/LizardmanWarrior_Idle.tpsheet
+- Assets/OpenMM8/Sprites/m404_LizardmanWarrior/LizardmanWarrior_ReceiveDamage.tpsheet
+- Assets/OpenMM8/Sprites/m404_LizardmanWarrior/LizardmanWarrior_Walk.tpsheet
+- Assets/OpenMM8/Sprites/m412_Pirate/Pirate_Attack.tpsheet
+- Assets/OpenMM8/Sprites/m412_Pirate/Pirate_BlockDamage.tpsheet
+- Assets/OpenMM8/Sprites/m412_Pirate/Pirate_Death.tpsheet
+- Assets/OpenMM8/Sprites/m412_Pirate/Pirate_DeathFinal.tpsheet
+- Assets/OpenMM8/Sprites/m412_Pirate/Pirate_Idle.tpsheet
+- Assets/OpenMM8/Sprites/m412_Pirate/Pirate_ReceiveDamage.tpsheet
+- Assets/OpenMM8/Sprites/m412_Pirate/Pirate_Walk.tpsheet
 - Assets/OpenMM8/UI/MainGUI.tpsheet
 - Assets/OpenMM8/UI/OutdoorMaps.tpsheet
 - Assets/OpenMM8/UI/pc27_LichAvatars.tpsheet
 textureFileNames:
 - Assets/codeandweb.com/Example/SpriteSheet/sprites.png
-- Assets/OpenMM8/Sprites/LizardmanVillager/LizardVillager_0_Attack.png
-- Assets/OpenMM8/Sprites/LizardmanVillager/LizardVillager_0_BlockDamage.png
-- Assets/OpenMM8/Sprites/LizardmanVillager/LizardVillager_0_Death.png
-- Assets/OpenMM8/Sprites/LizardmanVillager/LizardVillager_0_DeathFinal.png
-- Assets/OpenMM8/Sprites/LizardmanVillager/LizardVillager_0_Idle.png
-- Assets/OpenMM8/Sprites/LizardmanVillager/LizardVillager_0_ReceiveDamage.png
-- Assets/OpenMM8/Sprites/LizardmanVillager/LizardVillager_0_Walk.png
+- Assets/OpenMM8/Sprites/m400_LizardmanVillager/LizardVillager_0_Attack.png
+- Assets/OpenMM8/Sprites/m400_LizardmanVillager/LizardVillager_0_BlockDamage.png
+- Assets/OpenMM8/Sprites/m400_LizardmanVillager/LizardVillager_0_Death.png
+- Assets/OpenMM8/Sprites/m400_LizardmanVillager/LizardVillager_0_DeathFinal.png
+- Assets/OpenMM8/Sprites/m400_LizardmanVillager/LizardVillager_0_Idle.png
+- Assets/OpenMM8/Sprites/m400_LizardmanVillager/LizardVillager_0_ReceiveDamage.png
+- Assets/OpenMM8/Sprites/m400_LizardmanVillager/LizardVillager_0_Walk.png
+- Assets/OpenMM8/Sprites/m404_LizardmanWarrior/LizardmanWarrior_Attack.png
+- Assets/OpenMM8/Sprites/m404_LizardmanWarrior/LizardmanWarrior_BlockDamage.png
+- Assets/OpenMM8/Sprites/m404_LizardmanWarrior/LizardmanWarrior_Death.png
+- Assets/OpenMM8/Sprites/m404_LizardmanWarrior/LizardmanWarrior_DeathFinal.png
+- Assets/OpenMM8/Sprites/m404_LizardmanWarrior/LizardmanWarrior_Idle.png
+- Assets/OpenMM8/Sprites/m404_LizardmanWarrior/LizardmanWarrior_ReceiveDamage.png
+- Assets/OpenMM8/Sprites/m404_LizardmanWarrior/LizardmanWarrior_Walk.png
+- Assets/OpenMM8/Sprites/m412_Pirate/Pirate_Attack.png
+- Assets/OpenMM8/Sprites/m412_Pirate/Pirate_BlockDamage.png
+- Assets/OpenMM8/Sprites/m412_Pirate/Pirate_Death.png
+- Assets/OpenMM8/Sprites/m412_Pirate/Pirate_DeathFinal.png
+- Assets/OpenMM8/Sprites/m412_Pirate/Pirate_Idle.png
+- Assets/OpenMM8/Sprites/m412_Pirate/Pirate_ReceiveDamage.png
+- Assets/OpenMM8/Sprites/m412_Pirate/Pirate_Walk.png
 - Assets/OpenMM8/UI/MainGUI.png
 - Assets/OpenMM8/UI/OutdoorMaps.png
 - Assets/OpenMM8/UI/pc27_LichAvatars.png
 normalmapFileNames:
 - Assets/codeandweb.com/Example/SpriteSheet/sprites_n.png
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
 - 
 - 
 - 
