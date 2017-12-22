@@ -30,7 +30,7 @@ public class VillagerNpc : BaseNpc
         // ----- [Event] OnDamaged - Start running from that unit if not already running from it
         // ----- [Event] OnEnemyEnteredAgroRange - Start running away from that unit
 
-        if (m_IsPlayerInMeleeRange && !m_HostilityResolver.IsHostileTo(m_Player))
+        if (m_IsPlayerInMeleeRange && !m_HostilityResolver.IsHostileTo(m_Player) && m_EnemiesInAgroRange.Count == 0)
         {
             transform.LookAt(transform.position + m_Player.transform.rotation * Vector3.back, m_Player.transform.rotation * Vector3.up);
             m_Animator.SetInteger("State", (int)NpcState.Idle);

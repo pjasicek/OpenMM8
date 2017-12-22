@@ -1,17 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
 
-
-//============================================================
-// EDITOR
-//============================================================
-
-#if UNITY_EDITOR
 [CustomEditor(typeof(BaseNpc))]
 [CanEditMultipleObjects]
 public class BaseNpcEditor : Editor
@@ -47,5 +38,3 @@ public class VillagerNpcEditor : BaseNpcEditor
 {
 
 }
-
-#endif
