@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
 public class VillagerNpc : BaseNpc
 {
     // Use this for initialization
@@ -126,31 +122,3 @@ public class VillagerNpc : BaseNpc
         }
     }
 }
-
-//============================================================
-// EDITOR
-//============================================================
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(VillagerNpc))]
-public class VillagerNpcEditor : BaseNpcEditor
-{
-    VillagerNpc m_TargetObject;
-    public void OnSceneGUI()
-    {
-        base.OnSceneGUI();
-
-        m_TargetObject = this.target as VillagerNpc;
-
-        Handles.color = new Color(0, 1.0f, 0, 0.1f);
-        if (EditorApplication.isPlaying)
-        {
-            Handles.DrawSolidDisc(m_TargetObject.m_SpawnPosition, Vector3.up, m_TargetObject.m_WanderRadius);
-        }
-        else
-        {
-            Handles.DrawSolidDisc(m_TargetObject.transform.position, Vector3.up, m_TargetObject.m_WanderRadius);
-        }
-    }
-}
-#endif

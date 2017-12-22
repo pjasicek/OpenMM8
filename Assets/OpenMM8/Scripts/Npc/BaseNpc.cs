@@ -5,10 +5,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using System;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(NavMeshObstacle))]
 [RequireComponent(typeof(Collider))]
@@ -289,20 +285,3 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
     abstract public void OnObjectLeftMeleeRange(GameObject other);
     abstract public void OnObjectLeftAgroRange(GameObject other);
 }
-
-//============================================================
-// EDITOR
-//============================================================
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(BaseNpc))]
-public class BaseNpcEditor : Editor
-{
-    BaseNpc m_TargetObject;
-
-    public void OnSceneGUI()
-    {
-        
-    }
-}
-#endif

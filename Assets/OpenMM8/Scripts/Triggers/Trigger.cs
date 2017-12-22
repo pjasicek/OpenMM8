@@ -16,14 +16,15 @@ public class Trigger : MonoBehaviour
     private PrimitiveType m_ColliderShape = PrimitiveType.Sphere;
 
     [SerializeField]
-    private float m_SideLength;
+    private float m_SideLength = 0.0f;
 
     [SerializeField]
-    private float m_Height;
+    private float m_Height = 30.0f;
 
     void Awake()
     {
         UnityEngine.Assertions.Assert.AreNotEqual(TriggerType.None, m_TriggerType, "Valid Trigger Type must be set");
+        UnityEngine.Assertions.Assert.AreNotEqual(m_SideLength, 0.0f, "Trigger has to have a valid size");
 
         GameObject trigger = new GameObject();
         trigger.name = "Trigger_" + m_TriggerType.ToString();

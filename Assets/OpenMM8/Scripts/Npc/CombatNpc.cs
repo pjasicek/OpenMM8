@@ -5,10 +5,6 @@ using UnityEngine;
 using System;
 using UnityEngine.AI;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
 public class CombatNpc : BaseNpc
 {
     // Use this for initialization
@@ -204,15 +200,3 @@ public class CombatNpc : BaseNpc
         EnterBestState();
     }
 }
-
-//============================================================
-// EDITOR
-//============================================================
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(CombatNpc))]
-public class EnemyNpcEditor : BaseNpcEditor
-{
-
-}
-#endif
