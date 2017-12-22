@@ -10,7 +10,8 @@ using UnityEditor;
 #endif
 
 [RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(NavMeshObstacle))]
+[RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(NpcData))]
@@ -49,6 +50,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
     protected Animator m_Animator;
     protected NavMeshAgent m_NavMeshAgent;
+    protected NavMeshObstacle m_NavMeshObstacle;
     protected NpcData m_Stats;
     protected HostilityChecker m_HostilityResolver;
     
@@ -77,6 +79,17 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
     // Unity Overrides
     //-------------------------------------------------------------------------
 
+    public void Awake()
+    {
+        m_SpawnPosition = transform.position;
+        m_NavMeshAgent = GetComponent<NavMeshAgent>();
+        m_NavMeshAgent.enabled = false; // Supress warnigns
+        m_NavMeshObstacle = GetComponent<NavMeshObstacle>();
+        m_NavMeshObstacle.enabled = false; // Supress warnigns
+        m_Animator = GetComponent<Animator>();
+        m_HostilityResolver = GetComponent<HostilityChecker>();
+    }
+
     // Use this for initialization
     public void OnStart ()
     {
@@ -86,17 +99,18 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
             Debug.LogError("Could not find \"Player\" in scene !");
         }
 
-        m_SpawnPosition = transform.position;
-        m_NavMeshAgent = GetComponent<NavMeshAgent>();
-        m_Animator = GetComponent<Animator>();
-        m_HostilityResolver = GetComponent<HostilityChecker>();
-
         // Create debug waypoint
         m_CurrentWaypoint = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         m_CurrentWaypoint.gameObject.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
         m_CurrentWaypoint.GetComponent<Renderer>().material.color = Color.red;
         m_CurrentWaypoint.name = this.gameObject.name + " Waypoint";
         m_CurrentWaypoint.GetComponent<SphereCollider>().enabled = false;
+
+        m_CurrentWaypoint.SetActive(m_DrawWaypoint);
+
+        SetNavMeshAgentEnabled(true);
+
+        //m_NavMeshAgent
     }
 
     /**** If NPC is a Guard ****/
@@ -121,6 +135,11 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
     public bool IsWalking()
     {
+        if (!m_NavMeshAgent.enabled)
+        {
+            return false;
+        }
+
         if (!m_NavMeshAgent.pathPending)
         {
             if (m_NavMeshAgent.remainingDistance <= m_NavMeshAgent.stoppingDistance)
@@ -136,6 +155,8 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
     public void WanderWithinSpawnArea(float wanderRadius)
     {
+        SetNavMeshAgentEnabled(true);
+
         m_CurrentDestination = m_SpawnPosition + new Vector3(
             UnityEngine.Random.Range((int) - wanderRadius * 0.5f - 2, (int)wanderRadius * 0.5f + 2), 
             0,
@@ -153,6 +174,8 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
     public void WanderAwayFromEnemy(GameObject enemy)
     {
+        SetNavMeshAgentEnabled(true);
+
         Vector3 heading = enemy.transform.position - transform.position;
         heading.Normalize();
 
@@ -168,6 +191,8 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
     public void ChaseTarget(GameObject target)
     {
+        SetNavMeshAgentEnabled(true);
+
         m_Target = target;
 
         m_CurrentDestination = target.transform.position;
@@ -185,7 +210,23 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
     public void StopMoving()
     {
+        SetNavMeshAgentEnabled(true);
         m_NavMeshAgent.ResetPath();
+    }
+
+    public void SetNavMeshAgentEnabled(bool enabled)
+    {
+        // This is to supress warnings
+        if (enabled)
+        {
+            m_NavMeshObstacle.enabled = false;
+            m_NavMeshAgent.enabled = true;
+        }
+        else
+        {
+            m_NavMeshAgent.enabled = false;
+            m_NavMeshObstacle.enabled = true;
+        }
     }
 
     public void TurnToObject(GameObject go)

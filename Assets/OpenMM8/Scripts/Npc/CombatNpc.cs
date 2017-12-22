@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System;
+using UnityEngine.AI;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-public class EnemyNpc : BaseNpc
+public class CombatNpc : BaseNpc
 {
     // Use this for initialization
     void Start()
@@ -19,6 +20,8 @@ public class EnemyNpc : BaseNpc
         m_State = NpcState.Idle;
 
         InvokeRepeating("EnterBestState", 0.0f, m_UpdateIntervalMs / 1000.0f);
+
+        Debug.unityLogger.logEnabled = false;
     }
 
     // Update is called once per frame
@@ -36,6 +39,8 @@ public class EnemyNpc : BaseNpc
 
     public NpcState EnterBestState()
     {
+        SetNavMeshAgentEnabled(true);
+
         NpcState currState = (NpcState)m_Animator.GetInteger("State");
 
         // If it is attacking do not force it to do anything else
@@ -45,6 +50,11 @@ public class EnemyNpc : BaseNpc
             {
                 TurnToObject(m_Target);
             }
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            SetNavMeshAgentEnabled(false);
+            //m_NavMeshAgent.isStopped = true;
+            m_NavMeshAgent.velocity = Vector3.zero;
+            //GetComponent<Rigidbody>() = Vector3.zero;
             return currState;
         }
         
@@ -62,7 +72,7 @@ public class EnemyNpc : BaseNpc
                 {
                     if (m_RemainingWanderIdleTime > 0.0f)
                     {
-                        m_RemainingWanderIdleTime -= Time.deltaTime;
+                        m_RemainingWanderIdleTime -= m_UpdateIntervalMs / 1000.0f;
                         m_Animator.SetInteger("State", (int)NpcState.Idle);
                     }
                     else
@@ -200,7 +210,7 @@ public class EnemyNpc : BaseNpc
 //============================================================
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(EnemyNpc))]
+[CustomEditor(typeof(CombatNpc))]
 public class EnemyNpcEditor : BaseNpcEditor
 {
 
