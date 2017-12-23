@@ -17,7 +17,7 @@ public class CombatNpc : BaseNpc
 
         InvokeRepeating("EnterBestState", 0.0f, m_UpdateIntervalMs / 1000.0f);
 
-        Debug.unityLogger.logEnabled = false;
+        //Debug.unityLogger.logEnabled = false;
     }
 
     // Update is called once per frame
@@ -111,6 +111,7 @@ public class CombatNpc : BaseNpc
                 {
                     // Ranged and not walking -> find and attack target
                     GameObject closestTarget = GetClosestTarget(m_EnemiesInAgroRange);
+                    TurnToObject(closestTarget);
                     AttackTarget(closestTarget);
 
                     // Moving after shooting has to be handled in OnAttackFrame event
@@ -118,8 +119,17 @@ public class CombatNpc : BaseNpc
             }
             else
             {
-                GameObject closestTarget = GetClosestTarget(m_EnemiesInAgroRange);
-                ChaseTarget(closestTarget);
+                m_TimeSinceLastAltAttack += m_UpdateIntervalMs / 1000.0f;
+                if (m_HasAltRangedAttack && m_TimeSinceLastAltAttack > 2.0f)
+                {
+                    AttackTarget(GetClosestTarget(m_EnemiesInAgroRange));
+                    m_TimeSinceLastAltAttack = 0.0f;
+                }
+                else
+                {
+                    GameObject closestTarget = GetClosestTarget(m_EnemiesInAgroRange);
+                    ChaseTarget(closestTarget);
+                }
             }
         }
 
@@ -137,6 +147,7 @@ public class CombatNpc : BaseNpc
     {
         if (target != null)
         {
+            SetNavMeshAgentEnabled(false);
             m_Target = target;
 
             StopMoving();
@@ -198,5 +209,38 @@ public class CombatNpc : BaseNpc
         StopMoving();
         m_Animator.SetInteger("State", (int)NpcState.Idle);
         EnterBestState();
+
+        if (m_IsRanged && m_EnemiesInAgroRange.Count > 0 && m_EnemiesInMeleeRange.Count == 0)
+        {
+            // Kite the target
+            GameObject closestTarget = GetClosestTarget(m_EnemiesInAgroRange);
+            if (closestTarget != null)
+            {
+                MoveAfterRangedAttack(closestTarget);
+            }
+        }
+    }
+
+    public void MoveAfterRangedAttack(GameObject target)
+    {
+        SetNavMeshAgentEnabled(true);
+
+        Vector3 heading = target.transform.position - transform.position;
+        heading.Normalize();
+
+        float randRotMod = UnityEngine.Random.Range(-10.0f, 10.0f);
+        float kitingModifier = 90.0f + randRotMod;
+        heading = Quaternion.AngleAxis(kitingModifier, Vector3.up) * heading;
+
+        m_CurrentDestination = transform.position - heading * 6.0f;
+        m_NavMeshAgent.ResetPath();
+        m_NavMeshAgent.SetDestination(m_CurrentDestination);
+
+        m_CurrentWaypoint.transform.position = m_CurrentDestination;
+
+        Vector3 direction = (m_CurrentDestination - transform.position).normalized;
+        transform.rotation = Quaternion.LookRotation(direction);
+
+        m_Animator.SetInteger("State", (int)NpcState.Walking);
     }
 }

@@ -27,6 +27,9 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
     public float m_StoppingDistance = 0.5f;
 
     public bool m_IsRanged = false;
+    public bool m_HasAltRangedAttack = false;
+    public float m_AltRangedAttackChance;
+    public float m_TimeSinceLastAltAttack = 0.0f;
     public bool m_DoWander = false;
     public float m_MinWanderIdleTime = 1.0f;
     public float m_MaxWanderIdleTime = 2.0f;
@@ -174,6 +177,10 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
         Vector3 heading = enemy.transform.position - transform.position;
         heading.Normalize();
+
+        float randRotMod = UnityEngine.Random.Range(-20.0f, 20.0f);
+        //randRotMod = 90.0f;
+        heading = Quaternion.AngleAxis(randRotMod, Vector3.up) * heading;
 
         m_CurrentDestination = transform.position - heading * 6.0f;
         m_NavMeshAgent.ResetPath();

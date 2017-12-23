@@ -8,9 +8,14 @@ public class TriggerDispatcher : MonoBehaviour
 
     private List<ITriggerListener> m_Listeners = new List<ITriggerListener>();
 
+    void Awake()
+    {
+        
+    }
+
     void Start()
     {
-        UnityEngine.Assertions.Assert.AreNotEqual(TriggerType.None, m_TriggerType, 
+        UnityEngine.Assertions.Assert.AreNotEqual(TriggerType.None, m_TriggerType,
             "Valid Trigger Type must be set");
 
         foreach (MonoBehaviour mb in GetComponentsInParent<MonoBehaviour>())
