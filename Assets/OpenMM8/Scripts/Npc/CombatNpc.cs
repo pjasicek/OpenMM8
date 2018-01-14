@@ -7,6 +7,10 @@ using UnityEngine.AI;
 
 public class CombatNpc : BaseNpc
 {
+    [SerializeField]
+    private float m_AttackReuseTime = 0.8f;
+    private float m_AttackReuseTimeLeft = 0.0f;
+
     // Use this for initialization
     void Start()
     {
@@ -20,24 +24,22 @@ public class CombatNpc : BaseNpc
         //Debug.unityLogger.logEnabled = false;
     }
 
-    // Update is called once per frame
-    /*void Update()
-    {
-        if (!m_NavMeshAgent.enabled)
-        {
-            return;
-        }
-
-        m_CurrentWaypoint.SetActive(m_DrawWaypoint);
-
-        EnterBestState();
-    }*/
-
     public NpcState EnterBestState()
     {
         SetNavMeshAgentEnabled(true);
 
         NpcState currState = (NpcState)m_Animator.GetInteger("State");
+
+        if (currState == NpcState.Idle && m_AttackReuseTimeLeft > 0.0f)
+        {
+            m_AttackReuseTimeLeft -= m_UpdateIntervalMs / 1000.0f;
+            SetNavMeshAgentEnabled(false);
+            return currState;
+        }
+        else
+        {
+            m_SpriteLookRotator.m_LookLocked = false;
+        }
 
         // If it is attacking do not force it to do anything else
         if (currState == NpcState.Attacking)
@@ -96,9 +98,10 @@ public class CombatNpc : BaseNpc
             }
             else
             {
-                StopMoving();
+                /*StopMoving();
                 TurnToObject(m_Target);
-                m_Animator.SetInteger("State", (int)NpcState.Attacking);
+                m_Animator.SetInteger("State", (int)NpcState.Attacking);*/
+                AttackTarget(m_Target);
             }
         }
         else if (m_EnemiesInAgroRange.Count > 0)
@@ -153,6 +156,8 @@ public class CombatNpc : BaseNpc
             StopMoving();
             TurnToObject(m_Target);
             m_Animator.SetInteger("State", (int)NpcState.Attacking);
+            m_AudioSource.clip = m_AttackSound;
+            m_AudioSource.Play();
         }
 
         return target != null;
@@ -171,7 +176,6 @@ public class CombatNpc : BaseNpc
     {
         if (m_HostilityResolver.IsHostileTo(other))
         {
-            Debug.Log("Left melee !");
             m_EnemiesInMeleeRange.Remove(other);
             EnterBestState();
         }
@@ -179,7 +183,6 @@ public class CombatNpc : BaseNpc
 
     public override void OnObjectEnteredAgroRange(GameObject other)
     {
-        Debug.Log("Entered: " + other.name);
         if (m_HostilityResolver.IsHostileTo(other))
         {
             m_EnemiesInAgroRange.Add(other);
@@ -204,11 +207,10 @@ public class CombatNpc : BaseNpc
 
     public void OnAttackDone()
     {
-        Debug.Log("END ATTACK !");
+        //Debug.Log("END ATTACK !");
 
         StopMoving();
         m_Animator.SetInteger("State", (int)NpcState.Idle);
-        EnterBestState();
 
         if (m_IsRanged && m_EnemiesInAgroRange.Count > 0 && m_EnemiesInMeleeRange.Count == 0)
         {
@@ -218,6 +220,20 @@ public class CombatNpc : BaseNpc
             {
                 MoveAfterRangedAttack(closestTarget);
             }
+        }
+
+        //NpcState currState = (NpcState)m_Animator.GetInteger("State");
+        else if (/*currState == NpcState.Attacking && */ m_EnemiesInMeleeRange.Count != 0)
+        {
+            m_AttackReuseTimeLeft = m_AttackReuseTime;
+            m_Animator.SetInteger("State", (int)NpcState.Idle);
+            TurnToObject(GetClosestTarget(m_EnemiesInMeleeRange));
+            m_SpriteLookRotator.m_LookLocked = true;
+            SetNavMeshAgentEnabled(false);
+        }
+        else
+        {
+            EnterBestState();
         }
     }
 

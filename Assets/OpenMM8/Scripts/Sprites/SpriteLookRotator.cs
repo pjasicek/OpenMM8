@@ -7,7 +7,7 @@ using UnityEngine;
 public class SpriteLookRotator : MonoBehaviour
 {
     // Relative to camera
-    enum LookDirection { Front, FrontRight, Right, BackRight, Back, BackLeft, Left, FrontLeft };
+    public enum LookDirection { Front, FrontRight, Right, BackRight, Back, BackLeft, Left, FrontLeft };
 
     Camera m_Camera;
     Transform m_CameraTransform;
@@ -17,6 +17,7 @@ public class SpriteLookRotator : MonoBehaviour
     Animator m_Animator;
 
     public float m_RefreshRate = 50.0f;
+    public bool m_LookLocked = false;
 
     // Use this for initialization
     void Start()
@@ -30,7 +31,7 @@ public class SpriteLookRotator : MonoBehaviour
         InvokeRepeating("AlignRotation", 0.0f, m_RefreshRate / 1000.0f);
     }
 
-    void OnLookDirectionChanged(LookDirection previous, LookDirection current)
+    public void OnLookDirectionChanged(LookDirection current)
     {
         m_LookDirection = current;
 
@@ -44,6 +45,7 @@ public class SpriteLookRotator : MonoBehaviour
         }
         else if (m_LookDirection == LookDirection.FrontRight)
         {
+            Debug.Log("FrontRight");
             m_Animator.SetInteger("LookDirection", 1);
             m_Renderer.flipX = true;
         }
@@ -73,6 +75,7 @@ public class SpriteLookRotator : MonoBehaviour
         }
         else if (m_LookDirection == LookDirection.FrontLeft)
         {
+            Debug.Log("FrontLeft");
             m_Animator.SetInteger("LookDirection", 1);
             //m_Renderer.flipX = true;
         }
@@ -80,15 +83,18 @@ public class SpriteLookRotator : MonoBehaviour
         {
             UnityEngine.Assertions.Assert.IsTrue(false, "Invalid LookDirection: " + m_LookDirection);
         }
-
-
     }
 
     // Instead of Update to not drain CPU
-    void AlignRotation()
+    public void AlignRotation()
     {
         //Debug.Log("Object rotation: " + transform.rotation.eulerAngles);
         //Debug.Log("Camera rotation: " + m_CameraTransform.rotation.eulerAngles);
+
+        if (m_LookLocked)
+        {
+            return;
+        }
 
         float cameraY = m_CameraTransform.rotation.eulerAngles.y;
         float thisY = transform.rotation.eulerAngles.y;
@@ -142,7 +148,15 @@ public class SpriteLookRotator : MonoBehaviour
 
         if (currLook != m_LookDirection)
         {
-            OnLookDirectionChanged(m_LookDirection, currLook);
+            // Hack
+            BaseNpc.NpcState state = (BaseNpc.NpcState)m_Animator.GetInteger("State");
+            if (state == BaseNpc.NpcState.Attacking)
+            {
+                return;
+                //currLook = LookDirection.Front;
+            }
+
+            OnLookDirectionChanged(currLook);
         }
 
         /*if (diffAngle < 0)

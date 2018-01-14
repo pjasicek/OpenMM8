@@ -13,6 +13,8 @@ using System;
 [RequireComponent(typeof(NpcData))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(HostilityChecker))]
+[RequireComponent(typeof(SpriteLookRotator))]
+[RequireComponent(typeof(AudioSource))]
 
 public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 {
@@ -39,6 +41,11 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
     public float m_UpdateIntervalMs = 50.0f;
 
+    public AudioClip m_AttackSound;
+    public AudioClip m_DeathSound;
+    public AudioClip m_AwareSound;
+    public AudioClip m_WinceSound;
+
     /*public float m_AgroRange; // Agro on Y axis is not taken into account
     public float m_MeleeRange;*/
 
@@ -52,6 +59,8 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
     protected NavMeshObstacle m_NavMeshObstacle;
     protected NpcData m_Stats;
     protected HostilityChecker m_HostilityResolver;
+    protected SpriteLookRotator m_SpriteLookRotator;
+    protected AudioSource m_AudioSource;
     
     protected Vector3 m_CurrentDestination;
 
@@ -87,6 +96,8 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         m_NavMeshObstacle.enabled = false; // Supress warnigns
         m_Animator = GetComponent<Animator>();
         m_HostilityResolver = GetComponent<HostilityChecker>();
+        m_SpriteLookRotator = GetComponent<SpriteLookRotator>();
+        m_AudioSource = GetComponent<AudioSource>();
     }
 
     // Use this for initialization
@@ -243,10 +254,12 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         if (go.CompareTag("Player"))
         {
             transform.LookAt(transform.position + go.transform.rotation * Vector3.back, go.transform.rotation * Vector3.up);
+            m_SpriteLookRotator.OnLookDirectionChanged(SpriteLookRotator.LookDirection.Front);
         }
         else
         {
             transform.LookAt(go.transform);
+            m_SpriteLookRotator.AlignRotation();
         }
     }
 
