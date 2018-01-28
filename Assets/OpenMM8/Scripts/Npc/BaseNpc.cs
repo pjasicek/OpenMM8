@@ -5,16 +5,19 @@ using UnityEngine;
 using UnityEngine.AI;
 using System;
 
+using Assets.OpenMM8.Scripts.Gameplay;
+using Assets.OpenMM8.Scripts.Gameplay.Data;
+
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(NavMeshObstacle))]
 [RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(NpcData))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(HostilityChecker))]
 [RequireComponent(typeof(SpriteLookRotator))]
 [RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(Damageable))]
 
 public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 {
@@ -25,63 +28,61 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
     // Variables
     //-------------------------------------------------------------------------
 
+    public NpcType NpcType;
+    public NpcData NpcData;
+
     // Public - Editor accessible
-    public float m_StoppingDistance = 0.5f;
+    public float StoppingDistance = 0.5f;
 
-    public bool m_IsRanged = false;
-    public bool m_HasAltRangedAttack = false;
-    public float m_AltRangedAttackChance;
-    public float m_TimeSinceLastAltAttack = 0.0f;
-    public bool m_DoWander = false;
-    public float m_MinWanderIdleTime = 1.0f;
-    public float m_MaxWanderIdleTime = 2.0f;
-    public float m_WanderRadius = 15.0f;
+    public bool DoWander = false;
+    public float MinWanderIdleTime = 1.0f;
+    public float MaxWanderIdleTime = 2.0f;
+    public float WanderRadius = 15.0f;
 
-    public bool m_DrawWaypoint = true;
+    public bool DrawWaypoint = true;
 
-    public float m_UpdateIntervalMs = 50.0f;
+    public float UpdateIntervalMs = 50.0f;
 
-    public AudioClip m_AttackSound;
-    public AudioClip m_DeathSound;
-    public AudioClip m_AwareSound;
-    public AudioClip m_WinceSound;
+    public AudioClip AttackSound;
+    public AudioClip DeathSound;
+    public AudioClip AwareSound;
+    public AudioClip WinceSound;
 
     /*public float m_AgroRange; // Agro on Y axis is not taken into account
     public float m_MeleeRange;*/
 
-    public Vector3 m_SpawnPosition;
+    public Vector3 SpawnPosition;
 
     // Private
-    protected GameObject m_Player;
+    protected GameObject Player;
 
-    protected Animator m_Animator;
-    protected NavMeshAgent m_NavMeshAgent;
-    protected NavMeshObstacle m_NavMeshObstacle;
-    protected NpcData m_Stats;
-    protected HostilityChecker m_HostilityResolver;
-    protected SpriteLookRotator m_SpriteLookRotator;
-    protected AudioSource m_AudioSource;
+    protected Animator Animator;
+    protected NavMeshAgent NavMeshAgent;
+    protected NavMeshObstacle NavMeshObstacle;
+    protected HostilityChecker HostilityResolver;
+    protected SpriteLookRotator SpriteLookRotator;
+    protected AudioSource AudioSource;
     
-    protected Vector3 m_CurrentDestination;
+    protected Vector3 CurrentDestination;
 
-    protected float m_RemainingWanderIdleTime = 2.0f;
+    protected float RemainingWanderIdleTime = 2.0f;
 
-    protected GameObject m_CurrentWaypoint;
+    protected GameObject CurrentWaypoint;
 
-    protected NpcState m_State = NpcState.Idle;
+    protected NpcState State = NpcState.Idle;
 
-    protected List<GameObject> m_EnemiesInMeleeRange = new List<GameObject>();
+    protected List<GameObject> EnemiesInMeleeRange = new List<GameObject>();
     // Agro range is also Ranged range for archers/casters
-    protected List<GameObject> m_EnemiesInAgroRange = new List<GameObject>();
+    protected List<GameObject> EnemiesInAgroRange = new List<GameObject>();
 
-    protected GameObject m_Target;
+    protected GameObject Target;
 
     // State members
-    protected string m_Faction;
-    protected int m_FleeHealthPercantage;
-    protected bool m_IsFleeing = false;
+    protected string Faction;
+    protected int FleeHealthPercantage;
+    protected bool IsFleeing = false;
 
-    protected bool m_IsPlayerInMeleeRange = false;
+    protected bool IsPlayerInMeleeRange = false;
 
     //-------------------------------------------------------------------------
     // Unity Overrides
@@ -89,36 +90,38 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
     public void Awake()
     {
-        m_SpawnPosition = transform.position;
-        m_NavMeshAgent = GetComponent<NavMeshAgent>();
-        m_NavMeshAgent.enabled = false; // Supress warnigns
-        m_NavMeshObstacle = GetComponent<NavMeshObstacle>();
-        m_NavMeshObstacle.enabled = false; // Supress warnigns
-        m_Animator = GetComponent<Animator>();
-        m_HostilityResolver = GetComponent<HostilityChecker>();
-        m_SpriteLookRotator = GetComponent<SpriteLookRotator>();
-        m_AudioSource = GetComponent<AudioSource>();
+        SpawnPosition = transform.position;
+        NavMeshAgent = GetComponent<NavMeshAgent>();
+        NavMeshAgent.enabled = false; // Supress warnigns
+        NavMeshObstacle = GetComponent<NavMeshObstacle>();
+        NavMeshObstacle.enabled = false; // Supress warnigns
+        Animator = GetComponent<Animator>();
+        HostilityResolver = GetComponent<HostilityChecker>();
+        SpriteLookRotator = GetComponent<SpriteLookRotator>();
+        AudioSource = GetComponent<AudioSource>();
     }
 
     // Use this for initialization
     public void OnStart ()
     {
-        m_Player = GameObject.FindWithTag("Player");
-        if (m_Player == null)
+        Player = GameObject.FindWithTag("Player");
+        if (Player == null)
         {
             Debug.LogError("Could not find \"Player\" in scene !");
         }
 
         // Create debug waypoint
-        m_CurrentWaypoint = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        m_CurrentWaypoint.gameObject.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
-        m_CurrentWaypoint.GetComponent<Renderer>().material.color = Color.red;
-        m_CurrentWaypoint.name = this.gameObject.name + " Waypoint";
-        m_CurrentWaypoint.GetComponent<SphereCollider>().enabled = false;
+        CurrentWaypoint = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        CurrentWaypoint.gameObject.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+        CurrentWaypoint.GetComponent<Renderer>().material.color = Color.red;
+        CurrentWaypoint.name = this.gameObject.name + " Waypoint";
+        CurrentWaypoint.GetComponent<SphereCollider>().enabled = false;
 
-        m_CurrentWaypoint.SetActive(m_DrawWaypoint);
+        CurrentWaypoint.SetActive(DrawWaypoint);
 
         SetNavMeshAgentEnabled(true);
+
+        NpcData = GameMgr.Instance.NpcDb.GetNpcData(NpcType);
 
         //m_NavMeshAgent
     }
@@ -145,16 +148,16 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
     public bool IsWalking()
     {
-        if (!m_NavMeshAgent.enabled)
+        if (!NavMeshAgent.enabled)
         {
             return false;
         }
 
-        if (!m_NavMeshAgent.pathPending)
+        if (!NavMeshAgent.pathPending)
         {
-            if (m_NavMeshAgent.remainingDistance <= m_NavMeshAgent.stoppingDistance)
+            if (NavMeshAgent.remainingDistance <= NavMeshAgent.stoppingDistance)
             {
-                m_NavMeshAgent.SetDestination(transform.position);
+                NavMeshAgent.SetDestination(transform.position);
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
                 return false;
             }
@@ -167,17 +170,17 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
     {
         SetNavMeshAgentEnabled(true);
 
-        m_CurrentDestination = m_SpawnPosition + new Vector3(
+        CurrentDestination = SpawnPosition + new Vector3(
             UnityEngine.Random.Range((int) - wanderRadius * 0.5f - 2, (int)wanderRadius * 0.5f + 2), 
             0,
             UnityEngine.Random.Range((int) - wanderRadius * 0.5f - 2, (int)wanderRadius * 0.5f + 2));
-        m_NavMeshAgent.ResetPath();
+        NavMeshAgent.ResetPath();
 
-        m_NavMeshAgent.SetDestination(m_CurrentDestination);
+        NavMeshAgent.SetDestination(CurrentDestination);
 
-        m_CurrentWaypoint.transform.position = m_CurrentDestination;
+        CurrentWaypoint.transform.position = CurrentDestination;
 
-        Vector3 direction = (m_CurrentDestination - transform.position).normalized;
+        Vector3 direction = (CurrentDestination - transform.position).normalized;
         transform.rotation = Quaternion.LookRotation(direction);
         //transform.rotation = Quaternion.Slerp(transform.rotation, qDir, Time.deltaTime * rotSpeed);
     }
@@ -193,13 +196,13 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         //randRotMod = 90.0f;
         heading = Quaternion.AngleAxis(randRotMod, Vector3.up) * heading;
 
-        m_CurrentDestination = transform.position - heading * 6.0f;
-        m_NavMeshAgent.ResetPath();
-        m_NavMeshAgent.SetDestination(m_CurrentDestination);
+        CurrentDestination = transform.position - heading * 6.0f;
+        NavMeshAgent.ResetPath();
+        NavMeshAgent.SetDestination(CurrentDestination);
 
-        m_CurrentWaypoint.transform.position = m_CurrentDestination;
+        CurrentWaypoint.transform.position = CurrentDestination;
 
-        Vector3 direction = (m_CurrentDestination - transform.position).normalized;
+        Vector3 direction = (CurrentDestination - transform.position).normalized;
         transform.rotation = Quaternion.LookRotation(direction);
     }
 
@@ -207,25 +210,25 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
     {
         SetNavMeshAgentEnabled(true);
 
-        m_Target = target;
+        Target = target;
 
-        m_CurrentDestination = target.transform.position;
-        m_NavMeshAgent.ResetPath();
+        CurrentDestination = target.transform.position;
+        NavMeshAgent.ResetPath();
 
-        m_NavMeshAgent.SetDestination(m_CurrentDestination);
+        NavMeshAgent.SetDestination(CurrentDestination);
 
-        m_CurrentWaypoint.transform.position = m_CurrentDestination;
+        CurrentWaypoint.transform.position = CurrentDestination;
 
-        Vector3 direction = (m_CurrentDestination - transform.position).normalized;
+        Vector3 direction = (CurrentDestination - transform.position).normalized;
         transform.rotation = Quaternion.LookRotation(direction);
 
-        m_Animator.SetInteger("State", (int)NpcState.Walking);
+        Animator.SetInteger("State", (int)NpcState.Walking);
     }
 
     public void StopMoving()
     {
         SetNavMeshAgentEnabled(true);
-        m_NavMeshAgent.ResetPath();
+        NavMeshAgent.ResetPath();
     }
 
     public void SetNavMeshAgentEnabled(bool enabled)
@@ -233,13 +236,13 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         // This is to supress warnings
         if (enabled)
         {
-            m_NavMeshObstacle.enabled = false;
-            m_NavMeshAgent.enabled = true;
+            NavMeshObstacle.enabled = false;
+            NavMeshAgent.enabled = true;
         }
         else
         {
-            m_NavMeshAgent.enabled = false;
-            m_NavMeshObstacle.enabled = true;
+            NavMeshAgent.enabled = false;
+            NavMeshObstacle.enabled = true;
         }
     }
 
@@ -254,12 +257,12 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         if (go.CompareTag("Player"))
         {
             transform.LookAt(transform.position + go.transform.rotation * Vector3.back, go.transform.rotation * Vector3.up);
-            m_SpriteLookRotator.OnLookDirectionChanged(SpriteLookRotator.LookDirection.Front);
+            SpriteLookRotator.OnLookDirectionChanged(SpriteLookRotator.LookDirection.Front);
         }
         else
         {
             transform.LookAt(go.transform);
-            m_SpriteLookRotator.AlignRotation();
+            SpriteLookRotator.AlignRotation();
         }
     }
 

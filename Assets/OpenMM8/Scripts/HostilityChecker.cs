@@ -98,6 +98,11 @@ public class HostilityChecker : MonoBehaviour
             {
                 return true;
             }
+
+            if (name == "Player" && otherChecker.m_IsHostileToPlayer)
+            {
+                return true;
+            }
         }
 
         return false;

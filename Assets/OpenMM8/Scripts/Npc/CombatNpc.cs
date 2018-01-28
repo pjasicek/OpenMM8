@@ -4,139 +4,153 @@ using System.Linq;
 using UnityEngine;
 using System;
 using UnityEngine.AI;
+using Assets.OpenMM8.Scripts.Gameplay;
 
 public class CombatNpc : BaseNpc
 {
     [SerializeField]
-    private float m_AttackReuseTime = 0.8f;
-    private float m_AttackReuseTimeLeft = 0.0f;
+    private float AttackReuseTime = 0.8f;
+    private float AttackReuseTimeLeft = 0.0f;
+
+    private bool IsTargetInMeleeRange = false;
+
+    private bool IsRanged = false;
+    private bool HasAltRangedAttack = false;
+    private float AltRangedAttackChance;
+    private float TimeSinceLastAltAttack = 0.0f;
 
     // Use this for initialization
     void Start()
     {
         base.OnStart();
 
-        m_Animator.SetInteger("State", (int)NpcState.Idle);
-        m_State = NpcState.Idle;
+        Animator.SetInteger("State", (int)NpcState.Idle);
+        State = NpcState.Idle;
 
-        InvokeRepeating("EnterBestState", 0.0f, m_UpdateIntervalMs / 1000.0f);
+        InvokeRepeating("EnterBestState", 0.0f, UpdateIntervalMs / 1000.0f);
 
         //Debug.unityLogger.logEnabled = false;
+
+        Debug.Log("Missile1: " + NpcData.Attack1.Missile);
+
+        IsRanged = NpcData.Attack1.Missile != "0";
+        HasAltRangedAttack = NpcData.Attack2.Missile != "0";
+        AltRangedAttackChance = NpcData.ChanceAttack2;
     }
 
     public NpcState EnterBestState()
     {
         SetNavMeshAgentEnabled(true);
 
-        NpcState currState = (NpcState)m_Animator.GetInteger("State");
+        NpcState currState = (NpcState)Animator.GetInteger("State");
 
-        if (currState == NpcState.Idle && m_AttackReuseTimeLeft > 0.0f)
+        if (currState == NpcState.Idle && AttackReuseTimeLeft > 0.0f)
         {
-            m_AttackReuseTimeLeft -= m_UpdateIntervalMs / 1000.0f;
+            AttackReuseTimeLeft -= UpdateIntervalMs / 1000.0f;
             SetNavMeshAgentEnabled(false);
             return currState;
         }
         else
         {
-            m_SpriteLookRotator.m_LookLocked = false;
+            SpriteLookRotator.LookLocked = false;
         }
 
         // If it is attacking do not force it to do anything else
         if (currState == NpcState.Attacking)
         {
-            if (m_Target != null)
+            if (Target != null)
             {
-                TurnToObject(m_Target);
+                TurnToObject(Target);
             }
             GetComponent<Rigidbody>().velocity = Vector3.zero;
             SetNavMeshAgentEnabled(false);
             //m_NavMeshAgent.isStopped = true;
-            m_NavMeshAgent.velocity = Vector3.zero;
+            NavMeshAgent.velocity = Vector3.zero;
             //GetComponent<Rigidbody>() = Vector3.zero;
             return currState;
         }
         
-        if (m_EnemiesInMeleeRange.Count == 0 && m_EnemiesInAgroRange.Count == 0)
+        if (EnemiesInMeleeRange.Count == 0 && EnemiesInAgroRange.Count == 0)
         {
-            if (m_Target != null)
+            if (Target != null)
             {
-                m_Target = null;
+                Target = null;
                 StopMoving();
             }
 
             if (!IsWalking())
             {
-                if (m_DoWander)
+                if (DoWander)
                 {
-                    if (m_RemainingWanderIdleTime > 0.0f)
+                    if (RemainingWanderIdleTime > 0.0f)
                     {
-                        m_RemainingWanderIdleTime -= m_UpdateIntervalMs / 1000.0f;
-                        m_Animator.SetInteger("State", (int)NpcState.Idle);
+                        RemainingWanderIdleTime -= UpdateIntervalMs / 1000.0f;
+                        Animator.SetInteger("State", (int)NpcState.Idle);
                     }
                     else
                     {
-                        WanderWithinSpawnArea(m_WanderRadius);
-                        m_Animator.SetInteger("State", (int)NpcState.Walking);
-                        m_RemainingWanderIdleTime = UnityEngine.Random.Range(m_MinWanderIdleTime, m_MaxWanderIdleTime);
+                        WanderWithinSpawnArea(WanderRadius);
+                        Animator.SetInteger("State", (int)NpcState.Walking);
+                        RemainingWanderIdleTime = UnityEngine.Random.Range(MinWanderIdleTime, MaxWanderIdleTime);
                     }
                 }
             }
         }
-        else if (m_IsFleeing)
+        else if (IsFleeing)
         {
             // TODO
         }
-        else if (m_EnemiesInMeleeRange.Count > 0)
+        else if (EnemiesInMeleeRange.Count > 0)
         {
             // NPC is not attacking in this block
 
-            m_Target = m_EnemiesInMeleeRange.OrderBy(
+            Target = EnemiesInMeleeRange.OrderBy(
                 t => (t.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
-            if (m_Target == null)
+            if (Target == null)
             {
-                m_EnemiesInMeleeRange.Remove(m_Target);
+                EnemiesInMeleeRange.Remove(Target);
             }
             else
             {
                 /*StopMoving();
                 TurnToObject(m_Target);
                 m_Animator.SetInteger("State", (int)NpcState.Attacking);*/
-                AttackTarget(m_Target);
+                AttackTarget(Target, true);
             }
         }
-        else if (m_EnemiesInAgroRange.Count > 0)
+        else if (EnemiesInAgroRange.Count > 0)
         {
             // NPC is not attacking in this block
 
-            if (m_IsRanged)
+            if (IsRanged)
             {
                 if (!IsWalking())
                 {
                     // Ranged and not walking -> find and attack target
-                    GameObject closestTarget = GetClosestTarget(m_EnemiesInAgroRange);
+                    GameObject closestTarget = GetClosestTarget(EnemiesInAgroRange);
                     TurnToObject(closestTarget);
-                    AttackTarget(closestTarget);
+                    AttackTarget(closestTarget, false);
 
                     // Moving after shooting has to be handled in OnAttackFrame event
                 }
             }
             else
             {
-                m_TimeSinceLastAltAttack += m_UpdateIntervalMs / 1000.0f;
-                if (m_HasAltRangedAttack && m_TimeSinceLastAltAttack > 2.0f)
+                TimeSinceLastAltAttack += UpdateIntervalMs / 1000.0f;
+                if (HasAltRangedAttack && TimeSinceLastAltAttack > 2.0f)
                 {
-                    AttackTarget(GetClosestTarget(m_EnemiesInAgroRange));
-                    m_TimeSinceLastAltAttack = 0.0f;
+                    AttackTarget(GetClosestTarget(EnemiesInAgroRange), false);
+                    TimeSinceLastAltAttack = 0.0f;
                 }
                 else
                 {
-                    GameObject closestTarget = GetClosestTarget(m_EnemiesInAgroRange);
+                    GameObject closestTarget = GetClosestTarget(EnemiesInAgroRange);
                     ChaseTarget(closestTarget);
                 }
             }
         }
 
-        return (NpcState)m_Animator.GetInteger("State");
+        return (NpcState)Animator.GetInteger("State");
     }
 
     GameObject GetClosestTarget(List<GameObject> targets)
@@ -146,18 +160,20 @@ public class CombatNpc : BaseNpc
         return closest;
     }
 
-    bool AttackTarget(GameObject target)
+    bool AttackTarget(GameObject target, bool isMeleeRange)
     {
         if (target != null)
         {
             SetNavMeshAgentEnabled(false);
-            m_Target = target;
+            Target = target;
 
             StopMoving();
-            TurnToObject(m_Target);
-            m_Animator.SetInteger("State", (int)NpcState.Attacking);
-            m_AudioSource.clip = m_AttackSound;
-            m_AudioSource.Play();
+            TurnToObject(Target);
+            Animator.SetInteger("State", (int)NpcState.Attacking);
+            AudioSource.clip = AttackSound;
+            AudioSource.Play();
+
+            IsTargetInMeleeRange = isMeleeRange;
         }
 
         return target != null;
@@ -165,36 +181,36 @@ public class CombatNpc : BaseNpc
 
     public override void OnObjectEnteredMeleeRange(GameObject other)
     {
-        if (m_HostilityResolver.IsHostileTo(other))
+        if (HostilityResolver.IsHostileTo(other))
         {
-            m_EnemiesInMeleeRange.Add(other);
+            EnemiesInMeleeRange.Add(other);
             EnterBestState();
         }
     }
 
     public override void OnObjectLeftMeleeRange(GameObject other)
     {
-        if (m_HostilityResolver.IsHostileTo(other))
+        if (HostilityResolver.IsHostileTo(other))
         {
-            m_EnemiesInMeleeRange.Remove(other);
+            EnemiesInMeleeRange.Remove(other);
             EnterBestState();
         }
     }
 
     public override void OnObjectEnteredAgroRange(GameObject other)
     {
-        if (m_HostilityResolver.IsHostileTo(other))
+        if (HostilityResolver.IsHostileTo(other))
         {
-            m_EnemiesInAgroRange.Add(other);
+            EnemiesInAgroRange.Add(other);
             EnterBestState();
         }
     }
 
     public override void OnObjectLeftAgroRange(GameObject other)
     {
-        if (m_HostilityResolver.IsHostileTo(other))
+        if (HostilityResolver.IsHostileTo(other))
         {
-            m_EnemiesInAgroRange.Remove(other);
+            EnemiesInAgroRange.Remove(other);
             EnterBestState();
         }
     }
@@ -202,20 +218,44 @@ public class CombatNpc : BaseNpc
     // Animator
     public void OnAttackFrame()
     {
-
+        Debug.Log("OnAttackFrame");
+        if (Target)
+        {
+            if (IsTargetInMeleeRange)
+            {
+                // Always primary attack ?
+                Damageable damageable = Target.GetComponent<Damageable>();
+                if (damageable)
+                {
+                    Debug.Log("Min damage: " + NpcData.Attack1.MinDamage + ", Max damage: " + NpcData.Attack1.MaxDamage);
+                    Debug.Log("Name: " + NpcData.Name);
+                    damageable.ReceiveAttack(NpcData.Attack1, this.gameObject);
+                }
+            }
+            else
+            {
+                // Spawn projectile
+                if (NpcData.Attack2.Missile != "0")
+                {
+                    Debug.Log("Spawn missile: " + NpcData.Attack2.Missile);
+                }
+            }
+        }
     }
 
     public void OnAttackDone()
     {
         //Debug.Log("END ATTACK !");
 
-        StopMoving();
-        m_Animator.SetInteger("State", (int)NpcState.Idle);
+        IsTargetInMeleeRange = false;
 
-        if (m_IsRanged && m_EnemiesInAgroRange.Count > 0 && m_EnemiesInMeleeRange.Count == 0)
+        StopMoving();
+        Animator.SetInteger("State", (int)NpcState.Idle);
+
+        if (IsRanged && EnemiesInAgroRange.Count > 0 && EnemiesInMeleeRange.Count == 0)
         {
             // Kite the target
-            GameObject closestTarget = GetClosestTarget(m_EnemiesInAgroRange);
+            GameObject closestTarget = GetClosestTarget(EnemiesInAgroRange);
             if (closestTarget != null)
             {
                 MoveAfterRangedAttack(closestTarget);
@@ -223,12 +263,12 @@ public class CombatNpc : BaseNpc
         }
 
         //NpcState currState = (NpcState)m_Animator.GetInteger("State");
-        else if (/*currState == NpcState.Attacking && */ m_EnemiesInMeleeRange.Count != 0)
+        else if (/*currState == NpcState.Attacking && */ EnemiesInMeleeRange.Count != 0)
         {
-            m_AttackReuseTimeLeft = m_AttackReuseTime;
-            m_Animator.SetInteger("State", (int)NpcState.Idle);
-            TurnToObject(GetClosestTarget(m_EnemiesInMeleeRange));
-            m_SpriteLookRotator.m_LookLocked = true;
+            AttackReuseTimeLeft = AttackReuseTime;
+            Animator.SetInteger("State", (int)NpcState.Idle);
+            TurnToObject(GetClosestTarget(EnemiesInMeleeRange));
+            SpriteLookRotator.LookLocked = true;
             SetNavMeshAgentEnabled(false);
         }
         else
@@ -244,19 +284,19 @@ public class CombatNpc : BaseNpc
         Vector3 heading = target.transform.position - transform.position;
         heading.Normalize();
 
-        float randRotMod = UnityEngine.Random.Range(-10.0f, 10.0f);
+        float randRotMod = UnityEngine.Random.Range(-15.0f, 15.0f);
         float kitingModifier = 90.0f + randRotMod;
         heading = Quaternion.AngleAxis(kitingModifier, Vector3.up) * heading;
 
-        m_CurrentDestination = transform.position - heading * 6.0f;
-        m_NavMeshAgent.ResetPath();
-        m_NavMeshAgent.SetDestination(m_CurrentDestination);
+        CurrentDestination = transform.position - heading * 6.0f;
+        NavMeshAgent.ResetPath();
+        NavMeshAgent.SetDestination(CurrentDestination);
 
-        m_CurrentWaypoint.transform.position = m_CurrentDestination;
+        CurrentWaypoint.transform.position = CurrentDestination;
 
-        Vector3 direction = (m_CurrentDestination - transform.position).normalized;
+        Vector3 direction = (CurrentDestination - transform.position).normalized;
         transform.rotation = Quaternion.LookRotation(direction);
 
-        m_Animator.SetInteger("State", (int)NpcState.Walking);
+        Animator.SetInteger("State", (int)NpcState.Walking);
     }
 }

@@ -16,11 +16,11 @@ public class BaseNpcEditor : Editor
         Handles.color = new Color(0, 1.0f, 0, 0.1f);
         if (EditorApplication.isPlaying)
         {
-            Handles.DrawSolidDisc(m_TargetObject.m_SpawnPosition, Vector3.up, m_TargetObject.m_WanderRadius);
+            Handles.DrawSolidDisc(m_TargetObject.SpawnPosition, Vector3.up, m_TargetObject.WanderRadius);
         }
         else
         {
-            Handles.DrawSolidDisc(m_TargetObject.transform.position, Vector3.up, m_TargetObject.m_WanderRadius);
+            Handles.DrawSolidDisc(m_TargetObject.transform.position, Vector3.up, m_TargetObject.WanderRadius);
         }
     }
 }

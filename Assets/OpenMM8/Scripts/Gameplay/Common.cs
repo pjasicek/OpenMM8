@@ -8,8 +8,8 @@ using UnityEngine;
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
     // Events
-    public delegate DamageResult DamageReceived(int amount, GameObject source);
-    public delegate SpellResult SpellReceived(Spell spell, GameObject source);
+    public delegate AttackResult AttackReceived(AttackInfo hitInfo, GameObject source);
+    public delegate SpellResult SpellReceived(SpellInfo hitInfo, GameObject source);
 
     // Enums
 
@@ -81,7 +81,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         Water,
         Earth,
         Mind,
-        Body
+        Body,
+        Spirit,
+        Dark,
+        Light,
+        Physical,
+        None
     }
 
     public enum Attribute
@@ -117,7 +122,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         Minotaur,
         Dragon,
         Necromancer,
-        Cleric
+        Cleric,
+        None
     }
 
     public enum EquipType
@@ -203,18 +209,38 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         HostileClose // Red
     }
 
-    public enum DamageResult
+    public enum AttackResult
     {
         Kill,
         Hit,
         Resist,
-        Miss
+        Miss,
+        None
     }
 
     public enum SpellResult
     {
         Hit,
         Resist,
-        Kill
+        Kill,
+        None
+    }
+
+    public enum LootItemLevel
+    {
+        L1,
+        L2,
+        L3,
+        L4,
+        L5,
+        L6,
+        None
+    }
+    public enum NpcAgressivityType
+    {
+        Wimp,
+        Normal,
+        Agressive,
+        Suicidal
     }
 }

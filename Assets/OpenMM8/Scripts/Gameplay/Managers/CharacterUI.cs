@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    class CharacterUI
+    public class CharacterUI
     {
         public Image PlayerCharacter;
         public Image HealthBar;
@@ -17,50 +17,63 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public Image SelectionRing;
         public Image EmptySlot;
 
-        /*PartyMemberUI(int partyMemberIndex)
-        {
-            switch (partyMemberIndex)
-            {
-                case 1:
-                    break;
-
-                case 2:
-                    break;
-
-                case 3:
-                    break;
-
-                case 4:
-                    break;
-
-                case 5:
-                    break;
-            }
-        }*/
+        public Sprite GreenHealthBarSprite;
+        public Sprite YellowHealthBarSprite;
+        public Sprite RedHealthBarSprite;
 
         public void SetHealth(float percentage)
         {
-            Debug.Assert(EmptySlot.enabled == true);
+            Debug.Assert(EmptySlot.enabled == false);
+
+            if (percentage > 66.6f)
+            {
+                HealthBar.sprite = GreenHealthBarSprite;
+            }
+            else if (percentage > 33.3f)
+            {
+                HealthBar.sprite = YellowHealthBarSprite;
+            }
+            else
+            {
+                HealthBar.sprite = RedHealthBarSprite;
+            }
+
+            HealthBar.fillAmount = percentage / 100.0f;
         }
 
         public void SetMana(float percentage)
         {
-            Debug.Assert(EmptySlot.enabled == true);
+            Debug.Assert(EmptySlot.enabled == false);
+
+            ManaBar.fillAmount = percentage / 100.0f;
         }
 
         public void SetAvatarState(PlayerState state)
         {
-            Debug.Assert(EmptySlot.enabled == true);
+            Debug.Assert(EmptySlot.enabled == false);
         }
 
         public void SetAgroStatus(AgroState state)
         {
-            Debug.Assert(EmptySlot.enabled == true);
+            Debug.Assert(EmptySlot.enabled == false);
+
+            if (state == AgroState.Safe)
+            {
+                AgroStatus.sprite = GameMgr.Instance.GreenAgroStatusSprite;
+            }
+            else if (state == AgroState.HostileNearby)
+            {
+                AgroStatus.sprite = GameMgr.Instance.YelloqAgroStatusSprite;
+            }
+            else
+            {
+                AgroStatus.sprite = GameMgr.Instance.RedAgroStatusSprite;
+            }
         }
 
         public void SetSelected(bool isSelected)
         {
-            Debug.Assert(EmptySlot.enabled == true);
+            Debug.Assert(EmptySlot.enabled == false);
 
             SelectionRing.enabled = isSelected;
         }

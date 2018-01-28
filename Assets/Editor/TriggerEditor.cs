@@ -14,8 +14,8 @@ public class TriggerEditor : Editor
     {
         m_TargetObject = this.target as Trigger;
 
-        var type = typeof(Trigger).GetField("m_TriggerType", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(m_TargetObject);
-        var radius = typeof(Trigger).GetField("m_SideLength", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(m_TargetObject);
+        var type = typeof(Trigger).GetField("TriggerType", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(m_TargetObject);
+        var radius = typeof(Trigger).GetField("SideLength", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(m_TargetObject);
         if ((TriggerType)type == TriggerType.MeleeRange)
         {
             Handles.color = new Color(1.0f, 0.0f, 0, 0.15f);

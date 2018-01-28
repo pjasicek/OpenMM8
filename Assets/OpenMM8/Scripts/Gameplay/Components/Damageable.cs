@@ -5,22 +5,26 @@ using Assets.OpenMM8.Scripts.Gameplay;
 
 public class Damageable : MonoBehaviour
 {
-    public event DamageReceived OnDamageReceived;
+    public event AttackReceived OnAttackReceieved;
     public event SpellReceived OnSpellReceived;
 
-    public void ReceiveDamage(int amount, GameObject source)
+    public AttackResult ReceiveAttack(AttackInfo hitInfo, GameObject source)
     {
-        if (OnDamageReceived != null)
+        if (OnAttackReceieved != null)
         {
-            OnDamageReceived(amount, source);
+            OnAttackReceieved(hitInfo, source);
         }
+
+        return AttackResult.None;
     }
 
-    public void ReceiveSpell(Spell spell, GameObject source)
+    public SpellResult ReceiveSpell(SpellInfo hitInfo, GameObject source)
     {
         if (OnSpellReceived != null)
         {
-            OnSpellReceived(spell, source);
+            OnSpellReceived(hitInfo, source);
         }
+
+        return SpellResult.None;
     }
 }

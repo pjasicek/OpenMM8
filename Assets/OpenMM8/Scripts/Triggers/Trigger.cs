@@ -10,64 +10,64 @@ using System.Reflection;
 public class Trigger : MonoBehaviour
 {
     [SerializeField]
-    private TriggerType m_TriggerType = TriggerType.None;
+    private TriggerType TriggerType = TriggerType.None;
 
     [SerializeField]
-    private PrimitiveType m_ColliderShape = PrimitiveType.Sphere;
+    private PrimitiveType ColliderShape = PrimitiveType.Sphere;
 
     [SerializeField]
-    private float m_SideLength = 0.0f;
+    private float SideLength = 0.0f;
 
     [SerializeField]
-    private float m_Height = 30.0f;
+    private float Height = 30.0f;
 
     [SerializeField]
-    private string m_LayerMask;
+    private string LayerMask;
 
-    private GameObject m_TriggerRef;
+    private GameObject TriggerRef;
 
     void Awake()
     {
-        UnityEngine.Assertions.Assert.AreNotEqual(TriggerType.None, m_TriggerType, "Valid Trigger Type must be set");
-        UnityEngine.Assertions.Assert.AreNotEqual(m_SideLength, 0.0f, "Trigger has to have a valid size");
+        UnityEngine.Assertions.Assert.AreNotEqual(TriggerType.None, TriggerType, "Valid Trigger Type must be set");
+        UnityEngine.Assertions.Assert.AreNotEqual(SideLength, 0.0f, "Trigger has to have a valid size");
 
         GameObject trigger = new GameObject();
-        trigger.name = "Trigger_" + m_TriggerType.ToString();
+        trigger.name = "Trigger_" + TriggerType.ToString();
 
-        switch (m_ColliderShape)
+        switch (ColliderShape)
         {
             case PrimitiveType.Sphere:
                 var sphere = trigger.AddComponent(typeof(SphereCollider)) as SphereCollider;
-                sphere.radius = m_SideLength;
+                sphere.radius = SideLength;
                 break;
 
             case PrimitiveType.Capsule:
                 var capsusle = trigger.AddComponent(typeof(CapsuleCollider)) as CapsuleCollider;
-                capsusle.radius = m_SideLength;
-                capsusle.height = m_Height;
+                capsusle.radius = SideLength;
+                capsusle.height = Height;
                 break;
 
             case PrimitiveType.Cube:
                 var cube = trigger.AddComponent(typeof(BoxCollider)) as BoxCollider;
-                cube.size = new Vector3(m_SideLength, m_Height, m_SideLength);
+                cube.size = new Vector3(SideLength, Height, SideLength);
                 break;
 
             default:
-                Debug.LogError("Unsupported Collider Shape: " + m_ColliderShape);
+                Debug.LogError("Unsupported Collider Shape: " + ColliderShape);
                 break;
         }
         trigger.GetComponent<Collider>().isTrigger = true;
 
 
         TriggerDispatcher td = trigger.AddComponent(typeof(TriggerDispatcher)) as TriggerDispatcher;
-        td.m_TriggerType = m_TriggerType;
+        td.TriggerType = TriggerType;
 
         trigger.transform.parent = this.transform;
 
         trigger.gameObject.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         trigger.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);    
 
-        trigger.layer = LayerMask.NameToLayer(m_LayerMask);
+        trigger.layer = UnityEngine.LayerMask.NameToLayer(LayerMask);
     }
 
     // Use this for initialization

@@ -190,7 +190,6 @@ GameObject:
   m_Component:
   - component: {fileID: 83124868}
   - component: {fileID: 83124867}
-  - component: {fileID: 83124866}
   - component: {fileID: 83124865}
   - component: {fileID: 83124864}
   - component: {fileID: 83124863}
@@ -209,7 +208,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &83124854
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -492,31 +491,6 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
---- !u!114 &83124866
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 83124853}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e7bd9137dcefa42a7dd1ee72667b20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Level: 0
-  m_Health: 0
-  m_ArmorClass: 0
-  m_CanFly: 0
-  m_MovementSpeedType: 0
-  m_PreferredTargetClass: 0
-  m_Experience: 0
-  m_DropsQuestItem: 0
-  m_MoveType: 0
-  m_AIType: 0
-  m_HostilityType: 0
-  m_Speed: 0
-  m_Rec: 0
-  m_PreferredTarget: 0
 --- !u!114 &83124867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -528,11 +502,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645af68366d30ca4bb87082122745c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NpcType: 0
   m_StoppingDistance: 0.5
-  m_IsRanged: 0
-  m_HasAltRangedAttack: 1
-  m_AltRangedAttackChance: 0
-  m_TimeSinceLastAltAttack: 0
   m_DoWander: 1
   m_MinWanderIdleTime: 1
   m_MaxWanderIdleTime: 2
@@ -569,7 +540,6 @@ GameObject:
   m_Component:
   - component: {fileID: 100669001}
   - component: {fileID: 100669000}
-  - component: {fileID: 100668999}
   - component: {fileID: 100668998}
   - component: {fileID: 100668997}
   - component: {fileID: 100668996}
@@ -588,7 +558,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &100668987
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -871,31 +841,6 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
---- !u!114 &100668999
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 100668986}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e7bd9137dcefa42a7dd1ee72667b20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Level: 0
-  m_Health: 0
-  m_ArmorClass: 0
-  m_CanFly: 0
-  m_MovementSpeedType: 0
-  m_PreferredTargetClass: 0
-  m_Experience: 0
-  m_DropsQuestItem: 0
-  m_MoveType: 0
-  m_AIType: 0
-  m_HostilityType: 0
-  m_Speed: 0
-  m_Rec: 0
-  m_PreferredTarget: 0
 --- !u!114 &100669000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -907,11 +852,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645af68366d30ca4bb87082122745c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NpcType: 0
   m_StoppingDistance: 0.5
-  m_IsRanged: 0
-  m_HasAltRangedAttack: 1
-  m_AltRangedAttackChance: 0
-  m_TimeSinceLastAltAttack: 0
   m_DoWander: 1
   m_MinWanderIdleTime: 1
   m_MaxWanderIdleTime: 2
@@ -1011,7 +953,6 @@ GameObject:
   - component: {fileID: 172736393}
   - component: {fileID: 172736392}
   - component: {fileID: 172736394}
-  - component: {fileID: 172736384}
   - component: {fileID: 172736390}
   - component: {fileID: 172736395}
   - component: {fileID: 172736396}
@@ -1031,31 +972,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &172736384
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 172736383}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e7bd9137dcefa42a7dd1ee72667b20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Level: 0
-  m_Health: 0
-  m_ArmorClass: 0
-  m_CanFly: 0
-  m_MovementSpeedType: 0
-  m_PreferredTargetClass: 0
-  m_Experience: 0
-  m_DropsQuestItem: 0
-  m_MoveType: 0
-  m_AIType: 0
-  m_HostilityType: 0
-  m_Speed: 0
-  m_Rec: 0
-  m_PreferredTarget: 0
 --- !u!195 &172736385
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1377,11 +1293,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a77a1b462dfd05409b89665cd2f753e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NpcType: 0
   m_StoppingDistance: 0.5
-  m_IsRanged: 0
-  m_HasAltRangedAttack: 0
-  m_AltRangedAttackChance: 0
-  m_TimeSinceLastAltAttack: 0
   m_DoWander: 0
   m_MinWanderIdleTime: 1
   m_MaxWanderIdleTime: 2
@@ -1619,7 +1532,6 @@ GameObject:
   m_Component:
   - component: {fileID: 197864067}
   - component: {fileID: 197864066}
-  - component: {fileID: 197864065}
   - component: {fileID: 197864064}
   - component: {fileID: 197864063}
   - component: {fileID: 197864062}
@@ -1638,7 +1550,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &197864053
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1921,31 +1833,6 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
---- !u!114 &197864065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 197864052}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e7bd9137dcefa42a7dd1ee72667b20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Level: 0
-  m_Health: 0
-  m_ArmorClass: 0
-  m_CanFly: 0
-  m_MovementSpeedType: 0
-  m_PreferredTargetClass: 0
-  m_Experience: 0
-  m_DropsQuestItem: 0
-  m_MoveType: 0
-  m_AIType: 0
-  m_HostilityType: 0
-  m_Speed: 0
-  m_Rec: 0
-  m_PreferredTarget: 0
 --- !u!114 &197864066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1957,11 +1844,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645af68366d30ca4bb87082122745c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NpcType: 0
   m_StoppingDistance: 0.5
-  m_IsRanged: 0
-  m_HasAltRangedAttack: 1
-  m_AltRangedAttackChance: 0
-  m_TimeSinceLastAltAttack: 0
   m_DoWander: 1
   m_MinWanderIdleTime: 1
   m_MaxWanderIdleTime: 2
@@ -2016,7 +1900,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 226072613}
-  m_RootOrder: 20
+  m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -2149,6 +2033,7 @@ RectTransform:
   - {fileID: 1012512841}
   - {fileID: 1079024174}
   - {fileID: 175601148}
+  - {fileID: 1433031827}
   - {fileID: 392496141}
   - {fileID: 1142049352}
   - {fileID: 1863588359}
@@ -2616,7 +2501,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 226072613}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -2752,7 +2637,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 226072613}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -2909,7 +2794,7 @@ RectTransform:
   - {fileID: 985845216}
   - {fileID: 350877457}
   m_Father: {fileID: 226072613}
-  m_RootOrder: 21
+  m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2983,7 +2868,6 @@ GameObject:
   m_Component:
   - component: {fileID: 542714000}
   - component: {fileID: 542713999}
-  - component: {fileID: 542713998}
   - component: {fileID: 542713997}
   - component: {fileID: 542713996}
   - component: {fileID: 542713995}
@@ -3002,7 +2886,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &542713986
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3285,31 +3169,6 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
---- !u!114 &542713998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 542713985}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e7bd9137dcefa42a7dd1ee72667b20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Level: 0
-  m_Health: 0
-  m_ArmorClass: 0
-  m_CanFly: 0
-  m_MovementSpeedType: 0
-  m_PreferredTargetClass: 0
-  m_Experience: 0
-  m_DropsQuestItem: 0
-  m_MoveType: 0
-  m_AIType: 0
-  m_HostilityType: 0
-  m_Speed: 0
-  m_Rec: 0
-  m_PreferredTarget: 0
 --- !u!114 &542713999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3321,11 +3180,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645af68366d30ca4bb87082122745c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NpcType: 0
   m_StoppingDistance: 0.5
-  m_IsRanged: 0
-  m_HasAltRangedAttack: 1
-  m_AltRangedAttackChance: 0
-  m_TimeSinceLastAltAttack: 0
   m_DoWander: 1
   m_MinWanderIdleTime: 1
   m_MaxWanderIdleTime: 2
@@ -3362,7 +3218,6 @@ GameObject:
   m_Component:
   - component: {fileID: 550542152}
   - component: {fileID: 550542151}
-  - component: {fileID: 550542150}
   - component: {fileID: 550542149}
   - component: {fileID: 550542148}
   - component: {fileID: 550542147}
@@ -3381,7 +3236,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &550542138
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3664,31 +3519,6 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
---- !u!114 &550542150
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 550542137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e7bd9137dcefa42a7dd1ee72667b20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Level: 0
-  m_Health: 0
-  m_ArmorClass: 0
-  m_CanFly: 0
-  m_MovementSpeedType: 0
-  m_PreferredTargetClass: 0
-  m_Experience: 0
-  m_DropsQuestItem: 0
-  m_MoveType: 0
-  m_AIType: 0
-  m_HostilityType: 0
-  m_Speed: 0
-  m_Rec: 0
-  m_PreferredTarget: 0
 --- !u!114 &550542151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3700,11 +3530,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645af68366d30ca4bb87082122745c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NpcType: 0
   m_StoppingDistance: 0.5
-  m_IsRanged: 0
-  m_HasAltRangedAttack: 1
-  m_AltRangedAttackChance: 0
-  m_TimeSinceLastAltAttack: 0
   m_DoWander: 1
   m_MinWanderIdleTime: 1
   m_MaxWanderIdleTime: 2
@@ -3759,7 +3586,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 226072613}
-  m_RootOrder: 18
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -3786,10 +3613,10 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300106, guid: 9c33dcebc3204aa4d94dfac9e52d9839, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 1
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -3827,7 +3654,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 226072613}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -3957,7 +3784,6 @@ GameObject:
   m_Component:
   - component: {fileID: 644766597}
   - component: {fileID: 644766596}
-  - component: {fileID: 644766595}
   - component: {fileID: 644766594}
   - component: {fileID: 644766593}
   - component: {fileID: 644766592}
@@ -3976,7 +3802,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &644766583
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4259,31 +4085,6 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
---- !u!114 &644766595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 644766582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e7bd9137dcefa42a7dd1ee72667b20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Level: 0
-  m_Health: 0
-  m_ArmorClass: 0
-  m_CanFly: 0
-  m_MovementSpeedType: 0
-  m_PreferredTargetClass: 0
-  m_Experience: 0
-  m_DropsQuestItem: 0
-  m_MoveType: 0
-  m_AIType: 0
-  m_HostilityType: 0
-  m_Speed: 0
-  m_Rec: 0
-  m_PreferredTarget: 0
 --- !u!114 &644766596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4295,11 +4096,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645af68366d30ca4bb87082122745c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NpcType: 0
   m_StoppingDistance: 0.5
-  m_IsRanged: 0
-  m_HasAltRangedAttack: 1
-  m_AltRangedAttackChance: 0
-  m_TimeSinceLastAltAttack: 0
   m_DoWander: 1
   m_MinWanderIdleTime: 1
   m_MaxWanderIdleTime: 2
@@ -4336,7 +4134,6 @@ GameObject:
   m_Component:
   - component: {fileID: 680959181}
   - component: {fileID: 680959180}
-  - component: {fileID: 680959179}
   - component: {fileID: 680959178}
   - component: {fileID: 680959177}
   - component: {fileID: 680959176}
@@ -4355,7 +4152,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &680959167
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4638,31 +4435,6 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
---- !u!114 &680959179
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 680959166}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e7bd9137dcefa42a7dd1ee72667b20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Level: 0
-  m_Health: 0
-  m_ArmorClass: 0
-  m_CanFly: 0
-  m_MovementSpeedType: 0
-  m_PreferredTargetClass: 0
-  m_Experience: 0
-  m_DropsQuestItem: 0
-  m_MoveType: 0
-  m_AIType: 0
-  m_HostilityType: 0
-  m_Speed: 0
-  m_Rec: 0
-  m_PreferredTarget: 0
 --- !u!114 &680959180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4674,11 +4446,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645af68366d30ca4bb87082122745c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NpcType: 0
   m_StoppingDistance: 0.5
-  m_IsRanged: 0
-  m_HasAltRangedAttack: 1
-  m_AltRangedAttackChance: 0
-  m_TimeSinceLastAltAttack: 0
   m_DoWander: 1
   m_MinWanderIdleTime: 1
   m_MaxWanderIdleTime: 2
@@ -4715,7 +4484,6 @@ GameObject:
   m_Component:
   - component: {fileID: 729297851}
   - component: {fileID: 729297850}
-  - component: {fileID: 729297849}
   - component: {fileID: 729297848}
   - component: {fileID: 729297847}
   - component: {fileID: 729297846}
@@ -4734,7 +4502,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &729297837
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5017,31 +4785,6 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
---- !u!114 &729297849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 729297836}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e7bd9137dcefa42a7dd1ee72667b20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Level: 0
-  m_Health: 0
-  m_ArmorClass: 0
-  m_CanFly: 0
-  m_MovementSpeedType: 0
-  m_PreferredTargetClass: 0
-  m_Experience: 0
-  m_DropsQuestItem: 0
-  m_MoveType: 0
-  m_AIType: 0
-  m_HostilityType: 0
-  m_Speed: 0
-  m_Rec: 0
-  m_PreferredTarget: 0
 --- !u!114 &729297850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5053,11 +4796,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645af68366d30ca4bb87082122745c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NpcType: 0
   m_StoppingDistance: 0.5
-  m_IsRanged: 0
-  m_HasAltRangedAttack: 1
-  m_AltRangedAttackChance: 0
-  m_TimeSinceLastAltAttack: 0
   m_DoWander: 1
   m_MinWanderIdleTime: 1
   m_MaxWanderIdleTime: 2
@@ -5162,7 +4902,6 @@ GameObject:
   m_Component:
   - component: {fileID: 801180097}
   - component: {fileID: 801180096}
-  - component: {fileID: 801180095}
   - component: {fileID: 801180094}
   - component: {fileID: 801180093}
   - component: {fileID: 801180092}
@@ -5181,7 +4920,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &801180083
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5464,31 +5203,6 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
---- !u!114 &801180095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 801180082}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e7bd9137dcefa42a7dd1ee72667b20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Level: 0
-  m_Health: 0
-  m_ArmorClass: 0
-  m_CanFly: 0
-  m_MovementSpeedType: 0
-  m_PreferredTargetClass: 0
-  m_Experience: 0
-  m_DropsQuestItem: 0
-  m_MoveType: 0
-  m_AIType: 0
-  m_HostilityType: 0
-  m_Speed: 0
-  m_Rec: 0
-  m_PreferredTarget: 0
 --- !u!114 &801180096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5500,11 +5214,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645af68366d30ca4bb87082122745c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NpcType: 0
   m_StoppingDistance: 0.5
-  m_IsRanged: 0
-  m_HasAltRangedAttack: 1
-  m_AltRangedAttackChance: 0
-  m_TimeSinceLastAltAttack: 0
   m_DoWander: 1
   m_MinWanderIdleTime: 1
   m_MaxWanderIdleTime: 2
@@ -5541,7 +5252,6 @@ GameObject:
   m_Component:
   - component: {fileID: 867046311}
   - component: {fileID: 867046310}
-  - component: {fileID: 867046309}
   - component: {fileID: 867046308}
   - component: {fileID: 867046307}
   - component: {fileID: 867046306}
@@ -5560,7 +5270,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &867046297
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5843,31 +5553,6 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
---- !u!114 &867046309
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 867046296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e7bd9137dcefa42a7dd1ee72667b20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Level: 0
-  m_Health: 0
-  m_ArmorClass: 0
-  m_CanFly: 0
-  m_MovementSpeedType: 0
-  m_PreferredTargetClass: 0
-  m_Experience: 0
-  m_DropsQuestItem: 0
-  m_MoveType: 0
-  m_AIType: 0
-  m_HostilityType: 0
-  m_Speed: 0
-  m_Rec: 0
-  m_PreferredTarget: 0
 --- !u!114 &867046310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5879,11 +5564,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645af68366d30ca4bb87082122745c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NpcType: 0
   m_StoppingDistance: 0.5
-  m_IsRanged: 0
-  m_HasAltRangedAttack: 1
-  m_AltRangedAttackChance: 0
-  m_TimeSinceLastAltAttack: 0
   m_DoWander: 1
   m_MinWanderIdleTime: 1
   m_MaxWanderIdleTime: 2
@@ -5920,7 +5602,6 @@ GameObject:
   m_Component:
   - component: {fileID: 938530869}
   - component: {fileID: 938530868}
-  - component: {fileID: 938530867}
   - component: {fileID: 938530866}
   - component: {fileID: 938530865}
   - component: {fileID: 938530864}
@@ -6222,31 +5903,6 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
---- !u!114 &938530867
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 938530854}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e7bd9137dcefa42a7dd1ee72667b20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Level: 0
-  m_Health: 0
-  m_ArmorClass: 0
-  m_CanFly: 0
-  m_MovementSpeedType: 0
-  m_PreferredTargetClass: 0
-  m_Experience: 0
-  m_DropsQuestItem: 0
-  m_MoveType: 0
-  m_AIType: 0
-  m_HostilityType: 0
-  m_Speed: 0
-  m_Rec: 0
-  m_PreferredTarget: 0
 --- !u!114 &938530868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6258,11 +5914,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645af68366d30ca4bb87082122745c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NpcType: 6
   m_StoppingDistance: 0.5
-  m_IsRanged: 0
-  m_HasAltRangedAttack: 1
-  m_AltRangedAttackChance: 0
-  m_TimeSinceLastAltAttack: 0
   m_DoWander: 1
   m_MinWanderIdleTime: 1
   m_MaxWanderIdleTime: 2
@@ -6521,7 +6174,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 226072613}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -6589,7 +6242,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 226072613}
-  m_RootOrder: 16
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -6714,7 +6367,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1271837150
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6732,7 +6385,7 @@ RectTransform:
   - {fileID: 182121619}
   - {fileID: 1975399174}
   m_Father: {fileID: 226072613}
-  m_RootOrder: 22
+  m_RootOrder: 23
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -7244,11 +6897,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c1d4a2c328aa0b4ca16c6049d878970, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameState: 0
+  MapType: 0
+  PlayerParty: {fileID: 0}
   PartyCanvas: {fileID: 0}
   PartyBuffsAndButtonsCanvas: {fileID: 0}
   PartyInventoryCanvas: {fileID: 0}
   HouseCanvas: {fileID: 0}
   NpcTalkCanvas: {fileID: 0}
+  GreenHealthBarSprite: {fileID: 21300070, guid: 9c33dcebc3204aa4d94dfac9e52d9839,
+    type: 3}
+  YellowHealthBarSprite: {fileID: 21300074, guid: 9c33dcebc3204aa4d94dfac9e52d9839,
+    type: 3}
+  RedHealthBarSprite: {fileID: 21300072, guid: 9c33dcebc3204aa4d94dfac9e52d9839, type: 3}
 --- !u!4 &1331158432
 Transform:
   m_ObjectHideFlags: 0
@@ -7272,7 +6933,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1336066888}
   - component: {fileID: 1336066887}
-  - component: {fileID: 1336066886}
   - component: {fileID: 1336066885}
   - component: {fileID: 1336066884}
   - component: {fileID: 1336066883}
@@ -7291,7 +6951,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1336066874
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -7574,31 +7234,6 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
---- !u!114 &1336066886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1336066873}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e7bd9137dcefa42a7dd1ee72667b20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Level: 0
-  m_Health: 0
-  m_ArmorClass: 0
-  m_CanFly: 0
-  m_MovementSpeedType: 0
-  m_PreferredTargetClass: 0
-  m_Experience: 0
-  m_DropsQuestItem: 0
-  m_MoveType: 0
-  m_AIType: 0
-  m_HostilityType: 0
-  m_Speed: 0
-  m_Rec: 0
-  m_PreferredTarget: 0
 --- !u!114 &1336066887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7610,11 +7245,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645af68366d30ca4bb87082122745c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NpcType: 0
   m_StoppingDistance: 0.5
-  m_IsRanged: 0
-  m_HasAltRangedAttack: 1
-  m_AltRangedAttackChance: 0
-  m_TimeSinceLastAltAttack: 0
   m_DoWander: 1
   m_MinWanderIdleTime: 1
   m_MaxWanderIdleTime: 2
@@ -7776,6 +7408,74 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1385857572}
+--- !u!1 &1433031826
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1433031827}
+  - component: {fileID: 1433031829}
+  - component: {fileID: 1433031828}
+  m_Layer: 5
+  m_Name: EmptySlot_Pos1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1433031827
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1433031826}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -272, y: -192, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 226072613}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -272, y: -432}
+  m_SizeDelta: {x: 67, y: 92}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1433031828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1433031826}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300062, guid: 9c33dcebc3204aa4d94dfac9e52d9839, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &1433031829
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1433031826}
 --- !u!1 &1438454522
 GameObject:
   m_ObjectHideFlags: 0
@@ -7872,7 +7572,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 226072613}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -8107,6 +7807,29 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &1611976007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1611975998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5834f404145e9c84ab12ae120b81368b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinutesSinceSleep: 0
+--- !u!114 &1611976008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1611975998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc94e886ff6e6f4fbffeb24937825cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1618740448 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100002, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 2}
@@ -8347,7 +8070,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1745473525}
   - component: {fileID: 1745473524}
-  - component: {fileID: 1745473523}
   - component: {fileID: 1745473522}
   - component: {fileID: 1745473521}
   - component: {fileID: 1745473520}
@@ -8366,7 +8088,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1745473511
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8649,31 +8371,6 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
---- !u!114 &1745473523
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1745473510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e7bd9137dcefa42a7dd1ee72667b20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Level: 0
-  m_Health: 0
-  m_ArmorClass: 0
-  m_CanFly: 0
-  m_MovementSpeedType: 0
-  m_PreferredTargetClass: 0
-  m_Experience: 0
-  m_DropsQuestItem: 0
-  m_MoveType: 0
-  m_AIType: 0
-  m_HostilityType: 0
-  m_Speed: 0
-  m_Rec: 0
-  m_PreferredTarget: 0
 --- !u!114 &1745473524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8685,11 +8382,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645af68366d30ca4bb87082122745c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NpcType: 0
   m_StoppingDistance: 0.5
-  m_IsRanged: 0
-  m_HasAltRangedAttack: 1
-  m_AltRangedAttackChance: 0
-  m_TimeSinceLastAltAttack: 0
   m_DoWander: 1
   m_MinWanderIdleTime: 1
   m_MaxWanderIdleTime: 2
@@ -8726,7 +8420,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1837808394}
   - component: {fileID: 1837808393}
-  - component: {fileID: 1837808392}
   - component: {fileID: 1837808391}
   - component: {fileID: 1837808390}
   - component: {fileID: 1837808389}
@@ -8745,7 +8438,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1837808380
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9028,31 +8721,6 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
---- !u!114 &1837808392
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1837808379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e7bd9137dcefa42a7dd1ee72667b20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Level: 0
-  m_Health: 0
-  m_ArmorClass: 0
-  m_CanFly: 0
-  m_MovementSpeedType: 0
-  m_PreferredTargetClass: 0
-  m_Experience: 0
-  m_DropsQuestItem: 0
-  m_MoveType: 0
-  m_AIType: 0
-  m_HostilityType: 0
-  m_Speed: 0
-  m_Rec: 0
-  m_PreferredTarget: 0
 --- !u!114 &1837808393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9064,11 +8732,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645af68366d30ca4bb87082122745c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NpcType: 0
   m_StoppingDistance: 0.5
-  m_IsRanged: 0
-  m_HasAltRangedAttack: 1
-  m_AltRangedAttackChance: 0
-  m_TimeSinceLastAltAttack: 0
   m_DoWander: 1
   m_MinWanderIdleTime: 1
   m_MaxWanderIdleTime: 2
@@ -9191,7 +8856,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 226072613}
-  m_RootOrder: 19
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -9259,7 +8924,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 226072613}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -9309,7 +8974,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1925631360}
   - component: {fileID: 1925631359}
-  - component: {fileID: 1925631358}
   - component: {fileID: 1925631357}
   - component: {fileID: 1925631356}
   - component: {fileID: 1925631355}
@@ -9328,7 +8992,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1925631346
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9611,31 +9275,6 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
---- !u!114 &1925631358
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1925631345}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e7bd9137dcefa42a7dd1ee72667b20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Level: 0
-  m_Health: 0
-  m_ArmorClass: 0
-  m_CanFly: 0
-  m_MovementSpeedType: 0
-  m_PreferredTargetClass: 0
-  m_Experience: 0
-  m_DropsQuestItem: 0
-  m_MoveType: 0
-  m_AIType: 0
-  m_HostilityType: 0
-  m_Speed: 0
-  m_Rec: 0
-  m_PreferredTarget: 0
 --- !u!114 &1925631359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9647,11 +9286,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645af68366d30ca4bb87082122745c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NpcType: 0
   m_StoppingDistance: 0.5
-  m_IsRanged: 0
-  m_HasAltRangedAttack: 1
-  m_AltRangedAttackChance: 0
-  m_TimeSinceLastAltAttack: 0
   m_DoWander: 1
   m_MinWanderIdleTime: 1
   m_MaxWanderIdleTime: 2
@@ -9983,7 +9619,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 226072613}
-  m_RootOrder: 17
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -10010,10 +9646,10 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300070, guid: 9c33dcebc3204aa4d94dfac9e52d9839, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 1
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -10051,7 +9687,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 226072613}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -10101,7 +9737,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2041721932}
   - component: {fileID: 2041721931}
-  - component: {fileID: 2041721930}
   - component: {fileID: 2041721929}
   - component: {fileID: 2041721928}
   - component: {fileID: 2041721927}
@@ -10120,7 +9755,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &2041721918
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10403,31 +10038,6 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
---- !u!114 &2041721930
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2041721917}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e7bd9137dcefa42a7dd1ee72667b20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Level: 0
-  m_Health: 0
-  m_ArmorClass: 0
-  m_CanFly: 0
-  m_MovementSpeedType: 0
-  m_PreferredTargetClass: 0
-  m_Experience: 0
-  m_DropsQuestItem: 0
-  m_MoveType: 0
-  m_AIType: 0
-  m_HostilityType: 0
-  m_Speed: 0
-  m_Rec: 0
-  m_PreferredTarget: 0
 --- !u!114 &2041721931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10439,11 +10049,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645af68366d30ca4bb87082122745c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NpcType: 0
   m_StoppingDistance: 0.5
-  m_IsRanged: 0
-  m_HasAltRangedAttack: 1
-  m_AltRangedAttackChance: 0
-  m_TimeSinceLastAltAttack: 0
   m_DoWander: 1
   m_MinWanderIdleTime: 1
   m_MaxWanderIdleTime: 2

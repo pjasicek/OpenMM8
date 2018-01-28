@@ -14,12 +14,12 @@ public class VillagerNpc : BaseNpc
     // Update is called once per frame
     void Update ()
     {
-        if (!m_NavMeshAgent.enabled)
+        if (!NavMeshAgent.enabled)
         {
             return;
         }
 
-        m_CurrentWaypoint.SetActive(m_DrawWaypoint);
+        CurrentWaypoint.SetActive(DrawWaypoint);
 
         /**** If NPC is a Villager ****/
         // 1) If it is moving, do nothing
@@ -30,32 +30,32 @@ public class VillagerNpc : BaseNpc
         // ----- [Event] OnDamaged - Start running from that unit if not already running from it
         // ----- [Event] OnEnemyEnteredAgroRange - Start running away from that unit
 
-        if (m_IsPlayerInMeleeRange && !m_HostilityResolver.IsHostileTo(m_Player) && m_EnemiesInAgroRange.Count == 0)
+        if (IsPlayerInMeleeRange && !HostilityResolver.IsHostileTo(Player) && EnemiesInAgroRange.Count == 0)
         {
-            transform.LookAt(transform.position + m_Player.transform.rotation * Vector3.back, m_Player.transform.rotation * Vector3.up);
-            m_Animator.SetInteger("State", (int)NpcState.Idle);
+            transform.LookAt(transform.position + Player.transform.rotation * Vector3.back, Player.transform.rotation * Vector3.up);
+            Animator.SetInteger("State", (int)NpcState.Idle);
         }
         else if (IsWalking())
         {
             // Walking - either wandering or fleeing, let it reach its destination
         }
-        else if ((m_RemainingWanderIdleTime > 0.0f) && (m_EnemiesInAgroRange.Count == 0))
+        else if ((RemainingWanderIdleTime > 0.0f) && (EnemiesInAgroRange.Count == 0))
         {
             // Villager has some time left to be idle
 
-            m_RemainingWanderIdleTime -= Time.deltaTime;
+            RemainingWanderIdleTime -= Time.deltaTime;
             // TODO: Change, need an "event" to tell me when he started being idle
-            m_Animator.SetInteger("State", (int)NpcState.Idle);
+            Animator.SetInteger("State", (int)NpcState.Idle);
         }
-        else if (m_EnemiesInAgroRange.Count > 0)
+        else if (EnemiesInAgroRange.Count > 0)
         {
             // Find closest hostile unit
             // Move away from that unit
 
-            GameObject closestEnemy = m_EnemiesInAgroRange.OrderBy(t => (t.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
+            GameObject closestEnemy = EnemiesInAgroRange.OrderBy(t => (t.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
             WanderAwayFromEnemy(closestEnemy);
 
-            m_Animator.SetInteger("State", (int)NpcState.Walking);
+            Animator.SetInteger("State", (int)NpcState.Walking);
 
             // I dont want to stop when running away from enemy, so this is left commented out as a reminder
             // m_RemainingWanderIdleTime = Random.Range(m_MinWanderIdleTime, m_MaxWanderIdleTime);
@@ -63,13 +63,13 @@ public class VillagerNpc : BaseNpc
         else
         {
             // Wander
-            WanderWithinSpawnArea(m_WanderRadius);
-            m_Animator.SetInteger("State", (int)NpcState.Walking);
+            WanderWithinSpawnArea(WanderRadius);
+            Animator.SetInteger("State", (int)NpcState.Walking);
 
-            m_RemainingWanderIdleTime = Random.Range(m_MinWanderIdleTime, m_MaxWanderIdleTime);
+            RemainingWanderIdleTime = Random.Range(MinWanderIdleTime, MaxWanderIdleTime);
         }
 
-        m_State = (NpcState)m_Animator.GetInteger("State");
+        State = (NpcState)Animator.GetInteger("State");
     }
 
     // Trigger events
@@ -78,11 +78,11 @@ public class VillagerNpc : BaseNpc
     {
         if (other.name == "Player")
         {
-            m_IsPlayerInMeleeRange = true;
+            IsPlayerInMeleeRange = true;
 
-            if (!m_HostilityResolver.IsHostileTo(other))
+            if (!HostilityResolver.IsHostileTo(other))
             {
-                m_NavMeshAgent.isStopped = true;
+                NavMeshAgent.isStopped = true;
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
                 transform.LookAt(transform.position + other.transform.rotation * Vector3.back, other.transform.rotation * Vector3.up);
             }
@@ -93,32 +93,32 @@ public class VillagerNpc : BaseNpc
     {
         if (other.name == "Player")
         {
-            m_IsPlayerInMeleeRange = false;
-            if (!m_HostilityResolver.IsHostileTo(other))
+            IsPlayerInMeleeRange = false;
+            if (!HostilityResolver.IsHostileTo(other))
             {
-                m_NavMeshAgent.ResetPath();
+                NavMeshAgent.ResetPath();
             }
         }
     }
 
     public override void OnObjectEnteredAgroRange(GameObject other)
     {
-        if (m_HostilityResolver.IsHostileTo(other))
+        if (HostilityResolver.IsHostileTo(other))
         {
-            if (m_EnemiesInAgroRange.Count == 0)
+            if (EnemiesInAgroRange.Count == 0)
             {
                 WanderAwayFromEnemy(other);
-                m_Animator.SetInteger("State", (int)NpcState.Walking);
+                Animator.SetInteger("State", (int)NpcState.Walking);
             }
-            m_EnemiesInAgroRange.Add(other);
+            EnemiesInAgroRange.Add(other);
         }
     }
 
     public override void OnObjectLeftAgroRange(GameObject other)
     {
-        if (m_HostilityResolver.IsHostileTo(other))
+        if (HostilityResolver.IsHostileTo(other))
         {
-            m_EnemiesInAgroRange.Remove(other);
+            EnemiesInAgroRange.Remove(other);
         }
     }
 }

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class TriggerDispatcher : MonoBehaviour 
 {
-    public TriggerType m_TriggerType = TriggerType.None;
+    public TriggerType TriggerType = TriggerType.None;
 
-    private List<ITriggerListener> m_Listeners = new List<ITriggerListener>();
+    private List<ITriggerListener> Listeners = new List<ITriggerListener>();
 
     void Awake()
     {
@@ -15,31 +15,31 @@ public class TriggerDispatcher : MonoBehaviour
 
     void Start()
     {
-        UnityEngine.Assertions.Assert.AreNotEqual(TriggerType.None, m_TriggerType,
+        UnityEngine.Assertions.Assert.AreNotEqual(TriggerType.None, TriggerType,
             "Valid Trigger Type must be set");
 
         foreach (MonoBehaviour mb in GetComponentsInParent<MonoBehaviour>())
         {
             if (mb is ITriggerListener)
             {
-                m_Listeners.Add((ITriggerListener)mb);
+                Listeners.Add((ITriggerListener)mb);
             }
         }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        foreach (ITriggerListener listener in m_Listeners)
+        foreach (ITriggerListener listener in Listeners)
         {
-            listener.OnObjectEnteredMyTrigger(other.gameObject, m_TriggerType);
+            listener.OnObjectEnteredMyTrigger(other.gameObject, TriggerType);
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        foreach (ITriggerListener listener in m_Listeners)
+        foreach (ITriggerListener listener in Listeners)
         {
-            listener.OnObjectLeftMyTrigger(other.gameObject, m_TriggerType);
+            listener.OnObjectLeftMyTrigger(other.gameObject, TriggerType);
         }
     }
 }

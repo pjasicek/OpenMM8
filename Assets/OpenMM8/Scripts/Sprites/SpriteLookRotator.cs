@@ -9,79 +9,79 @@ public class SpriteLookRotator : MonoBehaviour
     // Relative to camera
     public enum LookDirection { Front, FrontRight, Right, BackRight, Back, BackLeft, Left, FrontLeft };
 
-    Camera m_Camera;
-    Transform m_CameraTransform;
-    LookDirection m_LookDirection = LookDirection.Front;
+    Camera Camera;
+    Transform CameraTransform;
+    LookDirection LookDir = LookDirection.Front;
 
-    SpriteRenderer m_Renderer;
-    Animator m_Animator;
+    SpriteRenderer Renderer;
+    Animator Animator;
 
-    public float m_RefreshRate = 50.0f;
-    public bool m_LookLocked = false;
+    public float RefreshRate = 50.0f;
+    public bool LookLocked = false;
 
     // Use this for initialization
     void Start()
     {
-        m_Camera = Camera.main;
-        m_CameraTransform = Camera.main.transform;
+        Camera = Camera.main;
+        CameraTransform = Camera.main.transform;
 
-        m_Renderer = GetComponent<SpriteRenderer>();
-        m_Animator = GetComponent<Animator>();
+        Renderer = GetComponent<SpriteRenderer>();
+        Animator = GetComponent<Animator>();
 
-        InvokeRepeating("AlignRotation", 0.0f, m_RefreshRate / 1000.0f);
+        InvokeRepeating("AlignRotation", 0.0f, RefreshRate / 1000.0f);
     }
 
     public void OnLookDirectionChanged(LookDirection current)
     {
-        m_LookDirection = current;
+        LookDir = current;
 
         //Debug.Log("Look direction changed to: " + current);
 
-        m_Renderer.flipX = false;
+        Renderer.flipX = false;
 
-        if (m_LookDirection == LookDirection.Front)
+        if (LookDir == LookDirection.Front)
         {
-            m_Animator.SetInteger("LookDirection", 0);
+            Animator.SetInteger("LookDirection", 0);
         }
-        else if (m_LookDirection == LookDirection.FrontRight)
+        else if (LookDir == LookDirection.FrontRight)
         {
-            Debug.Log("FrontRight");
-            m_Animator.SetInteger("LookDirection", 1);
-            m_Renderer.flipX = true;
+            //Debug.Log("FrontRight");
+            Animator.SetInteger("LookDirection", 1);
+            Renderer.flipX = true;
         }
-        else if (m_LookDirection == LookDirection.Right)
+        else if (LookDir == LookDirection.Right)
         {
-            m_Animator.SetInteger("LookDirection", 2);
-            m_Renderer.flipX = true;
+            Animator.SetInteger("LookDirection", 2);
+            Renderer.flipX = true;
         }
-        else if (m_LookDirection == LookDirection.BackRight)
+        else if (LookDir == LookDirection.BackRight)
         {
-            m_Animator.SetInteger("LookDirection", 3);
-            m_Renderer.flipX = true;
+            Animator.SetInteger("LookDirection", 3);
+            Renderer.flipX = true;
         }
-        else if (m_LookDirection == LookDirection.Back)
+        else if (LookDir == LookDirection.Back)
         {
-            m_Animator.SetInteger("LookDirection", 4);
+            Animator.SetInteger("LookDirection", 4);
         }
-        else if (m_LookDirection == LookDirection.BackLeft)
+        else if (LookDir == LookDirection.BackLeft)
         {
-            m_Animator.SetInteger("LookDirection", 3);
+            Animator.SetInteger("LookDirection", 3);
             //m_Renderer.flipX = true;
         }
-        else if (m_LookDirection == LookDirection.Left)
+        else if (LookDir == LookDirection.Left)
         {
-            m_Animator.SetInteger("LookDirection", 2);
+            Animator.SetInteger("LookDirection", 2);
             //m_Renderer.flipX = true;
         }
-        else if (m_LookDirection == LookDirection.FrontLeft)
+        else if (LookDir == LookDirection.FrontLeft)
         {
-            Debug.Log("FrontLeft");
-            m_Animator.SetInteger("LookDirection", 1);
+            //Debug.Log("FrontLeft");
+            Animator.SetInteger("LookDirection", 1);
             //m_Renderer.flipX = true;
         }
         else
         {
-            UnityEngine.Assertions.Assert.IsTrue(false, "Invalid LookDirection: " + m_LookDirection);
+            UnityEngine.Assertions.Assert.IsTrue(false, "Invalid LookDirection: " + LookDir);
         }
     }
 
@@ -91,12 +91,12 @@ public class SpriteLookRotator : MonoBehaviour
         //Debug.Log("Object rotation: " + transform.rotation.eulerAngles);
         //Debug.Log("Camera rotation: " + m_CameraTransform.rotation.eulerAngles);
 
-        if (m_LookLocked)
+        if (LookLocked)
         {
             return;
         }
 
-        float cameraY = m_CameraTransform.rotation.eulerAngles.y;
+        float cameraY = CameraTransform.rotation.eulerAngles.y;
         float thisY = transform.rotation.eulerAngles.y;
 
         float diffAngle = cameraY - thisY;
@@ -146,10 +146,10 @@ public class SpriteLookRotator : MonoBehaviour
             return;
         }
 
-        if (currLook != m_LookDirection)
+        if (currLook != LookDir)
         {
             // Hack
-            BaseNpc.NpcState state = (BaseNpc.NpcState)m_Animator.GetInteger("State");
+            BaseNpc.NpcState state = (BaseNpc.NpcState)Animator.GetInteger("State");
             if (state == BaseNpc.NpcState.Attacking)
             {
                 return;

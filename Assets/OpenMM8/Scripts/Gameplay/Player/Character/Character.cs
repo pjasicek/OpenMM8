@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using UnityEngine;
+
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
     class Character
@@ -10,7 +12,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public CharacterModel CharacterModel;
         public CharacterUI CharacterUI;
 
-        static Character Create(CharacterModel characterModel, CharacterUI characterUI)
+        public static Character Create(CharacterModel characterModel, CharacterUI characterUI)
         {
             Character character = new Character();
             character.CharacterModel = characterModel;
@@ -47,7 +49,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void ModifyCurrentHitPoints(int numHitPoints)
         {
-
+            CharacterModel.CurrHitPoints += numHitPoints;
+            int maxHP = CharacterModel.DefaultStats.MaxHitPoints + CharacterModel.BonusStats.MaxHitPoints;
+            float healthPercent = ((float)CharacterModel.CurrHitPoints / (float)maxHP) * 100.0f;
+            Debug.Log("CurrentHP : " + CharacterModel.CurrHitPoints + ", MaxHP: " + maxHP);
+            CharacterUI.SetHealth(healthPercent);
         }
 
         public void ModifyCurrentSpellPoints(int numSpellPoints)
