@@ -1,17 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+using Assets.OpenMM8.Scripts.Gameplay;
+
 [RequireComponent(typeof(BaseNpc))]
 public class InspectableNpc : Inspectable
 {
-    public override void Inspect()
-    {
-        
-    }
+    private NpcData NpcData;
 
-    // Use this for initialization
     void Start()
     {
+        NpcData = GetComponent<BaseNpc>().NpcData;
+    }
 
+    public override Canvas SetupInspectCanvas()
+    {
+        return null;
     }
 }
