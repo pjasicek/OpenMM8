@@ -112,6 +112,74 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: b3b23b08c80e841499e440b5187c8a04, type: 2}
+--- !u!1 &35481107
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 35481108}
+  - component: {fileID: 35481110}
+  - component: {fileID: 35481109}
+  m_Layer: 5
+  m_Name: Edge_Bottom
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &35481108
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 35481107}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 127.100006, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1895586409}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 127.1, y: 0}
+  m_SizeDelta: {x: 512, y: 7}
+  m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &35481109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 35481107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300008, guid: 4810b726cb622e9448076058ae86c084, type: 3}
+  m_Type: 3
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 0
+  m_FillAmount: 0.5
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &35481110
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 35481107}
 --- !u!1 &55145937
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,6 +270,7 @@ GameObject:
   - component: {fileID: 83124856}
   - component: {fileID: 83124855}
   - component: {fileID: 83124854}
+  - component: {fileID: 83124866}
   m_Layer: 8
   m_Name: LizardmanWarrior (21)
   m_TagString: Enemy
@@ -248,8 +317,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8ec5fa391193a44a4dbf66e3bde885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RefreshRate: 50
-  m_LookLocked: 0
+  RefreshRate: 50
+  LookLocked: 0
 --- !u!82 &83124857
 AudioSource:
   m_ObjectHideFlags: 0
@@ -395,11 +464,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 2
-  m_ColliderShape: 1
-  m_SideLength: 25
-  m_Height: 30
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 2
+  ColliderShape: 0
+  SideLength: 20
+  Height: 30
+  LayerMask: NpcRangeTrigger
 --- !u!212 &83124862
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -456,11 +525,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 1
-  m_ColliderShape: 0
-  m_SideLength: 2.5
-  m_Height: 0
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 1
+  ColliderShape: 0
+  SideLength: 2.5
+  Height: 2
+  LayerMask: NpcRangeTrigger
 --- !u!114 &83124864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -472,7 +541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8744681ee57b7f84ebedfa41ddbc448b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Camera: {fileID: 0}
+  Camera: {fileID: 0}
   amActive: 1
   autoInit: 1
 --- !u!114 &83124865
@@ -491,6 +560,17 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
+--- !u!114 &83124866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 83124853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc94e886ff6e6f4fbffeb24937825cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &83124867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -503,19 +583,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 0
-  m_StoppingDistance: 0.5
-  m_DoWander: 1
-  m_MinWanderIdleTime: 1
-  m_MaxWanderIdleTime: 2
-  m_WanderRadius: 15
-  m_DrawWaypoint: 0
-  m_UpdateIntervalMs: 50
-  m_AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
-  m_DeathSound: {fileID: 0}
-  m_AwareSound: {fileID: 0}
-  m_WinceSound: {fileID: 0}
-  m_SpawnPosition: {x: 0, y: 0, z: 0}
-  m_AttackReuseTime: 0.8
+  StoppingDistance: 0.5
+  DoWander: 0
+  MinWanderIdleTime: 1
+  MaxWanderIdleTime: 2
+  WanderRadius: 15
+  DrawWaypoint: 0
+  UpdateIntervalMs: 50
+  AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
+  DeathSound: {fileID: 8300000, guid: c9ef2dd2f2897b143a1ed35a70c16345, type: 3}
+  AwareSound: {fileID: 8300000, guid: d32de25f51413fe4b9910caf2bb5e40c, type: 3}
+  WinceSound: {fileID: 8300000, guid: 91b9b5091d1fee74692d8eb1b5a313f2, type: 3}
+  SpawnPosition: {x: 0, y: 0, z: 0}
+  AttackReuseTime: 0.8
 --- !u!4 &83124868
 Transform:
   m_ObjectHideFlags: 0
@@ -552,6 +632,7 @@ GameObject:
   - component: {fileID: 100668989}
   - component: {fileID: 100668988}
   - component: {fileID: 100668987}
+  - component: {fileID: 100668999}
   m_Layer: 8
   m_Name: LizardmanWarrior (23)
   m_TagString: Enemy
@@ -598,8 +679,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8ec5fa391193a44a4dbf66e3bde885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RefreshRate: 50
-  m_LookLocked: 0
+  RefreshRate: 50
+  LookLocked: 0
 --- !u!82 &100668990
 AudioSource:
   m_ObjectHideFlags: 0
@@ -745,11 +826,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 2
-  m_ColliderShape: 1
-  m_SideLength: 25
-  m_Height: 30
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 2
+  ColliderShape: 0
+  SideLength: 20
+  Height: 30
+  LayerMask: NpcRangeTrigger
 --- !u!212 &100668995
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -806,11 +887,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 1
-  m_ColliderShape: 0
-  m_SideLength: 2.5
-  m_Height: 0
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 1
+  ColliderShape: 0
+  SideLength: 2.5
+  Height: 2
+  LayerMask: NpcRangeTrigger
 --- !u!114 &100668997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -822,7 +903,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8744681ee57b7f84ebedfa41ddbc448b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Camera: {fileID: 0}
+  Camera: {fileID: 0}
   amActive: 1
   autoInit: 1
 --- !u!114 &100668998
@@ -841,6 +922,17 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
+--- !u!114 &100668999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 100668986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc94e886ff6e6f4fbffeb24937825cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &100669000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -853,19 +945,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 0
-  m_StoppingDistance: 0.5
-  m_DoWander: 1
-  m_MinWanderIdleTime: 1
-  m_MaxWanderIdleTime: 2
-  m_WanderRadius: 15
-  m_DrawWaypoint: 0
-  m_UpdateIntervalMs: 50
-  m_AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
-  m_DeathSound: {fileID: 0}
-  m_AwareSound: {fileID: 0}
-  m_WinceSound: {fileID: 0}
-  m_SpawnPosition: {x: 0, y: 0, z: 0}
-  m_AttackReuseTime: 0.8
+  StoppingDistance: 0.5
+  DoWander: 0
+  MinWanderIdleTime: 1
+  MaxWanderIdleTime: 2
+  WanderRadius: 15
+  DrawWaypoint: 0
+  UpdateIntervalMs: 50
+  AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
+  DeathSound: {fileID: 8300000, guid: c9ef2dd2f2897b143a1ed35a70c16345, type: 3}
+  AwareSound: {fileID: 8300000, guid: d32de25f51413fe4b9910caf2bb5e40c, type: 3}
+  WinceSound: {fileID: 8300000, guid: 91b9b5091d1fee74692d8eb1b5a313f2, type: 3}
+  SpawnPosition: {x: 0, y: 0, z: 0}
+  AttackReuseTime: 0.8
 --- !u!4 &100669001
 Transform:
   m_ObjectHideFlags: 0
@@ -942,6 +1034,168 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &116859321
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 116859325}
+  - component: {fileID: 116859324}
+  - component: {fileID: 116859323}
+  - component: {fileID: 116859322}
+  m_Layer: 5
+  m_Name: ObjectInfoCanvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &116859322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 116859321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &116859323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 116859321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 1
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 640, y: 480}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 1
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+--- !u!223 &116859324
+Canvas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 116859321}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!224 &116859325
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 116859321}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 640, y: 480, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_Children:
+  - {fileID: 1895586409}
+  m_Father: {fileID: 0}
+  m_RootOrder: 23
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &119757797
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 119757798}
+  - component: {fileID: 119757800}
+  - component: {fileID: 119757799}
+  m_Layer: 5
+  m_Name: Healthbar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &119757798
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 119757797}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 281.40002, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1895586409}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 281.40002}
+  m_SizeDelta: {x: 200, y: 6}
+  m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &119757799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 119757797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300022, guid: 4810b726cb622e9448076058ae86c084, type: 3}
+  m_Type: 3
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 0
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &119757800
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 119757797}
 --- !u!1 &172736383
 GameObject:
   m_ObjectHideFlags: 0
@@ -965,6 +1219,7 @@ GameObject:
   - component: {fileID: 172736385}
   - component: {fileID: 172736389}
   - component: {fileID: 172736399}
+  - component: {fileID: 172736384}
   m_Layer: 8
   m_Name: LizardmanVillager
   m_TagString: Untagged
@@ -972,6 +1227,17 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &172736384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 172736383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc94e886ff6e6f4fbffeb24937825cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!195 &172736385
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1294,18 +1560,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 0
-  m_StoppingDistance: 0.5
-  m_DoWander: 0
-  m_MinWanderIdleTime: 1
-  m_MaxWanderIdleTime: 2
-  m_WanderRadius: 15
-  m_DrawWaypoint: 1
-  m_UpdateIntervalMs: 50
-  m_AttackSound: {fileID: 0}
-  m_DeathSound: {fileID: 0}
-  m_AwareSound: {fileID: 0}
-  m_WinceSound: {fileID: 0}
-  m_SpawnPosition: {x: 0, y: 0, z: 0}
+  StoppingDistance: 0.5
+  DoWander: 0
+  MinWanderIdleTime: 1
+  MaxWanderIdleTime: 2
+  WanderRadius: 15
+  DrawWaypoint: 1
+  UpdateIntervalMs: 50
+  AttackSound: {fileID: 0}
+  DeathSound: {fileID: 0}
+  AwareSound: {fileID: 0}
+  WinceSound: {fileID: 0}
+  SpawnPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &172736395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1317,7 +1583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8744681ee57b7f84ebedfa41ddbc448b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Camera: {fileID: 0}
+  Camera: {fileID: 0}
   amActive: 1
   autoInit: 1
 --- !u!114 &172736396
@@ -1331,8 +1597,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8ec5fa391193a44a4dbf66e3bde885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RefreshRate: 50
-  m_LookLocked: 0
+  RefreshRate: 50
+  LookLocked: 0
 --- !u!114 &172736397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1344,11 +1610,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 2
-  m_ColliderShape: 1
-  m_SideLength: 20
-  m_Height: 30
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 2
+  ColliderShape: 0
+  SideLength: 20
+  Height: 30
+  LayerMask: NpcRangeTrigger
 --- !u!114 &172736398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1360,11 +1626,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 1
-  m_ColliderShape: 0
-  m_SideLength: 2.5
-  m_Height: 0
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 1
+  ColliderShape: 0
+  SideLength: 2.5
+  Height: 2
+  LayerMask: NpcRangeTrigger
 --- !u!208 &172736399
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -1544,6 +1810,7 @@ GameObject:
   - component: {fileID: 197864055}
   - component: {fileID: 197864054}
   - component: {fileID: 197864053}
+  - component: {fileID: 197864065}
   m_Layer: 8
   m_Name: LizardmanWarrior (29)
   m_TagString: Enemy
@@ -1590,8 +1857,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8ec5fa391193a44a4dbf66e3bde885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RefreshRate: 50
-  m_LookLocked: 0
+  RefreshRate: 50
+  LookLocked: 0
 --- !u!82 &197864056
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1737,11 +2004,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 2
-  m_ColliderShape: 1
-  m_SideLength: 25
-  m_Height: 30
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 2
+  ColliderShape: 0
+  SideLength: 20
+  Height: 30
+  LayerMask: NpcRangeTrigger
 --- !u!212 &197864061
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1798,11 +2065,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 1
-  m_ColliderShape: 0
-  m_SideLength: 2.5
-  m_Height: 0
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 1
+  ColliderShape: 0
+  SideLength: 2.5
+  Height: 2
+  LayerMask: NpcRangeTrigger
 --- !u!114 &197864063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1814,7 +2081,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8744681ee57b7f84ebedfa41ddbc448b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Camera: {fileID: 0}
+  Camera: {fileID: 0}
   amActive: 1
   autoInit: 1
 --- !u!114 &197864064
@@ -1833,6 +2100,17 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
+--- !u!114 &197864065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 197864052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc94e886ff6e6f4fbffeb24937825cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &197864066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1845,19 +2123,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 0
-  m_StoppingDistance: 0.5
-  m_DoWander: 1
-  m_MinWanderIdleTime: 1
-  m_MaxWanderIdleTime: 2
-  m_WanderRadius: 15
-  m_DrawWaypoint: 0
-  m_UpdateIntervalMs: 50
-  m_AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
-  m_DeathSound: {fileID: 0}
-  m_AwareSound: {fileID: 0}
-  m_WinceSound: {fileID: 0}
-  m_SpawnPosition: {x: 0, y: 0, z: 0}
-  m_AttackReuseTime: 0.8
+  StoppingDistance: 0.5
+  DoWander: 0
+  MinWanderIdleTime: 1
+  MaxWanderIdleTime: 2
+  WanderRadius: 15
+  DrawWaypoint: 0
+  UpdateIntervalMs: 50
+  AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
+  DeathSound: {fileID: 8300000, guid: c9ef2dd2f2897b143a1ed35a70c16345, type: 3}
+  AwareSound: {fileID: 8300000, guid: d32de25f51413fe4b9910caf2bb5e40c, type: 3}
+  WinceSound: {fileID: 8300000, guid: 91b9b5091d1fee74692d8eb1b5a313f2, type: 3}
+  SpawnPosition: {x: 0, y: 0, z: 0}
+  AttackReuseTime: 0.8
 --- !u!4 &197864067
 Transform:
   m_ObjectHideFlags: 0
@@ -2251,6 +2529,10 @@ Prefab:
       propertyPath: m_Volume
       value: 0.34
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 2}
   m_IsPrefabParent: 0
@@ -2322,6 +2604,74 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 260656952}
+--- !u!1 &264751969
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 264751970}
+  - component: {fileID: 264751972}
+  - component: {fileID: 264751971}
+  m_Layer: 5
+  m_Name: Corner_UR
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &264751970
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 264751969}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 143.49998, y: 288, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1895586409}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 143.49998, y: 288}
+  m_SizeDelta: {x: 33, y: 32}
+  m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &264751971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 264751969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300006, guid: 4810b726cb622e9448076058ae86c084, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &264751972
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 264751969}
 --- !u!1 &268988236
 GameObject:
   m_ObjectHideFlags: 0
@@ -2390,10 +2740,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 268988236}
---- !u!1 &294865437 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 100074, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
-  m_PrefabInternal: {fileID: 1281912245}
 --- !u!1 &350877456
 GameObject:
   m_ObjectHideFlags: 0
@@ -2880,6 +3226,7 @@ GameObject:
   - component: {fileID: 542713988}
   - component: {fileID: 542713987}
   - component: {fileID: 542713986}
+  - component: {fileID: 542713998}
   m_Layer: 8
   m_Name: LizardmanWarrior (20)
   m_TagString: Enemy
@@ -2926,8 +3273,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8ec5fa391193a44a4dbf66e3bde885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RefreshRate: 50
-  m_LookLocked: 0
+  RefreshRate: 50
+  LookLocked: 0
 --- !u!82 &542713989
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3073,11 +3420,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 2
-  m_ColliderShape: 1
-  m_SideLength: 25
-  m_Height: 30
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 2
+  ColliderShape: 0
+  SideLength: 20
+  Height: 30
+  LayerMask: NpcRangeTrigger
 --- !u!212 &542713994
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3134,11 +3481,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 1
-  m_ColliderShape: 0
-  m_SideLength: 2.5
-  m_Height: 0
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 1
+  ColliderShape: 0
+  SideLength: 2.5
+  Height: 2
+  LayerMask: NpcRangeTrigger
 --- !u!114 &542713996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3150,7 +3497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8744681ee57b7f84ebedfa41ddbc448b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Camera: {fileID: 0}
+  Camera: {fileID: 0}
   amActive: 1
   autoInit: 1
 --- !u!114 &542713997
@@ -3169,6 +3516,17 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
+--- !u!114 &542713998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 542713985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc94e886ff6e6f4fbffeb24937825cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &542713999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3181,19 +3539,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 0
-  m_StoppingDistance: 0.5
-  m_DoWander: 1
-  m_MinWanderIdleTime: 1
-  m_MaxWanderIdleTime: 2
-  m_WanderRadius: 15
-  m_DrawWaypoint: 0
-  m_UpdateIntervalMs: 50
-  m_AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
-  m_DeathSound: {fileID: 0}
-  m_AwareSound: {fileID: 0}
-  m_WinceSound: {fileID: 0}
-  m_SpawnPosition: {x: 0, y: 0, z: 0}
-  m_AttackReuseTime: 0.8
+  StoppingDistance: 0.5
+  DoWander: 0
+  MinWanderIdleTime: 1
+  MaxWanderIdleTime: 2
+  WanderRadius: 15
+  DrawWaypoint: 0
+  UpdateIntervalMs: 50
+  AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
+  DeathSound: {fileID: 8300000, guid: c9ef2dd2f2897b143a1ed35a70c16345, type: 3}
+  AwareSound: {fileID: 8300000, guid: d32de25f51413fe4b9910caf2bb5e40c, type: 3}
+  WinceSound: {fileID: 8300000, guid: 91b9b5091d1fee74692d8eb1b5a313f2, type: 3}
+  SpawnPosition: {x: 0, y: 0, z: 0}
+  AttackReuseTime: 0.8
 --- !u!4 &542714000
 Transform:
   m_ObjectHideFlags: 0
@@ -3230,6 +3588,7 @@ GameObject:
   - component: {fileID: 550542140}
   - component: {fileID: 550542139}
   - component: {fileID: 550542138}
+  - component: {fileID: 550542150}
   m_Layer: 8
   m_Name: LizardmanWarrior (24)
   m_TagString: Enemy
@@ -3276,8 +3635,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8ec5fa391193a44a4dbf66e3bde885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RefreshRate: 50
-  m_LookLocked: 0
+  RefreshRate: 50
+  LookLocked: 0
 --- !u!82 &550542141
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3423,11 +3782,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 2
-  m_ColliderShape: 1
-  m_SideLength: 25
-  m_Height: 30
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 2
+  ColliderShape: 0
+  SideLength: 20
+  Height: 30
+  LayerMask: NpcRangeTrigger
 --- !u!212 &550542146
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3484,11 +3843,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 1
-  m_ColliderShape: 0
-  m_SideLength: 2.5
-  m_Height: 0
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 1
+  ColliderShape: 0
+  SideLength: 2.5
+  Height: 2
+  LayerMask: NpcRangeTrigger
 --- !u!114 &550542148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3500,7 +3859,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8744681ee57b7f84ebedfa41ddbc448b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Camera: {fileID: 0}
+  Camera: {fileID: 0}
   amActive: 1
   autoInit: 1
 --- !u!114 &550542149
@@ -3519,6 +3878,17 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
+--- !u!114 &550542150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 550542137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc94e886ff6e6f4fbffeb24937825cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &550542151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3531,19 +3901,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 0
-  m_StoppingDistance: 0.5
-  m_DoWander: 1
-  m_MinWanderIdleTime: 1
-  m_MaxWanderIdleTime: 2
-  m_WanderRadius: 15
-  m_DrawWaypoint: 0
-  m_UpdateIntervalMs: 50
-  m_AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
-  m_DeathSound: {fileID: 0}
-  m_AwareSound: {fileID: 0}
-  m_WinceSound: {fileID: 0}
-  m_SpawnPosition: {x: 0, y: 0, z: 0}
-  m_AttackReuseTime: 0.8
+  StoppingDistance: 0.5
+  DoWander: 0
+  MinWanderIdleTime: 1
+  MaxWanderIdleTime: 2
+  WanderRadius: 15
+  DrawWaypoint: 0
+  UpdateIntervalMs: 50
+  AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
+  DeathSound: {fileID: 8300000, guid: c9ef2dd2f2897b143a1ed35a70c16345, type: 3}
+  AwareSound: {fileID: 8300000, guid: d32de25f51413fe4b9910caf2bb5e40c, type: 3}
+  WinceSound: {fileID: 8300000, guid: 91b9b5091d1fee74692d8eb1b5a313f2, type: 3}
+  SpawnPosition: {x: 0, y: 0, z: 0}
+  AttackReuseTime: 0.8
 --- !u!4 &550542152
 Transform:
   m_ObjectHideFlags: 0
@@ -3796,6 +4166,7 @@ GameObject:
   - component: {fileID: 644766585}
   - component: {fileID: 644766584}
   - component: {fileID: 644766583}
+  - component: {fileID: 644766595}
   m_Layer: 8
   m_Name: LizardmanWarrior (19)
   m_TagString: Enemy
@@ -3842,8 +4213,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8ec5fa391193a44a4dbf66e3bde885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RefreshRate: 50
-  m_LookLocked: 0
+  RefreshRate: 50
+  LookLocked: 0
 --- !u!82 &644766586
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3989,11 +4360,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 2
-  m_ColliderShape: 1
-  m_SideLength: 25
-  m_Height: 30
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 2
+  ColliderShape: 0
+  SideLength: 20
+  Height: 30
+  LayerMask: NpcRangeTrigger
 --- !u!212 &644766591
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4050,11 +4421,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 1
-  m_ColliderShape: 0
-  m_SideLength: 2.5
-  m_Height: 0
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 1
+  ColliderShape: 0
+  SideLength: 2.5
+  Height: 2
+  LayerMask: NpcRangeTrigger
 --- !u!114 &644766593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4066,7 +4437,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8744681ee57b7f84ebedfa41ddbc448b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Camera: {fileID: 0}
+  Camera: {fileID: 0}
   amActive: 1
   autoInit: 1
 --- !u!114 &644766594
@@ -4085,6 +4456,17 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
+--- !u!114 &644766595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 644766582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc94e886ff6e6f4fbffeb24937825cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &644766596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4097,19 +4479,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 0
-  m_StoppingDistance: 0.5
-  m_DoWander: 1
-  m_MinWanderIdleTime: 1
-  m_MaxWanderIdleTime: 2
-  m_WanderRadius: 15
-  m_DrawWaypoint: 0
-  m_UpdateIntervalMs: 50
-  m_AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
-  m_DeathSound: {fileID: 0}
-  m_AwareSound: {fileID: 0}
-  m_WinceSound: {fileID: 0}
-  m_SpawnPosition: {x: 0, y: 0, z: 0}
-  m_AttackReuseTime: 0.8
+  StoppingDistance: 0.5
+  DoWander: 0
+  MinWanderIdleTime: 1
+  MaxWanderIdleTime: 2
+  WanderRadius: 15
+  DrawWaypoint: 0
+  UpdateIntervalMs: 50
+  AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
+  DeathSound: {fileID: 8300000, guid: c9ef2dd2f2897b143a1ed35a70c16345, type: 3}
+  AwareSound: {fileID: 8300000, guid: d32de25f51413fe4b9910caf2bb5e40c, type: 3}
+  WinceSound: {fileID: 8300000, guid: 91b9b5091d1fee74692d8eb1b5a313f2, type: 3}
+  SpawnPosition: {x: 0, y: 0, z: 0}
+  AttackReuseTime: 0.8
 --- !u!4 &644766597
 Transform:
   m_ObjectHideFlags: 0
@@ -4124,6 +4506,74 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &676942933
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 676942934}
+  - component: {fileID: 676942936}
+  - component: {fileID: 676942935}
+  m_Layer: 5
+  m_Name: Healthbar_CapRight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &676942934
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 676942933}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 97.50001, y: 279.40002, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1895586409}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 97.50001, y: 279.40002}
+  m_SizeDelta: {x: 5, y: 10}
+  m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &676942935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 676942933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300020, guid: 4810b726cb622e9448076058ae86c084, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &676942936
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 676942933}
 --- !u!1 &680959166
 GameObject:
   m_ObjectHideFlags: 0
@@ -4146,6 +4596,7 @@ GameObject:
   - component: {fileID: 680959169}
   - component: {fileID: 680959168}
   - component: {fileID: 680959167}
+  - component: {fileID: 680959179}
   m_Layer: 8
   m_Name: LizardmanWarrior (34)
   m_TagString: Enemy
@@ -4192,8 +4643,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8ec5fa391193a44a4dbf66e3bde885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RefreshRate: 50
-  m_LookLocked: 0
+  RefreshRate: 50
+  LookLocked: 0
 --- !u!82 &680959170
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4339,11 +4790,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 2
-  m_ColliderShape: 1
-  m_SideLength: 25
-  m_Height: 30
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 2
+  ColliderShape: 0
+  SideLength: 20
+  Height: 30
+  LayerMask: NpcRangeTrigger
 --- !u!212 &680959175
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4400,11 +4851,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 1
-  m_ColliderShape: 0
-  m_SideLength: 2.5
-  m_Height: 0
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 1
+  ColliderShape: 0
+  SideLength: 2.5
+  Height: 2
+  LayerMask: NpcRangeTrigger
 --- !u!114 &680959177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4416,7 +4867,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8744681ee57b7f84ebedfa41ddbc448b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Camera: {fileID: 0}
+  Camera: {fileID: 0}
   amActive: 1
   autoInit: 1
 --- !u!114 &680959178
@@ -4435,6 +4886,17 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
+--- !u!114 &680959179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 680959166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc94e886ff6e6f4fbffeb24937825cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &680959180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4447,19 +4909,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 0
-  m_StoppingDistance: 0.5
-  m_DoWander: 1
-  m_MinWanderIdleTime: 1
-  m_MaxWanderIdleTime: 2
-  m_WanderRadius: 15
-  m_DrawWaypoint: 0
-  m_UpdateIntervalMs: 50
-  m_AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
-  m_DeathSound: {fileID: 0}
-  m_AwareSound: {fileID: 0}
-  m_WinceSound: {fileID: 0}
-  m_SpawnPosition: {x: 0, y: 0, z: 0}
-  m_AttackReuseTime: 0.8
+  StoppingDistance: 0.5
+  DoWander: 0
+  MinWanderIdleTime: 1
+  MaxWanderIdleTime: 2
+  WanderRadius: 15
+  DrawWaypoint: 0
+  UpdateIntervalMs: 50
+  AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
+  DeathSound: {fileID: 8300000, guid: c9ef2dd2f2897b143a1ed35a70c16345, type: 3}
+  AwareSound: {fileID: 8300000, guid: d32de25f51413fe4b9910caf2bb5e40c, type: 3}
+  WinceSound: {fileID: 8300000, guid: 91b9b5091d1fee74692d8eb1b5a313f2, type: 3}
+  SpawnPosition: {x: 0, y: 0, z: 0}
+  AttackReuseTime: 0.8
 --- !u!4 &680959181
 Transform:
   m_ObjectHideFlags: 0
@@ -4496,6 +4958,7 @@ GameObject:
   - component: {fileID: 729297839}
   - component: {fileID: 729297838}
   - component: {fileID: 729297837}
+  - component: {fileID: 729297849}
   m_Layer: 8
   m_Name: LizardmanWarrior (26)
   m_TagString: Enemy
@@ -4542,8 +5005,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8ec5fa391193a44a4dbf66e3bde885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RefreshRate: 50
-  m_LookLocked: 0
+  RefreshRate: 50
+  LookLocked: 0
 --- !u!82 &729297840
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4689,11 +5152,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 2
-  m_ColliderShape: 1
-  m_SideLength: 25
-  m_Height: 30
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 2
+  ColliderShape: 0
+  SideLength: 20
+  Height: 30
+  LayerMask: NpcRangeTrigger
 --- !u!212 &729297845
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4750,11 +5213,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 1
-  m_ColliderShape: 0
-  m_SideLength: 2.5
-  m_Height: 0
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 1
+  ColliderShape: 0
+  SideLength: 2.5
+  Height: 2
+  LayerMask: NpcRangeTrigger
 --- !u!114 &729297847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4766,7 +5229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8744681ee57b7f84ebedfa41ddbc448b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Camera: {fileID: 0}
+  Camera: {fileID: 0}
   amActive: 1
   autoInit: 1
 --- !u!114 &729297848
@@ -4785,6 +5248,17 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
+--- !u!114 &729297849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 729297836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc94e886ff6e6f4fbffeb24937825cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &729297850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4797,19 +5271,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 0
-  m_StoppingDistance: 0.5
-  m_DoWander: 1
-  m_MinWanderIdleTime: 1
-  m_MaxWanderIdleTime: 2
-  m_WanderRadius: 15
-  m_DrawWaypoint: 0
-  m_UpdateIntervalMs: 50
-  m_AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
-  m_DeathSound: {fileID: 0}
-  m_AwareSound: {fileID: 0}
-  m_WinceSound: {fileID: 0}
-  m_SpawnPosition: {x: 0, y: 0, z: 0}
-  m_AttackReuseTime: 0.8
+  StoppingDistance: 0.5
+  DoWander: 0
+  MinWanderIdleTime: 1
+  MaxWanderIdleTime: 2
+  WanderRadius: 15
+  DrawWaypoint: 0
+  UpdateIntervalMs: 50
+  AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
+  DeathSound: {fileID: 8300000, guid: c9ef2dd2f2897b143a1ed35a70c16345, type: 3}
+  AwareSound: {fileID: 8300000, guid: d32de25f51413fe4b9910caf2bb5e40c, type: 3}
+  WinceSound: {fileID: 8300000, guid: 91b9b5091d1fee74692d8eb1b5a313f2, type: 3}
+  SpawnPosition: {x: 0, y: 0, z: 0}
+  AttackReuseTime: 0.8
 --- !u!4 &729297851
 Transform:
   m_ObjectHideFlags: 0
@@ -4914,6 +5388,7 @@ GameObject:
   - component: {fileID: 801180085}
   - component: {fileID: 801180084}
   - component: {fileID: 801180083}
+  - component: {fileID: 801180095}
   m_Layer: 8
   m_Name: LizardmanWarrior (31)
   m_TagString: Enemy
@@ -4960,8 +5435,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8ec5fa391193a44a4dbf66e3bde885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RefreshRate: 50
-  m_LookLocked: 0
+  RefreshRate: 50
+  LookLocked: 0
 --- !u!82 &801180086
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5107,11 +5582,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 2
-  m_ColliderShape: 1
-  m_SideLength: 25
-  m_Height: 30
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 2
+  ColliderShape: 0
+  SideLength: 20
+  Height: 30
+  LayerMask: NpcRangeTrigger
 --- !u!212 &801180091
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5168,11 +5643,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 1
-  m_ColliderShape: 0
-  m_SideLength: 2.5
-  m_Height: 0
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 1
+  ColliderShape: 0
+  SideLength: 2.5
+  Height: 2
+  LayerMask: NpcRangeTrigger
 --- !u!114 &801180093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5184,7 +5659,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8744681ee57b7f84ebedfa41ddbc448b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Camera: {fileID: 0}
+  Camera: {fileID: 0}
   amActive: 1
   autoInit: 1
 --- !u!114 &801180094
@@ -5203,6 +5678,17 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
+--- !u!114 &801180095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 801180082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc94e886ff6e6f4fbffeb24937825cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &801180096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5215,19 +5701,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 0
-  m_StoppingDistance: 0.5
-  m_DoWander: 1
-  m_MinWanderIdleTime: 1
-  m_MaxWanderIdleTime: 2
-  m_WanderRadius: 15
-  m_DrawWaypoint: 0
-  m_UpdateIntervalMs: 50
-  m_AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
-  m_DeathSound: {fileID: 0}
-  m_AwareSound: {fileID: 0}
-  m_WinceSound: {fileID: 0}
-  m_SpawnPosition: {x: 0, y: 0, z: 0}
-  m_AttackReuseTime: 0.8
+  StoppingDistance: 0.5
+  DoWander: 0
+  MinWanderIdleTime: 1
+  MaxWanderIdleTime: 2
+  WanderRadius: 15
+  DrawWaypoint: 0
+  UpdateIntervalMs: 50
+  AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
+  DeathSound: {fileID: 8300000, guid: c9ef2dd2f2897b143a1ed35a70c16345, type: 3}
+  AwareSound: {fileID: 8300000, guid: d32de25f51413fe4b9910caf2bb5e40c, type: 3}
+  WinceSound: {fileID: 8300000, guid: 91b9b5091d1fee74692d8eb1b5a313f2, type: 3}
+  SpawnPosition: {x: 0, y: 0, z: 0}
+  AttackReuseTime: 0.8
 --- !u!4 &801180097
 Transform:
   m_ObjectHideFlags: 0
@@ -5264,6 +5750,7 @@ GameObject:
   - component: {fileID: 867046299}
   - component: {fileID: 867046298}
   - component: {fileID: 867046297}
+  - component: {fileID: 867046309}
   m_Layer: 8
   m_Name: LizardmanWarrior (30)
   m_TagString: Enemy
@@ -5310,8 +5797,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8ec5fa391193a44a4dbf66e3bde885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RefreshRate: 50
-  m_LookLocked: 0
+  RefreshRate: 50
+  LookLocked: 0
 --- !u!82 &867046300
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5457,11 +5944,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 2
-  m_ColliderShape: 1
-  m_SideLength: 25
-  m_Height: 30
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 2
+  ColliderShape: 0
+  SideLength: 20
+  Height: 30
+  LayerMask: NpcRangeTrigger
 --- !u!212 &867046305
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5518,11 +6005,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 1
-  m_ColliderShape: 0
-  m_SideLength: 2.5
-  m_Height: 0
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 1
+  ColliderShape: 0
+  SideLength: 2.5
+  Height: 2
+  LayerMask: NpcRangeTrigger
 --- !u!114 &867046307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5534,7 +6021,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8744681ee57b7f84ebedfa41ddbc448b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Camera: {fileID: 0}
+  Camera: {fileID: 0}
   amActive: 1
   autoInit: 1
 --- !u!114 &867046308
@@ -5553,6 +6040,17 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
+--- !u!114 &867046309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 867046296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc94e886ff6e6f4fbffeb24937825cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &867046310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5565,19 +6063,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 0
-  m_StoppingDistance: 0.5
-  m_DoWander: 1
-  m_MinWanderIdleTime: 1
-  m_MaxWanderIdleTime: 2
-  m_WanderRadius: 15
-  m_DrawWaypoint: 0
-  m_UpdateIntervalMs: 50
-  m_AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
-  m_DeathSound: {fileID: 0}
-  m_AwareSound: {fileID: 0}
-  m_WinceSound: {fileID: 0}
-  m_SpawnPosition: {x: 0, y: 0, z: 0}
-  m_AttackReuseTime: 0.8
+  StoppingDistance: 0.5
+  DoWander: 0
+  MinWanderIdleTime: 1
+  MaxWanderIdleTime: 2
+  WanderRadius: 15
+  DrawWaypoint: 0
+  UpdateIntervalMs: 50
+  AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
+  DeathSound: {fileID: 8300000, guid: c9ef2dd2f2897b143a1ed35a70c16345, type: 3}
+  AwareSound: {fileID: 8300000, guid: d32de25f51413fe4b9910caf2bb5e40c, type: 3}
+  WinceSound: {fileID: 8300000, guid: 91b9b5091d1fee74692d8eb1b5a313f2, type: 3}
+  SpawnPosition: {x: 0, y: 0, z: 0}
+  AttackReuseTime: 0.8
 --- !u!4 &867046311
 Transform:
   m_ObjectHideFlags: 0
@@ -5592,6 +6090,74 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &912037705
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 912037706}
+  - component: {fileID: 912037708}
+  - component: {fileID: 912037707}
+  m_Layer: 5
+  m_Name: Corner_UL
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &912037706
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 912037705}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -143.5, y: 288, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1895586409}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -143.5, y: 288}
+  m_SizeDelta: {x: 33, y: 32}
+  m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &912037707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 912037705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300004, guid: 4810b726cb622e9448076058ae86c084, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &912037708
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 912037705}
 --- !u!1 &938530854
 GameObject:
   m_ObjectHideFlags: 0
@@ -5614,6 +6180,7 @@ GameObject:
   - component: {fileID: 938530857}
   - component: {fileID: 938530856}
   - component: {fileID: 938530855}
+  - component: {fileID: 938530867}
   m_Layer: 8
   m_Name: LizardmanWarrior (18)
   m_TagString: Enemy
@@ -5660,8 +6227,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8ec5fa391193a44a4dbf66e3bde885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RefreshRate: 50
-  m_LookLocked: 0
+  RefreshRate: 50
+  LookLocked: 0
 --- !u!82 &938530858
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5807,11 +6374,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 2
-  m_ColliderShape: 1
-  m_SideLength: 25
-  m_Height: 30
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 2
+  ColliderShape: 0
+  SideLength: 20
+  Height: 30
+  LayerMask: NpcRangeTrigger
 --- !u!212 &938530863
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5868,11 +6435,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 1
-  m_ColliderShape: 0
-  m_SideLength: 2.5
-  m_Height: 0
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 1
+  ColliderShape: 0
+  SideLength: 2.5
+  Height: 2
+  LayerMask: NpcRangeTrigger
 --- !u!114 &938530865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5884,7 +6451,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8744681ee57b7f84ebedfa41ddbc448b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Camera: {fileID: 0}
+  Camera: {fileID: 0}
   amActive: 1
   autoInit: 1
 --- !u!114 &938530866
@@ -5903,6 +6470,17 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
+--- !u!114 &938530867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 938530854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc94e886ff6e6f4fbffeb24937825cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &938530868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5915,19 +6493,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 6
-  m_StoppingDistance: 0.5
-  m_DoWander: 1
-  m_MinWanderIdleTime: 1
-  m_MaxWanderIdleTime: 2
-  m_WanderRadius: 15
-  m_DrawWaypoint: 0
-  m_UpdateIntervalMs: 50
-  m_AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
-  m_DeathSound: {fileID: 0}
-  m_AwareSound: {fileID: 0}
-  m_WinceSound: {fileID: 0}
-  m_SpawnPosition: {x: 0, y: 0, z: 0}
-  m_AttackReuseTime: 0.8
+  StoppingDistance: 0.5
+  DoWander: 0
+  MinWanderIdleTime: 1
+  MaxWanderIdleTime: 2
+  WanderRadius: 15
+  DrawWaypoint: 0
+  UpdateIntervalMs: 50
+  AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
+  DeathSound: {fileID: 8300000, guid: c9ef2dd2f2897b143a1ed35a70c16345, type: 3}
+  AwareSound: {fileID: 8300000, guid: d32de25f51413fe4b9910caf2bb5e40c, type: 3}
+  WinceSound: {fileID: 8300000, guid: 91b9b5091d1fee74692d8eb1b5a313f2, type: 3}
+  SpawnPosition: {x: 0, y: 0, z: 0}
+  AttackReuseTime: 0.8
 --- !u!4 &938530869
 Transform:
   m_ObjectHideFlags: 0
@@ -6078,6 +6656,74 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1012512840}
+--- !u!1 &1027162744
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1027162745}
+  - component: {fileID: 1027162747}
+  - component: {fileID: 1027162746}
+  m_Layer: 5
+  m_Name: Corner_LL
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1027162745
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1027162744}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -143.5, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1895586409}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -143.5, y: 0}
+  m_SizeDelta: {x: 33, y: 33}
+  m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &1027162746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1027162744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 4810b726cb622e9448076058ae86c084, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &1027162747
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1027162744}
 --- !u!1 &1079024173
 GameObject:
   m_ObjectHideFlags: 0
@@ -6905,11 +7551,18 @@ MonoBehaviour:
   PartyInventoryCanvas: {fileID: 0}
   HouseCanvas: {fileID: 0}
   NpcTalkCanvas: {fileID: 0}
+  ObjectInfoCanvas: {fileID: 0}
   GreenHealthBarSprite: {fileID: 21300070, guid: 9c33dcebc3204aa4d94dfac9e52d9839,
     type: 3}
   YellowHealthBarSprite: {fileID: 21300074, guid: 9c33dcebc3204aa4d94dfac9e52d9839,
     type: 3}
   RedHealthBarSprite: {fileID: 21300072, guid: 9c33dcebc3204aa4d94dfac9e52d9839, type: 3}
+  GreenAgroStatusSprite: {fileID: 21300092, guid: 9c33dcebc3204aa4d94dfac9e52d9839,
+    type: 3}
+  YelloqAgroStatusSprite: {fileID: 21300096, guid: 9c33dcebc3204aa4d94dfac9e52d9839,
+    type: 3}
+  RedAgroStatusSprite: {fileID: 21300094, guid: 9c33dcebc3204aa4d94dfac9e52d9839,
+    type: 3}
 --- !u!4 &1331158432
 Transform:
   m_ObjectHideFlags: 0
@@ -6945,6 +7598,7 @@ GameObject:
   - component: {fileID: 1336066876}
   - component: {fileID: 1336066875}
   - component: {fileID: 1336066874}
+  - component: {fileID: 1336066886}
   m_Layer: 8
   m_Name: LizardmanWarrior (28)
   m_TagString: Enemy
@@ -6991,8 +7645,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8ec5fa391193a44a4dbf66e3bde885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RefreshRate: 50
-  m_LookLocked: 0
+  RefreshRate: 50
+  LookLocked: 0
 --- !u!82 &1336066877
 AudioSource:
   m_ObjectHideFlags: 0
@@ -7138,11 +7792,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 2
-  m_ColliderShape: 1
-  m_SideLength: 25
-  m_Height: 30
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 2
+  ColliderShape: 0
+  SideLength: 20
+  Height: 30
+  LayerMask: NpcRangeTrigger
 --- !u!212 &1336066882
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7199,11 +7853,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 1
-  m_ColliderShape: 0
-  m_SideLength: 2.5
-  m_Height: 0
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 1
+  ColliderShape: 0
+  SideLength: 2.5
+  Height: 2
+  LayerMask: NpcRangeTrigger
 --- !u!114 &1336066884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7215,7 +7869,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8744681ee57b7f84ebedfa41ddbc448b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Camera: {fileID: 0}
+  Camera: {fileID: 0}
   amActive: 1
   autoInit: 1
 --- !u!114 &1336066885
@@ -7234,6 +7888,17 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
+--- !u!114 &1336066886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1336066873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc94e886ff6e6f4fbffeb24937825cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1336066887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7246,19 +7911,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 0
-  m_StoppingDistance: 0.5
-  m_DoWander: 1
-  m_MinWanderIdleTime: 1
-  m_MaxWanderIdleTime: 2
-  m_WanderRadius: 15
-  m_DrawWaypoint: 0
-  m_UpdateIntervalMs: 50
-  m_AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
-  m_DeathSound: {fileID: 0}
-  m_AwareSound: {fileID: 0}
-  m_WinceSound: {fileID: 0}
-  m_SpawnPosition: {x: 0, y: 0, z: 0}
-  m_AttackReuseTime: 0.8
+  StoppingDistance: 0.5
+  DoWander: 0
+  MinWanderIdleTime: 1
+  MaxWanderIdleTime: 2
+  WanderRadius: 15
+  DrawWaypoint: 0
+  UpdateIntervalMs: 50
+  AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
+  DeathSound: {fileID: 8300000, guid: c9ef2dd2f2897b143a1ed35a70c16345, type: 3}
+  AwareSound: {fileID: 8300000, guid: d32de25f51413fe4b9910caf2bb5e40c, type: 3}
+  WinceSound: {fileID: 8300000, guid: 91b9b5091d1fee74692d8eb1b5a313f2, type: 3}
+  SpawnPosition: {x: 0, y: 0, z: 0}
+  AttackReuseTime: 0.8
 --- !u!4 &1336066888
 Transform:
   m_ObjectHideFlags: 0
@@ -7476,6 +8141,74 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1433031826}
+--- !u!1 &1433945363
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1433945364}
+  - component: {fileID: 1433945366}
+  - component: {fileID: 1433945365}
+  m_Layer: 5
+  m_Name: Healthbar_CapLeft
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1433945364
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1433945363}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -97.49999, y: 279.39996, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1895586409}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -97.49999, y: 279.39996}
+  m_SizeDelta: {x: 5, y: 10}
+  m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &1433945365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1433945363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300018, guid: 4810b726cb622e9448076058ae86c084, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &1433945366
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1433945363}
 --- !u!1 &1438454522
 GameObject:
   m_ObjectHideFlags: 0
@@ -7620,6 +8353,142 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1450593135}
+--- !u!1 &1526605473
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1526605474}
+  - component: {fileID: 1526605476}
+  - component: {fileID: 1526605475}
+  m_Layer: 5
+  m_Name: Corner_LR
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1526605474
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1526605473}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 143.49998, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1895586409}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 143.49998, y: 0}
+  m_SizeDelta: {x: 33, y: 33}
+  m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &1526605475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1526605473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300002, guid: 4810b726cb622e9448076058ae86c084, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &1526605476
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1526605473}
+--- !u!1 &1579171338
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1579171339}
+  - component: {fileID: 1579171341}
+  - component: {fileID: 1579171340}
+  m_Layer: 5
+  m_Name: Edge_Left
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1579171339
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1579171338}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -154.5, y: -225.00002, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1895586409}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -154.5, y: -225.00002}
+  m_SizeDelta: {x: 11, y: 513}
+  m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &1579171340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1579171338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300010, guid: 4810b726cb622e9448076058ae86c084, type: 3}
+  m_Type: 3
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 1
+  m_FillAmount: 0.5
+  m_FillClockwise: 1
+  m_FillOrigin: 1
+--- !u!222 &1579171341
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1579171338}
 --- !u!1 &1587337822
 GameObject:
   m_ObjectHideFlags: 0
@@ -7691,6 +8560,54 @@ CanvasRenderer:
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 2}
   m_PrefabInternal: {fileID: 256868726}
+--- !u!114 &1611975999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1611975998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TriggerType: 1
+  ColliderShape: 0
+  SideLength: 2.5
+  Height: 2
+  LayerMask: NpcRangeTrigger
+--- !u!114 &1611976000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1611975998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TriggerType: 2
+  ColliderShape: 0
+  SideLength: 20
+  Height: 30
+  LayerMask: NpcRangeTrigger
+--- !u!114 &1611976001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1611975998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2eb9ae6c0da3ce5469e477fa4743ef74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HostilityType: 0
+  m_Race: 50
+  m_SpecialHostileTo: 
+  m_SpecialFriendlyTo: 
+  m_IsHostileToPlayer: 0
 --- !u!114 &1611976004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7702,8 +8619,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d23f1d3c390dee343b5a2e5137cdb0f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_GroundTexturePollInterval: 50
-  m_Ground: {fileID: 294865437}
+  GroundTexturePollInterval: 50
+  Ground: {fileID: 0}
 --- !u!120 &1611976005
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -7927,6 +8844,74 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AspectX: 4
   m_AspectY: 3
+--- !u!1 &1662541758
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1662541759}
+  - component: {fileID: 1662541761}
+  - component: {fileID: 1662541760}
+  m_Layer: 5
+  m_Name: Healthbar_Background
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1662541759
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1662541758}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.0000076293945, y: 279.40002, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1895586409}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0.0000076294, y: 279.40002}
+  m_SizeDelta: {x: 200, y: 10}
+  m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &1662541760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1662541758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300016, guid: 4810b726cb622e9448076058ae86c084, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &1662541761
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1662541758}
 --- !u!1 &1708986483
 GameObject:
   m_ObjectHideFlags: 0
@@ -8082,6 +9067,7 @@ GameObject:
   - component: {fileID: 1745473513}
   - component: {fileID: 1745473512}
   - component: {fileID: 1745473511}
+  - component: {fileID: 1745473523}
   m_Layer: 8
   m_Name: LizardmanWarrior (27)
   m_TagString: Enemy
@@ -8128,8 +9114,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8ec5fa391193a44a4dbf66e3bde885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RefreshRate: 50
-  m_LookLocked: 0
+  RefreshRate: 50
+  LookLocked: 0
 --- !u!82 &1745473514
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8275,11 +9261,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 2
-  m_ColliderShape: 1
-  m_SideLength: 25
-  m_Height: 30
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 2
+  ColliderShape: 0
+  SideLength: 20
+  Height: 30
+  LayerMask: NpcRangeTrigger
 --- !u!212 &1745473519
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8336,11 +9322,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 1
-  m_ColliderShape: 0
-  m_SideLength: 2.5
-  m_Height: 0
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 1
+  ColliderShape: 0
+  SideLength: 2.5
+  Height: 2
+  LayerMask: NpcRangeTrigger
 --- !u!114 &1745473521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8352,7 +9338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8744681ee57b7f84ebedfa41ddbc448b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Camera: {fileID: 0}
+  Camera: {fileID: 0}
   amActive: 1
   autoInit: 1
 --- !u!114 &1745473522
@@ -8371,6 +9357,17 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
+--- !u!114 &1745473523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1745473510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc94e886ff6e6f4fbffeb24937825cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1745473524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8383,19 +9380,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 0
-  m_StoppingDistance: 0.5
-  m_DoWander: 1
-  m_MinWanderIdleTime: 1
-  m_MaxWanderIdleTime: 2
-  m_WanderRadius: 15
-  m_DrawWaypoint: 0
-  m_UpdateIntervalMs: 50
-  m_AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
-  m_DeathSound: {fileID: 0}
-  m_AwareSound: {fileID: 0}
-  m_WinceSound: {fileID: 0}
-  m_SpawnPosition: {x: 0, y: 0, z: 0}
-  m_AttackReuseTime: 0.8
+  StoppingDistance: 0.5
+  DoWander: 0
+  MinWanderIdleTime: 1
+  MaxWanderIdleTime: 2
+  WanderRadius: 15
+  DrawWaypoint: 0
+  UpdateIntervalMs: 50
+  AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
+  DeathSound: {fileID: 8300000, guid: c9ef2dd2f2897b143a1ed35a70c16345, type: 3}
+  AwareSound: {fileID: 8300000, guid: d32de25f51413fe4b9910caf2bb5e40c, type: 3}
+  WinceSound: {fileID: 8300000, guid: 91b9b5091d1fee74692d8eb1b5a313f2, type: 3}
+  SpawnPosition: {x: 0, y: 0, z: 0}
+  AttackReuseTime: 0.8
 --- !u!4 &1745473525
 Transform:
   m_ObjectHideFlags: 0
@@ -8432,6 +9429,7 @@ GameObject:
   - component: {fileID: 1837808382}
   - component: {fileID: 1837808381}
   - component: {fileID: 1837808380}
+  - component: {fileID: 1837808392}
   m_Layer: 8
   m_Name: LizardmanWarrior (33)
   m_TagString: Enemy
@@ -8478,8 +9476,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8ec5fa391193a44a4dbf66e3bde885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RefreshRate: 50
-  m_LookLocked: 0
+  RefreshRate: 50
+  LookLocked: 0
 --- !u!82 &1837808383
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8625,11 +9623,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 2
-  m_ColliderShape: 1
-  m_SideLength: 25
-  m_Height: 30
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 2
+  ColliderShape: 0
+  SideLength: 20
+  Height: 30
+  LayerMask: NpcRangeTrigger
 --- !u!212 &1837808388
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8686,11 +9684,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 1
-  m_ColliderShape: 0
-  m_SideLength: 2.5
-  m_Height: 0
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 1
+  ColliderShape: 0
+  SideLength: 2.5
+  Height: 2
+  LayerMask: NpcRangeTrigger
 --- !u!114 &1837808390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8702,7 +9700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8744681ee57b7f84ebedfa41ddbc448b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Camera: {fileID: 0}
+  Camera: {fileID: 0}
   amActive: 1
   autoInit: 1
 --- !u!114 &1837808391
@@ -8721,6 +9719,17 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
+--- !u!114 &1837808392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1837808379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc94e886ff6e6f4fbffeb24937825cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1837808393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8733,19 +9742,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 0
-  m_StoppingDistance: 0.5
-  m_DoWander: 1
-  m_MinWanderIdleTime: 1
-  m_MaxWanderIdleTime: 2
-  m_WanderRadius: 15
-  m_DrawWaypoint: 0
-  m_UpdateIntervalMs: 50
-  m_AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
-  m_DeathSound: {fileID: 0}
-  m_AwareSound: {fileID: 0}
-  m_WinceSound: {fileID: 0}
-  m_SpawnPosition: {x: 0, y: 0, z: 0}
-  m_AttackReuseTime: 0.8
+  StoppingDistance: 0.5
+  DoWander: 0
+  MinWanderIdleTime: 1
+  MaxWanderIdleTime: 2
+  WanderRadius: 15
+  DrawWaypoint: 0
+  UpdateIntervalMs: 50
+  AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
+  DeathSound: {fileID: 8300000, guid: c9ef2dd2f2897b143a1ed35a70c16345, type: 3}
+  AwareSound: {fileID: 8300000, guid: d32de25f51413fe4b9910caf2bb5e40c, type: 3}
+  WinceSound: {fileID: 8300000, guid: 91b9b5091d1fee74692d8eb1b5a313f2, type: 3}
+  SpawnPosition: {x: 0, y: 0, z: 0}
+  AttackReuseTime: 0.8
 --- !u!4 &1837808394
 Transform:
   m_ObjectHideFlags: 0
@@ -8896,6 +9905,74 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1845918207}
+--- !u!1 &1863150665
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1863150666}
+  - component: {fileID: 1863150668}
+  - component: {fileID: 1863150667}
+  m_Layer: 5
+  m_Name: Edge_Right
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1863150666
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1863150665}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 156.5, y: -225.00002, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1895586409}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 156.5, y: -225.00002}
+  m_SizeDelta: {x: 11, y: 513}
+  m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &1863150667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1863150665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300012, guid: 4810b726cb622e9448076058ae86c084, type: 3}
+  m_Type: 3
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 1
+  m_FillAmount: 0.5
+  m_FillClockwise: 1
+  m_FillOrigin: 1
+--- !u!222 &1863150668
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1863150665}
 --- !u!1 &1863588358
 GameObject:
   m_ObjectHideFlags: 0
@@ -8964,6 +10041,86 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1863588358}
+--- !u!1 &1895586408
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1895586409}
+  - component: {fileID: 1895586411}
+  - component: {fileID: 1895586410}
+  m_Layer: 5
+  m_Name: Background
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1895586409
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1895586408}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 10.300003, y: -123.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 35481108}
+  - {fileID: 1967177794}
+  - {fileID: 1579171339}
+  - {fileID: 1863150666}
+  - {fileID: 1027162745}
+  - {fileID: 1526605474}
+  - {fileID: 264751970}
+  - {fileID: 912037706}
+  - {fileID: 1662541759}
+  - {fileID: 119757798}
+  - {fileID: 1433945364}
+  - {fileID: 676942934}
+  m_Father: {fileID: 116859325}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 10.3, y: 116.9}
+  m_SizeDelta: {x: 320, y: 320}
+  m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &1895586410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1895586408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300028, guid: 4810b726cb622e9448076058ae86c084, type: 3}
+  m_Type: 2
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &1895586411
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1895586408}
 --- !u!1 &1925631345
 GameObject:
   m_ObjectHideFlags: 0
@@ -8986,6 +10143,7 @@ GameObject:
   - component: {fileID: 1925631348}
   - component: {fileID: 1925631347}
   - component: {fileID: 1925631346}
+  - component: {fileID: 1925631358}
   m_Layer: 8
   m_Name: LizardmanWarrior (32)
   m_TagString: Enemy
@@ -9032,8 +10190,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8ec5fa391193a44a4dbf66e3bde885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RefreshRate: 50
-  m_LookLocked: 0
+  RefreshRate: 50
+  LookLocked: 0
 --- !u!82 &1925631349
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9179,11 +10337,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 2
-  m_ColliderShape: 1
-  m_SideLength: 25
-  m_Height: 30
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 2
+  ColliderShape: 0
+  SideLength: 20
+  Height: 30
+  LayerMask: NpcRangeTrigger
 --- !u!212 &1925631354
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -9240,11 +10398,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 1
-  m_ColliderShape: 0
-  m_SideLength: 2.5
-  m_Height: 0
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 1
+  ColliderShape: 0
+  SideLength: 2.5
+  Height: 2
+  LayerMask: NpcRangeTrigger
 --- !u!114 &1925631356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9256,7 +10414,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8744681ee57b7f84ebedfa41ddbc448b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Camera: {fileID: 0}
+  Camera: {fileID: 0}
   amActive: 1
   autoInit: 1
 --- !u!114 &1925631357
@@ -9275,6 +10433,17 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
+--- !u!114 &1925631358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1925631345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc94e886ff6e6f4fbffeb24937825cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1925631359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9287,19 +10456,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 0
-  m_StoppingDistance: 0.5
-  m_DoWander: 1
-  m_MinWanderIdleTime: 1
-  m_MaxWanderIdleTime: 2
-  m_WanderRadius: 15
-  m_DrawWaypoint: 0
-  m_UpdateIntervalMs: 50
-  m_AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
-  m_DeathSound: {fileID: 0}
-  m_AwareSound: {fileID: 0}
-  m_WinceSound: {fileID: 0}
-  m_SpawnPosition: {x: 0, y: 0, z: 0}
-  m_AttackReuseTime: 0.8
+  StoppingDistance: 0.5
+  DoWander: 0
+  MinWanderIdleTime: 1
+  MaxWanderIdleTime: 2
+  WanderRadius: 15
+  DrawWaypoint: 0
+  UpdateIntervalMs: 50
+  AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
+  DeathSound: {fileID: 8300000, guid: c9ef2dd2f2897b143a1ed35a70c16345, type: 3}
+  AwareSound: {fileID: 8300000, guid: d32de25f51413fe4b9910caf2bb5e40c, type: 3}
+  WinceSound: {fileID: 8300000, guid: 91b9b5091d1fee74692d8eb1b5a313f2, type: 3}
+  SpawnPosition: {x: 0, y: 0, z: 0}
+  AttackReuseTime: 0.8
 --- !u!4 &1925631360
 Transform:
   m_ObjectHideFlags: 0
@@ -9517,6 +10686,74 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1966843781}
+--- !u!1 &1967177793
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1967177794}
+  - component: {fileID: 1967177796}
+  - component: {fileID: 1967177795}
+  m_Layer: 5
+  m_Name: Edge_Top
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1967177794
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1967177793}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 96.5, y: 309.99994, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1895586409}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 96.5, y: 309.99994}
+  m_SizeDelta: {x: 513, y: 10}
+  m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &1967177795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1967177793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300014, guid: 4810b726cb622e9448076058ae86c084, type: 3}
+  m_Type: 3
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 0
+  m_FillAmount: 0.6
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &1967177796
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1967177793}
 --- !u!1 &1975399173
 GameObject:
   m_ObjectHideFlags: 0
@@ -9749,6 +10986,7 @@ GameObject:
   - component: {fileID: 2041721920}
   - component: {fileID: 2041721919}
   - component: {fileID: 2041721918}
+  - component: {fileID: 2041721930}
   m_Layer: 8
   m_Name: LizardmanWarrior (25)
   m_TagString: Enemy
@@ -9795,8 +11033,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8ec5fa391193a44a4dbf66e3bde885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RefreshRate: 50
-  m_LookLocked: 0
+  RefreshRate: 50
+  LookLocked: 0
 --- !u!82 &2041721921
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9942,11 +11180,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 2
-  m_ColliderShape: 1
-  m_SideLength: 25
-  m_Height: 30
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 2
+  ColliderShape: 0
+  SideLength: 20
+  Height: 30
+  LayerMask: NpcRangeTrigger
 --- !u!212 &2041721926
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10003,11 +11241,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TriggerType: 1
-  m_ColliderShape: 0
-  m_SideLength: 2.5
-  m_Height: 0
-  m_LayerMask: NpcRangeTrigger
+  TriggerType: 1
+  ColliderShape: 0
+  SideLength: 2.5
+  Height: 2
+  LayerMask: NpcRangeTrigger
 --- !u!114 &2041721928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10019,7 +11257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8744681ee57b7f84ebedfa41ddbc448b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Camera: {fileID: 0}
+  Camera: {fileID: 0}
   amActive: 1
   autoInit: 1
 --- !u!114 &2041721929
@@ -10038,6 +11276,17 @@ MonoBehaviour:
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
   m_IsHostileToPlayer: 1
+--- !u!114 &2041721930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2041721917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc94e886ff6e6f4fbffeb24937825cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2041721931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10050,19 +11299,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 0
-  m_StoppingDistance: 0.5
-  m_DoWander: 1
-  m_MinWanderIdleTime: 1
-  m_MaxWanderIdleTime: 2
-  m_WanderRadius: 15
-  m_DrawWaypoint: 0
-  m_UpdateIntervalMs: 50
-  m_AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
-  m_DeathSound: {fileID: 0}
-  m_AwareSound: {fileID: 0}
-  m_WinceSound: {fileID: 0}
-  m_SpawnPosition: {x: 0, y: 0, z: 0}
-  m_AttackReuseTime: 0.8
+  StoppingDistance: 0.5
+  DoWander: 0
+  MinWanderIdleTime: 1
+  MaxWanderIdleTime: 2
+  WanderRadius: 15
+  DrawWaypoint: 0
+  UpdateIntervalMs: 50
+  AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
+  DeathSound: {fileID: 8300000, guid: c9ef2dd2f2897b143a1ed35a70c16345, type: 3}
+  AwareSound: {fileID: 8300000, guid: d32de25f51413fe4b9910caf2bb5e40c, type: 3}
+  WinceSound: {fileID: 8300000, guid: 91b9b5091d1fee74692d8eb1b5a313f2, type: 3}
+  SpawnPosition: {x: 0, y: 0, z: 0}
+  AttackReuseTime: 0.8
 --- !u!4 &2041721932
 Transform:
   m_ObjectHideFlags: 0

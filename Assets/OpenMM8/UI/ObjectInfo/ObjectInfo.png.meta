@@ -1,23 +1,23 @@
 fileFormatVersion: 2
-guid: 4ef35b1242ff7544bbbded446c0bd543
-timeCreated: 1517162513
+guid: 4810b726cb622e9448076058ae86c084
+timeCreated: 1517248503
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: MHP_BG
-    21300002: MHP_CAPL
-    21300004: MHP_CAPR
-    21300006: MHP_GRN
-    21300008: MHP_RED
-    21300010: MHP_YEL
-    21300012: cornr_LL
-    21300014: cornr_LR
-    21300016: cornr_UL
-    21300018: cornr_UR
-    21300020: edge_btm
-    21300022: edge_lf
-    21300024: edge_rt
-    21300026: edge_top
+    21300000: cornr_LL
+    21300002: cornr_LR
+    21300004: cornr_UL
+    21300006: cornr_UR
+    21300008: edge_btm
+    21300010: edge_lf
+    21300012: edge_rt
+    21300014: edge_top
+    21300016: MHP_BG
+    21300018: MHP_CAPL
+    21300020: MHP_CAPR
+    21300022: MHP_GRN
+    21300024: MHP_RED
+    21300026: MHP_YEL
     21300028: parchment
   externalObjects: {}
   serializedVersion: 4
@@ -84,95 +84,11 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: MHP_BG
-      rect:
-        serializedVersion: 2
-        x: 23
-        y: 734
-        width: 200
-        height: 10
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: MHP_CAPL
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 498
-        width: 5
-        height: 10
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: MHP_CAPR
-      rect:
-        serializedVersion: 2
-        x: 281
-        y: 941
-        width: 5
-        height: 10
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: MHP_GRN
-      rect:
-        serializedVersion: 2
-        x: 281
-        y: 996
-        width: 200
-        height: 6
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: MHP_RED
-      rect:
-        serializedVersion: 2
-        x: 281
-        y: 988
-        width: 200
-        height: 6
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: MHP_YEL
-      rect:
-        serializedVersion: 2
-        x: 529
-        y: 1017
-        width: 200
-        height: 6
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
       name: cornr_LL
       rect:
         serializedVersion: 2
-        x: 281
-        y: 953
+        x: 1
+        y: 217
         width: 33
         height: 33
       alignment: 9
@@ -185,8 +101,8 @@ TextureImporter:
       name: cornr_LR
       rect:
         serializedVersion: 2
-        x: 23
-        y: 699
+        x: 1
+        y: 182
         width: 33
         height: 33
       alignment: 9
@@ -199,8 +115,8 @@ TextureImporter:
       name: cornr_UL
       rect:
         serializedVersion: 2
-        x: 58
-        y: 700
+        x: 1
+        y: 148
         width: 33
         height: 32
       alignment: 0
@@ -213,8 +129,8 @@ TextureImporter:
       name: cornr_UR
       rect:
         serializedVersion: 2
-        x: 23
-        y: 665
+        x: 1
+        y: 114
         width: 33
         height: 32
       alignment: 9
@@ -227,8 +143,8 @@ TextureImporter:
       name: edge_btm
       rect:
         serializedVersion: 2
-        x: 23
-        y: 1004
+        x: 1
+        y: 57
         width: 512
         height: 7
       alignment: 9
@@ -256,7 +172,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 14
-        y: 499
+        y: 511
         width: 7
         height: 512
       alignment: 9
@@ -269,10 +185,94 @@ TextureImporter:
       name: edge_top
       rect:
         serializedVersion: 2
-        x: 14
-        y: 1013
+        x: 1
+        y: 102
         width: 513
         height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: MHP_BG
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 90
+        width: 200
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: MHP_CAPL
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 78
+        width: 5
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: MHP_CAPR
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 66
+        width: 5
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: MHP_GRN
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 82
+        width: 200
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: MHP_RED
+      rect:
+        serializedVersion: 2
+        x: 203
+        y: 94
+        width: 200
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: MHP_YEL
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 74
+        width: 200
+        height: 6
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -283,8 +283,8 @@ TextureImporter:
       name: parchment
       rect:
         serializedVersion: 2
-        x: 23
-        y: 746
+        x: 1
+        y: 252
         width: 256
         height: 256
       alignment: 0
