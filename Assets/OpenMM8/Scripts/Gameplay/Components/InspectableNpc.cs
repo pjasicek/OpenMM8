@@ -38,6 +38,8 @@ public class InspectableNpc : Inspectable
         ui.DarkResistanceText.text = NpcData.Resistances[SpellElement.Dark].ToString();
         ui.PhysicalResistanceText.text = NpcData.Resistances[SpellElement.Physical].ToString();
 
+        ui.PreviewImage.sprite = GetComponent<BaseNpc>().PreviewImage;
+
         return GameMgr.Instance.InspectNpcUI.Canvas;
     }
 }

@@ -48,6 +48,8 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
     public AudioClip AwareSound;
     public AudioClip WinceSound;
 
+    public Sprite PreviewImage;
+
     /*public float m_AgroRange; // Agro on Y axis is not taken into account
     public float m_MeleeRange;*/
 

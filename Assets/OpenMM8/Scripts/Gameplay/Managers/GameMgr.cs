@@ -117,6 +117,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             InspectNpcUI.DarkResistanceText = npcInfoBackgroundObject.transform.Find("DarkResistanceText").GetComponent<Text>();
             InspectNpcUI.PhysicalResistanceText = npcInfoBackgroundObject.transform.Find("PhysicalResistanceText").GetComponent<Text>();
 
+            InspectNpcUI.PreviewImage = npcInfoBackgroundObject.transform.Find("PreviewImageMask").transform.Find("PreviewImage").GetComponent<Image>();
+
             GameObject PartyCanvasObject = GameObject.Find("PartyCanvas");
             if (PartyCanvasObject != null)
             {

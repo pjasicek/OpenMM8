@@ -27,4 +27,6 @@ public class InspectNpcUI
     public Text LightResistanceText;
     public Text DarkResistanceText;
     public Text PhysicalResistanceText;
+
+    public Image PreviewImage;
 }
