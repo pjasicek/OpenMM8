@@ -34,6 +34,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         /*public event GamePausedAction OnGamePaused;
         public event GameUnpausedAction OnGameUnpaused;*/
 
+        [Header("UI")]
+        public InspectNpcUI InspectNpcUI;
+
         // UI Canvases
         [Header("UI - Canvases")]
         public Canvas PartyCanvas;
@@ -41,7 +44,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public Canvas PartyInventoryCanvas;
         public Canvas HouseCanvas;
         public Canvas NpcTalkCanvas;
-        public Canvas ObjectInfoCanvas;
 
         // TODO: Get rid of this somehow
         [Header("UI - Character")]
@@ -52,6 +54,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public Sprite GreenAgroStatusSprite;
         public Sprite YelloqAgroStatusSprite;
         public Sprite RedAgroStatusSprite;
+
+        [Header("Misc")]
+        private Canvas InspectedCanvas = null;
+        public bool IsGamePaused = false;
 
         /*static GameMgr()
         {
@@ -78,9 +84,38 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             PlayerParty = GameObject.Find("Player").GetComponent<PlayerParty>();
             Debug.Assert(PlayerParty != null);
 
-            GameObject ObjectInfoCanvasObject = GameObject.Find("ObjectInfoCanvas");
+            /*GameObject ObjectInfoCanvasObject = GameObject.Find("NpcInfoCanvas");
             Debug.Assert(ObjectInfoCanvasObject != null);
-            ObjectInfoCanvas = ObjectInfoCanvasObject.GetComponent<Canvas>();
+            ObjectInfoCanvas = ObjectInfoCanvasObject.GetComponent<Canvas>();*/
+
+            GameObject objectInfoCanvasObject = GameObject.Find("NpcInfoCanvas");
+            Debug.Assert(objectInfoCanvasObject != null);
+            Transform npcInfoBackgroundObject = objectInfoCanvasObject.transform.Find("Background");
+
+            InspectNpcUI = new InspectNpcUI();
+            InspectNpcUI.Canvas = objectInfoCanvasObject.GetComponent<Canvas>();
+
+            InspectNpcUI.Healthbar_Background = npcInfoBackgroundObject.transform.Find("Healthbar_Background").GetComponent<Image>();
+            InspectNpcUI.Healthbar = npcInfoBackgroundObject.transform.Find("Healthbar").GetComponent<Image>();
+            InspectNpcUI.Healthbar_CapLeft = npcInfoBackgroundObject.transform.Find("Healthbar_CapLeft").GetComponent<Image>();
+            InspectNpcUI.Healthbar_CapRight = npcInfoBackgroundObject.transform.Find("Healthbar_CapRight").GetComponent<Image>();
+
+            InspectNpcUI.NpcNameText = npcInfoBackgroundObject.transform.Find("NpcNameText").GetComponent<Text>();
+            InspectNpcUI.HitPointsText = npcInfoBackgroundObject.transform.Find("HitPointsText").GetComponent<Text>();
+            InspectNpcUI.ArmorClassText = npcInfoBackgroundObject.transform.Find("ArmorClassText").GetComponent<Text>();
+            InspectNpcUI.AttackText = npcInfoBackgroundObject.transform.Find("AttackText").GetComponent<Text>();
+            InspectNpcUI.DamageText = npcInfoBackgroundObject.transform.Find("DamageText").GetComponent<Text>();
+            InspectNpcUI.SpellText = npcInfoBackgroundObject.transform.Find("SpellText").GetComponent<Text>();
+            InspectNpcUI.FireResistanceText = npcInfoBackgroundObject.transform.Find("FireResistanceText").GetComponent<Text>();
+            InspectNpcUI.AirResistanceText = npcInfoBackgroundObject.transform.Find("AirResistanceText").GetComponent<Text>();
+            InspectNpcUI.WaterResistanceText = npcInfoBackgroundObject.transform.Find("WaterResistanceText").GetComponent<Text>();
+            InspectNpcUI.EarthResistanceText = npcInfoBackgroundObject.transform.Find("EarthResistanceText").GetComponent<Text>();
+            InspectNpcUI.MindResistanceText = npcInfoBackgroundObject.transform.Find("MindResistanceText").GetComponent<Text>();
+            InspectNpcUI.SpiritResistanceText = npcInfoBackgroundObject.transform.Find("SpiritResistanceText").GetComponent<Text>();
+            InspectNpcUI.BodyResistanceText = npcInfoBackgroundObject.transform.Find("BodyResistanceText").GetComponent<Text>();
+            InspectNpcUI.LightResistanceText = npcInfoBackgroundObject.transform.Find("LightResistanceText").GetComponent<Text>();
+            InspectNpcUI.DarkResistanceText = npcInfoBackgroundObject.transform.Find("DarkResistanceText").GetComponent<Text>();
+            InspectNpcUI.PhysicalResistanceText = npcInfoBackgroundObject.transform.Find("PhysicalResistanceText").GetComponent<Text>();
 
             GameObject PartyCanvasObject = GameObject.Find("PartyCanvas");
             if (PartyCanvasObject != null)
@@ -145,13 +180,45 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 PartyBuffsAndButtonsCanvas.enabled = false;
             }
 
+            bool wasInspectEnabled = (InspectedCanvas != null) && (InspectedCanvas.enabled == true);
+            bool isInspectEnabled = false;
+
             if (Input.GetButton("InspectObject"))
             {
-                ObjectInfoCanvas.enabled = true;
+                if (!IsGamePaused)
+                {
+                    Time.timeScale = 0;
+                }
+
+                RaycastHit hit;
+                Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5F, 0.595F, 0));
+
+                if (Physics.Raycast(ray, out hit, 1000.0f, 1 << LayerMask.NameToLayer("NPC")))
+                {
+                    Transform objectHit = hit.collider.transform;
+                    if (objectHit.GetComponent<Inspectable>() != null)
+                    {
+                        InspectedCanvas = objectHit.GetComponent<Inspectable>().SetupInspectCanvas();
+                        isInspectEnabled = true;
+                    }
+                }
             }
             else
             {
-                ObjectInfoCanvas.enabled = false;
+                if (!IsGamePaused)
+                {
+                    Time.timeScale = 1;
+                }
+            }
+
+            if (!wasInspectEnabled && isInspectEnabled)
+            {
+                InspectedCanvas.enabled = true;
+            }
+            else if (wasInspectEnabled && !isInspectEnabled)
+            {
+                InspectedCanvas.enabled = false;
+                InspectedCanvas = null;
             }
         }
 
@@ -159,7 +226,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             Time.timeScale = 0;
             AudioListener.pause = true;
-
+            IsGamePaused = true;
             //OnGamePaused();
         }
 
@@ -167,7 +234,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             Time.timeScale = 1;
             AudioListener.pause = false;
-
+            IsGamePaused = false;
             //OnGameUnpaused();
         }
 

@@ -15,6 +15,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int Level;
         public int HitPoints;
         public int ArmorClass;
+        public string AttackAmountText;
         public int ExperienceWorth;
         public NpcLootPrototype Treasure;
         public int Quest;

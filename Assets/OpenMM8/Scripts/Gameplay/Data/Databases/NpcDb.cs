@@ -76,6 +76,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                     // Attack 1
                     npcData.Attack1 = new AttackInfo();
                     npcData.Attack1.DamageType = CsvSpellElementToEnum(columns[17]);
+                    npcData.AttackAmountText = columns[18];
                     CsvDamageRangeToInt(columns[18], out npcData.Attack1.MinDamage, out npcData.Attack1.MaxDamage);
                     npcData.Attack1.Missile = columns[19];
                     // Attack 2
