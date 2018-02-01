@@ -40,9 +40,14 @@ public class CombatNpc : BaseNpc
 
     public NpcState EnterBestState()
     {
-        SetNavMeshAgentEnabled(true);
-
         NpcState currState = (NpcState)Animator.GetInteger("State");
+
+        if ((currState == NpcState.Dead) || (currState == NpcState.Dying))
+        {
+            return currState;
+        }
+
+        SetNavMeshAgentEnabled(true);
 
         if (currState == NpcState.Idle && AttackReuseTimeLeft > 0.0f)
         {

@@ -55,6 +55,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public Sprite YelloqAgroStatusSprite;
         public Sprite RedAgroStatusSprite;
 
+        [Header("UI - Inspect NPC")]
+        public Sprite GreenInspectNpcHealthbar;
+        public Sprite YellowInspectNpcHealthbar;
+        public Sprite RedInspectNpcHealthbar;
+
         [Header("Misc")]
         private Canvas InspectedCanvas = null;
         public bool IsGamePaused = false;
@@ -195,7 +200,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 RaycastHit hit;
                 Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5F, 0.595F, 0));
 
-                if (Physics.Raycast(ray, out hit, 1000.0f, 1 << LayerMask.NameToLayer("NPC")))
+                int layerMask = ~(1 << LayerMask.NameToLayer("NpcRangeTrigger"));
+                if (Physics.Raycast(ray, out hit, 1000.0f, layerMask))
                 {
                     Transform objectHit = hit.collider.transform;
                     if (objectHit.GetComponent<Inspectable>() != null)
@@ -243,6 +249,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public void ChangeGameState(GameState newState)
         {
 
+        }
+
+        public static void Log(string msg)
+        {
+            Debug.Log(msg);
         }
     }
 }

@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-using UnityEngine;
-
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
     public class NpcLootPrototype

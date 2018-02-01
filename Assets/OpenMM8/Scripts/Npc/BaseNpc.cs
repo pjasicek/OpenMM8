@@ -17,7 +17,7 @@ using Assets.OpenMM8.Scripts.Gameplay.Data;
 [RequireComponent(typeof(HostilityChecker))]
 [RequireComponent(typeof(SpriteLookRotator))]
 [RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(Damageable))]
+//[RequireComponent(typeof(Damageable))]
 
 public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 {
@@ -28,10 +28,14 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
     // Variables
     //-------------------------------------------------------------------------
 
+    // Public - Editor accessible
+
+    // Gameplay
     public NpcType NpcType;
     public NpcData NpcData;
 
-    // Public - Editor accessible
+    public int CurrentHitPoints;
+    
     public float StoppingDistance = 0.5f;
 
     public bool DoWander = false;
@@ -124,8 +128,132 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         SetNavMeshAgentEnabled(true);
 
         NpcData = GameMgr.Instance.NpcDb.GetNpcData(NpcType);
+        CurrentHitPoints = NpcData.HitPoints;
+
+        Damageable damageable = GetComponent<Damageable>();
+        damageable.OnAttackReceieved += new AttackReceived(OnAttackReceived);
+        damageable.OnSpellReceived += new SpellReceived(OnSpellReceived);
 
         //m_NavMeshAgent
+    }
+
+    private AttackResult OnAttackReceived(AttackInfo hitInfo, GameObject source)
+    {
+        if (CurrentHitPoints <= 0)
+        {
+            return AttackResult.None;
+        }
+
+        // If this NPC was previously friendly with player, well, it certainly will  not be now
+        if (!HostilityResolver.IsHostileTo(source))
+        {
+            if (source.CompareTag("Player"))
+            {
+                HostilityResolver.m_IsHostileToPlayer = true;
+
+                // Add it to enemy lists
+                foreach (SphereCollider childCollider in GetComponentsInChildren<SphereCollider>())
+                {
+                    if (childCollider.gameObject.name.Contains("Trigger_"))
+                    {
+                        childCollider.enabled = false;
+                        childCollider.enabled = true;
+                    }
+                }
+
+                // Also for player
+                foreach (SphereCollider childCollider in source.GetComponentsInChildren<SphereCollider>())
+                {
+                    if (childCollider.gameObject.name.Contains("Trigger_"))
+                    {
+                        childCollider.enabled = false;
+                        childCollider.enabled = true;
+                    }
+                }
+            }
+
+            // Broadcast this to all nearby allied units - "my friends dont like Player anymore !"
+        }
+
+        Debug.Log("[" + name + "]: Received damage (" + hitInfo.MinDamage.ToString() + ") from: " + source.name);
+        CurrentHitPoints -= hitInfo.MinDamage;
+
+        if (CurrentHitPoints <= 0)
+        {
+            SetNavMeshAgentEnabled(false);
+
+            /*foreach (Component comp in GetComponents(typeof(Component)))
+            {
+                if (comp.Equals(Animator) || 
+                    comp.Equals(SpriteLookRotator) || 
+                    comp.Equals(GetComponent<CameraFacingBillboard>()) ||
+                    comp.Equals(GetComponent<SpriteRenderer>()))
+                {
+                    continue;
+                }
+
+                Destroy(comp);
+            }*/
+
+            /*foreach (MonoBehaviour comp in GetComponents<MonoBehaviour>())
+            {
+                comp.enabled = false;
+            }
+            NavMeshObstacle.enabled = false;*/
+            Destroy(GetComponent<Damageable>());
+
+            int childrenCount = transform.childCount;
+            for (int i = childrenCount - 1; i >= 0; i--)
+            {
+                GameObject.Destroy(transform.GetChild(i).gameObject);
+            }
+
+            /*Animator.enabled = true;
+            SpriteLookRotator.enabled = true;
+            GetComponent<CameraFacingBillboard>().enabled = true;
+            GetComponent<SpriteRenderer>().enabled = true;
+            GetComponent<InspectableNpc>().enabled = true;
+            GetComponent<CapsuleCollider>().isTrigger = true;*/
+
+            tag = "Corpse";
+            gameObject.layer = LayerMask.NameToLayer("Default");
+                
+            Animator.SetInteger("State", (int)NpcState.Dying);
+
+            AudioSource.PlayOneShot(DeathSound);
+        }
+
+        return AttackResult.None;
+    }
+
+    private SpellResult OnSpellReceived(SpellInfo hitInfo, GameObject source)
+    {
+        return SpellResult.None;
+    }
+
+    public void OnDeath()
+    {
+        Animator.SetInteger("State", (int)NpcState.Dead);
+
+        enabled = false;
+        NavMeshObstacle.enabled = false;
+        SpriteLookRotator.OnLookDirectionChanged(SpriteLookRotator.LookDirection.Front);
+        SpriteLookRotator.LookLocked = true;
+        GetComponent<CapsuleCollider>().center = new Vector3(0, -1.75f, 0);
+        GetComponent<CapsuleCollider>().isTrigger = true;
+        foreach (MonoBehaviour comp in GetComponents<MonoBehaviour>())
+        {
+            if (//comp.Equals(Animator) ||
+                //comp.Equals(SpriteLookRotator) ||
+                comp.Equals(GetComponent<CameraFacingBillboard>()) ||
+                comp.Equals(GetComponent<SpriteRenderer>()) ||
+                comp.Equals(GetComponent<Inspectable>()))
+            {
+                continue;
+            }
+
+            comp.enabled = false;
+        }
     }
 
     /**** If NPC is a Guard ****/
@@ -142,7 +270,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
     //                            and query all nearby Guards / Villagers of the same affiliation to be hostile towards
     //                            that unit too
 
-    
+
 
     //-------------------------------------------------------------------------
     // Methods

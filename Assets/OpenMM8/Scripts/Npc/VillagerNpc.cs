@@ -14,6 +14,12 @@ public class VillagerNpc : BaseNpc
     // Update is called once per frame
     void Update ()
     {
+        NpcState currState = (NpcState)Animator.GetInteger("State");
+        if ((currState == NpcState.Dead) || (currState == NpcState.Dying))
+        {
+            return;
+        }
+
         if (!NavMeshAgent.enabled)
         {
             return;

@@ -7,6 +7,13 @@ using UnityEditor;
 using System.Reflection;
 #endif
 
+public enum TriggerType
+{
+    None,
+    MeleeRange,
+    AgroRange
+};
+
 public class Trigger : MonoBehaviour
 {
     [SerializeField]

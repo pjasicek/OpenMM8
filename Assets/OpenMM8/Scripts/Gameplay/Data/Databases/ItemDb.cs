@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-using UnityEngine;
-
 using Assets.OpenMM8.Scripts.Gameplay.Items;
 
 namespace Assets.OpenMM8.Scripts.Gameplay.Data
