@@ -51,7 +51,8 @@ public class CameraFacingBillboard : MonoBehaviour
 
         if (amActive)
         {
-            transform.LookAt(parentTransform.position + Camera.transform.rotation * Vector3.back, Camera.transform.rotation * Vector3.up);
+            //transform.LookAt(parentTransform.position + Camera.transform.rotation * Vector3.back, Camera.transform.rotation * Vector3.up);
+            transform.rotation = Quaternion.LookRotation(Camera.transform.position - transform.position);
         }
     }
 

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    class ItemData
+    public class ItemData
     {
         public int Id;
         public string ImageName;

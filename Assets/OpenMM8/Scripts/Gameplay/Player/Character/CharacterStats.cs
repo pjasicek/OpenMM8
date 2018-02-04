@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    class CharacterStats
+    public class CharacterStats
     {
         public int MaxHitPoints;
         public int MaxSpellPoints;

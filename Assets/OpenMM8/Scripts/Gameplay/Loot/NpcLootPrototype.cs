@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
+using Assets.OpenMM8.Scripts.Gameplay.Items;
+
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
     public class NpcLootPrototype
@@ -13,6 +15,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int ItemChance = 0;
         public EquipType ItemType = EquipType.NotAvailable;
         public LootItemLevel ItemLevel = LootItemLevel.None;
+        public int CertainItemId = 0;
 
         public NpcLootPrototype(string treasureDef)
         {
@@ -138,11 +141,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             if (diceRoll.Success)
             {
                 string diceRollStr = diceRoll.Value;
-                int numDiceSides = int.Parse(diceRollStr.Substring(0, diceRollStr.IndexOf('d')));
-                int numDiceRolls = int.Parse(diceRoll.Value.Substring(diceRoll.Value.LastIndexOf('d') + 1));
+                int numDiceRolls = int.Parse(diceRollStr.Substring(0, diceRollStr.IndexOf('d')));
+                int numDiceSides = int.Parse(diceRoll.Value.Substring(diceRoll.Value.LastIndexOf('d') + 1));
 
-                MinGold = numDiceSides;
-                MaxGold = numDiceSides * numDiceRolls;
+                MinGold = numDiceRolls;
+                MaxGold = numDiceRolls * numDiceSides;
             }
         }
     }

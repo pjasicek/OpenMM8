@@ -11,7 +11,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         TransferQuest
     }
 
-    class Award
+    public class Award
     {
         public AwardType Type;
         public string Description;

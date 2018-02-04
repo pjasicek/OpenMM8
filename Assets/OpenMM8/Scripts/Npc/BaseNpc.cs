@@ -17,6 +17,8 @@ using Assets.OpenMM8.Scripts.Gameplay.Data;
 [RequireComponent(typeof(HostilityChecker))]
 [RequireComponent(typeof(SpriteLookRotator))]
 [RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(Lootable))]
+[RequireComponent(typeof(HoverInfo))]
 //[RequireComponent(typeof(Damageable))]
 
 public abstract class BaseNpc : MonoBehaviour, ITriggerListener
@@ -33,6 +35,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
     // Gameplay
     public NpcType NpcType;
     public NpcData NpcData;
+    public Loot Loot;
 
     public int CurrentHitPoints;
     
@@ -67,6 +70,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
     protected NavMeshObstacle NavMeshObstacle;
     protected HostilityChecker HostilityResolver;
     protected SpriteLookRotator SpriteLookRotator;
+    protected HoverInfo HoverInfo;
     protected AudioSource AudioSource;
     
     protected Vector3 CurrentDestination;
@@ -105,6 +109,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         HostilityResolver = GetComponent<HostilityChecker>();
         SpriteLookRotator = GetComponent<SpriteLookRotator>();
         AudioSource = GetComponent<AudioSource>();
+        HoverInfo = GetComponent<HoverInfo>();
     }
 
     // Use this for initialization
@@ -134,6 +139,23 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         damageable.OnAttackReceieved += new AttackReceived(OnAttackReceived);
         damageable.OnSpellReceived += new SpellReceived(OnSpellReceived);
 
+        Loot = new Loot();
+        if (NpcData.Treasure.CertainItemId != 0)
+        {
+            Loot.Item = GameMgr.Instance.ItemDb.GetItem(NpcData.Treasure.CertainItemId);
+        }
+        else
+        {
+            Loot.Item = null;
+        }
+
+        Loot.GoldAmount = (int)(GameMgr.GaussianRandom() * (NpcData.Treasure.MaxGold - NpcData.Treasure.MinGold) + NpcData.Treasure.MinGold);
+
+        GetComponent<Lootable>().Loot = Loot;
+        GetComponent<Lootable>().enabled = false;
+
+        HoverInfo.HoverText = NpcData.Name;
+
         //m_NavMeshAgent
     }
 
@@ -141,7 +163,14 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
     {
         if (CurrentHitPoints <= 0)
         {
-            return AttackResult.None;
+            return new AttackResult();
+        }
+
+        AttackResult result = DamageCalculator.DamageFromPlayerToNpc(hitInfo, NpcData.Resistances, NpcData.ArmorClass);
+        result.HitObjectName = NpcData.Name;
+        if (result.Type == AttackResultType.Miss)
+        {
+            return result;
         }
 
         // If this NPC was previously friendly with player, well, it certainly will  not be now
@@ -175,31 +204,13 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
             // Broadcast this to all nearby allied units - "my friends dont like Player anymore !"
         }
 
-        Debug.Log("[" + name + "]: Received damage (" + hitInfo.MinDamage.ToString() + ") from: " + source.name);
-        CurrentHitPoints -= hitInfo.MinDamage;
+        Debug.Log("[" + name + "]: Received damage (" + result.DamageDealt.ToString() + ") from: " + source.name);
+        CurrentHitPoints -= result.DamageDealt;
 
         if (CurrentHitPoints <= 0)
         {
+            CurrentHitPoints = 0;
             SetNavMeshAgentEnabled(false);
-
-            /*foreach (Component comp in GetComponents(typeof(Component)))
-            {
-                if (comp.Equals(Animator) || 
-                    comp.Equals(SpriteLookRotator) || 
-                    comp.Equals(GetComponent<CameraFacingBillboard>()) ||
-                    comp.Equals(GetComponent<SpriteRenderer>()))
-                {
-                    continue;
-                }
-
-                Destroy(comp);
-            }*/
-
-            /*foreach (MonoBehaviour comp in GetComponents<MonoBehaviour>())
-            {
-                comp.enabled = false;
-            }
-            NavMeshObstacle.enabled = false;*/
             Destroy(GetComponent<Damageable>());
 
             int childrenCount = transform.childCount;
@@ -208,27 +219,26 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
                 GameObject.Destroy(transform.GetChild(i).gameObject);
             }
 
-            /*Animator.enabled = true;
-            SpriteLookRotator.enabled = true;
-            GetComponent<CameraFacingBillboard>().enabled = true;
-            GetComponent<SpriteRenderer>().enabled = true;
-            GetComponent<InspectableNpc>().enabled = true;
-            GetComponent<CapsuleCollider>().isTrigger = true;*/
-
             tag = "Corpse";
             gameObject.layer = LayerMask.NameToLayer("Default");
                 
             Animator.SetInteger("State", (int)NpcState.Dying);
 
             AudioSource.PlayOneShot(DeathSound);
+
+            result.Type = AttackResultType.Kill;
+        }
+        else
+        {
+            result.Type = AttackResultType.Hit;
         }
 
-        return AttackResult.None;
+        return result;
     }
 
     private SpellResult OnSpellReceived(SpellInfo hitInfo, GameObject source)
     {
-        return SpellResult.None;
+        return new SpellResult();
     }
 
     public void OnDeath()
@@ -240,11 +250,13 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         SpriteLookRotator.OnLookDirectionChanged(SpriteLookRotator.LookDirection.Front);
         SpriteLookRotator.LookLocked = true;
         GetComponent<CapsuleCollider>().center = new Vector3(0, -1.75f, 0);
+        GetComponent<CapsuleCollider>().radius = 0.75f;
         GetComponent<CapsuleCollider>().isTrigger = true;
         foreach (MonoBehaviour comp in GetComponents<MonoBehaviour>())
         {
             if (//comp.Equals(Animator) ||
                 //comp.Equals(SpriteLookRotator) ||
+                comp.Equals(HoverInfo) ||
                 comp.Equals(GetComponent<CameraFacingBillboard>()) ||
                 comp.Equals(GetComponent<SpriteRenderer>()) ||
                 comp.Equals(GetComponent<Inspectable>()))
@@ -254,6 +266,8 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
             comp.enabled = false;
         }
+
+        GetComponent<Lootable>().enabled = true;
     }
 
     /**** If NPC is a Guard ****/

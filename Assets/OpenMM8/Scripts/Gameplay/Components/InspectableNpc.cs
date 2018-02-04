@@ -23,7 +23,7 @@ public class InspectableNpc : Inspectable
 
         InspectNpcUI ui = GameMgr.Instance.InspectNpcUI;
         ui.NpcNameText.text = NpcData.Name;
-        ui.HitPointsText.text = Npc.CurrentHitPoints.ToString();
+        ui.HitPointsText.text = Npc.CurrentHitPoints.ToString() + "/" + NpcData.HitPoints;
         ui.ArmorClassText.text = NpcData.ArmorClass.ToString();
         ui.AttackText.text = NpcData.Attack1.DamageType.ToString();
         ui.DamageText.text = NpcData.AttackAmountText;

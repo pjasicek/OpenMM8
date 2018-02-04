@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    class InventoryItem
+    public class InventoryItem
     {
         public ItemData Item;
         public Vector2Int SlotPosition;
@@ -15,7 +15,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public bool IsEquipped;
     }
 
-    class Inventory
+    public class Inventory
     {
         public List<InventoryItem> ItemList = new List<InventoryItem>();
     }

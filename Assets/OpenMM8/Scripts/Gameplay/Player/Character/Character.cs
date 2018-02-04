@@ -7,12 +7,11 @@ using UnityEngine;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    class Character
+    public class Character
     {
         public CharacterModel CharacterModel;
         public CharacterUI CharacterUI;
         public PlayerParty PlayerParty;
-
 
         public float TimeUntilRecovery = 0.0f;
 
@@ -56,10 +55,29 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             if (victim)
             {
                 AttackInfo attackInfo = new AttackInfo();
-                attackInfo.MinDamage = 50;
-                attackInfo.MaxDamage = 100;
+                attackInfo.MinDamage = 10;
+                attackInfo.MaxDamage = 20;
                 attackInfo.DamageType = SpellElement.Physical;
-                victim.ReceiveAttack(attackInfo, PlayerParty.gameObject);
+
+                AttackResult result = victim.ReceiveAttack(attackInfo, PlayerParty.gameObject);
+                string hitText = "";
+                switch (result.Type)
+                {
+                    case AttackResultType.Hit:
+                        hitText = CharacterModel.Name + " hits " + result.HitObjectName + " for " + result.DamageDealt + " damage";
+                        PlayerParty.SetPartyInfoText(hitText);
+                        break;
+
+                    case AttackResultType.Kill:
+                        hitText = CharacterModel.Name + " inflicts " + result.DamageDealt + " points killing " + result.HitObjectName;
+                        PlayerParty.SetPartyInfoText(hitText);
+                        break;
+
+                    case AttackResultType.Miss:
+                        hitText = CharacterModel.Name + " missed attack on " + result.HitObjectName;
+                        PlayerParty.SetPartyInfoText(hitText);
+                        break;
+                }
             }
 
             return true;

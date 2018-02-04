@@ -9,7 +9,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 {
     [RequireComponent(typeof(HostilityChecker))]
     [RequireComponent(typeof(Damageable))]
-    class PlayerParty : MonoBehaviour, ITriggerListener
+    public class PlayerParty : MonoBehaviour, ITriggerListener
     {
         public List<Character> Characters = new List<Character>();
         public Character ActiveCharacter;
@@ -30,6 +30,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public AudioClip WeaponVsLeather_Medium;
         public AudioClip WeaponVsLeather_Hard;
 
+        [Header("Sounds - Gold")]
+        public AudioClip GoldChanged;
+
+        [Header("Misc")]
+
         [SerializeField]
         private int MinutesSinceSleep;
 
@@ -38,9 +43,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private List<GameObject> EnemiesInMeleeRange = new List<GameObject>();
         private List<GameObject> EnemiesInAgroRange = new List<GameObject>();
+        private List<GameObject> ObjectsInMeleeRange = new List<GameObject>();
 
         // Misc
         private float AttackDelayTimeLeft = 0.0f;
+        private float TimeSinceLastPartyText = 0.0f;
+
+        public int Gold;
+        public int Food;
 
         private void Awake()
         {
@@ -59,7 +69,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void Update()
         {
-            AttackDelayTimeLeft -= Time.deltaTime;
+            TimeSinceLastPartyText += Time.deltaTime;
+            if (TimeSinceLastPartyText > 2.0f)
+            {
+                SetPartyInfoText("");
+            }
 
             foreach (Character character in Characters)
             {
@@ -82,46 +96,174 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 }
             }
 
-            if (Input.GetButton("Fire1") && (AttackDelayTimeLeft <= 0.0f))
+            AttackDelayTimeLeft -= Time.deltaTime;
+
+            HandleHover();
+
+            if (Input.GetButton("Attack") && (AttackDelayTimeLeft <= 0.0f))
             {
-                if (ActiveCharacter != null && ActiveCharacter.IsRecovered())
+                Attack();
+            }
+
+            if (Input.GetButtonDown("Interact"))
+            {
+                Interact();
+            }
+        }
+
+        private void Attack()
+        {
+            if (ActiveCharacter != null && ActiveCharacter.IsRecovered())
+            {
+                Damageable victim = null;
+
+                // 1) Try to attack NPC which is being targeted by the crosshair
+                //    - does not have to be enemy, when we are aiming with attack
+                //    directly on NPC, we can attack guard / villager this way
+                RaycastHit hit;
+                Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5F, 0.595F, 0));
+                if (Physics.Raycast(ray, out hit, 100.0f, 1 << LayerMask.NameToLayer("NPC")))
                 {
-                    Damageable victim = null;
-
-                    // 1) Try to attack NPC which is being targeted by the crosshair
-                    //    - does not have to be enemy, when we are aiming with attack
-                    //    directly on NPC, we can attack guard / villager this way
-                    RaycastHit hit;
-                    Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5F, 0.595F, 0));
-                    if (Physics.Raycast(ray, out hit, 2.5f, 1 << LayerMask.NameToLayer("NPC")))
+                    Transform objectHit = hit.collider.transform;
+                    if ((objectHit.GetComponent<Damageable>() != null) &&
+                        (ObjectsInMeleeRange.Contains(objectHit.gameObject)))
                     {
-                        Transform objectHit = hit.collider.transform;
-                        if (objectHit.GetComponent<Damageable>() != null)
+                        victim = objectHit.GetComponent<Damageable>();
+                    }
+                }
+
+                // 2) Try to attack enemy which is closest to Player
+                if ((victim == null) && (EnemiesInMeleeRange.Count > 0))
+                {
+                    EnemiesInMeleeRange.OrderBy(t => (t.transform.position - transform.position).sqrMagnitude);
+                    foreach (GameObject enemyObject in EnemiesInMeleeRange)
+                    {
+                        if (enemyObject.GetComponent<Renderer>().isVisible)
                         {
-                            victim = objectHit.GetComponent<Damageable>();
+                            victim = enemyObject.GetComponent<Damageable>();
+                            break;
                         }
                     }
+                }
 
-                    // 2) Try to attack enemy which is closest to Player
-                    if (EnemiesInMeleeRange.Count > 0)
-                    {
-                        EnemiesInMeleeRange.OrderBy(t => (t.transform.position - transform.position).sqrMagnitude);
-                        foreach (GameObject enemyObject in EnemiesInMeleeRange)
-                        {
-                            if (enemyObject.GetComponent<Renderer>().isVisible)
-                            {
-                                victim = enemyObject.GetComponent<Damageable>();
-                                break;
-                            }
-                        }
-                    }
+                if (victim == null)
+                {
+                    // No victim in Player's melee range was found. Try to find some in range if player has a bow / crossbow
+                }
 
-                    ActiveCharacter.Attack(victim);
-                    ActiveCharacter = null;
-                    AttackDelayTimeLeft = 0.1f;
+                /*if (victim != null)
+                {
+                    Debug.Log("Hit with ");
+                }*/
+
+                ActiveCharacter.Attack(victim);
+                ActiveCharacter = null;
+                AttackDelayTimeLeft = 0.1f;
+            }
+        }
+
+        private bool Interact()
+        {
+            Interactable interactObject = null;
+
+            ObjectsInMeleeRange.RemoveAll(go => go == null || 
+                Vector3.Distance(transform.position, go.transform.position) > Constants.MeleeRangeDistance);
+
+            // 1) Try to interact with object being targeted by Crosshair
+            RaycastHit hit;
+            Ray ray = Camera.main.ViewportPointToRay(Constants.CrosshairScreenRelPos);
+
+            int layerMask = ~((1 << LayerMask.NameToLayer("NpcRangeTrigger")) | (1 << LayerMask.NameToLayer("Player")));
+            if (Physics.Raycast(ray, out hit, 100.0f, layerMask))
+            {
+                Transform objectHit = hit.collider.transform;
+                if ((objectHit.GetComponent<Interactable>() != null) &&
+                    (objectHit.GetComponent<Interactable>().enabled) &&
+                    (Vector3.Distance(transform.position, objectHit.transform.position) < Constants.MeleeRangeDistance))
+                {
+                    Debug.Log("Can interact with: " + objectHit.name);
+                    interactObject = objectHit.GetComponent<Interactable>();
+                }
+
+                // Handle also HoverInfo
+                if ((objectHit.GetComponent<HoverInfo>() != null) &&
+                    (objectHit.GetComponent<HoverInfo>().enabled))
+                {
+                    string hoverText = objectHit.GetComponent<HoverInfo>().HoverText;
+                    SetPartyInfoText(hoverText, true);
                 }
             }
 
+            // 2) Try to interact within any visible object within melee distance
+            // Should I even want this to happen ?
+            // Problem here is that Player's melee sensor does not intersect corpse's modified collider
+            if (interactObject == null)
+            {
+                /*List<RaycastHit> closeObjects = Physics.SphereCastAll(
+                    transform.position,
+                    Constants.MeleeRangeDistance,
+                    transform.forward, 
+                    layerMask)
+                    .ToList();
+
+                Debug.Log("Found: " + closeObjects.Count);
+
+                if (closeObjects.Count > 0)
+                {
+                    closeObjects.RemoveAll(r => r.distance > Constants.MeleeRangeDistance ||
+                        r.collider.gameObject.GetComponent<Renderer>() == null ||
+                        r.collider.gameObject.GetComponent<Interactable>() == null ||
+                        r.collider.gameObject.GetComponent<Renderer>().isVisible == false);
+                    if (closeObjects.Count > 0)
+                    {
+                        interactObject = closeObjects.OrderBy(r => (r.transform.position - transform.position).sqrMagnitude).
+                            FirstOrDefault().
+                            transform.GetComponent<Interactable>();
+                    }
+                }*/
+
+                /*if ((interactObject == null) && (ObjectsInMeleeRange.Count > 0))
+                {
+                    ObjectsInMeleeRange.OrderBy(t => (t.transform.position - transform.position).sqrMagnitude);
+                    foreach (GameObject closeObject in ObjectsInMeleeRange)
+                    {
+                        if (closeObject.GetComponent<Renderer>().isVisible &&
+                            closeObject.GetComponent<Interactable>() != null)
+                        {
+                            interactObject = closeObject.GetComponent<Interactable>();
+                            break;
+                        }
+                    }
+                }*/
+            }
+
+            if (interactObject != null)
+            {
+                return interactObject.Interact(this.gameObject);
+            }
+
+            return false;
+        }
+
+        private bool HandleHover()
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ViewportPointToRay(Constants.CrosshairScreenRelPos);
+            int layerMask = ~((1 << LayerMask.NameToLayer("NpcRangeTrigger")) | (1 << LayerMask.NameToLayer("Player")));
+            if (Physics.Raycast(ray, out hit, 1000.0f, layerMask))
+            {
+                Transform objectHit = hit.collider.transform;
+
+                if ((objectHit.GetComponent<HoverInfo>() != null) &&
+                    (objectHit.GetComponent<HoverInfo>().enabled))
+                {
+                    string hoverText = objectHit.GetComponent<HoverInfo>().HoverText;
+                    SetPartyInfoText(hoverText, true);
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void UpdatePartyEffects(int msDiff)
@@ -151,16 +293,59 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         // Damageable events
         AttackResult OnAttackReceived(AttackInfo hitInfo, GameObject source)
         {
-            Debug.Log("Received damage !");
-            Characters[0].ModifyCurrentHitPoints(-1 * UnityEngine.Random.Range(hitInfo.MinDamage, hitInfo.MaxDamage));
-            //Characters[0].ModifyCurrentHitPoints(-4);
+            Character hitCharacter = null;
+            if (hitInfo.PreferredClass != Class.None)
+            {
+                List<Character> preferredCharacters = new List<Character>();
+                foreach (Character character in Characters)
+                {
+                    if (character.CharacterModel.Class == hitInfo.PreferredClass)
+                    {
+                        preferredCharacters.Add(character);
+                    }
+                }
 
-            return AttackResult.Hit;
+                if (preferredCharacters.Count > 0)
+                {
+                    hitCharacter = preferredCharacters[UnityEngine.Random.Range(0, preferredCharacters.Count)];
+                }
+                else
+                {
+                    hitCharacter = Characters[UnityEngine.Random.Range(0, Characters.Count)];
+                }
+            }
+            else
+            {
+                hitCharacter = Characters[UnityEngine.Random.Range(0, Characters.Count)];
+            }
+
+            if (hitCharacter == null)
+            {
+                Debug.LogError("hitCharacter is null !");
+                return new AttackResult();
+            }
+
+            AttackResult result = DamageCalculator.DamageFromNpcToPlayer(hitInfo,
+                hitCharacter.CharacterModel.DefaultStats.Resistances,
+                hitCharacter.CharacterModel.DefaultStats.ArmorClass,
+                hitCharacter.CharacterModel.DefaultStats.Attributes[Attribute.Luck]);
+            if (result.Type == AttackResultType.Miss)
+            {
+                return result;
+            }
+
+            hitCharacter.ModifyCurrentHitPoints(-1 * result.DamageDealt);
+            if (hitCharacter.CharacterModel.CurrHitPoints <= 0)
+            {
+                result.Type = AttackResultType.Kill;
+            }
+
+            return result;
         }
 
         SpellResult OnSpellReceived(SpellInfo hitInfo, GameObject source)
         {
-            return SpellResult.Hit;
+            return new SpellResult();
         }
 
         //---------------------------------------------------------------------
@@ -168,7 +353,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         //---------------------------------------------------------------------
         public void OnObjectEnteredMyTrigger(GameObject other, TriggerType triggerType)
         {
-            Debug.Log("Entered: " + other.name);
+            //Debug.Log("Entered: " + other.name);
             switch (triggerType)
             {
                 case TriggerType.MeleeRange:
@@ -177,6 +362,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                 case TriggerType.AgroRange:
                     OnObjectEnteredAgroRange(other);
+                    break;
+
+                case TriggerType.ObjectTrigger:
+                    OnObjectEnteredInteractibleRange(other);
                     break;
 
                 default:
@@ -197,10 +386,24 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     OnObjectLeftAgroRange(other);
                     break;
 
+                case TriggerType.ObjectTrigger:
+                    OnObjectLeftInteractibleRange(other);
+                    break;
+
                 default:
                     Debug.LogError("Unhandled Trigger Type: " + triggerType);
                     break;
             }
+        }
+
+        private void OnObjectLeftInteractibleRange(GameObject other)
+        {
+            
+        }
+
+        private void OnObjectEnteredInteractibleRange(GameObject other)
+        {
+            
         }
 
         public void OnObjectEnteredMeleeRange(GameObject other)
@@ -210,12 +413,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 EnemiesInMeleeRange.Add(other);
                 UpdateAgroStatus();
             }
+
+            ObjectsInMeleeRange.Add(other);
         }
 
         public void OnObjectLeftMeleeRange(GameObject other)
         {
             EnemiesInMeleeRange.Remove(other);
             UpdateAgroStatus();
+
+            ObjectsInMeleeRange.Remove(other);
         }
 
         public void OnObjectEnteredAgroRange(GameObject other)
@@ -247,6 +454,39 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 UpdatePartyAgroStatus(AgroState.Safe);
             }
+        }
+
+        public void OnAcquiredLoot(Loot loot)
+        {
+            // Handle item
+
+            if (loot.GoldAmount > 0)
+            {
+                AddGold(loot.GoldAmount);
+                SetPartyInfoText("You found " + loot.GoldAmount.ToString() + " gold !");
+            }
+        }
+
+        public void AddGold(int amount)
+        {
+            GameMgr.Instance.PartyUI.AddGold(amount);
+            PlayerAudioSource.PlayOneShot(GoldChanged, 1.5f);
+        }
+
+        public void AddFood(int amount)
+        {
+            GameMgr.Instance.PartyUI.AddFood(amount);
+        }
+
+        public void SetPartyInfoText(string text, bool onlyIfEmpty = false)
+        {
+            if (onlyIfEmpty && GameMgr.Instance.PartyUI.HoverInfoText.text != "")
+            {
+                return;
+            }
+
+            GameMgr.Instance.PartyUI.HoverInfoText.text = text;
+            TimeSinceLastPartyText = 0.0f;
         }
     }
 }

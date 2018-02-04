@@ -4,59 +4,32 @@ using System.Linq;
 using System.Text;
 using UnityEngine.UI;
 
-namespace Assets.OpenMM8.Scripts.Gameplay.Managers
+namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    class PartyUI
+    public class PartyUI
     {
         public Text GoldText;
         public Text FoodText;
-        public List<CharacterUI> CharacterListUI = new List<CharacterUI>();
+        public Text HoverInfoText;
 
-        PartyUI()
-        {
-
-        }
-
-        void SetGold(int amount)
+        public void SetGold(int amount)
         {
             GoldText.text = amount.ToString();
         }
 
-        void AddGold(int amount)
+        public void AddGold(int amount)
         {
             GoldText.text = (int.Parse(GoldText.text) + amount).ToString();
         }
 
-        void SetFood(int amount)
+        public void SetFood(int amount)
         {
             FoodText.text = amount.ToString();
         }
 
-        void AddFood(int amount)
+        public void AddFood(int amount)
         {
             FoodText.text = (int.Parse(FoodText.text) + amount).ToString();
-        }
-
-        void SetAllAgroStatus(AgroState state)
-        {
-            foreach (CharacterUI charUI in CharacterListUI)
-            {
-                if (charUI.IsOccuppied())
-                {
-                    charUI.SetAgroStatus(state);
-                }
-            }
-        }
-
-        void SetAllAvatarState(PlayerState state)
-        {
-            foreach (CharacterUI charUI in CharacterListUI)
-            {
-                if (charUI.IsOccuppied())
-                {
-                    charUI.SetAvatarState(state);
-                }
-            }
         }
     }
 }

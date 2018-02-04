@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Assets.OpenMM8.Scripts.Gameplay.Items;
+
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    public class NpcLoot
+    public class Loot
     {
-
+        public int GoldAmount = 0;
+        public BaseItem Item = null;
     }
 }

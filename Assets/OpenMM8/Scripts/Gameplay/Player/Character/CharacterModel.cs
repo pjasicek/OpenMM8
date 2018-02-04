@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    class CharacterModel
+    public class CharacterModel
     {
         public int CharacterAvatarId;
         public int PartyIndex;

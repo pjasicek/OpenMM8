@@ -11,7 +11,8 @@ public enum TriggerType
 {
     None,
     MeleeRange,
-    AgroRange
+    AgroRange,
+    ObjectTrigger
 };
 
 public class Trigger : MonoBehaviour

@@ -11,6 +11,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public delegate AttackResult AttackReceived(AttackInfo hitInfo, GameObject source);
     public delegate SpellResult SpellReceived(SpellInfo hitInfo, GameObject source);
 
+    // Global constants
+    public static class Constants
+    {
+        public static float MeleeRangeDistance = 3.0f;
+        public static Vector3 CrosshairScreenRelPos = new Vector3(0.5f, 0.595f, 0.0f);
+    }
+
     // Enums
 
     public enum GameState
@@ -209,7 +216,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         HostileClose // Red
     }
 
-    public enum AttackResult
+    public enum AttackResultType
     {
         Kill,
         Hit,
@@ -218,7 +225,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         None
     }
 
-    public enum SpellResult
+    public enum SpellResultType
     {
         Hit,
         Resist,

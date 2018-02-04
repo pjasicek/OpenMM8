@@ -31,7 +31,7 @@ public class CombatNpc : BaseNpc
 
         //Debug.unityLogger.logEnabled = false;
 
-        Debug.Log("Missile1: " + NpcData.Attack1.Missile);
+        //Debug.Log("Missile1: " + NpcData.Attack1.Missile);
 
         IsRanged = NpcData.Attack1.Missile != "0";
         HasAltRangedAttack = NpcData.Attack2.Missile != "0";
@@ -223,7 +223,7 @@ public class CombatNpc : BaseNpc
     // Animator
     public void OnAttackFrame()
     {
-        Debug.Log("OnAttackFrame");
+        //Debug.Log("OnAttackFrame");
         if (Target)
         {
             if (IsTargetInMeleeRange)
@@ -232,8 +232,8 @@ public class CombatNpc : BaseNpc
                 Damageable damageable = Target.GetComponent<Damageable>();
                 if (damageable)
                 {
-                    Debug.Log("Min damage: " + NpcData.Attack1.MinDamage + ", Max damage: " + NpcData.Attack1.MaxDamage);
-                    Debug.Log("Name: " + NpcData.Name);
+                    /*Debug.Log("Min damage: " + NpcData.Attack1.MinDamage + ", Max damage: " + NpcData.Attack1.MaxDamage);
+                    Debug.Log("Name: " + NpcData.Name);*/
                     damageable.ReceiveAttack(NpcData.Attack1, this.gameObject);
                 }
             }
@@ -242,7 +242,7 @@ public class CombatNpc : BaseNpc
                 // Spawn projectile
                 if (NpcData.Attack2.Missile != "0")
                 {
-                    Debug.Log("Spawn missile: " + NpcData.Attack2.Missile);
+                    //Debug.Log("Spawn missile: " + NpcData.Attack2.Missile);
                 }
             }
         }

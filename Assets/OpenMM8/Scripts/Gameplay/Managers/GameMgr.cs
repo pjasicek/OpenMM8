@@ -36,6 +36,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         [Header("UI")]
         public InspectNpcUI InspectNpcUI;
+        public PartyUI PartyUI;
 
         // UI Canvases
         [Header("UI - Canvases")]
@@ -63,6 +64,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         [Header("Misc")]
         private Canvas InspectedCanvas = null;
         public bool IsGamePaused = false;
+
 
         /*static GameMgr()
         {
@@ -92,6 +94,22 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             /*GameObject ObjectInfoCanvasObject = GameObject.Find("NpcInfoCanvas");
             Debug.Assert(ObjectInfoCanvasObject != null);
             ObjectInfoCanvas = ObjectInfoCanvasObject.GetComponent<Canvas>();*/
+
+            GameObject partyCanvasObject = GameObject.Find("PartyCanvas");
+            if (partyCanvasObject != null)
+            {
+                PartyCanvas = partyCanvasObject.GetComponent<Canvas>();
+                PartyBuffsAndButtonsCanvas = partyCanvasObject.transform.Find("BuffsAndButtonsCanvas").GetComponent<Canvas>();
+            }
+            else
+            {
+                Debug.LogError("Could not find PartyCanvas gameobject !");
+            }
+
+            PartyUI = new PartyUI();
+            PartyUI.GoldText = partyCanvasObject.transform.Find("GoldCountText").GetComponent<Text>();
+            PartyUI.FoodText = partyCanvasObject.transform.Find("FoodCountText").GetComponent<Text>();
+            PartyUI.HoverInfoText = partyCanvasObject.transform.Find("BaseBarImage").transform.Find("HoverInfoText").GetComponent<Text>();
 
             GameObject objectInfoCanvasObject = GameObject.Find("NpcInfoCanvas");
             Debug.Assert(objectInfoCanvasObject != null);
@@ -124,17 +142,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             InspectNpcUI.PreviewImage = npcInfoBackgroundObject.transform.Find("PreviewImageMask").transform.Find("PreviewImage").GetComponent<Image>();
 
-            GameObject PartyCanvasObject = GameObject.Find("PartyCanvas");
-            if (PartyCanvasObject != null)
-            {
-                PartyCanvas = PartyCanvasObject.GetComponent<Canvas>();
-                PartyBuffsAndButtonsCanvas = PartyCanvasObject.transform.Find("BuffsAndButtonsCanvas").GetComponent<Canvas>();
-            }
-            else
-            {
-                Debug.LogError("Could not find PartyCanvas gameobject !");
-            }
-
             // 2) Initialize Player's party
             CharacterModel characterModel1 = new CharacterModel();
             characterModel1.CharacterAvatarId = 27;
@@ -143,21 +150,33 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             characterModel1.Class = Class.Necromancer;
             characterModel1.Experience = 0;
             characterModel1.SkillPoints = 0;
-            characterModel1.CurrHitPoints = 50;
+            characterModel1.CurrHitPoints = 500;
             characterModel1.CurrSpellPoints = 50;
             characterModel1.Condition = Condition.Good;
             characterModel1.DefaultStats.Age = 30;
             characterModel1.DefaultStats.Level = 1;
-            characterModel1.DefaultStats.MaxHitPoints = 50;
+            characterModel1.DefaultStats.MaxHitPoints = 500;
             characterModel1.DefaultStats.MaxSpellPoints = 50;
 
+            foreach (Attribute attr in Enum.GetValues(typeof(Attribute)))
+            {
+                characterModel1.DefaultStats.Attributes[attr] = 0;
+                characterModel1.BonusStats.Attributes[attr] = 0;
+            }
+
+            foreach (SpellElement resist in Enum.GetValues(typeof(SpellElement)))
+            {
+                characterModel1.DefaultStats.Resistances[resist] = 0;
+                characterModel1.BonusStats.Resistances[resist] = 0;
+            }
+
             CharacterUI characterUI1 = new CharacterUI();
-            characterUI1.PlayerCharacter = PartyCanvasObject.transform.Find("PC1_Avatar").GetComponent<Image>();
-            characterUI1.SelectionRing = PartyCanvasObject.transform.Find("PC1_SelectRing").GetComponent<Image>();
-            characterUI1.AgroStatus = PartyCanvasObject.transform.Find("PC1_AgroStatus").GetComponent<Image>();
-            characterUI1.HealthBar = PartyCanvasObject.transform.Find("PC1_HealthBar").GetComponent<Image>();
-            characterUI1.ManaBar = PartyCanvasObject.transform.Find("PC1_ManaBar").GetComponent<Image>();
-            characterUI1.EmptySlot = PartyCanvasObject.transform.Find("EmptySlot_Pos1").GetComponent<Image>();
+            characterUI1.PlayerCharacter = partyCanvasObject.transform.Find("PC1_Avatar").GetComponent<Image>();
+            characterUI1.SelectionRing = partyCanvasObject.transform.Find("PC1_SelectRing").GetComponent<Image>();
+            characterUI1.AgroStatus = partyCanvasObject.transform.Find("PC1_AgroStatus").GetComponent<Image>();
+            characterUI1.HealthBar = partyCanvasObject.transform.Find("PC1_HealthBar").GetComponent<Image>();
+            characterUI1.ManaBar = partyCanvasObject.transform.Find("PC1_ManaBar").GetComponent<Image>();
+            characterUI1.EmptySlot = partyCanvasObject.transform.Find("EmptySlot_Pos1").GetComponent<Image>();
 
             characterUI1.GreenHealthBarSprite = GreenHealthBarSprite;
             characterUI1.YellowHealthBarSprite = YellowHealthBarSprite;
@@ -182,11 +201,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                PartyBuffsAndButtonsCanvas.enabled = false;
-            }
-
             bool wasInspectEnabled = (InspectedCanvas != null) && (InspectedCanvas.enabled == true);
             bool isInspectEnabled = false;
 
@@ -198,9 +212,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 }
 
                 RaycastHit hit;
-                Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5F, 0.595F, 0));
+                Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5F, 0.595F, 0.0F));
+                //ray.origin -= 100 * ray.direction.normalized;
 
-                int layerMask = ~(1 << LayerMask.NameToLayer("NpcRangeTrigger"));
+                int layerMask = ~((1 << LayerMask.NameToLayer("NpcRangeTrigger")) | (1 << LayerMask.NameToLayer("Player")));
                 if (Physics.Raycast(ray, out hit, 1000.0f, layerMask))
                 {
                     Transform objectHit = hit.collider.transform;
@@ -210,6 +225,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         isInspectEnabled = true;
                     }
                 }
+
+                //Debug.DrawRay(ray.origin, ray.direction, Color.green);
             }
             else
             {
@@ -255,5 +272,39 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             Debug.Log(msg);
         }
+
+        private static float Gaussian()
+        {
+            float u, v, S;
+
+            do
+            {
+                u = 2.0f * UnityEngine.Random.Range(0.0f, 1.0f) - 1.0f;
+                v = 2.0f * UnityEngine.Random.Range(0.0f, 1.0f) - 1.0f;
+                S = u * u + v * v;
+            }
+            while (S >= 1.0);
+
+            float fac = UnityEngine.Mathf.Sqrt(-2.0f * UnityEngine.Mathf.Log(S) / S);
+            return u * fac;
+        }
+
+        public static float GaussianRandom()
+        {
+            float sigma = 1.0f / 6.0f; // or whatever works.
+            while (true)
+            {
+                float z = Gaussian() * sigma + 0.5f;
+                if (z >= 0.0 && z <= 1.0)
+                {
+                    return z;
+                }
+            }
+        }
+
+        /*public static bool CrosshairRaycast()
+        {
+
+        }*/
     }
 }

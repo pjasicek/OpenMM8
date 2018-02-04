@@ -12,19 +12,19 @@ public class Damageable : MonoBehaviour
     {
         if (OnAttackReceieved != null)
         {
-            OnAttackReceieved(hitInfo, source);
+            return OnAttackReceieved(hitInfo, source);
         }
 
-        return AttackResult.None;
+        return null;
     }
 
     public SpellResult ReceiveSpell(SpellInfo hitInfo, GameObject source)
     {
         if (OnSpellReceived != null)
         {
-            OnSpellReceived(hitInfo, source);
+            return OnSpellReceived(hitInfo, source);
         }
 
-        return SpellResult.None;
+        return null;
     }
 }
