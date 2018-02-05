@@ -98,7 +98,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             AttackDelayTimeLeft -= Time.deltaTime;
 
-            HandleHover();
+            //HandleHover();
 
             if (Input.GetButton("Attack") && (AttackDelayTimeLeft <= 0.0f))
             {

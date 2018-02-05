@@ -19,6 +19,8 @@ public class CombatNpc : BaseNpc
     private float AltRangedAttackChance;
     private float TimeSinceLastAltAttack = 0.0f;
 
+    private bool WasInit = false;
+
     // Use this for initialization
     void Start()
     {
@@ -36,18 +38,54 @@ public class CombatNpc : BaseNpc
         IsRanged = NpcData.Attack1.Missile != "0";
         HasAltRangedAttack = NpcData.Attack2.Missile != "0";
         AltRangedAttackChance = NpcData.ChanceAttack2;
+
+        /*NavMeshAgent.velocity = new Vector3(0, -10, 0);
+        SetNavMeshAgentEnabled(true);
+        EnterBestState();*/
     }
 
     public NpcState EnterBestState()
     {
         NpcState currState = (NpcState)Animator.GetInteger("State");
+        /*if (Animator.enabled)
+        {
+            Animator.enabled = false;
+        }
+        return currState;*/
 
         if ((currState == NpcState.Dead) || (currState == NpcState.Dying))
         {
             return currState;
         }
 
-        SetNavMeshAgentEnabled(true);
+        if ((currState != NpcState.Attacking) && 
+            (EnemiesInAgroRange.Count == 0) && 
+            (EnemiesInMeleeRange.Count == 0) && 
+            !DoWander &&
+            WasInit)
+        {
+            SetNavMeshAgentEnabled(false);
+            SpriteLookRotator.OnLookDirectionChanged(SpriteLookRotator.LookDirection.Front);
+            SpriteLookRotator.LookLocked = true;
+            if (Animator.enabled)
+            {
+                Animator.Update(Time.deltaTime);
+                Animator.enabled = false;
+            }
+            //Debug.Log("OK");
+            return currState;
+        }
+        else
+        {
+            WasInit = true;
+            SpriteLookRotator.LookLocked = false;
+            if (!Animator.enabled)
+            {
+                Animator.enabled = true;
+            }
+        }
+
+        //SetNavMeshAgentEnabled(true);
 
         if (currState == NpcState.Idle && AttackReuseTimeLeft > 0.0f)
         {
@@ -67,7 +105,7 @@ public class CombatNpc : BaseNpc
             {
                 TurnToObject(Target);
             }
-            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            //GetComponent<Rigidbody>().velocity = Vector3.zero;
             SetNavMeshAgentEnabled(false);
             //m_NavMeshAgent.isStopped = true;
             NavMeshAgent.velocity = Vector3.zero;
@@ -297,7 +335,10 @@ public class CombatNpc : BaseNpc
         NavMeshAgent.ResetPath();
         NavMeshAgent.SetDestination(CurrentDestination);
 
-        CurrentWaypoint.transform.position = CurrentDestination;
+        if (DrawWaypoint)
+        {
+            CurrentWaypoint.transform.position = CurrentDestination;
+        }
 
         Vector3 direction = (CurrentDestination - transform.position).normalized;
         transform.rotation = Quaternion.LookRotation(direction);

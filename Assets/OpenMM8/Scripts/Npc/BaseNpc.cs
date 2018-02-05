@@ -11,7 +11,7 @@ using Assets.OpenMM8.Scripts.Gameplay.Data;
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(NavMeshObstacle))]
 [RequireComponent(typeof(Collider))]
-[RequireComponent(typeof(Rigidbody))]
+//[RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(HostilityChecker))]
@@ -122,13 +122,16 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         }
 
         // Create debug waypoint
-        CurrentWaypoint = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        CurrentWaypoint.gameObject.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
-        CurrentWaypoint.GetComponent<Renderer>().material.color = Color.red;
-        CurrentWaypoint.name = this.gameObject.name + " Waypoint";
-        CurrentWaypoint.GetComponent<SphereCollider>().enabled = false;
+        if (DrawWaypoint)
+        {
+            CurrentWaypoint = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            CurrentWaypoint.gameObject.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+            CurrentWaypoint.GetComponent<Renderer>().material.color = Color.red;
+            CurrentWaypoint.name = this.gameObject.name + " Waypoint";
+            CurrentWaypoint.GetComponent<SphereCollider>().enabled = false;
 
-        CurrentWaypoint.SetActive(DrawWaypoint);
+            CurrentWaypoint.SetActive(DrawWaypoint);
+        }
 
         SetNavMeshAgentEnabled(true);
 
@@ -302,7 +305,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
             if (NavMeshAgent.remainingDistance <= NavMeshAgent.stoppingDistance)
             {
                 NavMeshAgent.SetDestination(transform.position);
-                GetComponent<Rigidbody>().velocity = Vector3.zero;
+                //GetComponent<Rigidbody>().velocity = Vector3.zero;
                 return false;
             }
         }
@@ -322,7 +325,10 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
         NavMeshAgent.SetDestination(CurrentDestination);
 
-        CurrentWaypoint.transform.position = CurrentDestination;
+        if (DrawWaypoint)
+        {
+            CurrentWaypoint.transform.position = CurrentDestination;
+        }
 
         Vector3 direction = (CurrentDestination - transform.position).normalized;
         transform.rotation = Quaternion.LookRotation(direction);
@@ -344,7 +350,10 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         NavMeshAgent.ResetPath();
         NavMeshAgent.SetDestination(CurrentDestination);
 
-        CurrentWaypoint.transform.position = CurrentDestination;
+        if (DrawWaypoint)
+        {
+            CurrentWaypoint.transform.position = CurrentDestination;
+        }
 
         Vector3 direction = (CurrentDestination - transform.position).normalized;
         transform.rotation = Quaternion.LookRotation(direction);
@@ -361,7 +370,10 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
         NavMeshAgent.SetDestination(CurrentDestination);
 
-        CurrentWaypoint.transform.position = CurrentDestination;
+        if (DrawWaypoint)
+        {
+            CurrentWaypoint.transform.position = CurrentDestination;
+        }
 
         Vector3 direction = (CurrentDestination - transform.position).normalized;
         transform.rotation = Quaternion.LookRotation(direction);
@@ -377,6 +389,11 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
     public void SetNavMeshAgentEnabled(bool enabled)
     {
+        if (NavMeshAgent.enabled == enabled && NavMeshObstacle.enabled == !enabled)
+        {
+            return;
+        }
+
         // This is to supress warnings
         if (enabled)
         {

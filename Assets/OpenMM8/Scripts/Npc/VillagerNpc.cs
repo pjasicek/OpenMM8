@@ -25,7 +25,10 @@ public class VillagerNpc : BaseNpc
             return;
         }
 
-        CurrentWaypoint.SetActive(DrawWaypoint);
+        if (DrawWaypoint)
+        {
+            CurrentWaypoint.SetActive(DrawWaypoint);
+        }
 
         /**** If NPC is a Villager ****/
         // 1) If it is moving, do nothing
@@ -89,7 +92,7 @@ public class VillagerNpc : BaseNpc
             if (!HostilityResolver.IsHostileTo(other))
             {
                 NavMeshAgent.isStopped = true;
-                GetComponent<Rigidbody>().velocity = Vector3.zero;
+                //GetComponent<Rigidbody>().velocity = Vector3.zero;
                 transform.LookAt(transform.position + other.transform.rotation * Vector3.back, other.transform.rotation * Vector3.up);
             }
         }
