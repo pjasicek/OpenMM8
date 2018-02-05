@@ -85,6 +85,18 @@ public class CombatNpc : BaseNpc
             }
         }
 
+        if (IsPlayerInMeleeRange && 
+            !HostilityResolver.m_IsHostileToPlayer &&
+            EnemiesInMeleeRange.Count == 0 &&
+            EnemiesInAgroRange.Count == 0)
+        {
+            TurnToObject(Player);
+            currState = NpcState.Idle;
+            Animator.SetInteger("State", (int)currState);
+            SetNavMeshAgentEnabled(false);
+            return currState;
+        }
+
         //SetNavMeshAgentEnabled(true);
 
         if (currState == NpcState.Idle && AttackReuseTimeLeft > 0.0f)
@@ -229,6 +241,11 @@ public class CombatNpc : BaseNpc
             EnemiesInMeleeRange.Add(other);
             EnterBestState();
         }
+        else if (other.CompareTag("Player"))
+        {
+            IsPlayerInMeleeRange = true;
+            EnterBestState();
+        }
     }
 
     public override void OnObjectLeftMeleeRange(GameObject other)
@@ -236,6 +253,11 @@ public class CombatNpc : BaseNpc
         if (HostilityResolver.IsHostileTo(other))
         {
             EnemiesInMeleeRange.Remove(other);
+            EnterBestState();
+        }
+        else if (other.CompareTag("Player"))
+        {
+            IsPlayerInMeleeRange = false;
             EnterBestState();
         }
     }

@@ -41,9 +41,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private HostilityChecker HostilityChecker;
         public AudioSource PlayerAudioSource;
 
-        private List<GameObject> EnemiesInMeleeRange = new List<GameObject>();
-        private List<GameObject> EnemiesInAgroRange = new List<GameObject>();
-        private List<GameObject> ObjectsInMeleeRange = new List<GameObject>();
+        public List<GameObject> EnemiesInMeleeRange = new List<GameObject>();
+        public List<GameObject> EnemiesInAgroRange = new List<GameObject>();
+        public List<GameObject> ObjectsInMeleeRange = new List<GameObject>();
 
         // Misc
         private float AttackDelayTimeLeft = 0.0f;
@@ -54,7 +54,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private void Awake()
         {
-            
+
         }
 
         private void Start()
@@ -98,7 +98,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             AttackDelayTimeLeft -= Time.deltaTime;
 
-            //HandleHover();
+            HandleHover();
 
             if (Input.GetButton("Attack") && (AttackDelayTimeLeft <= 0.0f))
             {
@@ -109,6 +109,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 Interact();
             }
+
+            UpdateAgroStatus();
         }
 
         private void Attack()
@@ -135,6 +137,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 // 2) Try to attack enemy which is closest to Player
                 if ((victim == null) && (EnemiesInMeleeRange.Count > 0))
                 {
+                    EnemiesInMeleeRange.RemoveAll(t => t == null);
                     EnemiesInMeleeRange.OrderBy(t => (t.transform.position - transform.position).sqrMagnitude);
                     foreach (GameObject enemyObject in EnemiesInMeleeRange)
                     {
@@ -183,6 +186,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 {
                     Debug.Log("Can interact with: " + objectHit.name);
                     interactObject = objectHit.GetComponent<Interactable>();
+                }
+                else
+                {
+                    Debug.Log("Cannot interact with: " + objectHit.name);
                 }
 
                 // Handle also HoverInfo
@@ -250,7 +257,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             RaycastHit hit;
             Ray ray = Camera.main.ViewportPointToRay(Constants.CrosshairScreenRelPos);
             int layerMask = ~((1 << LayerMask.NameToLayer("NpcRangeTrigger")) | (1 << LayerMask.NameToLayer("Player")));
-            if (Physics.Raycast(ray, out hit, 1000.0f, layerMask))
+            if (Physics.Raycast(ray, out hit, 200.0f, layerMask))
             {
                 Transform objectHit = hit.collider.transform;
 

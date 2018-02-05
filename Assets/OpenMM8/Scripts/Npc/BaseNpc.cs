@@ -81,9 +81,9 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
     protected NpcState State = NpcState.Idle;
 
-    protected List<GameObject> EnemiesInMeleeRange = new List<GameObject>();
+    public List<GameObject> EnemiesInMeleeRange = new List<GameObject>();
     // Agro range is also Ranged range for archers/casters
-    protected List<GameObject> EnemiesInAgroRange = new List<GameObject>();
+    public List<GameObject> EnemiesInAgroRange = new List<GameObject>();
 
     protected GameObject Target;
 
@@ -177,7 +177,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         }
 
         // If this NPC was previously friendly with player, well, it certainly will  not be now
-        if (!HostilityResolver.IsHostileTo(source))
+        /*if (!HostilityResolver.IsHostileTo(source))
         {
             if (source.CompareTag("Player"))
             {
@@ -203,8 +203,48 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
                     }
                 }
             }
+        }*/
 
+        if ((source.CompareTag("Player")) && (HostilityResolver.m_HostilityType == HostilityChecker.HostilityType.Friendly))
+        {
             // Broadcast this to all nearby allied units - "my friends dont like Player anymore !"
+            RaycastHit[] hits = Physics.SphereCastAll(transform.position, 20.0f, Vector3.forward, LayerMask.NameToLayer("NPC"));
+            Debug.Log("hits: " + hits.Length);
+            foreach (RaycastHit hit in hits)
+            {
+                GameObject go = hit.transform.gameObject;
+                HostilityChecker hostilityChecker = go.GetComponent<HostilityChecker>();
+                if ((hostilityChecker != null) && 
+                    (hostilityChecker.m_HostilityType == HostilityChecker.HostilityType.Friendly) && 
+                    (!hostilityChecker.m_IsHostileToPlayer) &&
+                    (go.CompareTag("Enemy") || go.CompareTag("Guard") || go.CompareTag("Villager")))
+                {
+                    Debug.Log("Added: " + go.name);
+                    hostilityChecker.m_IsHostileToPlayer = true;
+                    go.GetComponent<BaseNpc>().EnemiesInAgroRange.Clear();
+                    go.GetComponent<BaseNpc>().EnemiesInMeleeRange.Clear();
+                    foreach (SphereCollider childCollider in go.GetComponentsInChildren<SphereCollider>())
+                    {
+                        if (childCollider.gameObject.name.Contains("Trigger_"))
+                        {
+                            childCollider.enabled = false;
+                            childCollider.enabled = true;
+                        }
+                    }
+                }
+            }
+
+            source.GetComponent<PlayerParty>().EnemiesInMeleeRange.Clear();
+            source.GetComponent<PlayerParty>().EnemiesInAgroRange.Clear();
+            source.GetComponent<PlayerParty>().ObjectsInMeleeRange.Clear();
+            foreach (SphereCollider childCollider in source.GetComponentsInChildren<SphereCollider>())
+            {
+                if (childCollider.gameObject.name.Contains("Trigger_"))
+                {
+                    childCollider.enabled = false;
+                    childCollider.enabled = true;
+                }
+            }
         }
 
         Debug.Log("[" + name + "]: Received damage (" + result.DamageDealt.ToString() + ") from: " + source.name);

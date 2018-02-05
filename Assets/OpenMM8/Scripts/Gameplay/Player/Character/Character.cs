@@ -55,8 +55,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             if (victim)
             {
                 AttackInfo attackInfo = new AttackInfo();
-                attackInfo.MinDamage = 10;
-                attackInfo.MaxDamage = 20;
+                attackInfo.MinDamage = 100;
+                attackInfo.MaxDamage = 200;
+                attackInfo.AttackMod = 10000;
                 attackInfo.DamageType = SpellElement.Physical;
 
                 AttackResult result = victim.ReceiveAttack(attackInfo, PlayerParty.gameObject);
