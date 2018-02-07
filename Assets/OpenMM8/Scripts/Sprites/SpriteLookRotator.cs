@@ -12,6 +12,7 @@ public class SpriteLookRotator : MonoBehaviour
     Camera Camera;
     Transform CameraTransform;
     LookDirection LookDir = LookDirection.Front;
+    bool IsNpc = false;
 
     SpriteRenderer Renderer;
     Animator Animator;
@@ -27,6 +28,7 @@ public class SpriteLookRotator : MonoBehaviour
 
         Renderer = GetComponent<SpriteRenderer>();
         Animator = GetComponent<Animator>();
+        IsNpc = GetComponent<BaseNpc>() != null;
 
         InvokeRepeating("AlignRotation", 0.0f, RefreshRate / 1000.0f);
     }
@@ -148,12 +150,15 @@ public class SpriteLookRotator : MonoBehaviour
 
         if (currLook != LookDir)
         {
-            // Hack
-            BaseNpc.NpcState state = (BaseNpc.NpcState)Animator.GetInteger("State");
-            if (state == BaseNpc.NpcState.Attacking)
+            if (IsNpc)
             {
-                return;
-                //currLook = LookDirection.Front;
+                // Hack
+                BaseNpc.NpcState state = (BaseNpc.NpcState)Animator.GetInteger("State");
+                if (state == BaseNpc.NpcState.Attacking)
+                {
+                    return;
+                    //currLook = LookDirection.Front;
+                }
             }
 
             OnLookDirectionChanged(currLook);

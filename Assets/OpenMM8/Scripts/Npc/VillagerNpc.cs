@@ -15,7 +15,7 @@ public class VillagerNpc : BaseNpc
     void Update ()
     {
         NpcState currState = (NpcState)Animator.GetInteger("State");
-        if ((currState == NpcState.Dead) || (currState == NpcState.Dying))
+        if ((currState == NpcState.Dead) || (currState == NpcState.Dying) || (currState == NpcState.ReceivingDamage))
         {
             return;
         }

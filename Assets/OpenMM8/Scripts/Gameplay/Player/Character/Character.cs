@@ -63,8 +63,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             if (victim)
             {
                 AttackInfo attackInfo = new AttackInfo();
-                attackInfo.MinDamage = 100;
-                attackInfo.MaxDamage = 200;
+                attackInfo.MinDamage = 1;
+                attackInfo.MaxDamage = 1;
                 attackInfo.AttackMod = 10000;
                 attackInfo.DamageType = SpellElement.Physical;
 

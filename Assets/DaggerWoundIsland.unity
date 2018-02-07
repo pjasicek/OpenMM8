@@ -309,7 +309,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &37784353
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -691,7 +691,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &55145937
 GameObject:
   m_ObjectHideFlags: 0
@@ -867,7 +873,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &91798106
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1249,7 +1255,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &101082145
 GameObject:
   m_ObjectHideFlags: 0
@@ -1659,7 +1671,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &137195565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2041,7 +2053,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &152276959
 GameObject:
   m_ObjectHideFlags: 0
@@ -2075,7 +2093,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &152276960
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2457,7 +2475,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &172736383
 GameObject:
   m_ObjectHideFlags: 0
@@ -2488,7 +2512,7 @@ GameObject:
   - component: {fileID: 172736403}
   m_Layer: 8
   m_Name: LizardmanVillager
-  m_TagString: Untagged
+  m_TagString: Villager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2961,7 +2985,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &175601147
 GameObject:
   m_ObjectHideFlags: 0
@@ -3137,7 +3167,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &195325161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3519,7 +3549,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &201289662
 GameObject:
   m_ObjectHideFlags: 0
@@ -3553,7 +3589,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &201289663
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3935,7 +3971,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &215058309
 GameObject:
   m_ObjectHideFlags: 0
@@ -4227,7 +4269,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &241321791
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4609,7 +4651,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &246274078
 GameObject:
   m_ObjectHideFlags: 0
@@ -4999,7 +5047,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &281505965
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5381,7 +5429,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &293703863
 GameObject:
   m_ObjectHideFlags: 0
@@ -5415,7 +5469,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &293703864
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5797,7 +5851,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &315092925
 GameObject:
   m_ObjectHideFlags: 0
@@ -5986,7 +6046,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &359520889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6368,7 +6428,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 1, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &362349818
 GameObject:
   m_ObjectHideFlags: 0
@@ -6478,7 +6544,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &367584450
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6860,7 +6926,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &392496140
 GameObject:
   m_ObjectHideFlags: 0
@@ -6962,7 +7034,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &397967809
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -7344,7 +7416,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+--- !u!1001 &410923823
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4103937461655818, guid: 5d71cf02f05216d4fa5586adbfe6b1d8, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -48.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 4103937461655818, guid: 5d71cf02f05216d4fa5586adbfe6b1d8, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 5.76
+      objectReference: {fileID: 0}
+    - target: {fileID: 4103937461655818, guid: 5d71cf02f05216d4fa5586adbfe6b1d8, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -28.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 4103937461655818, guid: 5d71cf02f05216d4fa5586adbfe6b1d8, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4103937461655818, guid: 5d71cf02f05216d4fa5586adbfe6b1d8, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4103937461655818, guid: 5d71cf02f05216d4fa5586adbfe6b1d8, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4103937461655818, guid: 5d71cf02f05216d4fa5586adbfe6b1d8, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4103937461655818, guid: 5d71cf02f05216d4fa5586adbfe6b1d8, type: 2}
+      propertyPath: m_RootOrder
+      value: 84
+      objectReference: {fileID: 0}
+    - target: {fileID: 1412997457085722, guid: 5d71cf02f05216d4fa5586adbfe6b1d8, type: 2}
+      propertyPath: m_Name
+      value: Arrow
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 5d71cf02f05216d4fa5586adbfe6b1d8, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &414991439
 GameObject:
   m_ObjectHideFlags: 0
@@ -7454,7 +7578,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &429990156
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -7836,7 +7960,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &449485874
 GameObject:
   m_ObjectHideFlags: 0
@@ -8014,7 +8144,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &477205207
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8396,7 +8526,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &490825950
 GameObject:
   m_ObjectHideFlags: 0
@@ -8506,7 +8642,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &509289272
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8888,7 +9024,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &516606566
 GameObject:
   m_ObjectHideFlags: 0
@@ -8922,7 +9064,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &516606567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9304,7 +9446,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &530989915
 GameObject:
   m_ObjectHideFlags: 0
@@ -9338,7 +9486,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &530989916
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9720,7 +9868,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &537905290
 GameObject:
   m_ObjectHideFlags: 0
@@ -9995,7 +10149,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &575368582
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10377,7 +10531,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &580063000
 GameObject:
   m_ObjectHideFlags: 0
@@ -10479,7 +10639,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &588579218
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10861,7 +11021,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &610508040
 GameObject:
   m_ObjectHideFlags: 0
@@ -10895,7 +11061,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &610508041
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -11277,7 +11443,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &635718961
 GameObject:
   m_ObjectHideFlags: 0
@@ -11353,10 +11525,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MinimapScale: {x: 0.2, y: 0.2}
   WizardEyeRelativeSize: {x: 118, y: 81}
-  WizardEyeDotRelativeSize: 2.5
+  WizardEyeDotRelativeSize: 2
   GuiRelativeSize: {x: 640, y: 480}
   MapSideLength: 650
   MinimapMarkers: []
+  VisibleMinimapMarkers: []
 --- !u!222 &635718966
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11396,7 +11569,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &638759246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11778,7 +11951,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &671208471
 GameObject:
   m_ObjectHideFlags: 0
@@ -11956,7 +12135,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &678008981
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -12338,7 +12517,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &687431461
 GameObject:
   m_ObjectHideFlags: 0
@@ -12372,7 +12557,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &687431462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12754,7 +12939,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &687784901
 GameObject:
   m_ObjectHideFlags: 0
@@ -12788,7 +12979,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &687784902
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -13170,7 +13361,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &703679519
 GameObject:
   m_ObjectHideFlags: 0
@@ -13348,7 +13545,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &732050820
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -13730,7 +13927,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &750270787
 GameObject:
   m_ObjectHideFlags: 0
@@ -13832,7 +14035,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &760979626
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -14214,7 +14417,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &796385854
 GameObject:
   m_ObjectHideFlags: 0
@@ -14248,7 +14457,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &796385855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14630,7 +14839,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &815100852
 GameObject:
   m_ObjectHideFlags: 0
@@ -14814,7 +15029,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &833294145
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -15196,7 +15411,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &865059610
 GameObject:
   m_ObjectHideFlags: 0
@@ -15230,7 +15451,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &865059611
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -15612,7 +15833,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &895274554
 GameObject:
   m_ObjectHideFlags: 0
@@ -15790,7 +16017,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &916514833
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -16172,7 +16399,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &916530811
 GameObject:
   m_ObjectHideFlags: 0
@@ -16206,7 +16439,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &916530812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16588,7 +16821,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 1, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &933994593
 GameObject:
   m_ObjectHideFlags: 0
@@ -16622,7 +16861,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &933994594
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -17004,7 +17243,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &938530854
 GameObject:
   m_ObjectHideFlags: 0
@@ -17320,7 +17565,7 @@ MonoBehaviour:
   m_Race: 15
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
-  m_IsHostileToPlayer: 0
+  m_IsHostileToPlayer: 1
 --- !u!114 &938530867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17420,7 +17665,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 1, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &940522504
 GameObject:
   m_ObjectHideFlags: 0
@@ -17454,7 +17705,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &940522505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17836,7 +18087,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &959471143
 GameObject:
   m_ObjectHideFlags: 0
@@ -17870,7 +18127,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &959471144
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -18252,7 +18509,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &976152249
 GameObject:
   m_ObjectHideFlags: 0
@@ -18286,7 +18549,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &976152250
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -18668,7 +18931,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &980528361
 GameObject:
   m_ObjectHideFlags: 0
@@ -18846,7 +19115,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &998588267
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -19228,7 +19497,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1002204746
 GameObject:
   m_ObjectHideFlags: 0
@@ -19262,7 +19537,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1002204747
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -19644,7 +19919,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1012512840
 GameObject:
   m_ObjectHideFlags: 0
@@ -19746,7 +20027,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1018262360
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -20128,7 +20409,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1027162744
 GameObject:
   m_ObjectHideFlags: 0
@@ -20450,7 +20737,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1106845460
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -20832,7 +21119,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1113203065
 GameObject:
   m_ObjectHideFlags: 0
@@ -20866,7 +21159,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1113203066
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -21248,7 +21541,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1117847087
 GameObject:
   m_ObjectHideFlags: 0
@@ -21432,7 +21731,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1121671899
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -21814,7 +22113,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1142049351
 GameObject:
   m_ObjectHideFlags: 0
@@ -22060,7 +22365,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1205855415
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -22442,7 +22747,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1238832442
 GameObject:
   m_ObjectHideFlags: 0
@@ -22476,7 +22787,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1238832443
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -22858,7 +23169,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1247296466
 GameObject:
   m_ObjectHideFlags: 0
@@ -22892,7 +23209,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1247296467
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -23274,7 +23591,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1254906432
 GameObject:
   m_ObjectHideFlags: 0
@@ -24333,7 +24656,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1383622485
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -24715,7 +25038,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1385857572
 GameObject:
   m_ObjectHideFlags: 0
@@ -24816,7 +25145,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1390668097
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -25198,7 +25527,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1391486264
 GameObject:
   m_ObjectHideFlags: 0
@@ -25232,7 +25567,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1391486265
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -25614,7 +25949,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1419763614
 GameObject:
   m_ObjectHideFlags: 0
@@ -25724,7 +26065,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1425069676
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -26106,7 +26447,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1425608067
 GameObject:
   m_ObjectHideFlags: 0
@@ -26140,7 +26487,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1425608068
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -26522,7 +26869,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1432522816
 GameObject:
   m_ObjectHideFlags: 0
@@ -26556,7 +26909,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1432522817
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -26938,7 +27291,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1433031826
 GameObject:
   m_ObjectHideFlags: 0
@@ -27252,7 +27611,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1459086052
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -27634,7 +27993,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1508991748
 GameObject:
   m_ObjectHideFlags: 0
@@ -27668,7 +28033,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1508991749
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -28050,7 +28415,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1526605473
 GameObject:
   m_ObjectHideFlags: 0
@@ -28228,7 +28599,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1534126767
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -28610,7 +28981,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1559141876
 GameObject:
   m_ObjectHideFlags: 0
@@ -28644,7 +29021,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1559141877
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -29026,7 +29403,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1572645705
 GameObject:
   m_ObjectHideFlags: 0
@@ -29060,7 +29443,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1572645706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29442,7 +29825,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 1, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1579171338
 GameObject:
   m_ObjectHideFlags: 0
@@ -30267,7 +30656,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1620744662
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -30649,7 +31038,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1625937141
 GameObject:
   m_ObjectHideFlags: 0
@@ -30683,7 +31078,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1625937142
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -31065,7 +31460,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1653726331
 GameObject:
   m_ObjectHideFlags: 0
@@ -31099,7 +31500,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1653726332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31481,7 +31882,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 1, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1662541758
 GameObject:
   m_ObjectHideFlags: 0
@@ -31583,7 +31990,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1707730486
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -31965,7 +32372,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1708986483
 GameObject:
   m_ObjectHideFlags: 0
@@ -32064,7 +32477,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1710006267
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -32446,7 +32859,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1725178360
 GameObject:
   m_ObjectHideFlags: 0
@@ -32480,7 +32899,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1725178361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32862,7 +33281,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1736473572
 GameObject:
   m_ObjectHideFlags: 0
@@ -32964,7 +33389,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1760288202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33346,7 +33771,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1779450093
 GameObject:
   m_ObjectHideFlags: 0
@@ -33380,7 +33811,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1779450094
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -33762,7 +34193,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1822945723
 GameObject:
   m_ObjectHideFlags: 0
@@ -33796,7 +34233,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1822945724
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -34178,7 +34615,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1837981564
 GameObject:
   m_ObjectHideFlags: 0
@@ -34212,7 +34655,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1837981565
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -34594,7 +35037,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1839524221
 GameObject:
   m_ObjectHideFlags: 0
@@ -34976,7 +35425,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1863923110
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -35358,7 +35807,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1876185984
 GameObject:
   m_ObjectHideFlags: 0
@@ -35392,7 +35847,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1876185985
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -35774,7 +36229,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1895586408
 GameObject:
   m_ObjectHideFlags: 0
@@ -35923,7 +36384,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1900138847
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -36305,7 +36766,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1921374701
 GameObject:
   m_ObjectHideFlags: 0
@@ -36339,7 +36806,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1921374702
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -36721,7 +37188,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1930647722
 GameObject:
   m_ObjectHideFlags: 0
@@ -36831,7 +37304,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1947893536
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -37213,7 +37686,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1949702752
 GameObject:
   m_ObjectHideFlags: 0
@@ -37315,7 +37794,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1953154212
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -37697,7 +38176,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1964142257
 GameObject:
   m_ObjectHideFlags: 0
@@ -38008,7 +38493,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1993882005
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -38390,7 +38875,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &1998306311
 GameObject:
   m_ObjectHideFlags: 0
@@ -38492,7 +38983,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2005902300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38874,7 +39365,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 1, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &2010076822
 GameObject:
   m_ObjectHideFlags: 0
@@ -39280,7 +39777,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &2061341355
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -39662,7 +40159,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &2091335202
 GameObject:
   m_ObjectHideFlags: 0
@@ -39764,7 +40267,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &2094021590
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -40146,7 +40649,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 1, b: 0, a: 1}
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &2103193233
 GameObject:
   m_ObjectHideFlags: 0

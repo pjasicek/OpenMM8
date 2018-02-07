@@ -281,6 +281,8 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         }
         else
         {
+            Animator.SetInteger("State", (int)NpcState.ReceivingDamage);
+            StopMoving();
             result.Type = AttackResultType.Hit;
         }
 
@@ -323,21 +325,14 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         GetComponent<MinimapMarker>().Color = Color.yellow; 
     }
 
-    /**** If NPC is a Guard ****/
-    // 1) If it is attacking, do nothing (Waiting for AttackEnded frame event)
-    // 2) If it is moving, do nothing (May be interrupted if enemy enters its melee range)
-    // 3) If it has hostile unit(s) in range, move to its closest one
-    // 4) Else If this unit can Patrol, move to its point within patrol area
-    // 5) Else do nothing (Idle)
-    // ----- [Event] OnAttackEnded - after attack ends, it will check if it is within melee range of any hostile unit,
-    //                           if it is, then it will attack it again, if it is not, it will choose some strafe
-    //                           location - e.g. Shoot - Move - Shoot - Move, etc.
-    // ------ [Event] If enemy enters its attack range, it will attack immediately
-    // ------ [Event] OnDamaged - If it was attacked by a unit which was previously friendly, change this unit to Hostile
-    //                            and query all nearby Guards / Villagers of the same affiliation to be hostile towards
-    //                            that unit too
-
-
+    // Animator
+    public void OnRecieveDamageAnimEnd()
+    {
+        if (CurrentHitPoints > 0)
+        {
+            Animator.SetInteger("State", (int)NpcState.Idle);
+        }
+    }
 
     //-------------------------------------------------------------------------
     // Methods

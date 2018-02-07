@@ -18,6 +18,9 @@ public class CombatNpc : BaseNpc
     private bool HasAltRangedAttack = false;
     private float AltRangedAttackChance;
     private float TimeSinceLastAltAttack = 0.0f;
+    private float MinAltAttackRecoveryTime = 2.0f;
+    private float MaxAltAttackRecoveryTime = 4.0f;
+    private float CurrAltAttackRecoveryTime = 0.0f;
 
     private bool WasInit = false;
 
@@ -38,7 +41,7 @@ public class CombatNpc : BaseNpc
         IsRanged = NpcData.Attack1.Missile != "0";
         HasAltRangedAttack = NpcData.Attack2.Missile != "0";
         AltRangedAttackChance = NpcData.ChanceAttack2;
-
+        CurrAltAttackRecoveryTime = UnityEngine.Random.Range(MinAltAttackRecoveryTime, MaxAltAttackRecoveryTime);
         /*NavMeshAgent.velocity = new Vector3(0, -10, 0);
         SetNavMeshAgentEnabled(true);
         EnterBestState();*/
@@ -53,7 +56,7 @@ public class CombatNpc : BaseNpc
         }
         return currState;*/
 
-        if ((currState == NpcState.Dead) || (currState == NpcState.Dying))
+        if ((currState == NpcState.Dead) || (currState == NpcState.Dying) || (currState == NpcState.ReceivingDamage))
         {
             return currState;
         }
@@ -192,10 +195,16 @@ public class CombatNpc : BaseNpc
             else
             {
                 TimeSinceLastAltAttack += UpdateIntervalMs / 1000.0f;
-                if (HasAltRangedAttack && TimeSinceLastAltAttack > 2.0f)
+                if (HasAltRangedAttack && TimeSinceLastAltAttack > CurrAltAttackRecoveryTime)
                 {
-                    AttackTarget(GetClosestTarget(EnemiesInAgroRange), false);
-                    TimeSinceLastAltAttack = 0.0f;
+                    GameObject closestTarget = GetClosestTarget(EnemiesInAgroRange);
+                    // If the target is in agro range but close, dont use alt ranged attack
+                    if (closestTarget != null && Vector3.Distance(closestTarget.transform.position, transform.position) > 6.0f)
+                    {
+                        AttackTarget(closestTarget, false);
+                        TimeSinceLastAltAttack = 0.0f;
+                        CurrAltAttackRecoveryTime = UnityEngine.Random.Range(MinAltAttackRecoveryTime, MaxAltAttackRecoveryTime);
+                    }
                 }
                 else
                 {
@@ -303,6 +312,12 @@ public class CombatNpc : BaseNpc
                 if (NpcData.Attack2.Missile != "0")
                 {
                     //Debug.Log("Spawn missile: " + NpcData.Attack2.Missile);
+                    GameObject arrow = (GameObject)Instantiate(Resources.Load("Prefabs/Objects/ArrowPrefab"), transform.position + (transform.forward * 2), transform.rotation);
+                    Projectile projectile = arrow.GetComponent<Projectile>();
+                    projectile.AttackInfo = NpcData.Attack2;
+                    projectile.IsTargetPlayer = Target.CompareTag("Player");
+                    Vector3 add = new Vector3(0, 1.0f, 0);
+                    projectile.Shoot(arrow.transform.position, Target.transform.position + add);
                 }
             }
         }
@@ -353,7 +368,7 @@ public class CombatNpc : BaseNpc
         float kitingModifier = 90.0f + randRotMod;
         heading = Quaternion.AngleAxis(kitingModifier, Vector3.up) * heading;
 
-        CurrentDestination = transform.position - heading * 6.0f;
+        CurrentDestination = transform.position - heading * UnityEngine.Random.Range(6.0f, 7.5f);
         NavMeshAgent.ResetPath();
         NavMeshAgent.SetDestination(CurrentDestination);
 
