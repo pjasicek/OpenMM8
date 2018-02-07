@@ -113,7 +113,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
     }
 
     // Use this for initialization
-    public void OnStart ()
+    public void OnStart()
     {
         Player = GameObject.FindWithTag("Player");
         if (Player == null)
@@ -159,7 +159,14 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
         HoverInfo.HoverText = NpcData.Name;
 
-        //m_NavMeshAgent
+        if (HostilityResolver.m_IsHostileToPlayer)
+        {
+            GetComponent<MinimapMarker>().Color = Color.red;
+        }
+        else
+        {
+            GetComponent<MinimapMarker>().Color = Color.green;
+        }
     }
 
     private AttackResult OnAttackReceived(AttackInfo hitInfo, GameObject source)
@@ -221,6 +228,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
                 {
                     Debug.Log("Added: " + go.name);
                     hostilityChecker.m_IsHostileToPlayer = true;
+                    go.GetComponent<MinimapMarker>().Color = Color.red;
                     go.GetComponent<BaseNpc>().EnemiesInAgroRange.Clear();
                     go.GetComponent<BaseNpc>().EnemiesInMeleeRange.Clear();
                     foreach (SphereCollider childCollider in go.GetComponentsInChildren<SphereCollider>())
@@ -302,7 +310,8 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
                 comp.Equals(HoverInfo) ||
                 comp.Equals(GetComponent<CameraFacingBillboard>()) ||
                 comp.Equals(GetComponent<SpriteRenderer>()) ||
-                comp.Equals(GetComponent<Inspectable>()))
+                comp.Equals(GetComponent<Inspectable>()) ||
+                comp.Equals(GetComponent<MinimapMarker>()))
             {
                 continue;
             }
@@ -311,6 +320,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         }
 
         GetComponent<Lootable>().enabled = true;
+        GetComponent<MinimapMarker>().Color = Color.yellow; 
     }
 
     /**** If NPC is a Guard ****/

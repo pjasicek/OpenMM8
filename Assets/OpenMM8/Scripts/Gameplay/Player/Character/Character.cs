@@ -27,6 +27,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public void OnUpdate(float secDiff)
         {
             TimeUntilRecovery -= secDiff;
+            if (IsRecovered() && CharacterUI.AgroStatus.enabled == false)
+            {
+                CharacterUI.AgroStatus.enabled = true;
+            }
+            else if (!IsRecovered() && CharacterUI.AgroStatus.enabled == true)
+            {
+                CharacterUI.AgroStatus.enabled = false;
+            }
             /*if (!IsRecovered() && CharacterUI.SelectionRing.enabled == true)
             {
                 CharacterUI.SelectionRing.enabled = false;

@@ -302,6 +302,7 @@ GameObject:
   - component: {fileID: 37784355}
   - component: {fileID: 37784354}
   - component: {fileID: 37784353}
+  - component: {fileID: 37784371}
   m_Layer: 8
   m_Name: LizardmanWarrior (47)
   m_TagString: Enemy
@@ -679,6 +680,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 37
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &37784371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 37784352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &55145937
 GameObject:
   m_ObjectHideFlags: 0
@@ -847,6 +860,7 @@ GameObject:
   - component: {fileID: 91798108}
   - component: {fileID: 91798107}
   - component: {fileID: 91798106}
+  - component: {fileID: 91798124}
   m_Layer: 8
   m_Name: LizardmanWarrior (37)
   m_TagString: Enemy
@@ -1224,6 +1238,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 27
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &91798124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 91798105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &101082145
 GameObject:
   m_ObjectHideFlags: 0
@@ -1626,6 +1652,7 @@ GameObject:
   - component: {fileID: 137195581}
   - component: {fileID: 137195582}
   - component: {fileID: 137195567}
+  - component: {fileID: 137195583}
   m_Layer: 8
   m_Name: LizardmanWarrior (31)
   m_TagString: Enemy
@@ -2003,6 +2030,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HoverText: 
+--- !u!114 &137195583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 137195564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &152276959
 GameObject:
   m_ObjectHideFlags: 0
@@ -2029,6 +2068,7 @@ GameObject:
   - component: {fileID: 152276962}
   - component: {fileID: 152276961}
   - component: {fileID: 152276960}
+  - component: {fileID: 152276978}
   m_Layer: 8
   m_Name: LizardmanWarrior (50)
   m_TagString: Enemy
@@ -2406,6 +2446,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 40
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &152276978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 152276959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &172736383
 GameObject:
   m_ObjectHideFlags: 0
@@ -2433,6 +2485,7 @@ GameObject:
   - component: {fileID: 172736400}
   - component: {fileID: 172736401}
   - component: {fileID: 172736402}
+  - component: {fileID: 172736403}
   m_Layer: 8
   m_Name: LizardmanVillager
   m_TagString: Untagged
@@ -2776,8 +2829,8 @@ MonoBehaviour:
   CurrentHitPoints: 0
   StoppingDistance: 0.5
   DoWander: 0
-  MinWanderIdleTime: 1
-  MaxWanderIdleTime: 2
+  MinWanderIdleTime: 100000
+  MaxWanderIdleTime: 100000
   WanderRadius: 15
   DrawWaypoint: 1
   UpdateIntervalMs: 50
@@ -2897,6 +2950,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HoverText: 
+--- !u!114 &172736403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 172736383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &175601147
 GameObject:
   m_ObjectHideFlags: 0
@@ -3065,6 +3130,7 @@ GameObject:
   - component: {fileID: 195325177}
   - component: {fileID: 195325178}
   - component: {fileID: 195325163}
+  - component: {fileID: 195325179}
   m_Layer: 8
   m_Name: LizardmanWarrior (27)
   m_TagString: Enemy
@@ -3442,6 +3508,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HoverText: 
+--- !u!114 &195325179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 195325160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &201289662
 GameObject:
   m_ObjectHideFlags: 0
@@ -3468,6 +3546,7 @@ GameObject:
   - component: {fileID: 201289665}
   - component: {fileID: 201289664}
   - component: {fileID: 201289663}
+  - component: {fileID: 201289681}
   m_Layer: 8
   m_Name: LizardmanWarrior (45)
   m_TagString: Enemy
@@ -3845,6 +3924,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 35
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &201289681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 201289662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &215058309
 GameObject:
   m_ObjectHideFlags: 0
@@ -4129,6 +4220,7 @@ GameObject:
   - component: {fileID: 241321793}
   - component: {fileID: 241321792}
   - component: {fileID: 241321791}
+  - component: {fileID: 241321809}
   m_Layer: 8
   m_Name: LizardmanWarrior (49)
   m_TagString: Enemy
@@ -4506,6 +4598,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 39
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &241321809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 241321790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &246274078
 GameObject:
   m_ObjectHideFlags: 0
@@ -4888,6 +4992,7 @@ GameObject:
   - component: {fileID: 281505967}
   - component: {fileID: 281505966}
   - component: {fileID: 281505965}
+  - component: {fileID: 281505983}
   m_Layer: 8
   m_Name: LizardmanWarrior (67)
   m_TagString: Enemy
@@ -5265,6 +5370,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 57
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &281505983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 281505964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &293703863
 GameObject:
   m_ObjectHideFlags: 0
@@ -5291,6 +5408,7 @@ GameObject:
   - component: {fileID: 293703866}
   - component: {fileID: 293703865}
   - component: {fileID: 293703864}
+  - component: {fileID: 293703882}
   m_Layer: 8
   m_Name: LizardmanWarrior (93)
   m_TagString: Enemy
@@ -5668,6 +5786,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 83
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &293703882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 293703863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &315092925
 GameObject:
   m_ObjectHideFlags: 0
@@ -5849,6 +5979,7 @@ GameObject:
   - component: {fileID: 359520905}
   - component: {fileID: 359520906}
   - component: {fileID: 359520891}
+  - component: {fileID: 359520907}
   m_Layer: 8
   m_Name: LizardmanWarrior (21)
   m_TagString: Enemy
@@ -6226,6 +6357,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HoverText: 
+--- !u!114 &359520907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 359520888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 1, g: 1, b: 0, a: 1}
 --- !u!1 &362349818
 GameObject:
   m_ObjectHideFlags: 0
@@ -6328,6 +6471,7 @@ GameObject:
   - component: {fileID: 367584452}
   - component: {fileID: 367584451}
   - component: {fileID: 367584450}
+  - component: {fileID: 367584468}
   m_Layer: 8
   m_Name: LizardmanWarrior (71)
   m_TagString: Enemy
@@ -6705,6 +6849,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 61
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &367584468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 367584449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &392496140
 GameObject:
   m_ObjectHideFlags: 0
@@ -6799,6 +6955,7 @@ GameObject:
   - component: {fileID: 397967811}
   - component: {fileID: 397967810}
   - component: {fileID: 397967809}
+  - component: {fileID: 397967827}
   m_Layer: 8
   m_Name: LizardmanWarrior (46)
   m_TagString: Enemy
@@ -7176,6 +7333,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 36
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &397967827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 397967808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &414991439
 GameObject:
   m_ObjectHideFlags: 0
@@ -7278,6 +7447,7 @@ GameObject:
   - component: {fileID: 429990158}
   - component: {fileID: 429990157}
   - component: {fileID: 429990156}
+  - component: {fileID: 429990174}
   m_Layer: 8
   m_Name: LizardmanWarrior (83)
   m_TagString: Enemy
@@ -7655,6 +7825,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 73
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &429990174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 429990155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &449485874
 GameObject:
   m_ObjectHideFlags: 0
@@ -7825,6 +8007,7 @@ GameObject:
   - component: {fileID: 477205209}
   - component: {fileID: 477205208}
   - component: {fileID: 477205207}
+  - component: {fileID: 477205225}
   m_Layer: 8
   m_Name: LizardmanWarrior (91)
   m_TagString: Enemy
@@ -8202,6 +8385,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 81
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &477205225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 477205206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &490825950
 GameObject:
   m_ObjectHideFlags: 0
@@ -8304,6 +8499,7 @@ GameObject:
   - component: {fileID: 509289274}
   - component: {fileID: 509289273}
   - component: {fileID: 509289272}
+  - component: {fileID: 509289290}
   m_Layer: 8
   m_Name: LizardmanWarrior (90)
   m_TagString: Enemy
@@ -8681,6 +8877,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 80
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &509289290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 509289271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &516606566
 GameObject:
   m_ObjectHideFlags: 0
@@ -8707,6 +8915,7 @@ GameObject:
   - component: {fileID: 516606583}
   - component: {fileID: 516606584}
   - component: {fileID: 516606569}
+  - component: {fileID: 516606585}
   m_Layer: 8
   m_Name: LizardmanWarrior (24)
   m_TagString: Enemy
@@ -9084,6 +9293,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HoverText: 
+--- !u!114 &516606585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 516606566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &530989915
 GameObject:
   m_ObjectHideFlags: 0
@@ -9110,6 +9331,7 @@ GameObject:
   - component: {fileID: 530989918}
   - component: {fileID: 530989917}
   - component: {fileID: 530989916}
+  - component: {fileID: 530989934}
   m_Layer: 8
   m_Name: LizardmanWarrior (41)
   m_TagString: Enemy
@@ -9487,6 +9709,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 31
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &530989934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 530989915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &537905290
 GameObject:
   m_ObjectHideFlags: 0
@@ -9754,6 +9988,7 @@ GameObject:
   - component: {fileID: 575368584}
   - component: {fileID: 575368583}
   - component: {fileID: 575368582}
+  - component: {fileID: 575368600}
   m_Layer: 8
   m_Name: LizardmanWarrior (72)
   m_TagString: Enemy
@@ -10131,6 +10366,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 62
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &575368600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 575368581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &580063000
 GameObject:
   m_ObjectHideFlags: 0
@@ -10225,6 +10472,7 @@ GameObject:
   - component: {fileID: 588579220}
   - component: {fileID: 588579219}
   - component: {fileID: 588579218}
+  - component: {fileID: 588579236}
   m_Layer: 8
   m_Name: LizardmanWarrior (82)
   m_TagString: Enemy
@@ -10602,6 +10850,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 72
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &588579236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 588579217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &610508040
 GameObject:
   m_ObjectHideFlags: 0
@@ -10628,6 +10888,7 @@ GameObject:
   - component: {fileID: 610508043}
   - component: {fileID: 610508042}
   - component: {fileID: 610508041}
+  - component: {fileID: 610508059}
   m_Layer: 8
   m_Name: LizardmanWarrior (74)
   m_TagString: Enemy
@@ -11005,6 +11266,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 64
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &610508059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 610508040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &635718961
 GameObject:
   m_ObjectHideFlags: 0
@@ -11079,6 +11352,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_MinimapScale: {x: 0.2, y: 0.2}
+  WizardEyeRelativeSize: {x: 118, y: 81}
+  WizardEyeDotRelativeSize: 2.5
+  GuiRelativeSize: {x: 640, y: 480}
+  MapSideLength: 650
+  MinimapMarkers: []
 --- !u!222 &635718966
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11111,6 +11389,7 @@ GameObject:
   - component: {fileID: 638759262}
   - component: {fileID: 638759263}
   - component: {fileID: 638759248}
+  - component: {fileID: 638759264}
   m_Layer: 8
   m_Name: LizardmanWarrior (30)
   m_TagString: Enemy
@@ -11488,6 +11767,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HoverText: 
+--- !u!114 &638759264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 638759245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &671208471
 GameObject:
   m_ObjectHideFlags: 0
@@ -11658,6 +11949,7 @@ GameObject:
   - component: {fileID: 678008983}
   - component: {fileID: 678008982}
   - component: {fileID: 678008981}
+  - component: {fileID: 678008999}
   m_Layer: 8
   m_Name: LizardmanWarrior (38)
   m_TagString: Enemy
@@ -12035,6 +12327,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 28
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &678008999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 678008980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &687431461
 GameObject:
   m_ObjectHideFlags: 0
@@ -12061,6 +12365,7 @@ GameObject:
   - component: {fileID: 687431478}
   - component: {fileID: 687431479}
   - component: {fileID: 687431464}
+  - component: {fileID: 687431480}
   m_Layer: 8
   m_Name: LizardmanWarrior (25)
   m_TagString: Enemy
@@ -12438,6 +12743,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HoverText: 
+--- !u!114 &687431480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 687431461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &687784901
 GameObject:
   m_ObjectHideFlags: 0
@@ -12464,6 +12781,7 @@ GameObject:
   - component: {fileID: 687784904}
   - component: {fileID: 687784903}
   - component: {fileID: 687784902}
+  - component: {fileID: 687784920}
   m_Layer: 8
   m_Name: LizardmanWarrior (77)
   m_TagString: Enemy
@@ -12841,6 +13159,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 67
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &687784920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 687784901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &703679519
 GameObject:
   m_ObjectHideFlags: 0
@@ -13011,6 +13341,7 @@ GameObject:
   - component: {fileID: 732050822}
   - component: {fileID: 732050821}
   - component: {fileID: 732050820}
+  - component: {fileID: 732050838}
   m_Layer: 8
   m_Name: LizardmanWarrior (86)
   m_TagString: Enemy
@@ -13388,6 +13719,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 76
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &732050838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 732050819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &750270787
 GameObject:
   m_ObjectHideFlags: 0
@@ -13482,6 +13825,7 @@ GameObject:
   - component: {fileID: 760979628}
   - component: {fileID: 760979627}
   - component: {fileID: 760979626}
+  - component: {fileID: 760979644}
   m_Layer: 8
   m_Name: LizardmanWarrior (70)
   m_TagString: Enemy
@@ -13859,6 +14203,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 60
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &760979644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 760979625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &796385854
 GameObject:
   m_ObjectHideFlags: 0
@@ -13885,6 +14241,7 @@ GameObject:
   - component: {fileID: 796385871}
   - component: {fileID: 796385872}
   - component: {fileID: 796385857}
+  - component: {fileID: 796385873}
   m_Layer: 8
   m_Name: LizardmanWarrior (29)
   m_TagString: Enemy
@@ -14262,6 +14619,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HoverText: 
+--- !u!114 &796385873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 796385854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &815100852
 GameObject:
   m_ObjectHideFlags: 0
@@ -14438,6 +14807,7 @@ GameObject:
   - component: {fileID: 833294147}
   - component: {fileID: 833294146}
   - component: {fileID: 833294145}
+  - component: {fileID: 833294163}
   m_Layer: 8
   m_Name: LizardmanWarrior (34)
   m_TagString: Enemy
@@ -14815,6 +15185,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &833294163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 833294144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &865059610
 GameObject:
   m_ObjectHideFlags: 0
@@ -14841,6 +15223,7 @@ GameObject:
   - component: {fileID: 865059613}
   - component: {fileID: 865059612}
   - component: {fileID: 865059611}
+  - component: {fileID: 865059629}
   m_Layer: 8
   m_Name: LizardmanWarrior (61)
   m_TagString: Enemy
@@ -15218,6 +15601,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 51
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &865059629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 865059610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &895274554
 GameObject:
   m_ObjectHideFlags: 0
@@ -15388,6 +15783,7 @@ GameObject:
   - component: {fileID: 916514835}
   - component: {fileID: 916514834}
   - component: {fileID: 916514833}
+  - component: {fileID: 916514851}
   m_Layer: 8
   m_Name: LizardmanWarrior (48)
   m_TagString: Enemy
@@ -15765,6 +16161,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 38
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &916514851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 916514832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &916530811
 GameObject:
   m_ObjectHideFlags: 0
@@ -15791,6 +16199,7 @@ GameObject:
   - component: {fileID: 916530828}
   - component: {fileID: 916530829}
   - component: {fileID: 916530814}
+  - component: {fileID: 916530830}
   m_Layer: 8
   m_Name: LizardmanWarrior (23)
   m_TagString: Enemy
@@ -16168,6 +16577,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HoverText: 
+--- !u!114 &916530830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 916530811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 1, g: 1, b: 0, a: 1}
 --- !u!1 &933994593
 GameObject:
   m_ObjectHideFlags: 0
@@ -16194,6 +16615,7 @@ GameObject:
   - component: {fileID: 933994596}
   - component: {fileID: 933994595}
   - component: {fileID: 933994594}
+  - component: {fileID: 933994612}
   m_Layer: 8
   m_Name: LizardmanWarrior (85)
   m_TagString: Enemy
@@ -16571,6 +16993,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 75
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &933994612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 933994593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &938530854
 GameObject:
   m_ObjectHideFlags: 0
@@ -16597,6 +17031,7 @@ GameObject:
   - component: {fileID: 938530871}
   - component: {fileID: 938530872}
   - component: {fileID: 938530855}
+  - component: {fileID: 938530873}
   m_Layer: 8
   m_Name: LizardmanWarrior (18)
   m_TagString: Enemy
@@ -16974,6 +17409,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HoverText: 
+--- !u!114 &938530873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 938530854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 1, g: 1, b: 0, a: 1}
 --- !u!1 &940522504
 GameObject:
   m_ObjectHideFlags: 0
@@ -17000,6 +17447,7 @@ GameObject:
   - component: {fileID: 940522521}
   - component: {fileID: 940522522}
   - component: {fileID: 940522507}
+  - component: {fileID: 940522523}
   m_Layer: 8
   m_Name: LizardmanWarrior (26)
   m_TagString: Enemy
@@ -17377,6 +17825,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HoverText: 
+--- !u!114 &940522523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 940522504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &959471143
 GameObject:
   m_ObjectHideFlags: 0
@@ -17403,6 +17863,7 @@ GameObject:
   - component: {fileID: 959471146}
   - component: {fileID: 959471145}
   - component: {fileID: 959471144}
+  - component: {fileID: 959471162}
   m_Layer: 8
   m_Name: LizardmanWarrior (57)
   m_TagString: Enemy
@@ -17780,6 +18241,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 47
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &959471162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 959471143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &976152249
 GameObject:
   m_ObjectHideFlags: 0
@@ -17806,6 +18279,7 @@ GameObject:
   - component: {fileID: 976152252}
   - component: {fileID: 976152251}
   - component: {fileID: 976152250}
+  - component: {fileID: 976152268}
   m_Layer: 8
   m_Name: LizardmanWarrior (44)
   m_TagString: Enemy
@@ -18183,6 +18657,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 34
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &976152268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 976152249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &980528361
 GameObject:
   m_ObjectHideFlags: 0
@@ -18353,6 +18839,7 @@ GameObject:
   - component: {fileID: 998588269}
   - component: {fileID: 998588268}
   - component: {fileID: 998588267}
+  - component: {fileID: 998588285}
   m_Layer: 8
   m_Name: LizardmanWarrior (69)
   m_TagString: Enemy
@@ -18730,6 +19217,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 59
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &998588285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 998588266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1002204746
 GameObject:
   m_ObjectHideFlags: 0
@@ -18756,6 +19255,7 @@ GameObject:
   - component: {fileID: 1002204749}
   - component: {fileID: 1002204748}
   - component: {fileID: 1002204747}
+  - component: {fileID: 1002204765}
   m_Layer: 8
   m_Name: LizardmanWarrior (76)
   m_TagString: Enemy
@@ -19133,6 +19633,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 66
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1002204765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1002204746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1012512840
 GameObject:
   m_ObjectHideFlags: 0
@@ -19227,6 +19739,7 @@ GameObject:
   - component: {fileID: 1018262362}
   - component: {fileID: 1018262361}
   - component: {fileID: 1018262360}
+  - component: {fileID: 1018262378}
   m_Layer: 8
   m_Name: LizardmanWarrior (43)
   m_TagString: Enemy
@@ -19604,6 +20117,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 33
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1018262378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1018262359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1027162744
 GameObject:
   m_ObjectHideFlags: 0
@@ -19918,6 +20443,7 @@ GameObject:
   - component: {fileID: 1106845462}
   - component: {fileID: 1106845461}
   - component: {fileID: 1106845460}
+  - component: {fileID: 1106845478}
   m_Layer: 8
   m_Name: LizardmanWarrior (63)
   m_TagString: Enemy
@@ -20295,6 +20821,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 53
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1106845478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1106845459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1113203065
 GameObject:
   m_ObjectHideFlags: 0
@@ -20321,6 +20859,7 @@ GameObject:
   - component: {fileID: 1113203068}
   - component: {fileID: 1113203067}
   - component: {fileID: 1113203066}
+  - component: {fileID: 1113203084}
   m_Layer: 8
   m_Name: LizardmanWarrior (80)
   m_TagString: Enemy
@@ -20698,6 +21237,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 70
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1113203084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1113203065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1117847087
 GameObject:
   m_ObjectHideFlags: 0
@@ -20874,6 +21425,7 @@ GameObject:
   - component: {fileID: 1121671901}
   - component: {fileID: 1121671900}
   - component: {fileID: 1121671899}
+  - component: {fileID: 1121671917}
   m_Layer: 8
   m_Name: LizardmanWarrior (68)
   m_TagString: Enemy
@@ -21251,6 +21803,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 58
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1121671917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1121671898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1142049351
 GameObject:
   m_ObjectHideFlags: 0
@@ -21489,6 +22053,7 @@ GameObject:
   - component: {fileID: 1205855417}
   - component: {fileID: 1205855416}
   - component: {fileID: 1205855415}
+  - component: {fileID: 1205855433}
   m_Layer: 8
   m_Name: LizardmanWarrior (52)
   m_TagString: Enemy
@@ -21866,6 +22431,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 42
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1205855433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1205855414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1238832442
 GameObject:
   m_ObjectHideFlags: 0
@@ -21892,6 +22469,7 @@ GameObject:
   - component: {fileID: 1238832445}
   - component: {fileID: 1238832444}
   - component: {fileID: 1238832443}
+  - component: {fileID: 1238832461}
   m_Layer: 8
   m_Name: LizardmanWarrior (81)
   m_TagString: Enemy
@@ -22269,6 +22847,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 71
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1238832461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1238832442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1247296466
 GameObject:
   m_ObjectHideFlags: 0
@@ -22295,6 +22885,7 @@ GameObject:
   - component: {fileID: 1247296469}
   - component: {fileID: 1247296468}
   - component: {fileID: 1247296467}
+  - component: {fileID: 1247296485}
   m_Layer: 8
   m_Name: LizardmanWarrior (84)
   m_TagString: Enemy
@@ -22672,6 +23263,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 74
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1247296485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1247296466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1254906432
 GameObject:
   m_ObjectHideFlags: 0
@@ -23516,6 +24119,7 @@ MonoBehaviour:
   GameState: 0
   MapType: 0
   PlayerParty: {fileID: 0}
+  Minimap: {fileID: 0}
   PartyCanvas: {fileID: 0}
   PartyBuffsAndButtonsCanvas: {fileID: 0}
   PartyInventoryCanvas: {fileID: 0}
@@ -23722,6 +24326,7 @@ GameObject:
   - component: {fileID: 1383622487}
   - component: {fileID: 1383622486}
   - component: {fileID: 1383622485}
+  - component: {fileID: 1383622503}
   m_Layer: 8
   m_Name: LizardmanWarrior (59)
   m_TagString: Enemy
@@ -24099,6 +24704,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 49
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1383622503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1383622484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1385857572
 GameObject:
   m_ObjectHideFlags: 0
@@ -24192,6 +24809,7 @@ GameObject:
   - component: {fileID: 1390668099}
   - component: {fileID: 1390668098}
   - component: {fileID: 1390668097}
+  - component: {fileID: 1390668115}
   m_Layer: 8
   m_Name: LizardmanWarrior (79)
   m_TagString: Enemy
@@ -24569,6 +25187,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 69
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1390668115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1390668096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1391486264
 GameObject:
   m_ObjectHideFlags: 0
@@ -24595,6 +25225,7 @@ GameObject:
   - component: {fileID: 1391486267}
   - component: {fileID: 1391486266}
   - component: {fileID: 1391486265}
+  - component: {fileID: 1391486283}
   m_Layer: 8
   m_Name: LizardmanWarrior (40)
   m_TagString: Enemy
@@ -24972,6 +25603,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 30
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1391486283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1391486264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1419763614
 GameObject:
   m_ObjectHideFlags: 0
@@ -25074,6 +25717,7 @@ GameObject:
   - component: {fileID: 1425069678}
   - component: {fileID: 1425069677}
   - component: {fileID: 1425069676}
+  - component: {fileID: 1425069694}
   m_Layer: 8
   m_Name: LizardmanWarrior (36)
   m_TagString: Enemy
@@ -25451,6 +26095,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 26
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1425069694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1425069675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1425608067
 GameObject:
   m_ObjectHideFlags: 0
@@ -25477,6 +26133,7 @@ GameObject:
   - component: {fileID: 1425608070}
   - component: {fileID: 1425608069}
   - component: {fileID: 1425608068}
+  - component: {fileID: 1425608086}
   m_Layer: 8
   m_Name: LizardmanWarrior (89)
   m_TagString: Enemy
@@ -25854,6 +26511,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 79
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1425608086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1425608067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1432522816
 GameObject:
   m_ObjectHideFlags: 0
@@ -25880,6 +26549,7 @@ GameObject:
   - component: {fileID: 1432522819}
   - component: {fileID: 1432522818}
   - component: {fileID: 1432522817}
+  - component: {fileID: 1432522835}
   m_Layer: 8
   m_Name: LizardmanWarrior (35)
   m_TagString: Enemy
@@ -26257,6 +26927,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 25
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1432522835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1432522816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1433031826
 GameObject:
   m_ObjectHideFlags: 0
@@ -26563,6 +27245,7 @@ GameObject:
   - component: {fileID: 1459086054}
   - component: {fileID: 1459086053}
   - component: {fileID: 1459086052}
+  - component: {fileID: 1459086070}
   m_Layer: 8
   m_Name: LizardmanWarrior (54)
   m_TagString: Enemy
@@ -26940,6 +27623,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 44
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1459086070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1459086051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1508991748
 GameObject:
   m_ObjectHideFlags: 0
@@ -26966,6 +27661,7 @@ GameObject:
   - component: {fileID: 1508991751}
   - component: {fileID: 1508991750}
   - component: {fileID: 1508991749}
+  - component: {fileID: 1508991767}
   m_Layer: 8
   m_Name: LizardmanWarrior (78)
   m_TagString: Enemy
@@ -27343,6 +28039,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 68
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1508991767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1508991748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1526605473
 GameObject:
   m_ObjectHideFlags: 0
@@ -27513,6 +28221,7 @@ GameObject:
   - component: {fileID: 1534126769}
   - component: {fileID: 1534126768}
   - component: {fileID: 1534126767}
+  - component: {fileID: 1534126785}
   m_Layer: 8
   m_Name: LizardmanWarrior (60)
   m_TagString: Enemy
@@ -27890,6 +28599,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 50
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1534126785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1534126766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1559141876
 GameObject:
   m_ObjectHideFlags: 0
@@ -27916,6 +28637,7 @@ GameObject:
   - component: {fileID: 1559141879}
   - component: {fileID: 1559141878}
   - component: {fileID: 1559141877}
+  - component: {fileID: 1559141895}
   m_Layer: 8
   m_Name: LizardmanWarrior (92)
   m_TagString: Enemy
@@ -28293,6 +29015,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 82
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1559141895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1559141876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1572645705
 GameObject:
   m_ObjectHideFlags: 0
@@ -28319,6 +29053,7 @@ GameObject:
   - component: {fileID: 1572645722}
   - component: {fileID: 1572645723}
   - component: {fileID: 1572645708}
+  - component: {fileID: 1572645724}
   m_Layer: 8
   m_Name: LizardmanWarrior (20)
   m_TagString: Enemy
@@ -28696,6 +29431,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HoverText: 
+--- !u!114 &1572645724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1572645705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 1, g: 1, b: 0, a: 1}
 --- !u!1 &1579171338
 GameObject:
   m_ObjectHideFlags: 0
@@ -29513,6 +30260,7 @@ GameObject:
   - component: {fileID: 1620744664}
   - component: {fileID: 1620744663}
   - component: {fileID: 1620744662}
+  - component: {fileID: 1620744680}
   m_Layer: 8
   m_Name: LizardmanWarrior (51)
   m_TagString: Enemy
@@ -29890,6 +30638,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 41
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1620744680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1620744661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1625937141
 GameObject:
   m_ObjectHideFlags: 0
@@ -29916,6 +30676,7 @@ GameObject:
   - component: {fileID: 1625937144}
   - component: {fileID: 1625937143}
   - component: {fileID: 1625937142}
+  - component: {fileID: 1625937160}
   m_Layer: 8
   m_Name: LizardmanWarrior (66)
   m_TagString: Enemy
@@ -30293,6 +31054,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 56
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1625937160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1625937141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1653726331
 GameObject:
   m_ObjectHideFlags: 0
@@ -30319,6 +31092,7 @@ GameObject:
   - component: {fileID: 1653726348}
   - component: {fileID: 1653726349}
   - component: {fileID: 1653726334}
+  - component: {fileID: 1653726350}
   m_Layer: 8
   m_Name: LizardmanWarrior (19)
   m_TagString: Enemy
@@ -30696,6 +31470,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HoverText: 
+--- !u!114 &1653726350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1653726331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 1, g: 1, b: 0, a: 1}
 --- !u!1 &1662541758
 GameObject:
   m_ObjectHideFlags: 0
@@ -30790,6 +31576,7 @@ GameObject:
   - component: {fileID: 1707730488}
   - component: {fileID: 1707730487}
   - component: {fileID: 1707730486}
+  - component: {fileID: 1707730504}
   m_Layer: 8
   m_Name: LizardmanWarrior (56)
   m_TagString: Enemy
@@ -31167,6 +31954,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 46
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1707730504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1707730485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1708986483
 GameObject:
   m_ObjectHideFlags: 0
@@ -31258,6 +32057,7 @@ GameObject:
   - component: {fileID: 1710006269}
   - component: {fileID: 1710006268}
   - component: {fileID: 1710006267}
+  - component: {fileID: 1710006285}
   m_Layer: 8
   m_Name: LizardmanWarrior (39)
   m_TagString: Enemy
@@ -31635,6 +32435,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 29
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1710006285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1710006266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1725178360
 GameObject:
   m_ObjectHideFlags: 0
@@ -31661,6 +32473,7 @@ GameObject:
   - component: {fileID: 1725178377}
   - component: {fileID: 1725178378}
   - component: {fileID: 1725178363}
+  - component: {fileID: 1725178379}
   m_Layer: 8
   m_Name: LizardmanWarrior (32)
   m_TagString: Enemy
@@ -32038,6 +32851,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HoverText: 
+--- !u!114 &1725178379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1725178360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1736473572
 GameObject:
   m_ObjectHideFlags: 0
@@ -32132,6 +32957,7 @@ GameObject:
   - component: {fileID: 1760288218}
   - component: {fileID: 1760288219}
   - component: {fileID: 1760288204}
+  - component: {fileID: 1760288220}
   m_Layer: 8
   m_Name: LizardmanWarrior (28)
   m_TagString: Enemy
@@ -32509,6 +33335,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HoverText: 
+--- !u!114 &1760288220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1760288201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1779450093
 GameObject:
   m_ObjectHideFlags: 0
@@ -32535,6 +33373,7 @@ GameObject:
   - component: {fileID: 1779450096}
   - component: {fileID: 1779450095}
   - component: {fileID: 1779450094}
+  - component: {fileID: 1779450112}
   m_Layer: 8
   m_Name: LizardmanWarrior (64)
   m_TagString: Enemy
@@ -32912,6 +33751,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 54
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1779450112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1779450093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1822945723
 GameObject:
   m_ObjectHideFlags: 0
@@ -32938,6 +33789,7 @@ GameObject:
   - component: {fileID: 1822945726}
   - component: {fileID: 1822945725}
   - component: {fileID: 1822945724}
+  - component: {fileID: 1822945742}
   m_Layer: 8
   m_Name: LizardmanWarrior (87)
   m_TagString: Enemy
@@ -33315,6 +34167,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 77
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1822945742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1822945723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1837981564
 GameObject:
   m_ObjectHideFlags: 0
@@ -33341,6 +34205,7 @@ GameObject:
   - component: {fileID: 1837981567}
   - component: {fileID: 1837981566}
   - component: {fileID: 1837981565}
+  - component: {fileID: 1837981583}
   m_Layer: 8
   m_Name: LizardmanWarrior (53)
   m_TagString: Enemy
@@ -33718,6 +34583,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 43
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1837981583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1837981564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1839524221
 GameObject:
   m_ObjectHideFlags: 0
@@ -34092,6 +34969,7 @@ GameObject:
   - component: {fileID: 1863923112}
   - component: {fileID: 1863923111}
   - component: {fileID: 1863923110}
+  - component: {fileID: 1863923128}
   m_Layer: 8
   m_Name: LizardmanWarrior (62)
   m_TagString: Enemy
@@ -34469,6 +35347,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 52
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1863923128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1863923109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1876185984
 GameObject:
   m_ObjectHideFlags: 0
@@ -34495,6 +35385,7 @@ GameObject:
   - component: {fileID: 1876185987}
   - component: {fileID: 1876185986}
   - component: {fileID: 1876185985}
+  - component: {fileID: 1876186003}
   m_Layer: 8
   m_Name: LizardmanWarrior (42)
   m_TagString: Enemy
@@ -34872,6 +35763,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 32
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1876186003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1876185984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1895586408
 GameObject:
   m_ObjectHideFlags: 0
@@ -35013,6 +35916,7 @@ GameObject:
   - component: {fileID: 1900138849}
   - component: {fileID: 1900138848}
   - component: {fileID: 1900138847}
+  - component: {fileID: 1900138865}
   m_Layer: 8
   m_Name: LizardmanWarrior (33)
   m_TagString: Enemy
@@ -35390,6 +36294,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 23
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1900138865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1900138846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1921374701
 GameObject:
   m_ObjectHideFlags: 0
@@ -35416,6 +36332,7 @@ GameObject:
   - component: {fileID: 1921374704}
   - component: {fileID: 1921374703}
   - component: {fileID: 1921374702}
+  - component: {fileID: 1921374720}
   m_Layer: 8
   m_Name: LizardmanWarrior (65)
   m_TagString: Enemy
@@ -35793,6 +36710,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 55
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1921374720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1921374701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1930647722
 GameObject:
   m_ObjectHideFlags: 0
@@ -35895,6 +36824,7 @@ GameObject:
   - component: {fileID: 1947893538}
   - component: {fileID: 1947893537}
   - component: {fileID: 1947893536}
+  - component: {fileID: 1947893554}
   m_Layer: 8
   m_Name: LizardmanWarrior (55)
   m_TagString: Enemy
@@ -36272,6 +37202,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 45
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1947893554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1947893535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1949702752
 GameObject:
   m_ObjectHideFlags: 0
@@ -36366,6 +37308,7 @@ GameObject:
   - component: {fileID: 1953154214}
   - component: {fileID: 1953154213}
   - component: {fileID: 1953154212}
+  - component: {fileID: 1953154230}
   m_Layer: 8
   m_Name: LizardmanWarrior (58)
   m_TagString: Enemy
@@ -36743,6 +37686,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 48
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1953154230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1953154211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1964142257
 GameObject:
   m_ObjectHideFlags: 0
@@ -37046,6 +38001,7 @@ GameObject:
   - component: {fileID: 1993882007}
   - component: {fileID: 1993882006}
   - component: {fileID: 1993882005}
+  - component: {fileID: 1993882023}
   m_Layer: 8
   m_Name: LizardmanWarrior (75)
   m_TagString: Enemy
@@ -37423,6 +38379,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 65
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1993882023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1993882004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1998306311
 GameObject:
   m_ObjectHideFlags: 0
@@ -37517,6 +38485,7 @@ GameObject:
   - component: {fileID: 2005902316}
   - component: {fileID: 2005902317}
   - component: {fileID: 2005902302}
+  - component: {fileID: 2005902318}
   m_Layer: 8
   m_Name: LizardmanWarrior (22)
   m_TagString: Enemy
@@ -37894,6 +38863,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HoverText: 
+--- !u!114 &2005902318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2005902299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 1, g: 1, b: 0, a: 1}
 --- !u!1 &2010076822
 GameObject:
   m_ObjectHideFlags: 0
@@ -38292,6 +39273,7 @@ GameObject:
   - component: {fileID: 2061341357}
   - component: {fileID: 2061341356}
   - component: {fileID: 2061341355}
+  - component: {fileID: 2061341373}
   m_Layer: 8
   m_Name: LizardmanWarrior (73)
   m_TagString: Enemy
@@ -38669,6 +39651,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 63
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2061341373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2061341354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &2091335202
 GameObject:
   m_ObjectHideFlags: 0
@@ -38763,6 +39757,7 @@ GameObject:
   - component: {fileID: 2094021592}
   - component: {fileID: 2094021591}
   - component: {fileID: 2094021590}
+  - component: {fileID: 2094021608}
   m_Layer: 8
   m_Name: LizardmanWarrior (88)
   m_TagString: Enemy
@@ -39140,6 +40135,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 78
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2094021608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2094021589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &2103193233
 GameObject:
   m_ObjectHideFlags: 0

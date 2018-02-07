@@ -37,6 +37,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         [Header("UI")]
         public InspectNpcUI InspectNpcUI;
         public PartyUI PartyUI;
+        public Minimap Minimap;
 
         // UI Canvases
         [Header("UI - Canvases")]
@@ -100,6 +101,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 PartyCanvas = partyCanvasObject.GetComponent<Canvas>();
                 PartyBuffsAndButtonsCanvas = partyCanvasObject.transform.Find("BuffsAndButtonsCanvas").GetComponent<Canvas>();
+                Minimap = partyCanvasObject.transform.Find("BuffsAndButtonsCanvas").Find("Minimap").GetComponent<Minimap>();
             }
             else
             {

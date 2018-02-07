@@ -113,14 +113,17 @@ public class HostilityChecker : MonoBehaviour
 
     }
 
-
-
-	// Use this for initialization
-	void Start ()
+    private void Awake()
     {
-		if (m_HostilityType == HostilityType.Hostile)
+        if (m_HostilityType == HostilityType.Hostile)
         {
             m_IsHostileToPlayer = true;
         }
+    }
+
+    // Use this for initialization
+    void Start ()
+    {
+		
 	}
 }
