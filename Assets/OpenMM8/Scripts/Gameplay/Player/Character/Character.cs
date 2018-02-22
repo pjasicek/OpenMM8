@@ -12,16 +12,49 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public CharacterModel CharacterModel;
         public CharacterUI CharacterUI;
         public PlayerParty PlayerParty;
+        public CharacterSounds CharacterSounds;
+        public CharacterSprites CharacterSprites;        
 
         public float TimeUntilRecovery = 0.0f;
 
-        public static Character Create(CharacterModel characterModel, CharacterUI characterUI)
+        private float TimeInOtherAvatar = 0.0f;
+        private float MinIdleAvatar = 2.0f;
+        private float MaxIdleAvatar = 7.0f;
+        private float TimeUntilIdleAvatar = 7.0f;
+
+        public static Character Create(CharacterModel characterModel, CharacterUI characterUI, CharacterType type)
         {
             Character character = new Character();
             character.CharacterModel = characterModel;
             character.CharacterUI = characterUI;
+            character.CharacterSounds = GameMgr.Instance.GetCharacterSounds(type);
+            character.CharacterSprites = GameMgr.Instance.GetCharacterSprites(type);
+
+            character.CharacterUI.PlayerCharacter.sprite = character.CharacterSprites.ConditionToSpriteMap[Condition.Good];
 
             return character;
+        }
+
+        public void OnFixedUpdate(float secDiff)
+        {
+            if (CharacterUI.PlayerCharacter.sprite != CharacterSprites.ConditionToSpriteMap[CharacterModel.Condition])
+            {
+                TimeInOtherAvatar += secDiff;
+                if (TimeInOtherAvatar > 1.0f)
+                {
+                    CharacterUI.PlayerCharacter.sprite = CharacterSprites.ConditionToSpriteMap[CharacterModel.Condition];
+                    TimeUntilIdleAvatar = UnityEngine.Random.Range(MinIdleAvatar, MaxIdleAvatar);
+                    TimeInOtherAvatar = 0.0f;
+                }
+            }
+            else if (CharacterModel.Condition == Condition.Good)
+            {
+                TimeUntilIdleAvatar -= secDiff;
+                if (TimeUntilIdleAvatar < 0.0f)
+                {
+                    CharacterUI.PlayerCharacter.sprite = CharacterSprites.Idle[UnityEngine.Random.Range(0, CharacterSprites.Idle.Count)];
+                }
+            }
         }
 
         public void OnUpdate(float secDiff)
@@ -56,6 +89,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 return false;
             }
+
+            TimeUntilIdleAvatar = UnityEngine.Random.Range(MinIdleAvatar, MaxIdleAvatar);
 
             TimeUntilRecovery = 1.0f;
             PlayerParty.PlayerAudioSource.PlayOneShot(PlayerParty.SwordAttacks[UnityEngine.Random.Range(0, PlayerParty.SwordAttacks.Count)]);

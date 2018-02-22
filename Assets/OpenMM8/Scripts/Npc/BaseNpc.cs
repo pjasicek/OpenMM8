@@ -283,6 +283,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         {
             Animator.SetInteger("State", (int)NpcState.ReceivingDamage);
             StopMoving();
+            AudioSource.PlayOneShot(WinceSound);
             result.Type = AttackResultType.Hit;
         }
 

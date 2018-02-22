@@ -113,11 +113,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         Weak,
         Insane,
         Poisoned,
+        Diseased,
         Unconsious,
         Dead,
         Eradicated,
         Stoned,
-        Paralyzed
+        Paralyzed,
+        Sleeping,
+        Drunk
     }
 
     public enum Class
@@ -131,6 +134,38 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         Necromancer,
         Cleric,
         None
+    }
+
+    public enum CharacterType
+    {
+        Knight_1 = 1,
+        KnightFemale_1,
+        Knight_2,
+        KnightFemale_2,
+        Cleric_1,
+        ClericFemale_1,
+        Cleric_2,
+        ClericFemale_2,
+        Necromancer_1,
+        NecromancerFemale_1,
+        Necromancer_2,
+        NecromancerFemale_2,
+        Vampire_1,
+        VampireFemale_1,
+        Vampire_2,
+        VampireFemale_2,
+        DarkElf_1,
+        DarkElfFemale_1,
+        DarkElf_2,
+        DarkElfFemale_2,
+        Minotaur_1,
+        Minotaur_2,
+        Troll_1,
+        Troll_2,
+        Dragon_1,
+        Dragon_2,
+        Lich_1,
+        LichFemale_1,
     }
 
     public enum EquipType

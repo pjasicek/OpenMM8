@@ -46,8 +46,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public List<GameObject> ObjectsInMeleeRange = new List<GameObject>();
 
         // Misc
-        private float AttackDelayTimeLeft = 0.0f;
+        public float AttackDelayTimeLeft = 0.0f;
         private float TimeSinceLastPartyText = 0.0f;
+
+        private float PreviousTimeSinceStartup = 0.0f;
 
         public int Gold;
         public int Food;
@@ -65,10 +67,27 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             damageable.OnAttackReceieved += new AttackReceived(OnAttackReceived);
             damageable.OnSpellReceived += new SpellReceived(OnSpellReceived);
             PlayerAudioSource = transform.Find("FirstPersonCharacter").GetComponent<AudioSource>();
+
+            InvokeRepeating("StableUpdate", 0.0f, 0.05f);
         }
 
         public void Update()
         {
+            // Some things need to be updated even if game is paused, for example character's facial expressions
+            float realtimeSinceStartup = Time.realtimeSinceStartup;
+            float deltaTime = realtimeSinceStartup - PreviousTimeSinceStartup;
+            PreviousTimeSinceStartup = realtimeSinceStartup;
+
+            foreach (Character character in Characters)
+            {
+                character.OnFixedUpdate(deltaTime);
+            }
+
+            if (GameMgr.Instance.IsGamePaused)
+            {
+                return;
+            }
+
             TimeSinceLastPartyText += Time.deltaTime;
             if (TimeSinceLastPartyText > 2.0f)
             {
@@ -96,12 +115,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 }
             }
 
-            AttackDelayTimeLeft -= Time.deltaTime;
-
             HandleHover();
 
             if (Input.GetButton("Attack") && (AttackDelayTimeLeft <= 0.0f))
             {
+                Debug.Log("AttackDelayTimeLeft: " + AttackDelayTimeLeft);
                 Attack();
             }
 
@@ -111,6 +129,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             UpdateAgroStatus();
+
+            AttackDelayTimeLeft -= Time.deltaTime;
+        }
+
+        public void StableUpdate()
+        {
+            foreach (Character character in Characters)
+            {
+                character.OnFixedUpdate(0.05f);
+            }
         }
 
         private void Attack()
@@ -180,12 +208,23 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             if (Physics.Raycast(ray, out hit, 100.0f, layerMask))
             {
                 Transform objectHit = hit.collider.transform;
-                if ((objectHit.GetComponent<Interactable>() != null) &&
-                    (objectHit.GetComponent<Interactable>().enabled) &&
-                    (Vector3.Distance(transform.position, objectHit.transform.position) < Constants.MeleeRangeDistance))
+                if ((Vector3.Distance(transform.position, objectHit.transform.position) < Constants.MeleeRangeDistance))
+                {
+                    foreach (Interactable interactable in objectHit.GetComponents<Interactable>())
+                    {
+                        if (interactable.enabled)
+                        {
+                            interactObject = interactable;
+                            Debug.Log("Intercatble: " + interactable.GetType());
+                            break;
+                        }
+                    }
+                }
+
+                if (interactObject != null)
                 {
                     Debug.Log("Can interact with: " + objectHit.name);
-                    interactObject = objectHit.GetComponent<Interactable>();
+                    
                 }
                 else
                 {

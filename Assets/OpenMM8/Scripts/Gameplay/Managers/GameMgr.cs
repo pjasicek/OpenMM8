@@ -37,7 +37,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         [Header("UI")]
         public InspectNpcUI InspectNpcUI;
         public PartyUI PartyUI;
+        public NpcTalkUI NpcTalkUI;
         public Minimap Minimap;
+        public Image MinimapCloseButtonImage;
+        public MapQuestNotesUI MapQuestNotesUI;
 
         // UI Canvases
         [Header("UI - Canvases")]
@@ -45,7 +48,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public Canvas PartyBuffsAndButtonsCanvas;
         public Canvas PartyInventoryCanvas;
         public Canvas HouseCanvas;
-        public Canvas NpcTalkCanvas;
 
         // TODO: Get rid of this somehow
         [Header("UI - Character")]
@@ -62,10 +64,24 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public Sprite YellowInspectNpcHealthbar;
         public Sprite RedInspectNpcHealthbar;
 
+        [Header("UI - Map, Quest, Notes, History")]
+
+
+        [Header("Sounds")]
+        public AudioClip BackgroundMusic;
+
         [Header("Misc")]
         private Canvas InspectedCanvas = null;
+
+        [HideInInspector]
         public bool IsGamePaused = false;
 
+        private AudioSource AudioSource;
+        private Dictionary<CharacterType, CharacterSounds> CharacterSoundsMap = 
+            new Dictionary<CharacterType, CharacterSounds>();
+
+        private Dictionary<CharacterType, CharacterSprites> CharacterSpritesMap =
+            new Dictionary<CharacterType, CharacterSprites>();
 
         /*static GameMgr()
         {
@@ -87,6 +103,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         void Start()
         {
+            AudioSource = gameObject.AddComponent<AudioSource>();
+            AudioSource.clip = BackgroundMusic;
+            AudioSource.loop = true;
+            AudioSource.volume = 0.33f;
+            AudioSource.Play();
             // 1) Gather relevant game objects
 
             PlayerParty = GameObject.Find("Player").GetComponent<PlayerParty>();
@@ -107,6 +128,22 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 Debug.LogError("Could not find PartyCanvas gameobject !");
             }
+
+            MinimapCloseButtonImage = partyCanvasObject.transform.Find("MinimapCloseButton").GetComponent<Image>();
+
+            MapQuestNotesUI = new MapQuestNotesUI();
+            GameObject mapQuestNotesObject = partyCanvasObject.transform.Find("MapQuestNotesCanvas").gameObject;
+            MapQuestNotesUI.Canvas = mapQuestNotesObject.GetComponent<Canvas>();
+            MapQuestNotesUI.MapNameText = mapQuestNotesObject.transform.Find("MapCanvas").transform.Find("MapNameText").GetComponent<Text>();
+
+            NpcTalkUI = new NpcTalkUI();
+            GameObject npcTalkCanvasObject = partyCanvasObject.transform.Find("NpcTalkCanvas").gameObject;
+            NpcTalkUI.NpcTalkCanvas = npcTalkCanvasObject.GetComponent<Canvas>();
+            NpcTalkUI.NpcResponseBackground = npcTalkCanvasObject.transform.Find("NpcResponseBackground").GetComponent<Image>();
+            NpcTalkUI.NpcResponseText = npcTalkCanvasObject.transform.Find("NpcResponseBackground").Find("NpcResponseText").GetComponent<Text>();
+            NpcTalkUI.NpcAvatar = npcTalkCanvasObject.transform.Find("Avatar").GetComponent<Image>();
+            NpcTalkUI.LocationNameText = npcTalkCanvasObject.transform.Find("LocationNameText").GetComponent<Text>();
+            NpcTalkUI.NpcNameText = npcTalkCanvasObject.transform.Find("NpcNameText").GetComponent<Text>();
 
             PartyUI = new PartyUI();
             PartyUI.GoldText = partyCanvasObject.transform.Find("GoldCountText").GetComponent<Text>();
@@ -184,22 +221,22 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             characterUI1.YellowHealthBarSprite = YellowHealthBarSprite;
             characterUI1.RedHealthBarSprite = RedHealthBarSprite;
 
-            PlayerParty.AddCharacter(Character.Create(characterModel1, characterUI1));
+            PlayerParty.AddCharacter(Character.Create(characterModel1, characterUI1, CharacterType.Lich_1));
+
+            CharacterSprites.Load(CharacterType.Dragon_1);
         }
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetButtonDown("Escape"))
             {
-                if (GameState == GameState.Ingame)
+                if (IsGamePaused)
                 {
-                    PauseGame();
-                    GameState = GameState.IngamePaused;
+                    ReturnToGame();
                 }
                 else
                 {
-                    UnpauseGame();
-                    GameState = GameState.Ingame;
+
                 }
             }
 
@@ -247,22 +284,103 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 InspectedCanvas.enabled = false;
                 InspectedCanvas = null;
             }
+
+            if (Input.GetButtonDown("Map"))
+            {
+                if (!(IsGamePaused && !MapQuestNotesUI.Canvas.enabled))
+                {
+                    if (MapQuestNotesUI.Canvas.enabled)
+                    {
+                        ReturnToGame();
+                    }
+                    else
+                    {
+                        Cursor.lockState = CursorLockMode.None;
+                        Cursor.visible = true;
+                        PauseGame();
+                        MapQuestNotesUI.Canvas.enabled = true;
+                        GameMgr.Instance.Minimap.enabled = false;
+                    }
+                }
+            }
         }
 
-        void PauseGame()
+        public void ReturnToGame()
+        {
+            PartyBuffsAndButtonsCanvas.enabled = true;
+            NpcTalkUI.NpcTalkCanvas.enabled = false;
+            InspectNpcUI.Canvas.enabled = false;
+            MapQuestNotesUI.Canvas.enabled = false;
+
+            Minimap.enabled = true;
+            MinimapCloseButtonImage.enabled = false;
+            PartyBuffsAndButtonsCanvas.enabled = true;
+
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            UnpauseGame();
+        }
+
+        public void PauseGame()
         {
             Time.timeScale = 0;
-            AudioListener.pause = true;
+            AudioSource.Pause();
             IsGamePaused = true;
             //OnGamePaused();
         }
 
-        void UnpauseGame()
+        public void UnpauseGame()
         {
             Time.timeScale = 1;
-            AudioListener.pause = false;
+            AudioSource.UnPause();
             IsGamePaused = false;
             //OnGameUnpaused();
+        }
+
+        public static AudioClip PlayRandomSound(List<AudioClip> sounds, AudioSource audioSource)
+        {
+            if (sounds.Count == 0)
+            {
+                return null;
+            }
+
+            AudioClip sound = sounds[UnityEngine.Random.Range(0, sounds.Count)];
+            audioSource.PlayOneShot(sound);
+
+            return sound;
+        }
+
+        public static AudioClip PlayRandomSound(List<AudioClip> sounds)
+        {
+            return PlayRandomSound(sounds, GameMgr.Instance.AudioSource);
+        }
+
+        public CharacterSounds GetCharacterSounds(CharacterType type)
+        {
+            // Caching
+            if (CharacterSoundsMap.ContainsKey(type) && CharacterSoundsMap[type] != null)
+            {
+                return CharacterSoundsMap[type];
+            }
+            else
+            {
+                CharacterSoundsMap[type] = CharacterSounds.Load(type);
+                return CharacterSoundsMap[type];
+            }
+        }
+
+        public CharacterSprites GetCharacterSprites(CharacterType type)
+        {
+            // Caching
+            if (CharacterSpritesMap.ContainsKey(type) && CharacterSpritesMap[type] != null)
+            {
+                return CharacterSpritesMap[type];
+            }
+            else
+            {
+                CharacterSpritesMap[type] = CharacterSprites.Load(type);
+                return CharacterSpritesMap[type];
+            }
         }
 
         public void ChangeGameState(GameState newState)
