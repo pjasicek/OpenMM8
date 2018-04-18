@@ -36,12 +36,15 @@ public class Talkable : Interactable
                 GameMgr.PlayRandomSound(
                     playerParty.ActiveCharacter.CharacterSounds.Greeting,
                     playerParty.PlayerAudioSource);
+                playerParty.ActiveCharacter.Smile();
             }
             else
             {
+                Character character = playerParty.GetRandomCharacter();
                 GameMgr.PlayRandomSound(
-                    playerParty.Characters[UnityEngine.Random.Range(0, playerParty.Characters.Count)].CharacterSounds.Greeting,
+                    character.CharacterSounds.Greeting,
                     playerParty.PlayerAudioSource);
+                character.Smile();
             }
         }
 

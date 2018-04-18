@@ -98,8 +98,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             if (victim)
             {
                 AttackInfo attackInfo = new AttackInfo();
-                attackInfo.MinDamage = 1;
-                attackInfo.MaxDamage = 1;
+                attackInfo.MinDamage = 38;
+                attackInfo.MaxDamage = 64;
                 attackInfo.AttackMod = 10000;
                 attackInfo.DamageType = SpellElement.Physical;
 
@@ -109,19 +109,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 {
                     case AttackResultType.Hit:
                         hitText = CharacterModel.Name + " hits " + result.HitObjectName + " for " + result.DamageDealt + " damage";
-                        PlayerParty.SetPartyInfoText(hitText);
                         break;
 
                     case AttackResultType.Kill:
                         hitText = CharacterModel.Name + " inflicts " + result.DamageDealt + " points killing " + result.HitObjectName;
-                        PlayerParty.SetPartyInfoText(hitText);
                         break;
 
                     case AttackResultType.Miss:
                         hitText = CharacterModel.Name + " missed attack on " + result.HitObjectName;
-                        PlayerParty.SetPartyInfoText(hitText);
                         break;
                 }
+
+                PlayerParty.SetPartyInfoText(hitText);
             }
 
             return true;
@@ -179,6 +178,19 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public void ModifyResistance(SpellElement element, int amount)
         {
 
+        }
+
+        // Avatar expressions
+        public void Smile()
+        {
+            CharacterUI.PlayerCharacter.sprite =
+                CharacterSprites.Smile[UnityEngine.Random.Range(0, CharacterSprites.Smile.Count)];
+        }
+
+        public void TakeDamage()
+        {
+            CharacterUI.PlayerCharacter.sprite =
+                CharacterSprites.TakeDamage[UnityEngine.Random.Range(0, CharacterSprites.TakeDamage.Count)];
         }
     }
 }

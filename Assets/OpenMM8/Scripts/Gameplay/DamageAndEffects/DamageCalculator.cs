@@ -9,7 +9,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 {
     static public class DamageCalculator
     {
-        static public AttackResult DamageFromPlayerToNpc(AttackInfo hitInfo, Dictionary<SpellElement, int> npcResistances, int npcArmorClass)
+        static public AttackResult DamageFromPlayerToNpc(AttackInfo hitInfo, 
+            Dictionary<SpellElement, int> npcResistances, 
+            int npcArmorClass)
         {
             AttackResult result = new AttackResult();
 
@@ -35,7 +37,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return result;
         }
 
-        static public AttackResult DamageFromNpcToPlayer(AttackInfo hitInfo, Dictionary<SpellElement, int> playerResistances, int playerArmorClass, int playerLuck)
+        static public AttackResult DamageFromNpcToPlayer(AttackInfo hitInfo, 
+            Dictionary<SpellElement, int> playerResistances, 
+            int playerArmorClass, 
+            int playerLuck)
         {
             AttackResult result = new AttackResult();
 

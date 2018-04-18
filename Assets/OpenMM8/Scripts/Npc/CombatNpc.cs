@@ -199,11 +199,18 @@ public class CombatNpc : BaseNpc
                 {
                     GameObject closestTarget = GetClosestTarget(EnemiesInAgroRange);
                     // If the target is in agro range but close, dont use alt ranged attack
-                    if (closestTarget != null && Vector3.Distance(closestTarget.transform.position, transform.position) > 6.0f)
+                    if (closestTarget != null)
                     {
-                        AttackTarget(closestTarget, false);
-                        TimeSinceLastAltAttack = 0.0f;
-                        CurrAltAttackRecoveryTime = UnityEngine.Random.Range(MinAltAttackRecoveryTime, MaxAltAttackRecoveryTime);
+                        if (Vector3.Distance(closestTarget.transform.position, transform.position) > 6.0f)
+                        {
+                            AttackTarget(closestTarget, false);
+                            TimeSinceLastAltAttack = 0.0f;
+                            CurrAltAttackRecoveryTime = UnityEngine.Random.Range(MinAltAttackRecoveryTime, MaxAltAttackRecoveryTime);
+                        }
+                        else
+                        {
+                            ChaseTarget(closestTarget);
+                        }
                     }
                 }
                 else

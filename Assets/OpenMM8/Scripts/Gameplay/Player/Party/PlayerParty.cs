@@ -534,5 +534,20 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             GameMgr.Instance.PartyUI.HoverInfoText.text = text;
             TimeSinceLastPartyText = 0.0f;
         }
+
+        public Character GetMostRecoveredCharacter()
+        {
+            if (ActiveCharacter != null && ActiveCharacter.IsRecovered())
+            {
+                return ActiveCharacter;
+            }
+
+            return Characters.Aggregate((ch1, ch2) => ch1.TimeUntilRecovery < ch2.TimeUntilRecovery ? ch1 : ch2);
+        }
+
+        public Character GetRandomCharacter()
+        {
+            return Characters[UnityEngine.Random.Range(0, Characters.Count - 1)];
+        }
     }
 }
