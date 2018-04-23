@@ -13,11 +13,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     {
         public static GameMgr Instance;
 
-        // Databases
-        public ItemDb ItemDb;
-        public ItemEnchantDb ItemEnchantDb;
-        public NpcDb NpcDb;
-
         // States
         [Header("Game states")]
         public GameState GameState;
@@ -93,15 +88,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             UnityEngine.Assertions.Assert.IsTrue(Instance == null);
             Instance = this;
 
-            ItemDb = new ItemDb();
-            ItemEnchantDb = new ItemEnchantDb();
-            NpcDb = new NpcDb();
+            DontDestroyOnLoad(this);
 
             GameState = GameState.Ingame;
             MapType = MapType.Outdoor;
         }
 
-        void Start()
+        public bool Init()
         {
             AudioSource = gameObject.AddComponent<AudioSource>();
             AudioSource.clip = BackgroundMusic;
@@ -181,8 +174,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             InspectNpcUI.PreviewImage = npcInfoBackgroundObject.transform.Find("PreviewImageMask").transform.Find("PreviewImage").GetComponent<Image>();
 
-            // 2) Initialize Player's party
-            CharacterModel characterModel1 = new CharacterModel();
+            //CharacterSprites.Load(CharacterType.Dragon_1);
+
+            return true;
+        }
+
+        public bool PostInit()
+        {
+            CharacterData characterModel1 = new CharacterData();
             characterModel1.CharacterAvatarId = 27;
             characterModel1.PartyIndex = 1;
             characterModel1.Name = "Tyrkys";
@@ -210,6 +209,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             CharacterUI characterUI1 = new CharacterUI();
+            GameObject partyCanvasObject = GameObject.Find("PartyCanvas");
             characterUI1.PlayerCharacter = partyCanvasObject.transform.Find("PC1_Avatar").GetComponent<Image>();
             characterUI1.SelectionRing = partyCanvasObject.transform.Find("PC1_SelectRing").GetComponent<Image>();
             characterUI1.AgroStatus = partyCanvasObject.transform.Find("PC1_AgroStatus").GetComponent<Image>();
@@ -223,7 +223,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             PlayerParty.AddCharacter(Character.Create(characterModel1, characterUI1, CharacterType.Lich_1));
 
-            CharacterSprites.Load(CharacterType.Dragon_1);
+            return true;
+        }
+
+        void Start()
+        {
+
         }
 
         void Update()
@@ -391,35 +396,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public static void Log(string msg)
         {
             Debug.Log(msg);
-        }
-
-        private static float Gaussian()
-        {
-            float u, v, S;
-
-            do
-            {
-                u = 2.0f * UnityEngine.Random.Range(0.0f, 1.0f) - 1.0f;
-                v = 2.0f * UnityEngine.Random.Range(0.0f, 1.0f) - 1.0f;
-                S = u * u + v * v;
-            }
-            while (S >= 1.0);
-
-            float fac = UnityEngine.Mathf.Sqrt(-2.0f * UnityEngine.Mathf.Log(S) / S);
-            return u * fac;
-        }
-
-        public static float GaussianRandom()
-        {
-            float sigma = 1.0f / 6.0f; // or whatever works.
-            while (true)
-            {
-                float z = Gaussian() * sigma + 0.5f;
-                if (z >= 0.0 && z <= 1.0)
-                {
-                    return z;
-                }
-            }
         }
 
         /*public static bool CrosshairRaycast()

@@ -42,7 +42,7 @@ public class Minimap : MonoBehaviour
         WizardEyeRect.y = GameScreenResolution.y - (WizardEyeRect.y + WizardEyeRect.height / 2.0f);
         WizardEyeRect.width = (GameScreenResolution.x / GuiRelativeSize.x) * WizardEyeRelativeSize.x;
         WizardEyeRect.height = (GameScreenResolution.y / GuiRelativeSize.y) * WizardEyeRelativeSize.y;
-        Debug.Log("WizardEyeRect: " + WizardEyeRect.ToString());
+        //Debug.Log("WizardEyeRect: " + WizardEyeRect.ToString());
 
         WizardEyeDotSize = (GameScreenResolution.y / GuiRelativeSize.y) * WizardEyeDotRelativeSize;
 
@@ -58,16 +58,16 @@ public class Minimap : MonoBehaviour
         distancePerPixelX = ((MapSideLength / m_MinimapImage.texture.width) / (GameScreenResolution.x / GuiRelativeSize.x)) * sizeCoeffX;
         distancePerPixelY = ((MapSideLength / m_MinimapImage.texture.height) / (GameScreenResolution.y / GuiRelativeSize.y)) * sizeCoeffY;
 
-        Debug.Log("uvRect: " + m_MinimapImage.uvRect.ToString());
-        Debug.Log("rectTransform.rect: " + m_MinimapImage.rectTransform.rect.ToString());
+        //Debug.Log("uvRect: " + m_MinimapImage.uvRect.ToString());
+        //Debug.Log("rectTransform.rect: " + m_MinimapImage.rectTransform.rect.ToString());
 
         MaxDistanceFromMarkerToPlayer.x = (distancePerPixelX * (WizardEyeRect.width) / 2.0f);
         MaxDistanceFromMarkerToPlayer.y = (distancePerPixelY * (WizardEyeRect.height) / 2.0f);
 
-        Debug.Log("MaxDistanceFromMarkerToPlayer: " + MaxDistanceFromMarkerToPlayer.ToString());
-        Debug.Log("1px X = " + distancePerPixelX + " distance");
-        Debug.Log("Max distance: X: " + MaxDistanceFromMarkerToPlayer.x);
-        Debug.Log("MinmapTexture width: " + m_MinimapImage.texture.width + " height: " + m_MinimapImage.texture.height);
+        //Debug.Log("MaxDistanceFromMarkerToPlayer: " + MaxDistanceFromMarkerToPlayer.ToString());
+        //Debug.Log("1px X = " + distancePerPixelX + " distance");
+        //Debug.Log("Max distance: X: " + MaxDistanceFromMarkerToPlayer.x);
+        //Debug.Log("MinmapTexture width: " + m_MinimapImage.texture.width + " height: " + m_MinimapImage.texture.height);
 
         InvokeRepeating("test", 0.0f, 0.05f);
     }

@@ -19,6 +19,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             if (UnityEngine.Random.Range(0.0f, 1.0f) > chanceBeingHit)
             {
                 result.Type = AttackResultType.Miss;
+                result.DamageDealt = 0;
                 return result;
             }
             else
@@ -26,7 +27,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 result.Type = AttackResultType.Hit;
             }
 
-            float damageDealt = (GameMgr.GaussianRandom() * (hitInfo.MaxDamage - hitInfo.MinDamage)) + hitInfo.MinDamage;
+            //float damageDealt = (Gaussian.Random() * (hitInfo.MaxDamage - hitInfo.MinDamage)) + hitInfo.MinDamage;
+            float damageDealt = Gaussian.RandomRange(hitInfo.MinDamage, hitInfo.MaxDamage);
 
             // Apply resistances
             int attackResistance = npcResistances[hitInfo.DamageType];
@@ -48,6 +50,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             if (UnityEngine.Random.Range(0.0f, 1.0f) > chanceBeingHit)
             {
                 result.Type = AttackResultType.Miss;
+                result.DamageDealt = 0;
                 return result;
             }
             else
@@ -55,7 +58,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 result.Type = AttackResultType.Hit;
             }
 
-            float damageDealt = (GameMgr.GaussianRandom() * (hitInfo.MaxDamage - hitInfo.MinDamage)) + hitInfo.MinDamage;
+            float damageDealt = Gaussian.RandomRange(hitInfo.MinDamage, hitInfo.MaxDamage);// (Gaussian.Random() * (hitInfo.MaxDamage - hitInfo.MinDamage)) + hitInfo.MinDamage;
 
             // Apply resistances
             int attackResistance = playerResistances[hitInfo.DamageType];

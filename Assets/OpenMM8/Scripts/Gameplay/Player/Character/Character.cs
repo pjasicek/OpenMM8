@@ -7,67 +7,98 @@ using UnityEngine;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
+    // public delegate SpellResult SpellReceived(SpellInfo hitInfo, GameObject source);
+    public delegate void HealthChanged(Character chr, int maxHealth, int currHealth);
+    public delegate void ManaChanged(Character chr, int maxMana, int currMana);
+    public delegate void Recovered(Character chr);
+    public delegate void RecoveryTimeChanged(Character chr, float recoveryTime);
+    public delegate void CharConditionChanged(Character chr, Condition newCondition);
+    public delegate void CharHitNpc(Character chr, AttackInfo attackInfo, AttackResult result);
+    public delegate void CharGotHit(Character chr, AttackInfo attackInfo, AttackResult attackResult);
+    public delegate void NpcInspect(Character inspectorChr, NpcData npcData);
+    public delegate void NpcInspectEnd();
+    public delegate void ItemInspect(Character inspectorChr, ItemData itemData/*, InspectResult result*/);
+    public delegate void ItemEquip(/*Item item, EquipResult equipResult*/);
+    public delegate void ItemHold(/*Item item*/);
+    public delegate void ItemHoldEnd();
+
     public class Character
     {
-        public CharacterModel CharacterModel;
-        public CharacterUI CharacterUI;
-        public PlayerParty PlayerParty;
-        public CharacterSounds CharacterSounds;
-        public CharacterSprites CharacterSprites;        
+        public CharacterData Data;
+        public CharacterUI UI;
+        public PlayerParty Party;
+        public CharacterSounds Sounds;
+        public CharacterSprites Sprites;
 
-        public float TimeUntilRecovery = 0.0f;
+        public CharFaceUpdater CharFaceUpdater;
 
-        private float TimeInOtherAvatar = 0.0f;
-        private float MinIdleAvatar = 2.0f;
-        private float MaxIdleAvatar = 7.0f;
-        private float TimeUntilIdleAvatar = 7.0f;
+        // Events
+        public event HealthChanged OnHealthChanged;
+        public event ManaChanged OnManaChanged;
+        public event Recovered OnRecovered;
+        public event RecoveryTimeChanged OnRecoveryTimeChanged;
+        public event CharConditionChanged OnConditionChanged;
+        public event CharHitNpc OnHitNpc;
+        public event CharGotHit OnGotHit;
+        public event NpcInspect OnNpcInspect;
+        public event NpcInspectEnd OnNpcInspectEnd;
+        public event ItemInspect OnItemInspect;
+        public event ItemEquip OnItemEquip;
+        public event ItemHold OnItemHold;
+        public event ItemHoldEnd OnItemHoldEnd;
 
-        public static Character Create(CharacterModel characterModel, CharacterUI characterUI, CharacterType type)
+
+        private float m_TimeUntilRecovery = 0.0f;
+        public float TimeUntilRecovery
+        {
+            get
+            {
+                return m_TimeUntilRecovery;
+            }
+
+            set
+            {
+                m_TimeUntilRecovery = value;
+                OnRecoveryTimeChanged(this, m_TimeUntilRecovery);
+            }
+        }
+
+        public Character()
+        {
+            CharFaceUpdater = new CharFaceUpdater(this);
+        }
+
+        public static Character Create(CharacterData characterData, CharacterUI characterUI, CharacterType type)
         {
             Character character = new Character();
-            character.CharacterModel = characterModel;
-            character.CharacterUI = characterUI;
-            character.CharacterSounds = GameMgr.Instance.GetCharacterSounds(type);
-            character.CharacterSprites = GameMgr.Instance.GetCharacterSprites(type);
+            character.Data = characterData;
+            character.UI = characterUI;
+            character.Sounds = GameMgr.Instance.GetCharacterSounds(type);
+            character.Sprites = GameMgr.Instance.GetCharacterSprites(type);
 
-            character.CharacterUI.PlayerCharacter.sprite = character.CharacterSprites.ConditionToSpriteMap[Condition.Good];
+            character.UI.PlayerCharacter.sprite = character.Sprites.ConditionToSpriteMap[Condition.Good];
 
             return character;
         }
 
         public void OnFixedUpdate(float secDiff)
         {
-            if (CharacterUI.PlayerCharacter.sprite != CharacterSprites.ConditionToSpriteMap[CharacterModel.Condition])
-            {
-                TimeInOtherAvatar += secDiff;
-                if (TimeInOtherAvatar > 1.0f)
-                {
-                    CharacterUI.PlayerCharacter.sprite = CharacterSprites.ConditionToSpriteMap[CharacterModel.Condition];
-                    TimeUntilIdleAvatar = UnityEngine.Random.Range(MinIdleAvatar, MaxIdleAvatar);
-                    TimeInOtherAvatar = 0.0f;
-                }
-            }
-            else if (CharacterModel.Condition == Condition.Good)
-            {
-                TimeUntilIdleAvatar -= secDiff;
-                if (TimeUntilIdleAvatar < 0.0f)
-                {
-                    CharacterUI.PlayerCharacter.sprite = CharacterSprites.Idle[UnityEngine.Random.Range(0, CharacterSprites.Idle.Count)];
-                }
-            }
+            CharFaceUpdater.OnFixedUpdate(secDiff);
         }
 
         public void OnUpdate(float secDiff)
         {
+            bool wasRecovered = IsRecovered();
             TimeUntilRecovery -= secDiff;
-            if (IsRecovered() && CharacterUI.AgroStatus.enabled == false)
+
+            if (!wasRecovered && IsRecovered())
             {
-                CharacterUI.AgroStatus.enabled = true;
+                if (OnRecovered != null)
+                {
+                    OnRecovered(this);
+                }
             }
-            else if (!IsRecovered() && CharacterUI.AgroStatus.enabled == true)
-            {
-                CharacterUI.AgroStatus.enabled = false;
-            }
+
             /*if (!IsRecovered() && CharacterUI.SelectionRing.enabled == true)
             {
                 CharacterUI.SelectionRing.enabled = false;
@@ -90,10 +121,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 return false;
             }
 
-            TimeUntilIdleAvatar = UnityEngine.Random.Range(MinIdleAvatar, MaxIdleAvatar);
-
             TimeUntilRecovery = 1.0f;
-            PlayerParty.PlayerAudioSource.PlayOneShot(PlayerParty.SwordAttacks[UnityEngine.Random.Range(0, PlayerParty.SwordAttacks.Count)]);
+            Party.PlayerAudioSource.PlayOneShot(Party.SwordAttacks[UnityEngine.Random.Range(0, Party.SwordAttacks.Count)]);
 
             if (victim)
             {
@@ -103,27 +132,23 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 attackInfo.AttackMod = 10000;
                 attackInfo.DamageType = SpellElement.Physical;
 
-                AttackResult result = victim.ReceiveAttack(attackInfo, PlayerParty.gameObject);
-                string hitText = "";
-                switch (result.Type)
+                AttackResult result = victim.ReceiveAttack(attackInfo, Party.gameObject);
+                
+                if (OnHitNpc != null)
                 {
-                    case AttackResultType.Hit:
-                        hitText = CharacterModel.Name + " hits " + result.HitObjectName + " for " + result.DamageDealt + " damage";
-                        break;
-
-                    case AttackResultType.Kill:
-                        hitText = CharacterModel.Name + " inflicts " + result.DamageDealt + " points killing " + result.HitObjectName;
-                        break;
-
-                    case AttackResultType.Miss:
-                        hitText = CharacterModel.Name + " missed attack on " + result.HitObjectName;
-                        break;
+                    OnHitNpc(this, attackInfo, result);
                 }
-
-                PlayerParty.SetPartyInfoText(hitText);
             }
 
             return true;
+        }
+
+        public void OnAttackReceived(AttackInfo attackInfo, AttackResult result)
+        {
+            if (OnGotHit != null)
+            {
+                OnGotHit(this, attackInfo, result);
+            }
         }
 
         // Events
@@ -147,17 +172,26 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         }
 
-        public void ModifyCurrentHitPoints(int numHitPoints)
+        public void AddCurrHitPoints(int numHitPoints)
         {
-            CharacterModel.CurrHitPoints += numHitPoints;
-            int maxHP = CharacterModel.DefaultStats.MaxHitPoints + CharacterModel.BonusStats.MaxHitPoints;
-            float healthPercent = ((float)CharacterModel.CurrHitPoints / (float)maxHP) * 100.0f;
-            CharacterUI.SetHealth(healthPercent);
+            int maxHP = Data.DefaultStats.MaxHitPoints + Data.BonusStats.MaxHitPoints;
+            Data.CurrHitPoints = Mathf.Min(Data.CurrHitPoints + numHitPoints, maxHP);
+
+            if (OnHealthChanged != null)
+            {
+                OnHealthChanged(this, maxHP, Data.CurrHitPoints);
+            }
         }
 
-        public void ModifyCurrentSpellPoints(int numSpellPoints)
+        public void AddCurrSpellPoints(int numSpellPoints)
         {
+            int maxMP = Data.DefaultStats.MaxSpellPoints + Data.BonusStats.MaxSpellPoints;
+            Data.CurrSpellPoints = Mathf.Min(Data.CurrSpellPoints + numSpellPoints, maxMP);
 
+            if (OnManaChanged != null)
+            {
+                OnManaChanged(this, maxMP, Data.CurrSpellPoints);
+            }
         }
 
         public void AddLevel()
@@ -183,14 +217,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         // Avatar expressions
         public void Smile()
         {
-            CharacterUI.PlayerCharacter.sprite =
-                CharacterSprites.Smile[UnityEngine.Random.Range(0, CharacterSprites.Smile.Count)];
+            UI.PlayerCharacter.sprite =
+                Sprites.Smile[UnityEngine.Random.Range(0, Sprites.Smile.Count)];
         }
 
         public void TakeDamage()
         {
-            CharacterUI.PlayerCharacter.sprite =
-                CharacterSprites.TakeDamage[UnityEngine.Random.Range(0, CharacterSprites.TakeDamage.Count)];
+            UI.PlayerCharacter.sprite =
+                Sprites.TakeDamage[UnityEngine.Random.Range(0, Sprites.TakeDamage.Count)];
         }
     }
 }

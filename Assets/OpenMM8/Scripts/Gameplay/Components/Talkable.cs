@@ -34,7 +34,7 @@ public class Talkable : Interactable
             if (playerParty.ActiveCharacter != null)
             {
                 GameMgr.PlayRandomSound(
-                    playerParty.ActiveCharacter.CharacterSounds.Greeting,
+                    playerParty.ActiveCharacter.Sounds.Greeting,
                     playerParty.PlayerAudioSource);
                 playerParty.ActiveCharacter.Smile();
             }
@@ -42,7 +42,7 @@ public class Talkable : Interactable
             {
                 Character character = playerParty.GetRandomCharacter();
                 GameMgr.PlayRandomSound(
-                    character.CharacterSounds.Greeting,
+                    character.Sounds.Greeting,
                     playerParty.PlayerAudioSource);
                 character.Smile();
             }

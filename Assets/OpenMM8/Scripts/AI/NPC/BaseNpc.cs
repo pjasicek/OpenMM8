@@ -135,7 +135,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
         SetNavMeshAgentEnabled(true);
 
-        NpcData = GameMgr.Instance.NpcDb.GetNpcData(NpcType);
+        NpcData = DbMgr.Instance.NpcDb.GetNpcData(NpcType);
         CurrentHitPoints = NpcData.HitPoints;
 
         Damageable damageable = GetComponent<Damageable>();
@@ -145,14 +145,16 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         Loot = new Loot();
         if (NpcData.Treasure.CertainItemId != 0)
         {
-            Loot.Item = GameMgr.Instance.ItemDb.GetItem(NpcData.Treasure.CertainItemId);
+            Loot.Item = DbMgr.Instance.ItemDb.GetItem(NpcData.Treasure.CertainItemId);
         }
         else
         {
             Loot.Item = null;
         }
 
-        Loot.GoldAmount = (int)(GameMgr.GaussianRandom() * (NpcData.Treasure.MaxGold - NpcData.Treasure.MinGold) + NpcData.Treasure.MinGold);
+        //Loot.GoldAmount = (int)(Gaussian.Random() * (NpcData.Treasure.MaxGold - NpcData.Treasure.MinGold) + NpcData.Treasure.MinGold);
+        Loot.GoldAmount = Gaussian.RandomRange(NpcData.Treasure.MinGold, NpcData.Treasure.MaxGold);
+        //Debug.Log(NpcData.Treasure.MinGold + " " + NpcData.Treasure.MaxGold + " " + Loot.GoldAmount);
 
         GetComponent<Lootable>().Loot = Loot;
         GetComponent<Lootable>().enabled = false;

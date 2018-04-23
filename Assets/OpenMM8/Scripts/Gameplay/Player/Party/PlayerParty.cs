@@ -7,12 +7,27 @@ using UnityEngine;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
+    public delegate void CharacterJoinedParty(Character chr, PlayerParty party);
+    public delegate void CharacterLeftParty(Character chr, PlayerParty party);
+    public delegate void HoverObject(HoverInfo hoverInfo);
+    public delegate void GoldChanged(int oldGold, int newGold, int delta);
+    public delegate void FoodChanged(int oldFood, int newFood, int delta);
+    public delegate void FoundGold(int amount);
+
     [RequireComponent(typeof(HostilityChecker))]
     [RequireComponent(typeof(Damageable))]
     public class PlayerParty : MonoBehaviour, ITriggerListener
     {
         public List<Character> Characters = new List<Character>();
         public Character ActiveCharacter;
+
+        // Events
+        public event CharacterJoinedParty OnCharacterJoinedParty;
+        public event CharacterLeftParty OnCharacterLeftParty;
+        public event HoverObject OnHoverObject;
+        public event GoldChanged OnGoldChanged;
+        public event FoodChanged OnFoodChanged;
+        public event FoundGold OnFoundGold;
 
         [Header("Sounds - Attack")]
         public List<AudioClip> SwordAttacks = new List<AudioClip>();
@@ -51,8 +66,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private float PreviousTimeSinceStartup = 0.0f;
 
-        public int Gold;
-        public int Food;
+        public int Gold = 0;
+        public int Food = 0;
 
         private void Awake()
         {
@@ -68,7 +83,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             damageable.OnSpellReceived += new SpellReceived(OnSpellReceived);
             PlayerAudioSource = transform.Find("FirstPersonCharacter").GetComponent<AudioSource>();
 
-            InvokeRepeating("StableUpdate", 0.0f, 0.05f);
+            //InvokeRepeating("StableUpdate", 0.0f, 0.05f);
         }
 
         public void Update()
@@ -88,12 +103,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 return;
             }
 
-            TimeSinceLastPartyText += Time.deltaTime;
-            if (TimeSinceLastPartyText > 2.0f)
-            {
-                SetPartyInfoText("");
-            }
-
             foreach (Character character in Characters)
             {
                 character.OnUpdate(Time.deltaTime);
@@ -106,11 +115,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     if (character.IsRecovered() && ((ActiveCharacter == null) || !ActiveCharacter.IsRecovered()))
                     {
                         ActiveCharacter = character;
-                        ActiveCharacter.CharacterUI.SelectionRing.enabled = true;
+                        ActiveCharacter.UI.SelectionRing.enabled = true;
                     }
                     else
                     {
-                        character.CharacterUI.SelectionRing.enabled = false;
+                        character.UI.SelectionRing.enabled = false;
                     }
                 }
             }
@@ -235,8 +244,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 if ((objectHit.GetComponent<HoverInfo>() != null) &&
                     (objectHit.GetComponent<HoverInfo>().enabled))
                 {
-                    string hoverText = objectHit.GetComponent<HoverInfo>().HoverText;
-                    SetPartyInfoText(hoverText, true);
+                    if (OnHoverObject != null)
+                    {
+                        OnHoverObject(objectHit.GetComponent<HoverInfo>());
+                    }
+
+                    /*string hoverText = objectHit.GetComponent<HoverInfo>().HoverText;
+                    SetPartyInfoText(hoverText, true);*/
                 }
             }
 
@@ -303,8 +317,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 if ((objectHit.GetComponent<HoverInfo>() != null) &&
                     (objectHit.GetComponent<HoverInfo>().enabled))
                 {
-                    string hoverText = objectHit.GetComponent<HoverInfo>().HoverText;
-                    SetPartyInfoText(hoverText, true);
+                    if (OnHoverObject != null)
+                    {
+                        OnHoverObject(objectHit.GetComponent<HoverInfo>());
+                    }
+
                     return true;
                 }
             }
@@ -326,14 +343,19 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             foreach (Character character in Characters)
             {
-                character.CharacterUI.SetAgroStatus(agroState);
+                character.UI.SetAgroStatus(agroState);
             }
         }
 
         public void AddCharacter(Character character)
         {
-            character.PlayerParty = this;
+            character.Party = this;
             Characters.Add(character);
+            
+            if (OnCharacterJoinedParty != null)
+            {
+                OnCharacterJoinedParty(character, this);
+            }
         }
 
         // Damageable events
@@ -345,7 +367,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 List<Character> preferredCharacters = new List<Character>();
                 foreach (Character character in Characters)
                 {
-                    if (character.CharacterModel.Class == hitInfo.PreferredClass)
+                    if (character.Data.Class == hitInfo.PreferredClass)
                     {
                         preferredCharacters.Add(character);
                     }
@@ -372,19 +394,21 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             AttackResult result = DamageCalculator.DamageFromNpcToPlayer(hitInfo,
-                hitCharacter.CharacterModel.DefaultStats.Resistances,
-                hitCharacter.CharacterModel.DefaultStats.ArmorClass,
-                hitCharacter.CharacterModel.DefaultStats.Attributes[Attribute.Luck]);
-            if (result.Type == AttackResultType.Miss)
+                hitCharacter.Data.DefaultStats.Resistances,
+                hitCharacter.Data.DefaultStats.ArmorClass,
+                hitCharacter.Data.DefaultStats.Attributes[Attribute.Luck]);
+            /*if (result.Type == AttackResultType.Miss)
             {
                 return result;
-            }
+            }*/
 
-            hitCharacter.ModifyCurrentHitPoints(-1 * result.DamageDealt);
-            if (hitCharacter.CharacterModel.CurrHitPoints <= 0)
+            hitCharacter.AddCurrHitPoints(-1 * result.DamageDealt);
+            if (hitCharacter.Data.CurrHitPoints <= 0)
             {
                 result.Type = AttackResultType.Kill;
             }
+
+            hitCharacter.OnAttackReceived(hitInfo, result);
 
             return result;
         }
@@ -509,12 +533,23 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             if (loot.GoldAmount > 0)
             {
                 AddGold(loot.GoldAmount);
-                SetPartyInfoText("You found " + loot.GoldAmount.ToString() + " gold !");
+
+                if (OnFoundGold != null)
+                {
+                    OnFoundGold(loot.GoldAmount);
+                }
             }
         }
 
         public void AddGold(int amount)
         {
+            Gold += amount;
+
+            if (OnGoldChanged != null)
+            {
+                OnGoldChanged(Gold -= amount, Gold, amount);
+            }
+
             GameMgr.Instance.PartyUI.AddGold(amount);
             PlayerAudioSource.PlayOneShot(GoldChanged, 1.5f);
         }
@@ -522,17 +557,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public void AddFood(int amount)
         {
             GameMgr.Instance.PartyUI.AddFood(amount);
-        }
-
-        public void SetPartyInfoText(string text, bool onlyIfEmpty = false)
-        {
-            if (onlyIfEmpty && GameMgr.Instance.PartyUI.HoverInfoText.text != "")
-            {
-                return;
-            }
-
-            GameMgr.Instance.PartyUI.HoverInfoText.text = text;
-            TimeSinceLastPartyText = 0.0f;
         }
 
         public Character GetMostRecoveredCharacter()
