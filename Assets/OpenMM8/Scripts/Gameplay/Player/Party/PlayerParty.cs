@@ -22,12 +22,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public Character ActiveCharacter;
 
         // Events
-        public event CharacterJoinedParty OnCharacterJoinedParty;
-        public event CharacterLeftParty OnCharacterLeftParty;
-        public event HoverObject OnHoverObject;
-        public event GoldChanged OnGoldChanged;
-        public event FoodChanged OnFoodChanged;
-        public event FoundGold OnFoundGold;
+        static public event CharacterJoinedParty OnCharacterJoinedParty;
+        static public event CharacterLeftParty OnCharacterLeftParty;
+        static public event HoverObject OnHoverObject;
+        static public event GoldChanged OnGoldChanged;
+        static public event FoodChanged OnFoodChanged;
+        static public event FoundGold OnFoundGold;
 
         [Header("Sounds - Attack")]
         public List<AudioClip> SwordAttacks = new List<AudioClip>();
@@ -66,7 +66,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private float PreviousTimeSinceStartup = 0.0f;
 
-        public int Gold = 0;
+        public int Gold = 200;
         public int Food = 0;
 
         private void Awake()
@@ -128,7 +128,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             if (Input.GetButton("Attack") && (AttackDelayTimeLeft <= 0.0f))
             {
-                Debug.Log("AttackDelayTimeLeft: " + AttackDelayTimeLeft);
+                //Debug.Log("AttackDelayTimeLeft: " + AttackDelayTimeLeft);
                 Attack();
             }
 
@@ -547,16 +547,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             if (OnGoldChanged != null)
             {
-                OnGoldChanged(Gold -= amount, Gold, amount);
+                OnGoldChanged(Gold - amount, Gold, amount);
             }
 
-            GameMgr.Instance.PartyUI.AddGold(amount);
-            PlayerAudioSource.PlayOneShot(GoldChanged, 1.5f);
+            PlayerAudioSource.PlayOneShot(GoldChanged, 1.5f); 
         }
 
         public void AddFood(int amount)
         {
-            GameMgr.Instance.PartyUI.AddFood(amount);
+            Food += amount;
         }
 
         public Character GetMostRecoveredCharacter()

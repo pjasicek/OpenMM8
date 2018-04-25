@@ -15,8 +15,13 @@ public class InspectableItem : Inspectable
         ItemData = GetComponent<BaseItem>().ItemData;
     }
 
-    public override Canvas SetupInspectCanvas()
+    public override void StartInspect(Character inspector)
     {
-        return null;
+        throw new System.NotImplementedException();
+    }
+
+    public override void EndInspect(Character inspector)
+    {
+        throw new System.NotImplementedException();
     }
 }

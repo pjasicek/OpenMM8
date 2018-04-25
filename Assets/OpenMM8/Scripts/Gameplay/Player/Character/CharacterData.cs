@@ -7,6 +7,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 {
     public class CharacterData
     {
+        public CharacterType CharacterType = CharacterType.None;
+
         public int CharacterAvatarId;
         public int PartyIndex;
 

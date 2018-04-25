@@ -33,19 +33,19 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public CharFaceUpdater CharFaceUpdater;
 
         // Events
-        public event HealthChanged OnHealthChanged;
-        public event ManaChanged OnManaChanged;
-        public event Recovered OnRecovered;
-        public event RecoveryTimeChanged OnRecoveryTimeChanged;
-        public event CharConditionChanged OnConditionChanged;
-        public event CharHitNpc OnHitNpc;
-        public event CharGotHit OnGotHit;
-        public event NpcInspect OnNpcInspect;
-        public event NpcInspectEnd OnNpcInspectEnd;
-        public event ItemInspect OnItemInspect;
-        public event ItemEquip OnItemEquip;
-        public event ItemHold OnItemHold;
-        public event ItemHoldEnd OnItemHoldEnd;
+        static public event HealthChanged OnHealthChanged;
+        static public event ManaChanged OnManaChanged;
+        static public event Recovered OnRecovered;
+        static public event RecoveryTimeChanged OnRecoveryTimeChanged;
+        static public event CharConditionChanged OnConditionChanged;
+        static public event CharHitNpc OnHitNpc;
+        static public event CharGotHit OnGotHit;
+        static public event NpcInspect OnNpcInspect;
+        static public event NpcInspectEnd OnNpcInspectEnd;
+        static public event ItemInspect OnItemInspect;
+        static public event ItemEquip OnItemEquip;
+        static public event ItemHold OnItemHold;
+        static public event ItemHoldEnd OnItemHoldEnd;
 
 
         private float m_TimeUntilRecovery = 0.0f;
@@ -63,23 +63,22 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
-        public Character()
+        public Character(CharacterData charData)
         {
-            CharFaceUpdater = new CharFaceUpdater(this);
+            Data = charData;
         }
 
-        public static Character Create(CharacterData characterData, CharacterUI characterUI, CharacterType type)
+        /*public static Character Create(CharacterData characterData, CharacterType type)
         {
             Character character = new Character();
             character.Data = characterData;
-            character.UI = characterUI;
             character.Sounds = GameMgr.Instance.GetCharacterSounds(type);
             character.Sprites = GameMgr.Instance.GetCharacterSprites(type);
 
             character.UI.PlayerCharacter.sprite = character.Sprites.ConditionToSpriteMap[Condition.Good];
 
             return character;
-        }
+        }*/
 
         public void OnFixedUpdate(float secDiff)
         {

@@ -4,8 +4,12 @@ using UnityEngine.Video;
 using Assets.OpenMM8.Scripts.Gameplay;
 using UnityEngine.Experimental.UIElements;
 
+public delegate void TalkWithNpcDlg(Character talkerChr, Talkable talkedToObj);
+
 public class Talkable : Interactable
 {
+    static public event TalkWithNpcDlg OnTalkWithNpc;
+
     public string Name;
     public string Location;
     public string GreetText;
@@ -29,49 +33,12 @@ public class Talkable : Interactable
         }
 
         PlayerParty playerParty = interacter.GetComponent<PlayerParty>();
-        if (playerParty != null)
+        Character talker = playerParty.GetMostRecoveredCharacter();
+
+        if (OnTalkWithNpc != null)
         {
-            if (playerParty.ActiveCharacter != null)
-            {
-                GameMgr.PlayRandomSound(
-                    playerParty.ActiveCharacter.Sounds.Greeting,
-                    playerParty.PlayerAudioSource);
-                playerParty.ActiveCharacter.Smile();
-            }
-            else
-            {
-                Character character = playerParty.GetRandomCharacter();
-                GameMgr.PlayRandomSound(
-                    character.Sounds.Greeting,
-                    playerParty.PlayerAudioSource);
-                character.Smile();
-            }
+            OnTalkWithNpc(talker, this);
         }
-
-        NpcTalkUI ui = GameMgr.Instance.NpcTalkUI;
-        ui.NpcNameText.text = Name;
-        ui.LocationNameText.text = Location;
-        ui.NpcResponseText.text = GreetText;
-        ui.NpcTalkCanvas.enabled = true;
-        ui.NpcAvatar.sprite = Avatar;
-        GameMgr.Instance.Minimap.enabled = false;
-        GameMgr.Instance.MinimapCloseButtonImage.enabled = true;
-        GameMgr.Instance.PartyBuffsAndButtonsCanvas.enabled = false;
-        GameMgr.Instance.PauseGame();
-
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-
-        TextGenerator textGen = new TextGenerator();
-        TextGenerationSettings generationSettings = 
-            ui.NpcResponseText.GetGenerationSettings(ui.NpcResponseText.rectTransform.rect.size);
-        float height = textGen.GetPreferredHeight(GreetText, generationSettings);
-
-        float textSizeY = (height / 2.0f) / 10.0f;
-        Vector2 v = new Vector2(
-            ui.NpcResponseBackground.rectTransform.anchoredPosition.x, 
-            NpcTalkUI.DefaultResponseY + textSizeY + 5.0f);
-        ui.NpcResponseBackground.rectTransform.anchoredPosition = v;
 
         return true;
     }

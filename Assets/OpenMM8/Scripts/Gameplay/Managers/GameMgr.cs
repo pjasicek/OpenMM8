@@ -9,9 +9,23 @@ using UnityEngine.UI;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
+    public delegate void ReturnToGame();
+    public delegate void PauseGame();
+    public delegate void LevelUnloaded(int levelNum);
+    public delegate void LevelLoaded(int levelNum);
+
+    public delegate void MapButtonPressed();
+
     class GameMgr : MonoBehaviour //Singleton<GameMgr>
     {
         public static GameMgr Instance;
+
+        // Events
+        static public event ReturnToGame OnReturnToGame;
+        static public event PauseGame OnPauseGame;
+        static public event LevelUnloaded OnLevelUnloaded;
+        static public event LevelLoaded OnLevelLoaded;
+        static public event MapButtonPressed OnMapButtonPressed;
 
         // States
         [Header("Game states")]
@@ -29,62 +43,27 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         /*public event GamePausedAction OnGamePaused;
         public event GameUnpausedAction OnGameUnpaused;*/
 
-        [Header("UI")]
-        public InspectNpcUI InspectNpcUI;
-        public PartyUI PartyUI;
-        public NpcTalkUI NpcTalkUI;
-        public Minimap Minimap;
-        public Image MinimapCloseButtonImage;
-        public MapQuestNotesUI MapQuestNotesUI;
-
-        // UI Canvases
-        [Header("UI - Canvases")]
-        public Canvas PartyCanvas;
-        public Canvas PartyBuffsAndButtonsCanvas;
-        public Canvas PartyInventoryCanvas;
-        public Canvas HouseCanvas;
-
-        // TODO: Get rid of this somehow
-        [Header("UI - Character")]
-        public Sprite GreenHealthBarSprite;
-        public Sprite YellowHealthBarSprite;
-        public Sprite RedHealthBarSprite;
-
-        public Sprite GreenAgroStatusSprite;
-        public Sprite YelloqAgroStatusSprite;
-        public Sprite RedAgroStatusSprite;
-
-        [Header("UI - Inspect NPC")]
-        public Sprite GreenInspectNpcHealthbar;
-        public Sprite YellowInspectNpcHealthbar;
-        public Sprite RedInspectNpcHealthbar;
-
-        [Header("UI - Map, Quest, Notes, History")]
-
-
         [Header("Sounds")]
         public AudioClip BackgroundMusic;
-
-        [Header("Misc")]
-        private Canvas InspectedCanvas = null;
 
         [HideInInspector]
         public bool IsGamePaused = false;
 
         private AudioSource AudioSource;
-        private Dictionary<CharacterType, CharacterSounds> CharacterSoundsMap = 
+        private Dictionary<CharacterType, CharacterSounds> CharacterSoundsMap =
             new Dictionary<CharacterType, CharacterSounds>();
 
         private Dictionary<CharacterType, CharacterSprites> CharacterSpritesMap =
             new Dictionary<CharacterType, CharacterSprites>();
 
-        /*static GameMgr()
-        {
-            
-        }*/
+        // Private
+        private Inspectable m_InspectedObj;
 
         void Awake()
         {
+            // Events
+            Talkable.OnTalkWithNpc += OnTalkWithNpc;
+
             UnityEngine.Assertions.Assert.IsTrue(Instance == null);
             Instance = this;
 
@@ -106,74 +85,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             PlayerParty = GameObject.Find("Player").GetComponent<PlayerParty>();
             Debug.Assert(PlayerParty != null);
 
-            /*GameObject ObjectInfoCanvasObject = GameObject.Find("NpcInfoCanvas");
-            Debug.Assert(ObjectInfoCanvasObject != null);
-            ObjectInfoCanvas = ObjectInfoCanvasObject.GetComponent<Canvas>();*/
-
-            GameObject partyCanvasObject = GameObject.Find("PartyCanvas");
-            if (partyCanvasObject != null)
-            {
-                PartyCanvas = partyCanvasObject.GetComponent<Canvas>();
-                PartyBuffsAndButtonsCanvas = partyCanvasObject.transform.Find("BuffsAndButtonsCanvas").GetComponent<Canvas>();
-                Minimap = partyCanvasObject.transform.Find("BuffsAndButtonsCanvas").Find("Minimap").GetComponent<Minimap>();
-            }
-            else
-            {
-                Debug.LogError("Could not find PartyCanvas gameobject !");
-            }
-
-            MinimapCloseButtonImage = partyCanvasObject.transform.Find("MinimapCloseButton").GetComponent<Image>();
-
-            MapQuestNotesUI = new MapQuestNotesUI();
-            GameObject mapQuestNotesObject = partyCanvasObject.transform.Find("MapQuestNotesCanvas").gameObject;
-            MapQuestNotesUI.Canvas = mapQuestNotesObject.GetComponent<Canvas>();
-            MapQuestNotesUI.MapNameText = mapQuestNotesObject.transform.Find("MapCanvas").transform.Find("MapNameText").GetComponent<Text>();
-
-            NpcTalkUI = new NpcTalkUI();
-            GameObject npcTalkCanvasObject = partyCanvasObject.transform.Find("NpcTalkCanvas").gameObject;
-            NpcTalkUI.NpcTalkCanvas = npcTalkCanvasObject.GetComponent<Canvas>();
-            NpcTalkUI.NpcResponseBackground = npcTalkCanvasObject.transform.Find("NpcResponseBackground").GetComponent<Image>();
-            NpcTalkUI.NpcResponseText = npcTalkCanvasObject.transform.Find("NpcResponseBackground").Find("NpcResponseText").GetComponent<Text>();
-            NpcTalkUI.NpcAvatar = npcTalkCanvasObject.transform.Find("Avatar").GetComponent<Image>();
-            NpcTalkUI.LocationNameText = npcTalkCanvasObject.transform.Find("LocationNameText").GetComponent<Text>();
-            NpcTalkUI.NpcNameText = npcTalkCanvasObject.transform.Find("NpcNameText").GetComponent<Text>();
-
-            PartyUI = new PartyUI();
-            PartyUI.GoldText = partyCanvasObject.transform.Find("GoldCountText").GetComponent<Text>();
-            PartyUI.FoodText = partyCanvasObject.transform.Find("FoodCountText").GetComponent<Text>();
-            PartyUI.HoverInfoText = partyCanvasObject.transform.Find("BaseBarImage").transform.Find("HoverInfoText").GetComponent<Text>();
-
-            GameObject objectInfoCanvasObject = GameObject.Find("NpcInfoCanvas");
-            Debug.Assert(objectInfoCanvasObject != null);
-            Transform npcInfoBackgroundObject = objectInfoCanvasObject.transform.Find("Background");
-
-            InspectNpcUI = new InspectNpcUI();
-            InspectNpcUI.Canvas = objectInfoCanvasObject.GetComponent<Canvas>();
-
-            InspectNpcUI.Healthbar_Background = npcInfoBackgroundObject.transform.Find("Healthbar_Background").GetComponent<Image>();
-            InspectNpcUI.Healthbar = npcInfoBackgroundObject.transform.Find("Healthbar").GetComponent<Image>();
-            InspectNpcUI.Healthbar_CapLeft = npcInfoBackgroundObject.transform.Find("Healthbar_CapLeft").GetComponent<Image>();
-            InspectNpcUI.Healthbar_CapRight = npcInfoBackgroundObject.transform.Find("Healthbar_CapRight").GetComponent<Image>();
-
-            InspectNpcUI.NpcNameText = npcInfoBackgroundObject.transform.Find("NpcNameText").GetComponent<Text>();
-            InspectNpcUI.HitPointsText = npcInfoBackgroundObject.transform.Find("HitPointsText").GetComponent<Text>();
-            InspectNpcUI.ArmorClassText = npcInfoBackgroundObject.transform.Find("ArmorClassText").GetComponent<Text>();
-            InspectNpcUI.AttackText = npcInfoBackgroundObject.transform.Find("AttackText").GetComponent<Text>();
-            InspectNpcUI.DamageText = npcInfoBackgroundObject.transform.Find("DamageText").GetComponent<Text>();
-            InspectNpcUI.SpellText = npcInfoBackgroundObject.transform.Find("SpellText").GetComponent<Text>();
-            InspectNpcUI.FireResistanceText = npcInfoBackgroundObject.transform.Find("FireResistanceText").GetComponent<Text>();
-            InspectNpcUI.AirResistanceText = npcInfoBackgroundObject.transform.Find("AirResistanceText").GetComponent<Text>();
-            InspectNpcUI.WaterResistanceText = npcInfoBackgroundObject.transform.Find("WaterResistanceText").GetComponent<Text>();
-            InspectNpcUI.EarthResistanceText = npcInfoBackgroundObject.transform.Find("EarthResistanceText").GetComponent<Text>();
-            InspectNpcUI.MindResistanceText = npcInfoBackgroundObject.transform.Find("MindResistanceText").GetComponent<Text>();
-            InspectNpcUI.SpiritResistanceText = npcInfoBackgroundObject.transform.Find("SpiritResistanceText").GetComponent<Text>();
-            InspectNpcUI.BodyResistanceText = npcInfoBackgroundObject.transform.Find("BodyResistanceText").GetComponent<Text>();
-            InspectNpcUI.LightResistanceText = npcInfoBackgroundObject.transform.Find("LightResistanceText").GetComponent<Text>();
-            InspectNpcUI.DarkResistanceText = npcInfoBackgroundObject.transform.Find("DarkResistanceText").GetComponent<Text>();
-            InspectNpcUI.PhysicalResistanceText = npcInfoBackgroundObject.transform.Find("PhysicalResistanceText").GetComponent<Text>();
-
-            InspectNpcUI.PreviewImage = npcInfoBackgroundObject.transform.Find("PreviewImageMask").transform.Find("PreviewImage").GetComponent<Image>();
-
             //CharacterSprites.Load(CharacterType.Dragon_1);
 
             return true;
@@ -181,34 +92,39 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public bool PostInit()
         {
-            CharacterData characterModel1 = new CharacterData();
-            characterModel1.CharacterAvatarId = 27;
-            characterModel1.PartyIndex = 1;
-            characterModel1.Name = "Tyrkys";
-            characterModel1.Class = Class.Necromancer;
-            characterModel1.Experience = 0;
-            characterModel1.SkillPoints = 0;
-            characterModel1.CurrHitPoints = 500;
-            characterModel1.CurrSpellPoints = 50;
-            characterModel1.Condition = Condition.Good;
-            characterModel1.DefaultStats.Age = 30;
-            characterModel1.DefaultStats.Level = 1;
-            characterModel1.DefaultStats.MaxHitPoints = 500;
-            characterModel1.DefaultStats.MaxSpellPoints = 50;
+            CharacterData charData = new CharacterData();
+            charData.CharacterType = CharacterType.Lich_1;
+            charData.CharacterAvatarId = 27;
+            charData.PartyIndex = 1;
+            charData.Name = "Tyrkys";
+            charData.Class = Class.Necromancer;
+            charData.Experience = 0;
+            charData.SkillPoints = 0;
+            charData.CurrHitPoints = 500;
+            charData.CurrSpellPoints = 50;
+            charData.Condition = Condition.Good;
+            charData.DefaultStats.Age = 30;
+            charData.DefaultStats.Level = 1;
+            charData.DefaultStats.MaxHitPoints = 500;
+            charData.DefaultStats.MaxSpellPoints = 50;
 
             foreach (Attribute attr in Enum.GetValues(typeof(Attribute)))
             {
-                characterModel1.DefaultStats.Attributes[attr] = 0;
-                characterModel1.BonusStats.Attributes[attr] = 0;
+                charData.DefaultStats.Attributes[attr] = 0;
+                charData.BonusStats.Attributes[attr] = 0;
             }
 
             foreach (SpellElement resist in Enum.GetValues(typeof(SpellElement)))
             {
-                characterModel1.DefaultStats.Resistances[resist] = 0;
-                characterModel1.BonusStats.Resistances[resist] = 0;
+                charData.DefaultStats.Resistances[resist] = 0;
+                charData.BonusStats.Resistances[resist] = 0;
             }
 
-            CharacterUI characterUI1 = new CharacterUI();
+            Character chr = new Character(charData);
+
+            PlayerParty.AddCharacter(chr);
+
+            /*CharacterUI characterUI1 = new CharacterUI();
             GameObject partyCanvasObject = GameObject.Find("PartyCanvas");
             characterUI1.PlayerCharacter = partyCanvasObject.transform.Find("PC1_Avatar").GetComponent<Image>();
             characterUI1.SelectionRing = partyCanvasObject.transform.Find("PC1_SelectRing").GetComponent<Image>();
@@ -221,7 +137,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             characterUI1.YellowHealthBarSprite = YellowHealthBarSprite;
             characterUI1.RedHealthBarSprite = RedHealthBarSprite;
 
-            PlayerParty.AddCharacter(Character.Create(characterModel1, characterUI1, CharacterType.Lich_1));
+            PlayerParty.AddCharacter(Character.Create(charData, characterUI1, CharacterType.Lich_1));*/
+
+            if (OnLevelLoaded != null)
+            {
+                OnLevelLoaded(1);
+            }
 
             return true;
         }
@@ -245,8 +166,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 }
             }
 
-            bool wasInspectEnabled = (InspectedCanvas != null) && (InspectedCanvas.enabled == true);
+            bool wasInspectEnabled = (m_InspectedObj != null);
             bool isInspectEnabled = false;
+            Inspectable inspectedObj = null;
 
             if (Input.GetButton("InspectObject"))
             {
@@ -256,7 +178,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 }
 
                 RaycastHit hit;
-                Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5F, 0.595F, 0.0F));
+                Ray ray = UiMgr.Instance.GetCrosshairRay();
                 //ray.origin -= 100 * ray.direction.normalized;
 
                 int layerMask = ~((1 << LayerMask.NameToLayer("NpcRangeTrigger")) | (1 << LayerMask.NameToLayer("Player")));
@@ -265,7 +187,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     Transform objectHit = hit.collider.transform;
                     if (objectHit.GetComponent<Inspectable>() != null)
                     {
-                        InspectedCanvas = objectHit.GetComponent<Inspectable>().SetupInspectCanvas();
+                        inspectedObj = objectHit.GetComponent<Inspectable>();
                         isInspectEnabled = true;
                     }
                 }
@@ -280,19 +202,36 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 }
             }
 
-            if (!wasInspectEnabled && isInspectEnabled)
+            if (m_InspectedObj == null)
             {
-                InspectedCanvas.enabled = true;
+                m_InspectedObj = inspectedObj;
+            }
+
+            if (inspectedObj != null && m_InspectedObj != null && m_InspectedObj != inspectedObj)
+            {
+                m_InspectedObj.EndInspect(PlayerParty.GetMostRecoveredCharacter());
+                inspectedObj.StartInspect(PlayerParty.GetMostRecoveredCharacter());
+            }
+            else if (inspectedObj != null && !wasInspectEnabled && isInspectEnabled)
+            {
+                m_InspectedObj.StartInspect(PlayerParty.GetMostRecoveredCharacter());
             }
             else if (wasInspectEnabled && !isInspectEnabled)
             {
-                InspectedCanvas.enabled = false;
-                InspectedCanvas = null;
+                m_InspectedObj.EndInspect(PlayerParty.GetMostRecoveredCharacter());
+                m_InspectedObj = null;
             }
+
+            m_InspectedObj = inspectedObj;
 
             if (Input.GetButtonDown("Map"))
             {
-                if (!(IsGamePaused && !MapQuestNotesUI.Canvas.enabled))
+                if (OnMapButtonPressed != null)
+                {
+                    OnMapButtonPressed();
+                }
+
+                /*if (!(IsGamePaused && !MapQuestNotesUI.Canvas.enabled))
                 {
                     if (MapQuestNotesUI.Canvas.enabled)
                     {
@@ -306,24 +245,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         MapQuestNotesUI.Canvas.enabled = true;
                         GameMgr.Instance.Minimap.enabled = false;
                     }
-                }
+                }*/
             }
         }
 
         public void ReturnToGame()
         {
-            PartyBuffsAndButtonsCanvas.enabled = true;
-            NpcTalkUI.NpcTalkCanvas.enabled = false;
-            InspectNpcUI.Canvas.enabled = false;
-            MapQuestNotesUI.Canvas.enabled = false;
-
-            Minimap.enabled = true;
-            MinimapCloseButtonImage.enabled = false;
-            PartyBuffsAndButtonsCanvas.enabled = true;
-
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
             UnpauseGame();
+
+            if (OnReturnToGame != null)
+            {
+                OnReturnToGame();
+            }
         }
 
         public void PauseGame()
@@ -332,6 +265,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             AudioSource.Pause();
             IsGamePaused = true;
             //OnGamePaused();
+
+            if (OnPauseGame != null)
+            {
+                OnPauseGame();
+            }
         }
 
         public void UnpauseGame()
@@ -398,9 +336,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Debug.Log(msg);
         }
 
-        /*public static bool CrosshairRaycast()
-        {
+        //==================================== Events ====================================
 
-        }*/
+        public void OnTalkWithNpc(Character talkerChr, Talkable talkedToObj)
+        {
+            PauseGame();
+        }
     }
 }

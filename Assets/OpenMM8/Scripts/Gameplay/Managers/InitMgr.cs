@@ -8,6 +8,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
 {
     class InitMgr : MonoBehaviour
     {
+        InitMgr()
+        {
+            /*DbMgr.Instance.GetInstanceID();
+            GameMgr.Instance.GetInstanceID();
+            UiMgr.Instance.GetInstanceID();*/
+        }
+
         private void Start()
         {
             DbMgr.Instance.Init();

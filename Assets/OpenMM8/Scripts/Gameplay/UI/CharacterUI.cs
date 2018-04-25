@@ -17,9 +17,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public Image SelectionRing;
         public Image EmptySlot;
 
-        public Sprite GreenHealthBarSprite;
-        public Sprite YellowHealthBarSprite;
-        public Sprite RedHealthBarSprite;
+        static public Sprite HealthBarSprite_Green;
+        static public Sprite HealthBarSprite_Yellow;
+        static public Sprite HealthBarSprite_Red;
+
+        static public Sprite AgroStatusSprite_Green;
+        static public Sprite AgroStatusSprite_Yellow;
+        static public Sprite AgroStatusSprite_Red;
+        static public Sprite AgroStatusSprite_Gray;
 
         public void SetHealth(float percentage)
         {
@@ -27,15 +32,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             if (percentage > 66.6f)
             {
-                HealthBar.sprite = GreenHealthBarSprite;
+                HealthBar.sprite = HealthBarSprite_Green;
             }
             else if (percentage > 33.3f)
             {
-                HealthBar.sprite = YellowHealthBarSprite;
+                HealthBar.sprite = HealthBarSprite_Yellow;
             }
             else
             {
-                HealthBar.sprite = RedHealthBarSprite;
+                HealthBar.sprite = HealthBarSprite_Red;
             }
 
             HealthBar.fillAmount = percentage / 100.0f;
@@ -59,15 +64,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             if (state == AgroState.Safe)
             {
-                AgroStatus.sprite = GameMgr.Instance.GreenAgroStatusSprite;
+                AgroStatus.sprite = AgroStatusSprite_Green;
             }
             else if (state == AgroState.HostileNearby)
             {
-                AgroStatus.sprite = GameMgr.Instance.YelloqAgroStatusSprite;
+                AgroStatus.sprite = AgroStatusSprite_Yellow;
             }
             else
             {
-                AgroStatus.sprite = GameMgr.Instance.RedAgroStatusSprite;
+                AgroStatus.sprite = AgroStatusSprite_Red;
             }
         }
 

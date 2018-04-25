@@ -12,7 +12,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public Text FoodText;
         public Text HoverInfoText;
 
-        public void SetGold(int amount)
+        /*public void SetGold(int amount)
         {
             GoldText.text = amount.ToString();
         }
@@ -30,6 +30,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public void AddFood(int amount)
         {
             FoodText.text = (int.Parse(FoodText.text) + amount).ToString();
-        }
+        }*/
     }
 }

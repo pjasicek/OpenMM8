@@ -29,4 +29,8 @@ public class InspectNpcUI
     public Text PhysicalResistanceText;
 
     public Image PreviewImage;
+
+    public static Sprite HealthbarSprite_Green;
+    public static Sprite HealthbarSprite_Yellow;
+    public static Sprite HealthbarSprite_Red;
 }

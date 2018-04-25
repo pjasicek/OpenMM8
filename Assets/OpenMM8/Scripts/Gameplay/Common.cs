@@ -24,7 +24,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     {
         Menu,
         Ingame,
-        IngamePaused
+        IngamePaused,
     }
 
     public enum MapType
@@ -138,6 +138,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
     public enum CharacterType
     {
+        None = -1,
         Knight_1 = 1,
         KnightFemale_1,
         Knight_2,
