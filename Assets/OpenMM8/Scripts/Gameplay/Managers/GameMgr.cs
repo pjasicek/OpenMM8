@@ -11,8 +11,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 {
     public delegate void ReturnToGame();
     public delegate void PauseGame();
-    public delegate void LevelUnloaded(int levelNum);
-    public delegate void LevelLoaded(int levelNum);
+    /*public delegate void LevelUnloaded(int levelNum);
+    public delegate void LevelLoaded(int levelNum);*/
 
     public delegate void MapButtonPressed();
 
@@ -23,8 +23,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         // Events
         static public event ReturnToGame OnReturnToGame;
         static public event PauseGame OnPauseGame;
-        static public event LevelUnloaded OnLevelUnloaded;
-        static public event LevelLoaded OnLevelLoaded;
+       /* static public event LevelUnloaded OnLevelUnloaded;
+        static public event LevelLoaded OnLevelLoaded;*/
         static public event MapButtonPressed OnMapButtonPressed;
 
         // States
@@ -49,13 +49,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         [HideInInspector]
         public bool IsGamePaused = false;
 
-        private AudioSource AudioSource;
-        private Dictionary<CharacterType, CharacterSounds> CharacterSoundsMap =
-            new Dictionary<CharacterType, CharacterSounds>();
-
-        private Dictionary<CharacterType, CharacterSprites> CharacterSpritesMap =
-            new Dictionary<CharacterType, CharacterSprites>();
-
         // Private
         private Inspectable m_InspectedObj;
 
@@ -75,11 +68,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public bool Init()
         {
-            AudioSource = gameObject.AddComponent<AudioSource>();
-            AudioSource.clip = BackgroundMusic;
-            AudioSource.loop = true;
-            AudioSource.volume = 0.33f;
-            AudioSource.Play();
             // 1) Gather relevant game objects
 
             PlayerParty = GameObject.Find("Player").GetComponent<PlayerParty>();
@@ -124,25 +112,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             PlayerParty.AddCharacter(chr);
 
-            /*CharacterUI characterUI1 = new CharacterUI();
-            GameObject partyCanvasObject = GameObject.Find("PartyCanvas");
-            characterUI1.PlayerCharacter = partyCanvasObject.transform.Find("PC1_Avatar").GetComponent<Image>();
-            characterUI1.SelectionRing = partyCanvasObject.transform.Find("PC1_SelectRing").GetComponent<Image>();
-            characterUI1.AgroStatus = partyCanvasObject.transform.Find("PC1_AgroStatus").GetComponent<Image>();
-            characterUI1.HealthBar = partyCanvasObject.transform.Find("PC1_HealthBar").GetComponent<Image>();
-            characterUI1.ManaBar = partyCanvasObject.transform.Find("PC1_ManaBar").GetComponent<Image>();
-            characterUI1.EmptySlot = partyCanvasObject.transform.Find("EmptySlot_Pos1").GetComponent<Image>();
-
-            characterUI1.GreenHealthBarSprite = GreenHealthBarSprite;
-            characterUI1.YellowHealthBarSprite = YellowHealthBarSprite;
-            characterUI1.RedHealthBarSprite = RedHealthBarSprite;
-
-            PlayerParty.AddCharacter(Character.Create(charData, characterUI1, CharacterType.Lich_1));*/
-
-            if (OnLevelLoaded != null)
+            /*if (OnLevelLoaded != null)
             {
                 OnLevelLoaded(1);
-            }
+            }*/
 
             return true;
         }
@@ -262,7 +235,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public void PauseGame()
         {
             Time.timeScale = 0;
-            AudioSource.Pause();
             IsGamePaused = true;
             //OnGamePaused();
 
@@ -275,55 +247,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public void UnpauseGame()
         {
             Time.timeScale = 1;
-            AudioSource.UnPause();
             IsGamePaused = false;
             //OnGameUnpaused();
-        }
-
-        public static AudioClip PlayRandomSound(List<AudioClip> sounds, AudioSource audioSource)
-        {
-            if (sounds.Count == 0)
-            {
-                return null;
-            }
-
-            AudioClip sound = sounds[UnityEngine.Random.Range(0, sounds.Count)];
-            audioSource.PlayOneShot(sound);
-
-            return sound;
-        }
-
-        public static AudioClip PlayRandomSound(List<AudioClip> sounds)
-        {
-            return PlayRandomSound(sounds, GameMgr.Instance.AudioSource);
-        }
-
-        public CharacterSounds GetCharacterSounds(CharacterType type)
-        {
-            // Caching
-            if (CharacterSoundsMap.ContainsKey(type) && CharacterSoundsMap[type] != null)
-            {
-                return CharacterSoundsMap[type];
-            }
-            else
-            {
-                CharacterSoundsMap[type] = CharacterSounds.Load(type);
-                return CharacterSoundsMap[type];
-            }
-        }
-
-        public CharacterSprites GetCharacterSprites(CharacterType type)
-        {
-            // Caching
-            if (CharacterSpritesMap.ContainsKey(type) && CharacterSpritesMap[type] != null)
-            {
-                return CharacterSpritesMap[type];
-            }
-            else
-            {
-                CharacterSpritesMap[type] = CharacterSprites.Load(type);
-                return CharacterSpritesMap[type];
-            }
         }
 
         public void ChangeGameState(GameState newState)

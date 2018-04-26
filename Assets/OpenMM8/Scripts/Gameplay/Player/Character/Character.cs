@@ -68,18 +68,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Data = charData;
         }
 
-        /*public static Character Create(CharacterData characterData, CharacterType type)
-        {
-            Character character = new Character();
-            character.Data = characterData;
-            character.Sounds = GameMgr.Instance.GetCharacterSounds(type);
-            character.Sprites = GameMgr.Instance.GetCharacterSprites(type);
-
-            character.UI.PlayerCharacter.sprite = character.Sprites.ConditionToSpriteMap[Condition.Good];
-
-            return character;
-        }*/
-
         public void OnFixedUpdate(float secDiff)
         {
             CharFaceUpdater.OnFixedUpdate(secDiff);

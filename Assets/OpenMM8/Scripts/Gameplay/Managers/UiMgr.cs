@@ -34,6 +34,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         [Header("UI - Map, Quest, Notes, History")]
         int placeholder;
 
+        private Dictionary<CharacterType, CharacterSprites> CharacterSpritesMap =
+            new Dictionary<CharacterType, CharacterSprites>();
+
         //=================================== Unity Lifecycle ===================================
 
         private void Awake()
@@ -178,7 +181,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             chr.UI = chrUI;
 
             chr.CharFaceUpdater = new CharFaceUpdater(chr);
-            chr.Sprites = GameMgr.Instance.GetCharacterSprites(chr.Data.CharacterType);
+            chr.Sprites = GetCharacterSprites(chr.Data.CharacterType);
 
             Debug.Log("OK");
         }
@@ -222,6 +225,20 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             PartyUI.HoverInfoText.text = text;
             m_TimeSinceLastPartyText = 0.0f;
             m_PartyTextLockTime = 2.0f;
+        }
+
+        private CharacterSprites GetCharacterSprites(CharacterType type)
+        {
+            // Caching
+            if (CharacterSpritesMap.ContainsKey(type) && CharacterSpritesMap[type] != null)
+            {
+                return CharacterSpritesMap[type];
+            }
+            else
+            {
+                CharacterSpritesMap[type] = CharacterSprites.Load(type);
+                return CharacterSpritesMap[type];
+            }
         }
 
         //=================================== Events ===================================
