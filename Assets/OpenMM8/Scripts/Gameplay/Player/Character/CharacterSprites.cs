@@ -14,6 +14,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public List<Sprite> BigSmile = new List<Sprite>();
         public List<Sprite> FailAction = new List<Sprite>();
         public List<Sprite> Hurt = new List<Sprite>();
+        public List<Sprite> Greet = new List<Sprite>();
         //public Sprite Talk; // Should be animation but way too much effort now
         public Sprite Yell;
         public Sprite Struggle;
@@ -79,6 +80,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             characterSprites.Smile.Add(sprites[39]);
             characterSprites.Smile.Add(sprites[40]);
             characterSprites.Smile.Add(sprites[47]);
+
+            characterSprites.Greet.Add(sprites[39]);
+            characterSprites.Greet.Add(sprites[40]);
 
             characterSprites.FailAction.Add(sprites[50]);
             characterSprites.FailAction.Add(sprites[51]);

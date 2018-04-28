@@ -30,11 +30,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             Debug.Assert(EmptySlot.enabled == false);
 
-            if (percentage > 66.6f)
+            if (percentage > 50.0f)
             {
                 HealthBar.sprite = HealthBarSprite_Green;
             }
-            else if (percentage > 33.3f)
+            else if (percentage > 20.0f)
             {
                 HealthBar.sprite = HealthBarSprite_Yellow;
             }

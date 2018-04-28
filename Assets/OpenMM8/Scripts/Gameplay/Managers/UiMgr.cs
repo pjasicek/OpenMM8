@@ -249,7 +249,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         //=================================== Events ===================================
 
-        public void OnCharHealthChanged(Character chr, int maxHealth, int currHealth)
+        public void OnCharHealthChanged(Character chr, int maxHealth, int currHealth, int delta)
         {
             float healthPercent = ((float)currHealth / (float)maxHealth) * 100.0f;
             chr.UI.SetHealth(healthPercent);
@@ -418,6 +418,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnTalkWithNpc(Character talkerChr, Talkable talkedToObj)
         {
+            talkerChr.CharFaceUpdater.SetAvatar(RandomSprite(talkerChr.Sprites.Greet), 1.0f);
+
             NpcTalkUI.NpcNameText.text = talkedToObj.Name;
             NpcTalkUI.LocationNameText.text = talkedToObj.Location;
             NpcTalkUI.NpcResponseText.text = talkedToObj.GreetText;

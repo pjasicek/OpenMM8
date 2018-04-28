@@ -54,9 +54,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
             PlayerParty.OnGoldChanged += OnGoldChanged;
             PlayerParty.OnFoodChanged += OnFoodChanged;
 
+            Character.OnHealthChanged += OnHealthChanged;
             Character.OnHitNpc += OnCharHitNpc;
             Character.OnGotHit += OnCharGotHit;
             Character.OnAttack += OnCharAttack;
+
+            Talkable.OnTalkWithNpc += OnTalkWithNpc;
         }
 
         // Init sequence: DbMgr(1) -> GameMgr(1) -> *Mgr(1) -> GameMgr(2)
@@ -164,14 +167,25 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
 
         //=================================== Events ===================================
 
+        private void OnHealthChanged(Character chr, int maxHealth, int currHealth, int delta)
+        {
+            float prevHealthPerc = ((float)(currHealth - delta) / (float)maxHealth) * 100.0f;
+            float currHealthPerc = chr.GetHealthPercentage();
+
+            if (prevHealthPerc > 20.0f && currHealthPerc < 20.0f)
+            {
+                PlayRandomSound(chr.Sounds.BadlyWounded, chr.Party.PlayerAudioSource);
+            }
+        }
+
         public void OnReturnToGame()
         {
-            AudioSource.UnPause();
+            //AudioSource.UnPause();
         }
 
         public void OnGamePaused()
         {
-            AudioSource.Pause();
+            //AudioSource.Pause();
         }
 
         public void OnGoldChanged(int oldGold, int newGold, int delta)
@@ -208,17 +222,17 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
                     {
                         bool isVictimInMeleeRange = 
                             Vector3.Distance(result.Victim.transform.position, chr.Party.GetPosition()) < Constants.MeleeRangeDistance;
-
                         if (isVictimInMeleeRange)
                         {
                             NpcData npcData = result.Victim.GetComponent<BaseNpc>().NpcData;
-                            if (chr.Data.DefaultStats.Level > (npcData.Level))
+                            bool isNpcStrong = npcData.Level > chr.Data.DefaultStats.Level;
+                            if (isNpcStrong)
                             {
-                                PlayRandomSound(chr.Sounds.KilledWeakMonster, chr.Party.PlayerAudioSource);
+                                PlayRandomSound(chr.Sounds.KilledStrongMonster, chr.Party.PlayerAudioSource);
                             }
                             else
                             {
-                                PlayRandomSound(chr.Sounds.KilledStrongMonster, chr.Party.PlayerAudioSource);
+                                PlayRandomSound(chr.Sounds.KilledWeakMonster, chr.Party.PlayerAudioSource);
                             }
                         }
                     }
@@ -229,7 +243,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
         public void OnCharGotHit(Character chr, AttackInfo attackInfo, AttackResult attackResult)
         {
             float damagePercentage = ((float)attackResult.DamageDealt / (float)chr.GetMaxHealth()) * 100.0f;
-            Debug.Log("DamagePerc: " + damagePercentage);
             if (attackInfo.DamageType == SpellElement.Physical)
             {
                 PlayRandomSound(CharGotHit_Leather, chr.Party.PlayerAudioSource);
@@ -258,10 +271,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
 
         }
 
+        public void OnTalkWithNpc(Character talkerChr, Talkable talkedToObj)
+        {
+            PlayRandomSound(talkerChr.Sounds.Greeting, talkerChr.Party.PlayerAudioSource);
+        }
+
         public void OnItemInspect(Character inspectorChr, ItemData itemData/*, InspectResult result*/)
         {
 
         }
+
 
         public void OnItemEquip(/*Item item, EquipResult equipResult*/)
         {

@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
     // public delegate SpellResult SpellReceived(SpellInfo hitInfo, GameObject source);
-    public delegate void HealthChanged(Character chr, int maxHealth, int currHealth);
+    public delegate void HealthChanged(Character chr, int maxHealth, int currHealth, int delta);
     public delegate void ManaChanged(Character chr, int maxMana, int currMana);
     public delegate void Recovered(Character chr);
     public delegate void RecoveryTimeChanged(Character chr, float recoveryTime);
@@ -187,7 +187,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             if (OnHealthChanged != null)
             {
-                OnHealthChanged(this, maxHP, Data.CurrHitPoints);
+                OnHealthChanged(this, maxHP, Data.CurrHitPoints, numHitPoints);
             }
         }
 
