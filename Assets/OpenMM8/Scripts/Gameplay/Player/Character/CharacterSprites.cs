@@ -11,8 +11,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public List<Sprite> TakeDamage = new List<Sprite>();
         public List<Sprite> Idle = new List<Sprite>();
         public List<Sprite> Smile = new List<Sprite>();
+        public List<Sprite> BigSmile = new List<Sprite>();
+        public List<Sprite> FailAction = new List<Sprite>();
+        public List<Sprite> Hurt = new List<Sprite>();
         //public Sprite Talk; // Should be animation but way too much effort now
         public Sprite Yell;
+        public Sprite Struggle;
+        public Sprite KillNpc;
+        
         public Dictionary<Condition, Sprite> ConditionToSpriteMap = new Dictionary<Condition, Sprite>();
 
         public static CharacterSprites Load(CharacterType type)
@@ -44,6 +50,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             // 40 - Smile
             // 50 - Big Smile
             // 53 - Yell
+            // 54 - Struggle
+
+            // Kill NPC:
+            // 48, 41, 40
+
+            // Damage NPC:
+            // 
+
+            // Miss NPC:
+            // 51, 52, 
+
+            // Sprite indexes are -1 - picture sprites start from 1, index from 0
 
             characterSprites.TakeDamage.Add(sprites[36]);
             characterSprites.TakeDamage.Add(sprites[37]);
@@ -59,9 +77,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             characterSprites.Idle.Add(sprites[19]);
 
             characterSprites.Smile.Add(sprites[39]);
-            characterSprites.Smile.Add(sprites[49]);
+            characterSprites.Smile.Add(sprites[40]);
+            characterSprites.Smile.Add(sprites[47]);
+
+            characterSprites.FailAction.Add(sprites[50]);
+            characterSprites.FailAction.Add(sprites[51]);
+
+            characterSprites.BigSmile.Add(sprites[49]);
 
             characterSprites.Yell = sprites[52];
+            characterSprites.Struggle = sprites[53];
 
             characterSprites.ConditionToSpriteMap[Condition.Good] = sprites[0];
             characterSprites.ConditionToSpriteMap[Condition.Weak] = sprites[1];

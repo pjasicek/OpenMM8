@@ -179,7 +179,8 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         }
 
         AttackResult result = DamageCalculator.DamageFromPlayerToNpc(hitInfo, NpcData.Resistances, NpcData.ArmorClass);
-        result.HitObjectName = NpcData.Name;
+        result.Victim = this.gameObject;
+        result.VictimName = NpcData.Name;
         if (result.Type == AttackResultType.Miss)
         {
             return result;

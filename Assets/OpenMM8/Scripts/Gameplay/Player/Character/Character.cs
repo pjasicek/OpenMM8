@@ -15,6 +15,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public delegate void CharConditionChanged(Character chr, Condition newCondition);
     public delegate void CharHitNpc(Character chr, AttackInfo attackInfo, AttackResult result);
     public delegate void CharGotHit(Character chr, AttackInfo attackInfo, AttackResult attackResult);
+    public delegate void CharAttack(Character chr, AttackInfo attackInfo);
     public delegate void NpcInspect(Character inspectorChr, NpcData npcData);
     public delegate void NpcInspectEnd();
     public delegate void ItemInspect(Character inspectorChr, ItemData itemData/*, InspectResult result*/);
@@ -40,6 +41,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         static public event CharConditionChanged OnConditionChanged;
         static public event CharHitNpc OnHitNpc;
         static public event CharGotHit OnGotHit;
+        static public event CharAttack OnAttack;
         static public event NpcInspect OnNpcInspect;
         static public event NpcInspectEnd OnNpcInspectEnd;
         static public event ItemInspect OnItemInspect;
@@ -67,6 +69,20 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             Data = charData;
         }
+
+        // ============================ PUBLIC API ============================ 
+
+        public float GetHealthPercentage()
+        {
+            return ((float)Data.CurrHitPoints / (float)GetMaxHealth()) * 100.0f;
+        }
+
+        public int GetMaxHealth()
+        {
+            return Data.DefaultStats.MaxHitPoints + Data.BonusStats.MaxHitPoints;
+        }
+
+        // ====================================================================
 
         public void OnFixedUpdate(float secDiff)
         {
@@ -109,16 +125,20 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             TimeUntilRecovery = 1.0f;
-            Party.PlayerAudioSource.PlayOneShot(Party.SwordAttacks[UnityEngine.Random.Range(0, Party.SwordAttacks.Count)]);
+
+            AttackInfo attackInfo = new AttackInfo();
+            attackInfo.MinDamage = 38;
+            attackInfo.MaxDamage = 64;
+            attackInfo.AttackMod = 10000;
+            attackInfo.DamageType = SpellElement.Physical;
+
+            if (OnAttack != null)
+            {
+                OnAttack(this, attackInfo);
+            }
 
             if (victim)
             {
-                AttackInfo attackInfo = new AttackInfo();
-                attackInfo.MinDamage = 38;
-                attackInfo.MaxDamage = 64;
-                attackInfo.AttackMod = 10000;
-                attackInfo.DamageType = SpellElement.Physical;
-
                 AttackResult result = victim.ReceiveAttack(attackInfo, Party.gameObject);
                 
                 if (OnHitNpc != null)
@@ -132,7 +152,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnAttackReceived(AttackInfo attackInfo, AttackResult result)
         {
-            if (OnGotHit != null)
+            if (OnGotHit != null &&
+                (result.Type == AttackResultType.Hit || result.Type == AttackResultType.Kill))
             {
                 OnGotHit(this, attackInfo, result);
             }

@@ -81,7 +81,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public bool PostInit()
         {
             CharacterData charData = new CharacterData();
-            charData.CharacterType = CharacterType.Lich_1;
+            charData.CharacterType = CharacterType.KnightFemale_1;
             charData.CharacterAvatarId = 27;
             charData.PartyIndex = 1;
             charData.Name = "Tyrkys";

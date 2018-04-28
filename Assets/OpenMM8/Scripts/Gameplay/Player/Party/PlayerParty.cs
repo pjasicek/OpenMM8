@@ -29,27 +29,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         static public event FoodChanged OnFoodChanged;
         static public event FoundGold OnFoundGold;
 
-        [Header("Sounds - Attack")]
-        public List<AudioClip> SwordAttacks = new List<AudioClip>();
-        public List<AudioClip> AxeAttacks = new List<AudioClip>();
-        public List<AudioClip> BluntAttacks = new List<AudioClip>();
-        public List<AudioClip> BowAttacks = new List<AudioClip>();
-        public List<AudioClip> DragonAttacks = new List<AudioClip>();
-        public List<AudioClip> BlasterAttacks = new List<AudioClip>();
-
-        [Header("Sounds - Got Hit")]
-        public AudioClip WeaponVsMetal_Light;
-        public AudioClip WeaponVsMetal_Medium;
-        public AudioClip WeaponVsMetal_Hard;
-        public AudioClip WeaponVsLeather_Light;
-        public AudioClip WeaponVsLeather_Medium;
-        public AudioClip WeaponVsLeather_Hard;
-
-        [Header("Sounds - Gold")]
-        public AudioClip GoldChanged;
-
-        [Header("Misc")]
-
         [SerializeField]
         private int MinutesSinceSleep;
 
@@ -148,6 +127,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 character.OnFixedUpdate(0.05f);
             }
+        }
+
+        public Vector3 GetPosition()
+        {
+            return transform.position;
         }
 
         private void Attack()
@@ -397,6 +381,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 hitCharacter.Data.DefaultStats.Resistances,
                 hitCharacter.Data.DefaultStats.ArmorClass,
                 hitCharacter.Data.DefaultStats.Attributes[Attribute.Luck]);
+            result.Victim = this.gameObject;
             /*if (result.Type == AttackResultType.Miss)
             {
                 return result;
@@ -549,8 +534,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 OnGoldChanged(Gold - amount, Gold, amount);
             }
-
-            PlayerAudioSource.PlayOneShot(GoldChanged, 1.5f); 
         }
 
         public void AddFood(int amount)

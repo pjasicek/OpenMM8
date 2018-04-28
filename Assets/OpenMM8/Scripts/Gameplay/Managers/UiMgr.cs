@@ -57,6 +57,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Character.OnRecovered += OnCharRecovered;
             Character.OnRecoveryTimeChanged += OnCharRecoveryTimeChanged;
             Character.OnHitNpc += OnCharHitNpc;
+            Character.OnGotHit += OnCharGotHit;
 
             InspectableNpc.OnNpcInspectStart += OnNpcInspectStart;
             InspectableNpc.OnNpcInspectEnd += OnNpcInspectEnd;
@@ -241,6 +242,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
+        private Sprite RandomSprite(List<Sprite> sprites)
+        {
+            return sprites[UnityEngine.Random.Range(0, sprites.Count)];
+        }
+
         //=================================== Events ===================================
 
         public void OnCharHealthChanged(Character chr, int maxHealth, int currHealth)
@@ -291,21 +297,25 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnCharHitNpc(Character chr, AttackInfo attackInfo, AttackResult result)
         {
+            chr.CharFaceUpdater.ResetTimer();
+
             string hitText = "";
             switch (result.Type)
             {
                 case AttackResultType.Hit:
-                    hitText = chr.Data.Name + " hits " + result.HitObjectName + 
+                    hitText = chr.Data.Name + " hits " + result.VictimName + 
                         " for " + result.DamageDealt + " damage";
                     break;
 
                 case AttackResultType.Kill:
                     hitText = chr.Data.Name + " inflicts " + result.DamageDealt + 
-                        " points killing " + result.HitObjectName;
+                        " points killing " + result.VictimName;
+                    chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.Sprites.Smile), 0.75f);
                     break;
 
                 case AttackResultType.Miss:
-                    hitText = chr.Data.Name + " missed attack on " + result.HitObjectName;
+                    hitText = chr.Data.Name + " missed attack on " + result.VictimName;
+                    chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.Sprites.FailAction), 0.75f);
                     break;
 
                 default:
@@ -318,7 +328,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnCharGotHit(Character chr, AttackInfo attackInfo, AttackResult attackResult)
         {
-
+            if (attackResult.Type == AttackResultType.Hit)
+            {
+                chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.Sprites.TakeDamage), 0.5f);
+            }
         }
 
         public void OnHoverObject(HoverInfo hoverInfo)
