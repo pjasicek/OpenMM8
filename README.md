@@ -10,5 +10,5 @@
  - Villager AI is implemented - they wander within pre-defined location, they look at Player when near and they run from Hostile NPCs (or player)
 
 # In-Game screenshots
-![alt tag](https://s9.postimg.org/utmjrnrwv/screenshot_50.png)
-![alt tag](https://s9.postimg.org/6eix450bj/screenshot_51.png)
+![alt tag](https://s9.postimg.cc/utmjrnrwv/screenshot_50.png)
+![alt tag](https://s9.postimg.cc/6eix450bj/screenshot_51.png)
