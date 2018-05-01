@@ -182,7 +182,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                 ActiveCharacter.Attack(victim);
                 ActiveCharacter = null;
-                AttackDelayTimeLeft = 0.1f;
+                AttackDelayTimeLeft = 0.2f;
             }
         }
 
@@ -333,12 +333,44 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void AddCharacter(Character character)
         {
+            if (Characters.Count == 5)
+            {
+                Logger.LogError("Already 5 characters in party, cannot add more !");
+                return;
+            }
+
             character.Party = this;
             Characters.Add(character);
             
             if (OnCharacterJoinedParty != null)
             {
                 OnCharacterJoinedParty(character, this);
+            }
+        }
+
+        public void RemoveCharacter(Character character)
+        {
+            if (!Characters.Remove(character))
+            {
+                Logger.LogError("Attempting to remove nonexisting character from party");
+                return;
+            }
+
+            if (OnCharacterLeftParty != null)
+            {
+                OnCharacterLeftParty(character, this);
+            }
+
+            if (ActiveCharacter == character)
+            {
+                // Update will decide next active character
+                ActiveCharacter = null;
+
+                /*Character mostRecChr = GetMostRecoveredCharacter();
+                if (mostRecChr != null && mostRecChr.IsRecovered())
+                {
+                    ActiveCharacter = mostRecChr;
+                }*/
             }
         }
 

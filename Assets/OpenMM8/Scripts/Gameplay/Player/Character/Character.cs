@@ -82,6 +82,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return Data.DefaultStats.MaxHitPoints + Data.BonusStats.MaxHitPoints;
         }
 
+        public int GetPartyIndex()
+        {
+            return Party.Characters.FindIndex(ch => ch == this);
+        }
+
         // ====================================================================
 
         public void OnFixedUpdate(float secDiff)
@@ -124,7 +129,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 return false;
             }
 
-            TimeUntilRecovery = 1.0f;
+            TimeUntilRecovery = UnityEngine.Random.RandomRange(1.25f, 2.0f);
 
             AttackInfo attackInfo = new AttackInfo();
             attackInfo.MinDamage = 38;

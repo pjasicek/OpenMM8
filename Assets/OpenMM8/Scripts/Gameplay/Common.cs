@@ -16,6 +16,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     {
         public static float MeleeRangeDistance = 3.0f;
         public static Vector3 CrosshairScreenRelPos = new Vector3(0.5f, 0.595f, 0.0f);
+
+        public static float PC_WidthDelta = 97;
+        public static Vector2Int PC1_EmptySlot = new Vector2Int(-272, -432);
+        public static Vector2Int PC1_Avatar = new Vector2Int(-269, -428);
+        public static Vector2Int PC1_SelectionRing = new Vector2Int(-269, -428);
+        public static Vector2Int PC1_AgroStatus = new Vector2Int(-300, -466);
+        public static Vector2Int PC1_HealthBar = new Vector2Int(-236, -453);
+        public static Vector2Int PC1_ManaBar = new Vector2Int(-232, -453);
+        public static Vector2Int PC1_HealthManaFrame = new Vector2Int(-234, -453);
     }
 
     // Enums

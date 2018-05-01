@@ -64,6 +64,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             // Sprite indexes are -1 - picture sprites start from 1, index from 0
 
+            Debug.Log("Loaded: " + type.ToString());
             characterSprites.TakeDamage.Add(sprites[36]);
             characterSprites.TakeDamage.Add(sprites[37]);
             characterSprites.TakeDamage.Add(sprites[38]);

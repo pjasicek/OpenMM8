@@ -10,11 +10,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 {
     public class CharacterUI
     {
+        public GameObject Holder;
+
         public Image PlayerCharacter;
         public Image HealthBar;
         public Image ManaBar;
         public Image AgroStatus;
         public Image SelectionRing;
+        public Image BlessBuff;
         public Image EmptySlot;
 
         static public Sprite HealthBarSprite_Green;
@@ -28,8 +31,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void SetHealth(float percentage)
         {
-            Debug.Assert(EmptySlot.enabled == false);
-
             if (percentage > 50.0f)
             {
                 HealthBar.sprite = HealthBarSprite_Green;
@@ -48,8 +49,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void SetMana(float percentage)
         {
-            Debug.Assert(EmptySlot.enabled == false);
-
             ManaBar.fillAmount = percentage / 100.0f;
         }
 
@@ -60,8 +59,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void SetAgroStatus(AgroState state)
         {
-            Debug.Assert(EmptySlot.enabled == false);
-
             if (state == AgroState.Safe)
             {
                 AgroStatus.sprite = AgroStatusSprite_Green;
@@ -78,36 +75,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void SetSelected(bool isSelected)
         {
-            Debug.Assert(EmptySlot.enabled == false);
-
             SelectionRing.enabled = isSelected;
-        }
-
-        public void SetIsOccuppied(bool isOccupied)
-        {
-            if (isOccupied)
-            {
-                PlayerCharacter.enabled = false;
-                HealthBar.enabled = false;
-                ManaBar.enabled = false;
-                AgroStatus.enabled = false;
-                SelectionRing.enabled = false;
-                EmptySlot.enabled = true;
-            }
-            else
-            {
-                PlayerCharacter.enabled = true;
-                HealthBar.enabled = true;
-                ManaBar.enabled = true;
-                AgroStatus.enabled = true;
-                SelectionRing.enabled = true;
-                EmptySlot.enabled = false;
-            }
-        }
-
-        public bool IsOccuppied()
-        {
-            return EmptySlot.enabled;
         }
     }
 }

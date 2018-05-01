@@ -80,42 +80,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public bool PostInit()
         {
-            CharacterData charData = new CharacterData();
-            charData.CharacterType = CharacterType.KnightFemale_1;
-            charData.CharacterAvatarId = 27;
-            charData.PartyIndex = 1;
-            charData.Name = "Tyrkys";
-            charData.Class = Class.Necromancer;
-            charData.Experience = 0;
-            charData.SkillPoints = 0;
-            charData.CurrHitPoints = 500;
-            charData.CurrSpellPoints = 50;
-            charData.Condition = Condition.Good;
-            charData.DefaultStats.Age = 30;
-            charData.DefaultStats.Level = 1;
-            charData.DefaultStats.MaxHitPoints = 500;
-            charData.DefaultStats.MaxSpellPoints = 50;
-
-            foreach (Attribute attr in Enum.GetValues(typeof(Attribute)))
-            {
-                charData.DefaultStats.Attributes[attr] = 0;
-                charData.BonusStats.Attributes[attr] = 0;
-            }
-
-            foreach (SpellElement resist in Enum.GetValues(typeof(SpellElement)))
-            {
-                charData.DefaultStats.Resistances[resist] = 0;
-                charData.BonusStats.Resistances[resist] = 0;
-            }
-
-            Character chr = new Character(charData);
-
-            PlayerParty.AddCharacter(chr);
-
-            /*if (OnLevelLoaded != null)
-            {
-                OnLevelLoaded(1);
-            }*/
+            AddRandChar();
+            AddRandChar();
+            AddRandChar();
+            AddRandChar();
 
             return true;
         }
@@ -220,6 +188,55 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     }
                 }*/
             }
+
+            if (Input.GetKeyDown(KeyCode.F2))
+            {
+                PlayerParty.RemoveCharacter(PlayerParty.Characters[0]);
+            }
+
+            if (Input.GetKeyDown(KeyCode.F1))
+            {
+                if (PlayerParty.Characters.Count == 5)
+                {
+                    PlayerParty.RemoveCharacter(PlayerParty.Characters[0]);
+                }
+                AddRandChar();
+            }
+        }
+
+        public void AddRandChar()
+        {
+            var chrType = (CharacterType)UnityEngine.Random.Range(1, (int)Enum.GetValues(typeof(CharacterType)).Cast<CharacterType>().Max());
+
+            CharacterData charData = new CharacterData();
+            charData.CharacterType = chrType;
+            charData.Name = "Tyrkys";
+            charData.Class = Class.Knight;
+            charData.Experience = 0;
+            charData.SkillPoints = 0;
+            charData.CurrHitPoints = 500;
+            charData.CurrSpellPoints = 50;
+            charData.Condition = Condition.Good;
+            charData.DefaultStats.Age = 30;
+            charData.DefaultStats.Level = 1;
+            charData.DefaultStats.MaxHitPoints = 500;
+            charData.DefaultStats.MaxSpellPoints = 50;
+
+            foreach (Attribute attr in Enum.GetValues(typeof(Attribute)))
+            {
+                charData.DefaultStats.Attributes[attr] = 0;
+                charData.BonusStats.Attributes[attr] = 0;
+            }
+
+            foreach (SpellElement resist in Enum.GetValues(typeof(SpellElement)))
+            {
+                charData.DefaultStats.Resistances[resist] = 0;
+                charData.BonusStats.Resistances[resist] = 0;
+            }
+
+            Character chr = new Character(charData);
+
+            PlayerParty.AddCharacter(chr);
         }
 
         public void ReturnToGame()

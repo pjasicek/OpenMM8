@@ -66,7 +66,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
         public bool Init()
         {
             // Load sounds / music
-            BackgroundMusic = Resources.Load<AudioClip>("Music/Music_DaggerWoundIsland");
+            BackgroundMusic = Resources.Load<AudioClip>("Music/1");
 
             // Character weapon attack sounds
             SwordAttacks.Add(Resources.Load<AudioClip>("Player/Sounds/PlayerAttack/PlayerAttack_Sword_1"));
