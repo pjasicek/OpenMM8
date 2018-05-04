@@ -36,8 +36,8 @@ public class Video : MonoBehaviour
         videoPlayer.playOnAwake = false;
         videoPlayer.isLooping = true;
         videoPlayer.skipOnDrop = true;
-        audioSource.playOnAwake = false;
-        videoPlayer.waitForFirstFrame = false;
+        audioSource.playOnAwake = true;
+        videoPlayer.waitForFirstFrame = true;
 
         //We want to play from video clip not from url
         videoPlayer.source = VideoSource.VideoClip;
@@ -46,7 +46,7 @@ public class Video : MonoBehaviour
         videoPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
 
         //Assign the Audio from Video to AudioSource to be played
-        videoPlayer.EnableAudioTrack(0, true);
+        //videoPlayer.EnableAudioTrack(0, true);
         videoPlayer.SetTargetAudioSource(0, audioSource);
 
         //Set video To Play then prepare Audio to prevent Buffering
@@ -69,7 +69,7 @@ public class Video : MonoBehaviour
         videoPlayer.Play();
 
         //Play Sound
-        audioSource.Play();
+        //audioSource.Play();
 
         Debug.Log("Playing Video");
         while (videoPlayer.isPlaying)
