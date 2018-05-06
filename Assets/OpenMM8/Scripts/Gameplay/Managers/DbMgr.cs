@@ -14,6 +14,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public NpcGreetDb NpcGreetDb = new NpcGreetDb();
         public NpcTextDb NpcTextDb = new NpcTextDb();
         public NpcTopicDb NpcTopicDb = new NpcTopicDb();
+        public NpcNewsDb NpcNewsDb = new NpcNewsDb();
 
         private const string MM8_DATA_PATH = @"Assets/OpenMM8/Resources/Data/";
 
@@ -24,6 +25,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             NpcGreetDb.Initialize(MM8_DATA_PATH + @"NpcGreet.csv");
             NpcTextDb.Initialize(MM8_DATA_PATH + @"NpcText.csv");
             NpcTopicDb.Initialize(MM8_DATA_PATH + @"NpcTopic.csv");
+            NpcNewsDb.Initialize(MM8_DATA_PATH + @"NpcNews.csv");
         }
 
         public bool Init()

@@ -10,10 +10,7 @@ public class Talkable : Interactable
 {
     static public event TalkWithNpcDlg OnTalkWithNpc;
 
-    public string Name;
-    public string Location;
-    public string GreetText;
-    public Sprite Avatar;
+    public TalkProperties TalkProperties;
 
     public override bool Interact(GameObject interacter)
     {

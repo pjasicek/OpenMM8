@@ -14,6 +14,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
             GameMgr.Instance.Init();
             UiMgr.Instance.Init();
             SoundMgr.Instance.Init();
+            QuestMgr.Instance.Init();
+            TalkMgr.Instance.Init();
 
             GameMgr.Instance.PostInit();
         }

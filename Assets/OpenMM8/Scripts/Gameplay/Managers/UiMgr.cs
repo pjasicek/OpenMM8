@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.OpenMM8.Scripts.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -68,6 +69,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             MinimapMarker.OnMinimapMarkerDestroyed += OnMinimapMarkerDestroyed;
 
             Talkable.OnTalkWithNpc += OnTalkWithNpc;
+
+            TalkMgr.OnNpcTalkTextChanged += OnNpcTalkTextChanged;
         }
 
         private void Start()
@@ -99,6 +102,19 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_NpcTalkUI.NpcAvatar = npcTalkCanvasObject.transform.Find("Avatar").GetComponent<Image>();
             m_NpcTalkUI.LocationNameText = npcTalkCanvasObject.transform.Find("LocationNameText").GetComponent<Text>();
             m_NpcTalkUI.NpcNameText = npcTalkCanvasObject.transform.Find("NpcNameText").GetComponent<Text>();
+
+            m_NpcTalkUI.TopicButtonHolder = npcTalkCanvasObject.transform.Find("TopicsHolder").GetComponent<RectTransform>();
+            m_NpcTalkUI.TopicButtonList.Add(m_NpcTalkUI.TopicButtonHolder.Find("Button_1").gameObject);
+            m_NpcTalkUI.TopicButtonList.Add(m_NpcTalkUI.TopicButtonHolder.Find("Button_2").gameObject);
+            m_NpcTalkUI.TopicButtonList.Add(m_NpcTalkUI.TopicButtonHolder.Find("Button_3").gameObject);
+            m_NpcTalkUI.TopicButtonList.Add(m_NpcTalkUI.TopicButtonHolder.Find("Button_4").gameObject);
+            m_NpcTalkUI.TopicButtonList.Add(m_NpcTalkUI.TopicButtonHolder.Find("Button_5").gameObject);
+
+            foreach (GameObject topicBtn in m_NpcTalkUI.TopicButtonList)
+            {
+                topicBtn.GetComponent<Button>().onClick.AddListener(
+                    delegate { TalkMgr.Instance.OnTopicClicked(topicBtn.GetComponent<TopicBtnContext>()); });
+            }
 
             m_PartyUI = new PartyUI();
             m_PartyUI.GoldText = m_PartyCanvasObj.transform.Find("GoldCountText").GetComponent<Text>();
@@ -295,6 +311,94 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return sprites[UnityEngine.Random.Range(0, sprites.Count)];
         }
 
+        private float GetTextHeight(Text text)
+        {
+
+            Vector2 extents = new Vector2(text.rectTransform.rect.width, 1);
+
+            TextGenerator textGen = new TextGenerator();
+            TextGenerationSettings generationSettings =
+                text.GetGenerationSettings(extents);
+            textGen.GetPreferredHeight(text.text, generationSettings);
+            float height = textGen.lineCount * (text.fontSize * 1.15f);
+
+            return height;
+        }
+
+        public void RefreshNpcTalkTopics(TalkProperties talkProp)
+        {
+            // NPC Topics
+            foreach (GameObject topicButton in m_NpcTalkUI.TopicButtonList)
+            {
+                topicButton.SetActive(false);
+            }
+
+            float totalTextHeight = 0.0f;
+            int buttIdx = 0;
+            foreach (int topicId in talkProp.TopicIds)
+            {
+                string topic = DbMgr.Instance.NpcTopicDb.GetNpcTopic(topicId).Topic;
+
+                GameObject topicButton = m_NpcTalkUI.TopicButtonList[buttIdx];
+
+                topicButton.GetComponent<Text>().text = topic;
+                topicButton.SetActive(true);
+
+                float btnHeight = GetTextHeight(topicButton.GetComponent<Text>());
+                if (btnHeight < 300.0f)
+                {
+                    // This is a hack - oneliners have different padding than 2 liners
+                    btnHeight += 100.0f;
+                }
+                topicButton.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(
+                    RectTransform.Axis.Vertical, btnHeight);
+
+                // Set up data for click delegate
+                TopicBtnContext btnCtx = topicButton.GetComponent<TopicBtnContext>();
+                btnCtx.TalkProperties = talkProp;
+                btnCtx.TopicId = topicId;
+
+                totalTextHeight += btnHeight;
+                buttIdx++;
+            }
+
+            // 7.5px spaces between buttons
+            const float spacerHeight = 110.0f;
+            totalTextHeight += (buttIdx - 1) * spacerHeight;
+
+            float topicCenterY = m_NpcTalkUI.TopicButtonHolder.anchoredPosition.y;
+            float topPoint = topicCenterY + (totalTextHeight / 10.0f) / 2.0f;
+
+            foreach (GameObject topicButton in m_NpcTalkUI.TopicButtonList)
+            {
+                if (!topicButton.active)
+                {
+                    continue;
+                }
+
+                float btnHeight = topicButton.GetComponent<RectTransform>().rect.height;
+                Vector2 currPos = topicButton.GetComponent<RectTransform>().anchoredPosition;
+                Vector2 newPos = new Vector2(currPos.x, topPoint - ((btnHeight / 10.0f) / 2.0f));
+                topicButton.GetComponent<RectTransform>().anchoredPosition = newPos;
+
+                topPoint -= btnHeight / 10.0f;
+                topPoint -= spacerHeight / 10.0f;
+            }
+        }
+
+        private void UpdateNpcTalkText(string talkText)
+        {
+            m_NpcTalkUI.NpcResponseText.text = talkText;
+
+            float height = GetTextHeight(m_NpcTalkUI.NpcResponseText);
+
+            float textSizeY = (height /*/ 2.0f*/) / 10.0f;
+            Vector2 v = new Vector2(
+                m_NpcTalkUI.NpcResponseBackground.rectTransform.anchoredPosition.x,
+                NpcTalkUI.DefaultResponseY + textSizeY + 10.0f);
+            m_NpcTalkUI.NpcResponseBackground.rectTransform.anchoredPosition = v;
+        }
+
         //=================================== Events ===================================
 
         public void OnCharHealthChanged(Character chr, int maxHealth, int currHealth, int delta)
@@ -471,13 +575,24 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnTalkWithNpc(Character talkerChr, Talkable talkedToObj)
         {
-            talkerChr.CharFaceUpdater.SetAvatar(RandomSprite(talkerChr.Sprites.Greet), 1.0f);
+            String talkText = "Oops !";
+            TalkProperties talkProp = talkedToObj.TalkProperties;
+            if (talkProp.IsNpcNews)
+            {
+                talkText = TalkMgr.GetCurrentNpcNews(talkProp);
+            }
+            else
+            {
+                talkText = TalkMgr.GetCurrNpcGreet(talkProp);
+            }
 
-            m_NpcTalkUI.NpcNameText.text = talkedToObj.Name;
-            m_NpcTalkUI.LocationNameText.text = talkedToObj.Location;
-            m_NpcTalkUI.NpcResponseText.text = talkedToObj.GreetText;
+            RefreshNpcTalkTopics(talkProp);
+
+            talkerChr.CharFaceUpdater.SetAvatar(RandomSprite(talkerChr.Sprites.Greet), 1.0f);
+            m_NpcTalkUI.NpcNameText.text = talkedToObj.TalkProperties.Name;
+            m_NpcTalkUI.LocationNameText.text = talkedToObj.TalkProperties.Location;
             m_NpcTalkUI.NpcTalkCanvas.enabled = true;
-            m_NpcTalkUI.NpcAvatar.sprite = talkedToObj.Avatar;
+            m_NpcTalkUI.NpcAvatar.sprite = talkedToObj.TalkProperties.Avatar;
             m_Minimap.enabled = false;
             m_MinimapCloseButtonImage.enabled = true;
             m_PartyBuffsAndButtonsCanvas.enabled = false;
@@ -485,16 +600,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
-            TextGenerator textGen = new TextGenerator();
-            TextGenerationSettings generationSettings =
-                m_NpcTalkUI.NpcResponseText.GetGenerationSettings(m_NpcTalkUI.NpcResponseText.rectTransform.rect.size);
-            float height = textGen.GetPreferredHeight(talkedToObj.GreetText, generationSettings);
+            UpdateNpcTalkText(talkText);
+        }
 
-            float textSizeY = (height / 2.0f) / 10.0f;
-            Vector2 v = new Vector2(
-                m_NpcTalkUI.NpcResponseBackground.rectTransform.anchoredPosition.x,
-                NpcTalkUI.DefaultResponseY + textSizeY + 5.0f);
-            m_NpcTalkUI.NpcResponseBackground.rectTransform.anchoredPosition = v;
+        private void OnNpcTalkTextChanged(string text, TalkProperties talkProp)
+        {
+            UpdateNpcTalkText(text);
         }
 
         // =========== Game states
@@ -532,7 +643,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                     foreach (Character chr in m_PlayerParty.Characters)
                     {
-                        chr.UI.Holder.active = true;
+                        chr.UI.Holder.SetActive(true);
                     }
                 }
                 else
@@ -547,7 +658,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                     foreach (Character chr in m_PlayerParty.Characters)
                     {
-                        chr.UI.Holder.active = false;
+                        chr.UI.Holder.SetActive(false);
                     }
                 }
             }

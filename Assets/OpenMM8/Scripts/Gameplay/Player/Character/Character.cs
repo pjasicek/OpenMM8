@@ -106,15 +106,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     OnRecovered(this);
                 }
             }
-
-            /*if (!IsRecovered() && CharacterUI.SelectionRing.enabled == true)
-            {
-                CharacterUI.SelectionRing.enabled = false;
-            }
-            else if (IsRecovered() && CharacterUI.SelectionRing.enabled == false)
-            {
-                CharacterUI.SelectionRing.enabled = true;
-            }*/
         }
 
         public bool IsRecovered()
@@ -129,7 +120,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 return false;
             }
 
-            TimeUntilRecovery = UnityEngine.Random.RandomRange(1.25f, 2.0f);
+            TimeUntilRecovery = UnityEngine.Random.Range(1.25f, 2.0f);
 
             AttackInfo attackInfo = new AttackInfo();
             attackInfo.MinDamage = 38;

@@ -12,7 +12,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
 {
     public class NpcGreetDb : DataDb
     {
-        Dictionary<int, NpcGreet> NpcGreetMap = new Dictionary<int, NpcGreet>();
+        Dictionary<int, NpcGreet> m_NpcGreetMap = new Dictionary<int, NpcGreet>();
 
         override public bool ProcessCsvDataRow(int row, string[] columns)
         {
@@ -20,18 +20,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             int id;
             if (int.TryParse(columns[0], out id))
             {
-                NpcGreetMap.Add(id, new NpcGreet(id, columns[1], columns[2], columns[3], columns[4]));
+                m_NpcGreetMap.Add(id, new NpcGreet(id, columns[1], columns[2], columns[3], columns[4]));
             }
 
-            return NpcGreetMap.Count > 0;
+            return m_NpcGreetMap.Count > 0;
         }
 
         public NpcGreet GetNpcGreet(int id)
         {
             NpcGreet npcGreet = null;
-            if (NpcGreetMap.ContainsKey(id))
+            if (m_NpcGreetMap.ContainsKey(id))
             {
-                npcGreet = NpcGreetMap[id];
+                npcGreet = m_NpcGreetMap[id];
             }
 
             return npcGreet;
