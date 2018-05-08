@@ -11,6 +11,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 {
     public delegate void EscapePressed();
     public delegate void PauseGame();
+    public delegate void UnpauseGame();
     /*public delegate void LevelUnloaded(int levelNum);
     public delegate void LevelLoaded(int levelNum);*/
 
@@ -23,8 +24,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         // Events
         static public event EscapePressed OnEscapePressed;
         static public event PauseGame OnPauseGame;
-       /* static public event LevelUnloaded OnLevelUnloaded;
-        static public event LevelLoaded OnLevelLoaded;*/
+        static public event PauseGame OnUnpauseGame;
+        /* static public event LevelUnloaded OnLevelUnloaded;
+         static public event LevelLoaded OnLevelLoaded;*/
         static public event MapButtonPressed OnMapButtonPressed;
 
         // States
@@ -257,6 +259,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Time.timeScale = 1;
             IsGamePaused = false;
             //OnGameUnpaused();
+
+            if (OnUnpauseGame != null)
+            {
+                OnUnpauseGame();
+            }
         }
 
         public void ChangeGameState(GameState newState)

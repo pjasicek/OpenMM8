@@ -11,43 +11,43 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
         // Public
 
         // Private
-        private AudioSource AudioSource;
-        private AudioClip BackgroundMusic;
-        private PlayerParty PlayerParty;
+        private AudioSource m_AudioSource;
+        private AudioClip m_BackgroundMusic;
+        private PlayerParty m_PlayerParty;
 
         private Dictionary<CharacterType, CharacterSounds> CharacterSoundsMap =
             new Dictionary<CharacterType, CharacterSounds>();
 
         [Header("Sounds - Attack")]
-        private List<AudioClip> SwordAttacks = new List<AudioClip>();
-        private List<AudioClip> AxeAttacks = new List<AudioClip>();
-        private List<AudioClip> BluntAttacks = new List<AudioClip>();
-        private List<AudioClip> BowAttacks = new List<AudioClip>();
-        private List<AudioClip> DragonAttacks = new List<AudioClip>();
-        private List<AudioClip> BlasterAttacks = new List<AudioClip>();
+        private List<AudioClip> m_SwordAttacks = new List<AudioClip>();
+        private List<AudioClip> m_AxeAttacks = new List<AudioClip>();
+        private List<AudioClip> m_BluntAttacks = new List<AudioClip>();
+        private List<AudioClip> m_BowAttacks = new List<AudioClip>();
+        private List<AudioClip> m_DragonAttacks = new List<AudioClip>();
+        private List<AudioClip> m_BlasterAttacks = new List<AudioClip>();
 
         [Header("Sounds - Got Hit")]
-        private AudioClip WeaponVsMetal_Light;
-        private AudioClip WeaponVsMetal_Medium;
-        private AudioClip WeaponVsMetal_Hard;
-        private AudioClip WeaponVsLeather_Light;
-        private AudioClip WeaponVsLeather_Medium;
-        private AudioClip WeaponVsLeather_Hard;
+        private AudioClip m_WeaponVsMetal_Light;
+        private AudioClip m_WeaponVsMetal_Medium;
+        private AudioClip m_WeaponVsMetal_Hard;
+        private AudioClip m_WeaponVsLeather_Light;
+        private AudioClip m_WeaponVsLeather_Medium;
+        private AudioClip m_WeaponVsLeather_Hard;
 
-        private List<AudioClip> CharGotHit_Leather = new List<AudioClip>();
-        private List<AudioClip> CharGotHit_Metal = new List<AudioClip>();
+        private List<AudioClip> m_CharGotHit_Leather = new List<AudioClip>();
+        private List<AudioClip> m_CharGotHit_Metal = new List<AudioClip>();
 
 
         [Header("Sounds - Gold")]
-        public AudioClip GoldChanged;
+        public AudioClip m_GoldChanged;
 
         //=================================== Unity Lifecycle ===================================
 
         private void Awake()
         {
             // Events
-            GameMgr.OnEscapePressed += OnReturnToGame;
             GameMgr.OnPauseGame += OnGamePaused;
+            GameMgr.OnUnpauseGame += OnGameUnpaused;
 
             PlayerParty.OnCharacterJoinedParty += OnCharacterJoinedParty;
             PlayerParty.OnCharacterLeftParty += OnCharacterLeftParty;
@@ -66,46 +66,46 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
         public bool Init()
         {
             // Load sounds / music
-            BackgroundMusic = Resources.Load<AudioClip>("Music/1");
+            m_BackgroundMusic = Resources.Load<AudioClip>("Music/1");
 
             // Character weapon attack sounds
-            SwordAttacks.Add(Resources.Load<AudioClip>("Player/Sounds/PlayerAttack/PlayerAttack_Sword_1"));
-            SwordAttacks.Add(Resources.Load<AudioClip>("Player/Sounds/PlayerAttack/PlayerAttack_Sword_2"));
-            AxeAttacks.Add(Resources.Load<AudioClip>("Player/Sounds/PlayerAttack/PlayerAttack_Axe_1"));
-            AxeAttacks.Add(Resources.Load<AudioClip>("Player/Sounds/PlayerAttack/PlayerAttack_Axe_2"));
-            BluntAttacks.Add(Resources.Load<AudioClip>("Player/Sounds/PlayerAttack/PlayerAttack_Blunt_1"));
-            BluntAttacks.Add(Resources.Load<AudioClip>("Player/Sounds/PlayerAttack/PlayerAttack_Blunt_2"));
-            BowAttacks.Add(Resources.Load<AudioClip>("Player/Sounds/PlayerAttack/PlayerAttack_Bow_1"));
-            DragonAttacks.Add(Resources.Load<AudioClip>("Player/Sounds/PlayerAttack/PlayerAttack_DragonBreath_1"));
-            BlasterAttacks.Add(Resources.Load<AudioClip>("Player/Sounds/PlayerAttack/PlayerAttack_Blaster_1"));
+            m_SwordAttacks.Add(Resources.Load<AudioClip>("Player/Sounds/PlayerAttack/PlayerAttack_Sword_1"));
+            m_SwordAttacks.Add(Resources.Load<AudioClip>("Player/Sounds/PlayerAttack/PlayerAttack_Sword_2"));
+            m_AxeAttacks.Add(Resources.Load<AudioClip>("Player/Sounds/PlayerAttack/PlayerAttack_Axe_1"));
+            m_AxeAttacks.Add(Resources.Load<AudioClip>("Player/Sounds/PlayerAttack/PlayerAttack_Axe_2"));
+            m_BluntAttacks.Add(Resources.Load<AudioClip>("Player/Sounds/PlayerAttack/PlayerAttack_Blunt_1"));
+            m_BluntAttacks.Add(Resources.Load<AudioClip>("Player/Sounds/PlayerAttack/PlayerAttack_Blunt_2"));
+            m_BowAttacks.Add(Resources.Load<AudioClip>("Player/Sounds/PlayerAttack/PlayerAttack_Bow_1"));
+            m_DragonAttacks.Add(Resources.Load<AudioClip>("Player/Sounds/PlayerAttack/PlayerAttack_DragonBreath_1"));
+            m_BlasterAttacks.Add(Resources.Load<AudioClip>("Player/Sounds/PlayerAttack/PlayerAttack_Blaster_1"));
 
             // Character getting hit sounds - based on character's armor
-            WeaponVsMetal_Light = Resources.Load<AudioClip>("Player/Sounds/PlayerGotHit/Wood_vs_Metal_Light");
-            WeaponVsMetal_Medium = Resources.Load<AudioClip>("Player/Sounds/PlayerGotHit/Wood_vs_Metal_Medium");
-            WeaponVsMetal_Hard = Resources.Load<AudioClip>("Player/Sounds/PlayerGotHit/Wood_vs_Metal_Heavy");
-            WeaponVsLeather_Light = Resources.Load<AudioClip>("Player/Sounds/PlayerGotHit/Wood_vs_Leather_Light");
-            WeaponVsLeather_Medium = Resources.Load<AudioClip>("Player/Sounds/PlayerGotHit/Wood_vs_Leather_Medium");
-            WeaponVsLeather_Hard = Resources.Load<AudioClip>("Player/Sounds/PlayerGotHit/Wood_vs_Leather_Heavy");
+            m_WeaponVsMetal_Light = Resources.Load<AudioClip>("Player/Sounds/PlayerGotHit/Wood_vs_Metal_Light");
+            m_WeaponVsMetal_Medium = Resources.Load<AudioClip>("Player/Sounds/PlayerGotHit/Wood_vs_Metal_Medium");
+            m_WeaponVsMetal_Hard = Resources.Load<AudioClip>("Player/Sounds/PlayerGotHit/Wood_vs_Metal_Heavy");
+            m_WeaponVsLeather_Light = Resources.Load<AudioClip>("Player/Sounds/PlayerGotHit/Wood_vs_Leather_Light");
+            m_WeaponVsLeather_Medium = Resources.Load<AudioClip>("Player/Sounds/PlayerGotHit/Wood_vs_Leather_Medium");
+            m_WeaponVsLeather_Hard = Resources.Load<AudioClip>("Player/Sounds/PlayerGotHit/Wood_vs_Leather_Heavy");
 
-            CharGotHit_Leather.Add(WeaponVsLeather_Light);
-            CharGotHit_Leather.Add(WeaponVsLeather_Medium);
-            CharGotHit_Leather.Add(WeaponVsLeather_Hard);
+            m_CharGotHit_Leather.Add(m_WeaponVsLeather_Light);
+            m_CharGotHit_Leather.Add(m_WeaponVsLeather_Medium);
+            m_CharGotHit_Leather.Add(m_WeaponVsLeather_Hard);
 
-            CharGotHit_Metal.Add(WeaponVsMetal_Light);
-            CharGotHit_Metal.Add(WeaponVsMetal_Medium);
-            CharGotHit_Metal.Add(WeaponVsMetal_Hard);
+            m_CharGotHit_Metal.Add(m_WeaponVsMetal_Light);
+            m_CharGotHit_Metal.Add(m_WeaponVsMetal_Medium);
+            m_CharGotHit_Metal.Add(m_WeaponVsMetal_Hard);
 
             // UI sounds
-            GoldChanged = Resources.Load<AudioClip>("Player/Sounds/UI/GoldChanged");
+            m_GoldChanged = Resources.Load<AudioClip>("Player/Sounds/UI/GoldChanged");
 
 
-            AudioSource = gameObject.AddComponent<AudioSource>();
-            AudioSource.clip = BackgroundMusic;
-            AudioSource.loop = true;
-            AudioSource.volume = 0.33f;
-            AudioSource.Play();
+            m_AudioSource = gameObject.AddComponent<AudioSource>();
+            m_AudioSource.clip = m_BackgroundMusic;
+            m_AudioSource.loop = true;
+            m_AudioSource.volume = 0.33f;
+            m_AudioSource.Play();
 
-            PlayerParty = GameMgr.Instance.PlayerParty;
+            m_PlayerParty = GameMgr.Instance.PlayerParty;
 
             return true;
         }
@@ -135,7 +135,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
 
         public static AudioClip PlayRandomSound(List<AudioClip> sounds)
         {
-            return PlayRandomSound(sounds, Instance.AudioSource);
+            return PlayRandomSound(sounds, Instance.m_AudioSource);
         }
 
         public static AudioClip PlayRandomSound(List<AudioClip> sounds, AudioSource audioSource)
@@ -178,19 +178,22 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
             }
         }
 
-        public void OnReturnToGame()
-        {
-            //AudioSource.UnPause();
-        }
-
         public void OnGamePaused()
         {
-            //AudioSource.Pause();
+            
+        }
+
+        private void OnGameUnpaused()
+        {
+            if (!m_AudioSource.isPlaying)
+            {
+                m_AudioSource.UnPause();
+            }
         }
 
         public void OnGoldChanged(int oldGold, int newGold, int delta)
         {
-            AudioSource.PlayOneShot(GoldChanged, 1.5f);
+            m_AudioSource.PlayOneShot(m_GoldChanged, 1.5f);
         }
 
         public void OnFoodChanged(int oldFood, int newFood, int delta)
@@ -206,7 +209,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
         private void OnCharAttack(Character chr, AttackInfo attackInfo)
         {
             // TODO: Handle attack sounds based on character's equpped weapon
-            PlayRandomSound(SwordAttacks);
+            PlayRandomSound(m_SwordAttacks);
             //Party.PlayerAudioSource.PlayOneShot(Party.SwordAttacks[UnityEngine.Random.Range(0, Party.SwordAttacks.Count)]);
         }
 
@@ -245,7 +248,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
             float damagePercentage = ((float)attackResult.DamageDealt / (float)chr.GetMaxHealth()) * 100.0f;
             if (attackInfo.DamageType == SpellElement.Physical)
             {
-                PlayRandomSound(CharGotHit_Leather, chr.Party.PlayerAudioSource);
+                PlayRandomSound(m_CharGotHit_Leather, chr.Party.PlayerAudioSource);
 
                 /*if (damagePercentage > 20.0f)
                 {
@@ -273,7 +276,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
 
         public void OnTalkWithNpc(Character talkerChr, Talkable talkedToObj)
         {
-            if (!talkedToObj.IsHouse)
+            if (talkedToObj.IsHouse)
+            {
+                m_AudioSource.Pause();
+            }
+            else
             {
                 PlayRandomSound(talkerChr.Sounds.Greeting, talkerChr.Party.PlayerAudioSource);
             }

@@ -9,7 +9,9 @@ public class VideoScene : MonoBehaviour
 {
 
     //Raw Image to Show Video Images [Assign from the Editor]
-    
+
+    public bool UseAudioFromVideo = false;
+
     //Video To Play [Assign from the Editor]
     public VideoClip VideoToPlay;
     public AudioClip AudioToPlay;
@@ -33,6 +35,15 @@ public class VideoScene : MonoBehaviour
         plr.source = VideoSource.VideoClip;
         plr.clip = VideoToPlay;
 
+        if (UseAudioFromVideo)
+        {
+            AudioSource audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.volume = 0.5f;
+            audioSource.playOnAwake = false;
+            plr.audioOutputMode = VideoAudioOutputMode.AudioSource;
+            plr.SetTargetAudioSource(0, audioSource);
+        }
+
         return plr;
     }
 
@@ -42,6 +53,11 @@ public class VideoScene : MonoBehaviour
         Application.runInBackground = true;
 
         m_AudioSource = GetComponent<AudioSource>();
+        if (!UseAudioFromVideo)
+        {
+            m_AudioSource.clip = AudioToPlay;
+            m_AudioSource.loop = true;
+        }
 
         m_VideoPlayer1 = CreateVideoPlayer();
         m_VideoPlayer2 = CreateVideoPlayer();
@@ -70,11 +86,8 @@ public class VideoScene : MonoBehaviour
         }
         if (AudioToPlay == null)
         {
-            Debug.LogError("null audio");
+            Debug.LogWarning("null audio");
         }
-
-        m_AudioSource.clip = AudioToPlay;
-        m_AudioSource.loop = true;
 
         if (VideoToPlay != null)
         {
@@ -113,8 +126,7 @@ public class VideoScene : MonoBehaviour
 
         if (AudioToPlay == null)
         {
-            Debug.LogError("null video");
-            return;
+            Debug.LogWarning("null audio");
         }
 
         m_Image.texture = m_VideoPlayer1.texture;
