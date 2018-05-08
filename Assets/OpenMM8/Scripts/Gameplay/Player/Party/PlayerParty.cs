@@ -186,6 +186,19 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
+        private float GetRayDistance(Transform from, RaycastHit ray)
+        {
+            MeshCollider mc = ray.collider.transform.GetComponent<MeshCollider>();
+            if (mc)
+            {
+                return ray.distance;
+            }
+            else
+            {
+                return Vector3.Distance(from.position, ray.collider.transform.position);
+            }
+        }
+
         private bool Interact()
         {
             Interactable interactObject = null;
@@ -200,11 +213,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             int layerMask = ~((1 << LayerMask.NameToLayer("NpcRangeTrigger")) | (1 << LayerMask.NameToLayer("Player")));
             if (Physics.Raycast(ray, out hit, 100.0f, layerMask))
             {
-                Debug.Log("0");
                 Transform objectHit = hit.collider.transform;
-                Debug.Log("Position: " + objectHit.transform.position.ToString());
-                Debug.Log("LocalPosition: " + objectHit.transform.localPosition.ToString());
-                MeshCollider mc = objectHit.GetComponent<MeshCollider>();
+
+                /*MeshCollider mc = objectHit.GetComponent<MeshCollider>();
                 float distance = 1000000.0f;
                 if (mc)
                 {
@@ -217,22 +228,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 else
                 {
                     distance = Vector3.Distance(transform.position, objectHit.transform.position);
-                }
+                }*/
+
+                float distance = GetRayDistance(transform, hit);
                 if (distance < Constants.MeleeRangeDistance)
                 {
-                    Debug.Log("A");
                     foreach (Interactable interactable in objectHit.GetComponents<Interactable>())
                     {
-                        Debug.Log("b");
                         if (interactable.enabled)
                         {
                             interactObject = interactable;
-                            Debug.Log("Intercatble: " + interactable.GetType());
-                            Texture txt = hit.collider.transform.GetComponent<Renderer>().material.GetTexture("_MainTex");
-                            if (txt)
-                            {
-                                Debug.Log("txt name: " + txt.name);
-                            }
                             break;
                         }
                     }
@@ -240,12 +245,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                 if (interactObject != null)
                 {
-                    Debug.Log("Can interact with: " + objectHit.name);
+                    Debug.Log("+++ Can interact with: " + objectHit.name);
                     
                 }
                 else
                 {
-                    Debug.Log("Cannot interact with: " + objectHit.name);
+                    Debug.Log("--- Cannot interact with: " + objectHit.name);
                 }
 
                 // Handle also HoverInfo
