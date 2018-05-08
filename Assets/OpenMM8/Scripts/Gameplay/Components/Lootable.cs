@@ -7,7 +7,12 @@ public class Lootable : Interactable
 {
     public Loot Loot;
 
-    public override bool Interact(GameObject interacter)
+    public override bool CanInteract(GameObject interacter, RaycastHit interactRay)
+    {
+        return true;
+    }
+
+    public override bool Interact(GameObject interacter, RaycastHit interactRay)
     {
         if (Loot == null)
         {
@@ -21,6 +26,6 @@ public class Lootable : Interactable
 
         Destroy(this.gameObject);
 
-        return false;
+        return true;
     }
 }

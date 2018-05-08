@@ -12,7 +12,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
 {
     public class NpcNewsDb : DataDb
     {
-        Dictionary<int, NpcNews> m_NpcNewsMap = new Dictionary<int, NpcNews>();
+        Dictionary<int, NpcNewsData> m_NpcNewsMap = new Dictionary<int, NpcNewsData>();
 
         override public bool ProcessCsvDataRow(int row, string[] columns)
         {
@@ -20,7 +20,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             int id;
             if (int.TryParse(columns[0], out id))
             {
-                NpcNews npcNews = new NpcNews();
+                NpcNewsData npcNews = new NpcNewsData();
                 npcNews.Id = id;
                 npcNews.Text = columns[1];
                 npcNews.Notes = columns[2];
@@ -31,9 +31,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             return true;
         }
 
-        public NpcNews GetNpcNews(int id)
+        public NpcNewsData GetNpcNews(int id)
         {
-            NpcNews npcNews = null;
+            NpcNewsData npcNews = null;
             if (m_NpcNewsMap.ContainsKey(id))
             {
                 npcNews = m_NpcNewsMap[id];

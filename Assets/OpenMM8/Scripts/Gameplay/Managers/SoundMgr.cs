@@ -46,7 +46,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
         private void Awake()
         {
             // Events
-            GameMgr.OnReturnToGame += OnReturnToGame;
+            GameMgr.OnEscapePressed += OnReturnToGame;
             GameMgr.OnPauseGame += OnGamePaused;
 
             PlayerParty.OnCharacterJoinedParty += OnCharacterJoinedParty;
@@ -59,7 +59,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
             Character.OnGotHit += OnCharGotHit;
             Character.OnAttack += OnCharAttack;
 
-            Talkable.OnTalkWithNpc += OnTalkWithNpc;
+            Talkable.OnTalkStart += OnTalkWithNpc;
         }
 
         // Init sequence: DbMgr(1) -> GameMgr(1) -> *Mgr(1) -> GameMgr(2)
@@ -273,7 +273,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
 
         public void OnTalkWithNpc(Character talkerChr, Talkable talkedToObj)
         {
-            PlayRandomSound(talkerChr.Sounds.Greeting, talkerChr.Party.PlayerAudioSource);
+            if (!talkedToObj.IsHouse)
+            {
+                PlayRandomSound(talkerChr.Sounds.Greeting, talkerChr.Party.PlayerAudioSource);
+            }
         }
 
         public void OnItemInspect(Character inspectorChr, ItemData itemData/*, InspectResult result*/)

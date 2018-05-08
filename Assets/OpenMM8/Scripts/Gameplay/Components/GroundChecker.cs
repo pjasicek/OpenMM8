@@ -28,6 +28,7 @@ public class GroundChecker : MonoBehaviour
 
         GroundMesh = Ground.GetComponent<MeshFilter>().mesh;
         GroundTris = GroundMesh.triangles;
+        Debug.Log("Is readable (ground): " + GroundMesh.isReadable);
 
         for (int i = 0; i < GroundMesh.subMeshCount; i++)
         {

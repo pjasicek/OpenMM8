@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
     public class UiMgr : Singleton<UiMgr>
     {
+        public RawImage SceneVideoImage;
+
         // Public
         [Header("UI - Canvases")]
         private Canvas m_PartyCanvas;
@@ -23,6 +26,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private PlayerParty m_PlayerParty;
         private float m_TimeSinceLastPartyText = 0.0f;
         private float m_PartyTextLockTime = 0.0f;
+        //private Video m_SceneVideoPlayer;
+        private VideoScene m_CurrVideoScene = null;
+        private Talkable m_CurrTalkable = null;
+        private TalkProperties m_CurrTalkProp = null;
 
         [Header("UI")]
         private InspectNpcUI m_InspectNpcUI;
@@ -39,12 +46,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private Dictionary<CharacterType, CharacterSprites> CharacterSpritesMap =
             new Dictionary<CharacterType, CharacterSprites>();
 
+
         //=================================== Unity Lifecycle ===================================
 
         private void Awake()
         {
             GameMgr.OnPauseGame += OnPauseGame;
-            GameMgr.OnReturnToGame += OnReturnToGame;
+            GameMgr.OnEscapePressed += OnEscapePressed;
             GameMgr.OnMapButtonPressed += OnMapButtonPressed;
 
             PlayerParty.OnCharacterJoinedParty += OnCharacterJoinedParty;
@@ -68,9 +76,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             MinimapMarker.OnMinimapMarkerCreated += OnMinimapMarkerCreated;
             MinimapMarker.OnMinimapMarkerDestroyed += OnMinimapMarkerDestroyed;
 
-            Talkable.OnTalkWithNpc += OnTalkWithNpc;
+            Talkable.OnTalkStart += OnTalkStart;
 
             TalkMgr.OnNpcTalkTextChanged += OnNpcTalkTextChanged;
+            TalkMgr.OnNpcTalkTopicListChanged += OnNpcTalkTopicListChanged;
+            TalkMgr.OnTalkWithConcreteNpc += OnTalkWithConcreteNpc;
         }
 
         private void Start()
@@ -97,11 +107,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_NpcTalkUI = new NpcTalkUI();
             GameObject npcTalkCanvasObject = m_PartyCanvasObj.transform.Find("NpcTalkCanvas").gameObject;
             m_NpcTalkUI.NpcTalkCanvas = npcTalkCanvasObject.GetComponent<Canvas>();
-            m_NpcTalkUI.NpcResponseBackground = npcTalkCanvasObject.transform.Find("NpcResponseBackground").GetComponent<Image>();
+            m_NpcTalkUI.NpcTalkObj = npcTalkCanvasObject.transform.Find("NpcResponseBackground").gameObject;
+            m_NpcTalkUI.NpcTalkBackgroundImg = npcTalkCanvasObject.transform.Find("NpcResponseBackground").GetComponent<Image>();
             m_NpcTalkUI.NpcResponseText = npcTalkCanvasObject.transform.Find("NpcResponseBackground").Find("NpcResponseText").GetComponent<Text>();
-            m_NpcTalkUI.NpcAvatar = npcTalkCanvasObject.transform.Find("Avatar").GetComponent<Image>();
             m_NpcTalkUI.LocationNameText = npcTalkCanvasObject.transform.Find("LocationNameText").GetComponent<Text>();
-            m_NpcTalkUI.NpcNameText = npcTalkCanvasObject.transform.Find("NpcNameText").GetComponent<Text>();
+
+            m_NpcTalkUI.TalkAvatar = new TalkAvatar();
+            m_NpcTalkUI.TalkAvatar.Holder = npcTalkCanvasObject.transform.Find("Avatar").gameObject;
+            m_NpcTalkUI.TalkAvatar.Avatar = m_NpcTalkUI.TalkAvatar.Holder.transform.Find("AvatarImage").GetComponent<Image>();
+            m_NpcTalkUI.TalkAvatar.NpcNameText = m_NpcTalkUI.TalkAvatar.Holder.transform.Find("NpcNameText").GetComponent<Text>();
+
+            //m_SceneVideoPlayer = npcTalkCanvasObject.transform.Find("VideoPlayer").GetComponent<Video>();
+            SceneVideoImage = npcTalkCanvasObject.transform.Find("SceneVideoImage").GetComponent<RawImage>();
 
             m_NpcTalkUI.TopicButtonHolder = npcTalkCanvasObject.transform.Find("TopicsHolder").GetComponent<RectTransform>();
             m_NpcTalkUI.TopicButtonList.Add(m_NpcTalkUI.TopicButtonHolder.Find("Button_1").gameObject);
@@ -109,11 +126,24 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_NpcTalkUI.TopicButtonList.Add(m_NpcTalkUI.TopicButtonHolder.Find("Button_3").gameObject);
             m_NpcTalkUI.TopicButtonList.Add(m_NpcTalkUI.TopicButtonHolder.Find("Button_4").gameObject);
             m_NpcTalkUI.TopicButtonList.Add(m_NpcTalkUI.TopicButtonHolder.Find("Button_5").gameObject);
+            m_NpcTalkUI.TopicButtonList.Add(m_NpcTalkUI.TopicButtonHolder.Find("Button_6").gameObject);
 
             foreach (GameObject topicBtn in m_NpcTalkUI.TopicButtonList)
             {
                 topicBtn.GetComponent<Button>().onClick.AddListener(
                     delegate { TalkMgr.Instance.OnTopicClicked(topicBtn.GetComponent<TopicBtnContext>()); });
+            }
+
+            m_NpcTalkUI.AvatarBtnHolder = npcTalkCanvasObject.transform.Find("AvatarButtonsHolder").GetComponent<RectTransform>();
+            m_NpcTalkUI.AvatarBtnList.Add(m_NpcTalkUI.AvatarBtnHolder.Find("AvatarButton_1").GetComponent<AvatarBtnContext>());
+            m_NpcTalkUI.AvatarBtnList.Add(m_NpcTalkUI.AvatarBtnHolder.Find("AvatarButton_2").GetComponent<AvatarBtnContext>());
+            m_NpcTalkUI.AvatarBtnList.Add(m_NpcTalkUI.AvatarBtnHolder.Find("AvatarButton_3").GetComponent<AvatarBtnContext>());
+
+            if (m_NpcTalkUI.AvatarBtnHolder == null) { Debug.Log("null av btn holder"); }
+            foreach (AvatarBtnContext avatarCtx in m_NpcTalkUI.AvatarBtnList)
+            {
+                avatarCtx.AvatarButton.onClick.AddListener(
+                    delegate { TalkMgr.Instance.OnAvatarClicked(avatarCtx); });
             }
 
             m_PartyUI = new PartyUI();
@@ -280,7 +310,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 if (m_PartyTextLockTime < 0)
                 {
-                   m_PartyUI.HoverInfoText.text = text;
+                    m_PartyUI.HoverInfoText.text = text;
                     m_TimeSinceLastPartyText = 0.0f;
                 }
 
@@ -327,12 +357,21 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void RefreshNpcTalkTopics(TalkProperties talkProp)
         {
+
             // NPC Topics
             foreach (GameObject topicButton in m_NpcTalkUI.TopicButtonList)
             {
                 topicButton.SetActive(false);
-            }
 
+                // ..... 
+                if (topicButton == EventSystem.current.currentSelectedGameObject)
+                {
+                    int idx = m_NpcTalkUI.TopicButtonList.IndexOf(topicButton);
+                    m_NpcTalkUI.TopicButtonList[idx] = m_NpcTalkUI.TopicButtonList.Last();
+                    m_NpcTalkUI.TopicButtonList[m_NpcTalkUI.TopicButtonList.Count - 1] = topicButton;
+                }
+            }
+            
             float totalTextHeight = 0.0f;
             int buttIdx = 0;
             foreach (int topicId in talkProp.TopicIds)
@@ -345,11 +384,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 topicButton.SetActive(true);
 
                 float btnHeight = GetTextHeight(topicButton.GetComponent<Text>());
-                if (btnHeight < 300.0f)
-                {
-                    // This is a hack - oneliners have different padding than 2 liners
-                    btnHeight += 100.0f;
-                }
                 topicButton.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(
                     RectTransform.Axis.Vertical, btnHeight);
 
@@ -363,7 +397,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             // 7.5px spaces between buttons
-            const float spacerHeight = 110.0f;
+            const float spacerHeight = 200.0f;
             totalTextHeight += (buttIdx - 1) * spacerHeight;
 
             float topicCenterY = m_NpcTalkUI.TopicButtonHolder.anchoredPosition.y;
@@ -394,9 +428,91 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             float textSizeY = (height /*/ 2.0f*/) / 10.0f;
             Vector2 v = new Vector2(
-                m_NpcTalkUI.NpcResponseBackground.rectTransform.anchoredPosition.x,
+                m_NpcTalkUI.NpcTalkBackgroundImg.rectTransform.anchoredPosition.x,
                 NpcTalkUI.DefaultResponseY + textSizeY + 10.0f);
-            m_NpcTalkUI.NpcResponseBackground.rectTransform.anchoredPosition = v;
+            m_NpcTalkUI.NpcTalkBackgroundImg.rectTransform.anchoredPosition = v;
+        }
+
+        private void SetupInitialTalkCanvas(Talkable talkable)
+        {
+            m_NpcTalkUI.LocationNameText.text = talkable.Location;
+            m_NpcTalkUI.NpcTalkCanvas.enabled = true;
+
+            // avatar btns tmp
+            foreach (AvatarBtnContext avBtn in m_NpcTalkUI.AvatarBtnList)
+            {
+                avBtn.Holder.SetActive(false);
+            }
+
+            foreach (GameObject topicButton in m_NpcTalkUI.TopicButtonList)
+            {
+                topicButton.SetActive(false);
+            }
+        }
+
+        private void ShowTalkLobby(Talkable talkable)
+        {
+            SetupInitialTalkCanvas(talkable);
+
+            // If more than 1 talkables, then display location name and talkable buttons
+            if (talkable.TalkProperties.Count > 3)
+            {
+                Debug.LogError("Too many NPCs in talkable script: " + talkable.TalkProperties.Count
+                    + ", Displaying only 3 avatar buttons, ignoring rest !");
+            }
+
+            m_NpcTalkUI.TalkAvatar.Holder.SetActive(false);
+            m_NpcTalkUI.NpcTalkObj.SetActive(false);
+
+            int talkPropIdx = 0;
+            foreach (TalkProperties talkProp in talkable.TalkProperties)
+            {
+                // This is the limitation of max 3 avatar buttons
+                if (talkPropIdx >= 3)
+                {
+                    break;
+                }
+
+                AvatarBtnContext avBtn = m_NpcTalkUI.AvatarBtnList[talkPropIdx];
+
+                avBtn.Holder.SetActive(true);
+                avBtn.TalkProperties = talkProp;
+                avBtn.Avatar.sprite = talkProp.Avatar;
+                avBtn.AvatarText.text = talkProp.Name;
+
+                talkPropIdx++;
+            }
+
+            m_CurrTalkProp = null;
+        }
+
+        private void ReturnToGame()
+        {
+            m_PartyBuffsAndButtonsCanvas.enabled = true;
+            m_NpcTalkUI.NpcTalkCanvas.enabled = false;
+            m_InspectNpcUI.Canvas.enabled = false;
+            m_MapQuestNotesUI.Canvas.enabled = false;
+
+            m_Minimap.enabled = true;
+            m_MinimapCloseButtonImage.enabled = false;
+            m_PartyBuffsAndButtonsCanvas.enabled = true;
+
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
+            if (m_CurrVideoScene != null)
+            {
+                m_CurrVideoScene.Stop();
+                m_CurrVideoScene = null;
+            }
+
+            if (m_CurrTalkable != null)
+            {
+                m_CurrTalkable.OnEndInteract();
+                m_CurrTalkable = null;
+            }
+
+            GameMgr.Instance.UnpauseGame();
         }
 
         //=================================== Events ===================================
@@ -573,34 +689,46 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_Minimap.MinimapMarkers.Remove(marker);
         }
 
-        public void OnTalkWithNpc(Character talkerChr, Talkable talkedToObj)
+        public void OnTalkStart(Character talkerChr, Talkable talkable)
         {
-            String talkText = "Oops !";
-            TalkProperties talkProp = talkedToObj.TalkProperties;
-            if (talkProp.IsNpcNews)
+            SetupInitialTalkCanvas(talkable);
+
+            if (talkable.TalkProperties.Count == 0)
             {
-                talkText = TalkMgr.GetCurrentNpcNews(talkProp);
+                // If noone in the house/etc then only location is displayed,
+                // everything else is hidden
+                m_NpcTalkUI.TalkAvatar.Holder.SetActive(false);
+                m_NpcTalkUI.NpcTalkObj.SetActive(false);
+            }
+            else if (talkable.TalkProperties.Count == 1)
+            {
+                // If only one talkable, then just display the one
+                OnTalkWithConcreteNpc(talkable.TalkProperties[0]);
+
+                talkerChr.CharFaceUpdater.SetAvatar(RandomSprite(talkerChr.Sprites.Greet), 1.0f);
             }
             else
             {
-                talkText = TalkMgr.GetCurrNpcGreet(talkProp);
+                ShowTalkLobby(talkable);
             }
 
-            RefreshNpcTalkTopics(talkProp);
-
-            talkerChr.CharFaceUpdater.SetAvatar(RandomSprite(talkerChr.Sprites.Greet), 1.0f);
-            m_NpcTalkUI.NpcNameText.text = talkedToObj.TalkProperties.Name;
-            m_NpcTalkUI.LocationNameText.text = talkedToObj.TalkProperties.Location;
-            m_NpcTalkUI.NpcTalkCanvas.enabled = true;
-            m_NpcTalkUI.NpcAvatar.sprite = talkedToObj.TalkProperties.Avatar;
             m_Minimap.enabled = false;
             m_MinimapCloseButtonImage.enabled = true;
             m_PartyBuffsAndButtonsCanvas.enabled = false;
-
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
-            UpdateNpcTalkText(talkText);
+            /*if (talkedToObj.VideoClip != null && talkedToObj.AudioClip != null)
+            {
+                m_SceneVideoPlayer.Play(talkedToObj.VideoClip, talkedToObj.AudioClip);
+            }*/
+
+            if (talkable.VideoScene != null)
+            {
+                m_CurrVideoScene = talkable.VideoScene;
+                m_CurrVideoScene.Play();
+            }
+            m_CurrTalkable = talkable;
         }
 
         private void OnNpcTalkTextChanged(string text, TalkProperties talkProp)
@@ -608,21 +736,78 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             UpdateNpcTalkText(text);
         }
 
+        private void OnNpcTalkTopicListChanged(TalkProperties talkProp)
+        {
+            RefreshNpcTalkTopics(talkProp);
+        }
+
+        private void OnTalkWithConcreteNpc(TalkProperties talkProp)
+        {
+            if (m_CurrTalkable != null)
+            {
+                SetupInitialTalkCanvas(m_CurrTalkable);
+            }
+
+            m_CurrTalkProp = talkProp;
+
+            m_NpcTalkUI.TalkAvatar.Holder.SetActive(true);
+
+            if (TalkMgr.Instance.HasGreetText(talkProp))
+            {
+                m_NpcTalkUI.NpcTalkObj.SetActive(true);
+                String talkText = "Oops !";
+
+                if (talkProp.IsNpcNews)
+                {
+                    talkText = TalkMgr.GetCurrentNpcNews(talkProp);
+                }
+                else
+                {
+                    talkText = TalkMgr.GetCurrNpcGreet(talkProp);
+                }
+
+                UpdateNpcTalkText(talkText);
+            }
+            else
+            {
+                m_NpcTalkUI.NpcTalkObj.SetActive(false);
+            }
+
+            RefreshNpcTalkTopics(talkProp);
+
+            m_NpcTalkUI.TalkAvatar.NpcNameText.text = talkProp.Name;
+            m_NpcTalkUI.TalkAvatar.Avatar.sprite = talkProp.Avatar;
+        }
+
         // =========== Game states
 
-        public void OnReturnToGame()
+        public void OnEscapePressed()
         {
-            m_PartyBuffsAndButtonsCanvas.enabled = true;
-            m_NpcTalkUI.NpcTalkCanvas.enabled = false;
-            m_InspectNpcUI.Canvas.enabled = false;
-            m_MapQuestNotesUI.Canvas.enabled = false;
-
-            m_Minimap.enabled = true;
-            m_MinimapCloseButtonImage.enabled = false;
-            m_PartyBuffsAndButtonsCanvas.enabled = true;
-
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            // Check if we are talking
+            if (m_CurrTalkable != null)
+            {
+                if (m_CurrTalkable.TalkProperties.Count > 1)
+                {
+                    if (m_CurrTalkProp == null)
+                    {
+                        ReturnToGame();
+                    }
+                    else
+                    {
+                        // Go back to the Avatar buttons "lobby"
+                        ShowTalkLobby(m_CurrTalkable);
+                    }
+                }
+                else
+                {
+                    // 0 or 1 talkable NPCs, just go back to game
+                    ReturnToGame();
+                }
+            }
+            else
+            {
+                ReturnToGame();
+            }
         }
 
         public void OnPauseGame()
@@ -639,7 +824,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 if (m_MapQuestNotesUI.Canvas.enabled)
                 {
                     // Close map -> Return back to game
-                    GameMgr.Instance.ReturnToGame();
+                    GameMgr.Instance.PauseGame();
 
                     foreach (Character chr in m_PlayerParty.Characters)
                     {

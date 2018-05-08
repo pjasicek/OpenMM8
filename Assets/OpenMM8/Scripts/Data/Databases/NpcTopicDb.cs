@@ -12,7 +12,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
 {
     public class NpcTopicDb : DataDb
     {
-        Dictionary<int, NpcTopic> NpcTopicMap = new Dictionary<int, NpcTopic>();
+        Dictionary<int, NpcTopicData> NpcTopicMap = new Dictionary<int, NpcTopicData>();
 
         override public bool ProcessCsvDataRow(int row, string[] columns)
         {
@@ -20,7 +20,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             int id;
             if (int.TryParse(columns[0], out id))
             {
-                NpcTopic npcText = new NpcTopic();
+                NpcTopicData npcText = new NpcTopicData();
                 npcText.Id = id;
                 npcText.Topic = columns[1];
                 // Skip Requires . not used anyway
@@ -34,9 +34,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             return NpcTopicMap.Count > 0;
         }
 
-        public NpcTopic GetNpcTopic(int id)
+        public NpcTopicData GetNpcTopic(int id)
         {
-            NpcTopic npcText = null;
+            NpcTopicData npcText = null;
             if (NpcTopicMap.ContainsKey(id))
             {
                 npcText = NpcTopicMap[id];

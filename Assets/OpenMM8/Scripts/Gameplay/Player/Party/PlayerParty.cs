@@ -200,15 +200,39 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             int layerMask = ~((1 << LayerMask.NameToLayer("NpcRangeTrigger")) | (1 << LayerMask.NameToLayer("Player")));
             if (Physics.Raycast(ray, out hit, 100.0f, layerMask))
             {
+                Debug.Log("0");
                 Transform objectHit = hit.collider.transform;
-                if ((Vector3.Distance(transform.position, objectHit.transform.position) < Constants.MeleeRangeDistance))
+                Debug.Log("Position: " + objectHit.transform.position.ToString());
+                Debug.Log("LocalPosition: " + objectHit.transform.localPosition.ToString());
+                MeshCollider mc = objectHit.GetComponent<MeshCollider>();
+                float distance = 1000000.0f;
+                if (mc)
                 {
+                    Debug.Log("MC center: " + mc.bounds.center.ToString());
+                    Debug.Log("Player center: " + transform.position.ToString());
+                    Debug.Log("Distance: " + Vector3.Distance(transform.position, mc.bounds.center).ToString());
+                    Debug.Log("Hit distance: " + hit.distance.ToString());
+                    distance = hit.distance;
+                }
+                else
+                {
+                    distance = Vector3.Distance(transform.position, objectHit.transform.position);
+                }
+                if (distance < Constants.MeleeRangeDistance)
+                {
+                    Debug.Log("A");
                     foreach (Interactable interactable in objectHit.GetComponents<Interactable>())
                     {
+                        Debug.Log("b");
                         if (interactable.enabled)
                         {
                             interactObject = interactable;
                             Debug.Log("Intercatble: " + interactable.GetType());
+                            Texture txt = hit.collider.transform.GetComponent<Renderer>().material.GetTexture("_MainTex");
+                            if (txt)
+                            {
+                                Debug.Log("txt name: " + txt.name);
+                            }
                             break;
                         }
                     }
@@ -283,7 +307,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             if (interactObject != null)
             {
-                return interactObject.Interact(this.gameObject);
+                return interactObject.Interact(this.gameObject, hit);
             }
 
             return false;

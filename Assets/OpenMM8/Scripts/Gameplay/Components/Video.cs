@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using System;
 
 public class Video : MonoBehaviour
 {
@@ -11,73 +12,150 @@ public class Video : MonoBehaviour
     //Video To Play [Assign from the Editor]
     public VideoClip videoToPlay;
 
-    private VideoPlayer videoPlayer;
-    private VideoSource videoSource;
+    // Dirty "Double buffering"...
+    private VideoPlayer videoPlayer1;
+    private VideoPlayer videoPlayer2;
 
-    //Audio
-    private AudioSource audioSource;
+    AudioSource AudioSource;
+
+    private bool m_IsPlaying = false;
+
+    private VideoPlayer CreateVideoPlayer()
+    {
+        VideoPlayer plr = gameObject.AddComponent<VideoPlayer>();
+
+        //Add AudioSource
+        /*AudioSource audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.volume = 0.5f;
+        audioSource.playOnAwake = false;*/
+
+        plr.playOnAwake = false;
+        //plr.isLooping = true;
+        plr.skipOnDrop = true;
+        plr.waitForFirstFrame = true;
+        plr.source = VideoSource.VideoClip;
+        /*plr.audioOutputMode = VideoAudioOutputMode.AudioSource;
+        plr.SetTargetAudioSource(0, audioSource);*/
+        plr.clip = videoToPlay;
+
+        return plr;
+    }
 
     // Use this for initialization
     void Start()
     {
         Application.runInBackground = true;
-        StartCoroutine(playVideo());
-    }
 
-    IEnumerator playVideo()
-    {
-        //Add VideoPlayer to the GameObject
-        videoPlayer = gameObject.AddComponent<VideoPlayer>();
+        AudioSource = GetComponent<AudioSource>();
 
-        //Add AudioSource
-        audioSource = gameObject.AddComponent<AudioSource>();
+        videoPlayer1 = CreateVideoPlayer();
+        videoPlayer2 = CreateVideoPlayer();
 
-        //Disable Play on Awake for both Video and Audio
-        videoPlayer.playOnAwake = false;
-        videoPlayer.isLooping = true;
-        videoPlayer.skipOnDrop = true;
-        audioSource.playOnAwake = true;
-        videoPlayer.waitForFirstFrame = true;
+        videoPlayer1.loopPointReached += OnLoop1;
+        videoPlayer2.loopPointReached += OnLoop2;
 
-        //We want to play from video clip not from url
-        videoPlayer.source = VideoSource.VideoClip;
-
-        //Set Audio Output to AudioSource
-        videoPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
-
-        //Assign the Audio from Video to AudioSource to be played
-        //videoPlayer.EnableAudioTrack(0, true);
-        videoPlayer.SetTargetAudioSource(0, audioSource);
+        videoPlayer1.started += OnStarted1;
+        videoPlayer2.started += OnStarted2;
 
         //Set video To Play then prepare Audio to prevent Buffering
-        videoPlayer.clip = videoToPlay;
-        videoPlayer.Prepare();
+        //videoPlayer.clip = videoToPlay;
+    }    
 
-        //Wait until video is prepared
-        while (!videoPlayer.isPrepared)
+    private void OnStarted1(VideoPlayer source)
+    {
+        videoPlayer2.Prepare();
+    }
+
+    private void OnStarted2(VideoPlayer source)
+    {
+        videoPlayer1.Prepare();
+    }
+
+    private void OnLoop1(VideoPlayer source)
+    {
+        StartCoroutine(playVideo(videoPlayer2));
+    }
+
+    private void OnLoop2(VideoPlayer source)
+    {
+        StartCoroutine(playVideo(videoPlayer1));
+    }
+
+    public void Play(VideoClip clip, AudioClip audioClip)
+    {
+        if (clip != null)
         {
-            Debug.Log("Preparing Video");
-            yield return null;
+            videoToPlay = clip;
         }
 
-        Debug.Log("Done Preparing Video");
+        if (videoToPlay == null)
+        {
+            Debug.LogError("null video");
+            return;
+        }
+
+        AudioSource.clip = audioClip;
+        image.enabled = true;
+        StartCoroutine(playVideo(videoPlayer1));
+    }
+
+    public void Stop()
+    {
+        if (videoPlayer1.isPlaying)
+        {
+            videoPlayer1.Stop();
+        }
+        if (videoPlayer2.isPlaying)
+        {
+            videoPlayer2.Stop();
+        }
+
+        m_IsPlaying = false;
+        AudioSource.Stop();
+        image.enabled = false;
+    }
+
+    IEnumerator playVideo(VideoPlayer plr)
+    {
+        if (!plr.isPrepared)
+        {
+            plr.clip = videoToPlay;
+            plr.Prepare();
+
+            //Wait until video is prepared
+            while (!plr.isPrepared)
+            {
+                //Debug.Log("Preparing Video");
+                yield return null;
+            }
+        }
+
+        //Debug.Log("Done Preparing Video");
 
         //Assign the Texture from Video to RawImage to be displayed
-        image.texture = videoPlayer.texture;
+        image.texture = plr.texture;
+
+        /*if (!m_IsPlaying)
+        {
+            AudioSource.Play();
+        }*/
+        AudioSource.Stop();
+        AudioSource.Play();
 
         //Play Video
-        videoPlayer.Play();
+        plr.Play();
+        m_IsPlaying = true;
 
         //Play Sound
         //audioSource.Play();
 
-        Debug.Log("Playing Video");
-        while (videoPlayer.isPlaying)
+        //Debug.Log("Playing Video");
+        /*while (videoPlayer.isPlaying)
         {
             Debug.LogWarning("Video Time: " + Mathf.FloorToInt((float)videoPlayer.time));
             yield return null;
         }
 
-        Debug.Log("Done Playing Video");
+        Debug.Log("Done Playing Video");*/
     }
 }

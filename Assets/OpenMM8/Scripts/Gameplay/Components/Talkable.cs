@@ -3,16 +3,22 @@ using System.Collections;
 using UnityEngine.Video;
 using Assets.OpenMM8.Scripts.Gameplay;
 using UnityEngine.Experimental.UIElements;
+using System.Collections.Generic;
 
-public delegate void TalkWithNpcDlg(Character talkerChr, Talkable talkedToObj);
+public delegate void Talk(Character talkerChr, Talkable talkedToObj);
+public delegate void EndTalk(Talkable talkedToObj);
 
 public class Talkable : Interactable
 {
-    static public event TalkWithNpcDlg OnTalkWithNpc;
+    static public event Talk OnTalkStart;
+    static public event EndTalk OnTalkEnd;
 
-    public TalkProperties TalkProperties;
+    public string Location;
+    public bool IsHouse = false;
+    public VideoScene VideoScene = null;
+    public List<TalkProperties> TalkProperties = new List<TalkProperties>();
 
-    public override bool Interact(GameObject interacter)
+    public override bool CanInteract(GameObject interacter, RaycastHit interactRay)
     {
         if (!enabled)
         {
@@ -29,14 +35,32 @@ public class Talkable : Interactable
             }
         }
 
+        return true;
+    }
+
+    public override bool Interact(GameObject interacter, RaycastHit interactRay)
+    {
+        if (!CanInteract(interacter, interactRay))
+        {
+            return false;
+        }
+
         PlayerParty playerParty = interacter.GetComponent<PlayerParty>();
         Character talker = playerParty.GetMostRecoveredCharacter();
 
-        if (OnTalkWithNpc != null)
+        if (OnTalkStart != null)
         {
-            OnTalkWithNpc(talker, this);
+            OnTalkStart(talker, this);
         }
 
         return true;
+    }
+
+    public void OnEndInteract()
+    {
+        if (OnTalkEnd != null)
+        {
+            OnTalkEnd(this);
+        }
     }
 }

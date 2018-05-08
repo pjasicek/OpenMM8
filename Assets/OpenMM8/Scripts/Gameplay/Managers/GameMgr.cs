@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    public delegate void ReturnToGame();
+    public delegate void EscapePressed();
     public delegate void PauseGame();
     /*public delegate void LevelUnloaded(int levelNum);
     public delegate void LevelLoaded(int levelNum);*/
@@ -21,7 +21,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public static GameMgr Instance;
 
         // Events
-        static public event ReturnToGame OnReturnToGame;
+        static public event EscapePressed OnEscapePressed;
         static public event PauseGame OnPauseGame;
        /* static public event LevelUnloaded OnLevelUnloaded;
         static public event LevelLoaded OnLevelLoaded;*/
@@ -55,7 +55,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         void Awake()
         {
             // Events
-            Talkable.OnTalkWithNpc += OnTalkWithNpc;
+            Talkable.OnTalkStart += OnTalkStart;
 
             UnityEngine.Assertions.Assert.IsTrue(Instance == null);
             Instance = this;
@@ -97,14 +97,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             if (Input.GetButtonDown("Escape"))
             {
-                if (IsGamePaused)
-                {
-                    ReturnToGame();
-                }
-                else
-                {
-
-                }
+                PressEscape();
             }
 
             bool wasInspectEnabled = (m_InspectedObj != null);
@@ -239,13 +232,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             PlayerParty.AddCharacter(chr);
         }
 
-        public void ReturnToGame()
+        public void PressEscape()
         {
-            UnpauseGame();
-
-            if (OnReturnToGame != null)
+            if (OnEscapePressed != null)
             {
-                OnReturnToGame();
+                OnEscapePressed();
             }
         }
 
@@ -280,7 +271,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         //==================================== Events ====================================
 
-        public void OnTalkWithNpc(Character talkerChr, Talkable talkedToObj)
+        public void OnTalkStart(Character talkerChr, Talkable talkedToObj)
         {
             PauseGame();
         }

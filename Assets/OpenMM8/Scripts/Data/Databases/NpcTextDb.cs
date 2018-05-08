@@ -13,7 +13,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
 {
     public class NpcTextDb : DataDb
     {
-        private Dictionary<int, NpcText> m_NpcTextMap = new Dictionary<int, NpcText>();
+        private Dictionary<int, NpcTextData> m_NpcTextMap = new Dictionary<int, NpcTextData>();
         private int m_LastId = -1;
 
         override public bool ProcessCsvDataRow(int row, string[] columns)
@@ -28,7 +28,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             int id;
             if (int.TryParse(columns[0], out id))
             {
-                NpcText npcText = new NpcText();
+                NpcTextData npcText = new NpcTextData();
                 npcText.Id = id;
                 npcText.Text = columns[1];
                 npcText.Note = columns[2];
@@ -59,9 +59,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             return true;
         }
 
-        public NpcText GetNpcText(int id)
+        public NpcTextData GetNpcText(int id)
         {
-            NpcText npcText = null;
+            NpcTextData npcText = null;
             if (m_NpcTextMap.ContainsKey(id))
             {
                 npcText = m_NpcTextMap[id];

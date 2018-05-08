@@ -8,11 +8,22 @@ using UnityEngine.UI;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
+    public delegate void NpcTalkTopicListChanged(TalkProperties talkProp);
     public delegate void NpcTalkTextChanged(string text, TalkProperties talkProp);
+    public delegate void TalkWithConcreteNpc(TalkProperties talkProp);
 
     public class TalkMgr : Singleton<TalkMgr>
     {
+        //=================================== Member Variables ===================================
+
         public static event NpcTalkTextChanged OnNpcTalkTextChanged;
+        public static event NpcTalkTopicListChanged OnNpcTalkTopicListChanged;
+        public static event TalkWithConcreteNpc OnTalkWithConcreteNpc;
+
+        private Dictionary<int, bool> m_VisitedTopicIdsMap = new Dictionary<int, bool>();
+
+
+        //=================================== Unity Lifecycle ===================================
 
         void Awake()
         {
@@ -24,6 +35,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return true;
         }
 
+
         //=================================== Methods ===================================
 
         // Regular greet, mostly in houses and such
@@ -34,7 +46,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             // TODO: Add logic
             int currId = tlk.GreetId;
 
-            NpcGreet greet = DbMgr.Instance.NpcGreetDb.GetNpcGreet(currId);
+            NpcGreetData greet = DbMgr.Instance.NpcGreetDb.GetNpcGreet(currId);
             if (greet != null)
             {
                 if (tlk.IsVisited == false)
@@ -65,7 +77,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             // TODO: Add logic
             int currId = tlk.GreetId;
 
-            NpcNews news = DbMgr.Instance.NpcNewsDb.GetNpcNews(currId);
+            NpcNewsData news = DbMgr.Instance.NpcNewsDb.GetNpcNews(currId);
             if (news != null)
             {
                 newsText = news.Text;
@@ -78,15 +90,63 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return newsText;
         }
 
-        static public int UpdateTopicId(int clickedTopicId, TalkProperties talkProp)
+        static public int TryUpdateClickedTopic(int clickedTopicId, TalkProperties talkProp, out bool shouldTextChange)
         {
-            return clickedTopicId;
+            // Logic - This Talkmgr can access QuestMgr for possible update
+
+            // Types of topics handled here: 
+            // [1] Sell/Buy stuff
+            // [2] Quests
+            // [3] Party join requests
+            // ???
+
+            shouldTextChange = true;
+            int newTopicId = clickedTopicId;
+            switch (clickedTopicId)
+            {
+                case 8: newTopicId = 21; shouldTextChange = false; break;
+                default: break;
+            }
+
+            return newTopicId;
         }
 
-        static public string GetCurrentTopicText(int topicId)
+        private bool IsTopicVisited(int topicId)
         {
-            NpcTopic npcTopic = DbMgr.Instance.NpcTopicDb.GetNpcTopic(topicId);
+            if (m_VisitedTopicIdsMap.ContainsKey(topicId) && m_VisitedTopicIdsMap[topicId])
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public string GetCurrentTopicText(int topicId)
+        {
+            switch (topicId)
+            {
+                // Brekish Onefang - Portals of stone
+                case 21:
+                    if (IsTopicVisited(topicId))
+                    {
+                        return DbMgr.Instance.NpcTextDb.GetNpcText(23).Text;
+                    }
+                    else
+                    {
+                        return DbMgr.Instance.NpcTextDb.GetNpcText(22).Text;
+                    }
+
+                default: break;
+            }
+
+            // Is this really necessary ? Should be always same, no logic here I think
+            NpcTopicData npcTopic = DbMgr.Instance.NpcTopicDb.GetNpcTopic(topicId);
             return DbMgr.Instance.NpcTextDb.GetNpcText(npcTopic.TextId).Text;
+        }
+
+        public bool HasGreetText(TalkProperties talkProp)
+        {
+            return talkProp.GreetId > 0;
         }
 
         //=================================== Events ===================================
@@ -102,17 +162,45 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             TalkProperties talkProp = topicBtnCtx.TalkProperties;
             int topicId = topicBtnCtx.TopicId;
 
-            int updatedTopicId = UpdateTopicId(topicId, talkProp);
+            bool shouldTextChange;
+            int origTopicId = topicId;
+            int updatedTopicId = TryUpdateClickedTopic(topicId, talkProp, out shouldTextChange);
             if (topicId != updatedTopicId)
             {
+                // Replace old one with new one
+                talkProp.TopicIds[talkProp.TopicIds.FindIndex(id => id == topicId)] = updatedTopicId;
+
                 // Topic ID changed
+                if (OnNpcTalkTopicListChanged != null)
+                {
+                    OnNpcTalkTopicListChanged(talkProp);
+                }
             }
 
-            string talkText = GetCurrentTopicText(updatedTopicId);
-            Logger.LogDebug("TalkText: " + talkText);
+            string talkText = "";
+            if (shouldTextChange)
+            {
+                talkText = GetCurrentTopicText(updatedTopicId);
+            }
+            else
+            {
+                talkText = GetCurrentTopicText(origTopicId);
+            }
+
+            //Logger.LogDebug("TalkText: " + talkText);
             if (OnNpcTalkTextChanged != null)
             {
                 OnNpcTalkTextChanged(talkText, talkProp);
+            }
+
+            m_VisitedTopicIdsMap[origTopicId] = true;
+        }
+
+        public void OnAvatarClicked(AvatarBtnContext avatarBtnContext)
+        {
+            if (OnTalkWithConcreteNpc != null)
+            {
+                OnTalkWithConcreteNpc(avatarBtnContext.TalkProperties);
             }
         }
     }

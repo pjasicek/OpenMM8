@@ -10,7 +10,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public class TalkProperties
     {
         public string Name;
-        public string Location;
         public Sprite Avatar;
 
         public bool IsNpcNews = false;
@@ -19,5 +18,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         // State
         public bool IsVisited = false;
+        List<int> PrevTopicIds = new List<int>();
     }
 }
