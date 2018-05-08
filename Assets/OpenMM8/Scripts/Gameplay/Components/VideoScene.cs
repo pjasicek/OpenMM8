@@ -11,6 +11,7 @@ public class VideoScene : MonoBehaviour
     //Raw Image to Show Video Images [Assign from the Editor]
 
     public bool UseAudioFromVideo = false;
+    public bool RestartAudio = true;
 
     //Video To Play [Assign from the Editor]
     public VideoClip VideoToPlay;
@@ -192,8 +193,18 @@ public class VideoScene : MonoBehaviour
         //Assign the Texture from Video to RawImage to be displayed
         m_Image.texture = plr.texture;
 
-        m_AudioSource.Stop();
-        m_AudioSource.Play();
+        if (RestartAudio)
+        {
+            m_AudioSource.Stop();
+            m_AudioSource.Play();
+        }
+        else
+        {
+            if (!m_AudioSource.isPlaying)
+            {
+                m_AudioSource.Play();
+            }
+        }
 
         plr.Play();
     }

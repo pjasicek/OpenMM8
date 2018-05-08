@@ -65,7 +65,7 @@ public class TalkableHouse : Talkable
         }
 
         texName = texName.ToLower();
-        if (texName.Contains("a03a") || texName.Contains("a03b") || texName.Contains("a03c"))
+        if (texName.Contains("03a") || texName.Contains("03b") || texName.Contains("03c"))
         {
             return true;
         }

@@ -718,14 +718,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
-            /*if (talkedToObj.VideoClip != null && talkedToObj.AudioClip != null)
+            if (talkable.VideoSceneHolder != null)
             {
-                m_SceneVideoPlayer.Play(talkedToObj.VideoClip, talkedToObj.AudioClip);
-            }*/
-
-            if (talkable.VideoScene != null)
-            {
-                m_CurrVideoScene = talkable.VideoScene;
+                m_CurrVideoScene = talkable.VideoSceneHolder.GetComponent<VideoScene>();
                 m_CurrVideoScene.Play();
             }
             m_CurrTalkable = talkable;

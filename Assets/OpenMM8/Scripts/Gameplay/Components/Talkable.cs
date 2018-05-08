@@ -15,8 +15,20 @@ public class Talkable : Interactable
 
     public string Location;
     public bool IsHouse = false;
-    public VideoScene VideoScene = null;
+    public GameObject VideoSceneHolder = null;
     public List<TalkProperties> TalkProperties = new List<TalkProperties>();
+
+    private void Awake()
+    {
+        if (VideoSceneHolder != null)
+        {
+            if (VideoSceneHolder.GetComponent<VideoScene>() == null)
+            {
+                Debug.LogError(name + ": Has VideoSceneHolder but it does not have VideoScene !");
+                VideoSceneHolder = null;
+            }
+        }
+    }
 
     public override bool CanInteract(GameObject interacter, RaycastHit interactRay)
     {
