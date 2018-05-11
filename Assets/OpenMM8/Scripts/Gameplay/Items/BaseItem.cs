@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Assets.OpenMM8.Scripts.Gameplay.Items
 {
-    public class BaseItem
+    public class BaseItem : DbData
     {
         public ItemData ItemData;
 

@@ -43,7 +43,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         [Header("UI - Map, Quest, Notes, History")]
         int placeholder;
 
-        private Dictionary<CharacterType, CharacterSprites> CharacterSpritesMap =
+        private Dictionary<int, Sprite> m_NpcAvatarsMap = 
+            new Dictionary<int, Sprite>();
+
+        private Dictionary<CharacterType, CharacterSprites> m_CharacterSpritesMap =
             new Dictionary<CharacterType, CharacterSprites>();
 
 
@@ -198,76 +201,37 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_PlayerParty = GameMgr.Instance.PlayerParty;
 
             // ------ Load state-changing sprites ------ 
-            Dictionary<string, Sprite> spriteMap = new Dictionary<string, Sprite>();
+            Dictionary<string, Sprite> agroStSpriteMap = new Dictionary<string, Sprite>();
             string path = "UI/BarsAgroStatus";
-            Sprite[] sprites = Resources.LoadAll<Sprite>(path);
-            foreach (Sprite sprite in sprites)
+            Sprite[] agroStSprites = Resources.LoadAll<Sprite>(path);
+            foreach (Sprite sprite in agroStSprites)
             {
-                spriteMap[sprite.name] = sprite;
+                agroStSpriteMap[sprite.name] = sprite;
             }
 
-            CharacterUI.HealthBarSprite_Green = spriteMap["ManaG"];
-            CharacterUI.HealthBarSprite_Yellow = spriteMap["manaY"];
-            CharacterUI.HealthBarSprite_Red = spriteMap["manar"];
-            CharacterUI.AgroStatusSprite_Green = spriteMap["statG"];
-            CharacterUI.AgroStatusSprite_Yellow = spriteMap["statY"];
-            CharacterUI.AgroStatusSprite_Red = spriteMap["statR"];
-            CharacterUI.AgroStatusSprite_Gray = spriteMap["statBL"];
+            CharacterUI.HealthBarSprite_Green = agroStSpriteMap["ManaG"];
+            CharacterUI.HealthBarSprite_Yellow = agroStSpriteMap["manaY"];
+            CharacterUI.HealthBarSprite_Red = agroStSpriteMap["manar"];
+            CharacterUI.AgroStatusSprite_Green = agroStSpriteMap["statG"];
+            CharacterUI.AgroStatusSprite_Yellow = agroStSpriteMap["statY"];
+            CharacterUI.AgroStatusSprite_Red = agroStSpriteMap["statR"];
+            CharacterUI.AgroStatusSprite_Gray = agroStSpriteMap["statBL"];
 
-            InspectNpcUI.HealthbarSprite_Green = spriteMap["MHP_GRN"];
-            InspectNpcUI.HealthbarSprite_Yellow = spriteMap["MHP_YEL"];
-            InspectNpcUI.HealthbarSprite_Red = spriteMap["MHP_RED"];
+            InspectNpcUI.HealthbarSprite_Green = agroStSpriteMap["MHP_GRN"];
+            InspectNpcUI.HealthbarSprite_Yellow = agroStSpriteMap["MHP_YEL"];
+            InspectNpcUI.HealthbarSprite_Red = agroStSpriteMap["MHP_RED"];
+
+            // Load Npc Avatars
+            Sprite[] npcAvatarSprites = Resources.LoadAll<Sprite>("UI/NpcAvatars");
+            foreach (Sprite npcSprite in npcAvatarSprites)
+            {
+                // Get ID from name
+                string idStr = npcSprite.name.Substring(3);
+                int spriteId = int.Parse(idStr);
+                m_NpcAvatarsMap[spriteId] = npcSprite;
+            }
 
             return true;
-        }
-
-        private void OnCharacterJoinedParty(Character chr, PlayerParty party)
-        {
-            // Set up UI
-            int numPartyMembers = party.Characters.Count;
-
-            CharacterUI chrUI = new CharacterUI();
-            //float chrUiOffsetX = (Constants.PC_WidthDelta * m_PartyCanvasObj.transform.localScale.x) * chr.GetPartyIndex();
-            GameObject pc = (GameObject)Instantiate(Resources.Load("Prefabs/UI/PC"), m_PartyCanvasObj.transform);
-            pc.transform.localPosition = new Vector3(Constants.PC_WidthDelta, 0.0f, 0.0f) * chr.GetPartyIndex();
-            //pc.transform.position += new Vector3(Constants.PC_WidthDelta, 0.0f, 0.0f) * chr.Data.PartyIndex;
-            pc.name = "PC_" + chr.Data.Name;
-
-            chrUI.Holder = pc;
-            chrUI.PlayerCharacter = pc.transform.Find("PC_Avatar").GetComponent<Image>();
-            chrUI.SelectionRing = pc.transform.Find("PC_SelectRing").GetComponent<Image>();
-            chrUI.AgroStatus = pc.transform.Find("PC_AgroStatus").GetComponent<Image>();
-            chrUI.HealthBar = pc.transform.Find("PC_HealthBar").GetComponent<Image>();
-            chrUI.ManaBar = pc.transform.Find("PC_ManaBar").GetComponent<Image>();
-            chrUI.BlessBuff = pc.transform.Find("PC_BlessBuff").GetComponent<Image>();
-
-            chr.UI = chrUI;
-
-            /*chrUI.PlayerCharacter = partyCanvasObject.transform.Find("PC1_Avatar").GetComponent<Image>();
-            chrUI.SelectionRing = partyCanvasObject.transform.Find("PC1_SelectRing").GetComponent<Image>();
-            chrUI.AgroStatus = partyCanvasObject.transform.Find("PC1_AgroStatus").GetComponent<Image>();
-            chrUI.HealthBar = partyCanvasObject.transform.Find("PC1_HealthBar").GetComponent<Image>();
-            chrUI.ManaBar = partyCanvasObject.transform.Find("PC1_ManaBar").GetComponent<Image>();
-            chrUI.EmptySlot = partyCanvasObject.transform.Find("EmptySlot_Pos1").GetComponent<Image>();
-            chr.UI = chrUI;*/
-
-            chr.CharFaceUpdater = new CharFaceUpdater(chr);
-            chr.Sprites = GetCharacterSprites(chr.Data.CharacterType);
-
-            UpdateEmptySlotBanners(party);
-        }
-
-        private void OnCharacterLeftParty(Character removedChr, PlayerParty party)
-        {
-            Destroy(removedChr.UI.Holder);
-
-            foreach (Character chr in party.Characters)
-            {
-                chr.UI.Holder.transform.localPosition = 
-                    new Vector3(Constants.PC_WidthDelta, 0.0f, 0.0f) * chr.GetPartyIndex();
-            }
-
-            UpdateEmptySlotBanners(party);
         }
 
         private void UpdateEmptySlotBanners(PlayerParty party)
@@ -299,6 +263,24 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         //=================================== Methods ===================================
 
+        public Sprite GetNpcAvatarSprite(int npcId)
+        {
+            const int PLACEHOLDER_ID = 2200;
+
+            Sprite sprite = null;
+            if (m_NpcAvatarsMap.ContainsKey(npcId))
+            {
+                sprite = m_NpcAvatarsMap[npcId];
+            }
+            else
+            {
+                sprite = m_NpcAvatarsMap[PLACEHOLDER_ID];
+                Debug.LogError("Could not find NPC avatar with ID: " + npcId);
+            }
+
+            return sprite;
+        }
+
         public Ray GetCrosshairRay()
         {
             return Camera.main.ViewportPointToRay(Constants.CrosshairScreenRelPos);
@@ -325,14 +307,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private CharacterSprites GetCharacterSprites(CharacterType type)
         {
             // Caching
-            if (CharacterSpritesMap.ContainsKey(type) && CharacterSpritesMap[type] != null)
+            if (m_CharacterSpritesMap.ContainsKey(type) && m_CharacterSpritesMap[type] != null)
             {
-                return CharacterSpritesMap[type];
+                return m_CharacterSpritesMap[type];
             }
             else
             {
-                CharacterSpritesMap[type] = CharacterSprites.Load(type);
-                return CharacterSpritesMap[type];
+                m_CharacterSpritesMap[type] = CharacterSprites.Load(type);
+                return m_CharacterSpritesMap[type];
             }
         }
 
@@ -385,7 +367,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             int buttIdx = 0;
             foreach (int topicId in currentTopics)
             {
-                string topic = DbMgr.Instance.NpcTopicDb.GetNpcTopic(topicId).Topic;
+                string topic = DbMgr.Instance.NpcTopicDb.Get(topicId).Topic;
 
                 GameObject topicButton = m_NpcTalkUI.TopicButtonList[buttIdx];
 
@@ -549,6 +531,55 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         //=================================== Events ===================================
 
+        private void OnCharacterJoinedParty(Character chr, PlayerParty party)
+        {
+            // Set up UI
+            int numPartyMembers = party.Characters.Count;
+
+            CharacterUI chrUI = new CharacterUI();
+            //float chrUiOffsetX = (Constants.PC_WidthDelta * m_PartyCanvasObj.transform.localScale.x) * chr.GetPartyIndex();
+            GameObject pc = (GameObject)Instantiate(Resources.Load("Prefabs/UI/PC"), m_PartyCanvasObj.transform);
+            pc.transform.localPosition = new Vector3(Constants.PC_WidthDelta, 0.0f, 0.0f) * chr.GetPartyIndex();
+            //pc.transform.position += new Vector3(Constants.PC_WidthDelta, 0.0f, 0.0f) * chr.Data.PartyIndex;
+            pc.name = "PC_" + chr.Data.Name;
+
+            chrUI.Holder = pc;
+            chrUI.PlayerCharacter = pc.transform.Find("PC_Avatar").GetComponent<Image>();
+            chrUI.SelectionRing = pc.transform.Find("PC_SelectRing").GetComponent<Image>();
+            chrUI.AgroStatus = pc.transform.Find("PC_AgroStatus").GetComponent<Image>();
+            chrUI.HealthBar = pc.transform.Find("PC_HealthBar").GetComponent<Image>();
+            chrUI.ManaBar = pc.transform.Find("PC_ManaBar").GetComponent<Image>();
+            chrUI.BlessBuff = pc.transform.Find("PC_BlessBuff").GetComponent<Image>();
+
+            chr.UI = chrUI;
+
+            /*chrUI.PlayerCharacter = partyCanvasObject.transform.Find("PC1_Avatar").GetComponent<Image>();
+            chrUI.SelectionRing = partyCanvasObject.transform.Find("PC1_SelectRing").GetComponent<Image>();
+            chrUI.AgroStatus = partyCanvasObject.transform.Find("PC1_AgroStatus").GetComponent<Image>();
+            chrUI.HealthBar = partyCanvasObject.transform.Find("PC1_HealthBar").GetComponent<Image>();
+            chrUI.ManaBar = partyCanvasObject.transform.Find("PC1_ManaBar").GetComponent<Image>();
+            chrUI.EmptySlot = partyCanvasObject.transform.Find("EmptySlot_Pos1").GetComponent<Image>();
+            chr.UI = chrUI;*/
+
+            chr.CharFaceUpdater = new CharFaceUpdater(chr);
+            chr.Sprites = GetCharacterSprites(chr.Data.CharacterType);
+
+            UpdateEmptySlotBanners(party);
+        }
+
+        private void OnCharacterLeftParty(Character removedChr, PlayerParty party)
+        {
+            Destroy(removedChr.UI.Holder);
+
+            foreach (Character chr in party.Characters)
+            {
+                chr.UI.Holder.transform.localPosition =
+                    new Vector3(Constants.PC_WidthDelta, 0.0f, 0.0f) * chr.GetPartyIndex();
+            }
+
+            UpdateEmptySlotBanners(party);
+        }
+
         public void OnCharHealthChanged(Character chr, int maxHealth, int currHealth, int delta)
         {
             float healthPercent = ((float)currHealth / (float)maxHealth) * 100.0f;
@@ -644,7 +675,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             SetPartyInfoText(hoverInfo.HoverText, false);
         }
 
-        public void OnNpcInspectStart(Character inspector, BaseNpc npc, NpcData npcData)
+        public void OnNpcInspectStart(Character inspector, BaseNpc npc, MonsterData npcData)
         {
             m_InspectNpcUI.Canvas.enabled = true;
             m_InspectNpcUI.NpcNameText.text = npcData.Name;
@@ -681,7 +712,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
-        public void OnNpcInspectEnd(Character inspector, BaseNpc npc, NpcData npcData)
+        public void OnNpcInspectEnd(Character inspector, BaseNpc npc, MonsterData npcData)
         {
             m_InspectNpcUI.Canvas.enabled = false;
         }

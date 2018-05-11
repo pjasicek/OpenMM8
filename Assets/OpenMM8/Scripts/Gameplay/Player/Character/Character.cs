@@ -16,7 +16,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public delegate void CharHitNpc(Character chr, AttackInfo attackInfo, AttackResult result);
     public delegate void CharGotHit(Character chr, AttackInfo attackInfo, AttackResult attackResult);
     public delegate void CharAttack(Character chr, AttackInfo attackInfo);
-    public delegate void NpcInspect(Character inspectorChr, NpcData npcData);
+    public delegate void NpcInspect(Character inspectorChr, MonsterData npcData);
     public delegate void NpcInspectEnd();
     public delegate void ItemInspect(Character inspectorChr, ItemData itemData/*, InspectResult result*/);
     public delegate void ItemEquip(/*Item item, EquipResult equipResult*/);

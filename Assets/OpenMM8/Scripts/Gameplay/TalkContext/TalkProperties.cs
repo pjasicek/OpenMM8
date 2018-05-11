@@ -9,6 +9,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     [System.Serializable]
     public class TalkProperties
     {
+        // If this field is > 0 then the data will be loaded from the .CSV file
+        // Otherwise it has to be specified by hand
+        public int NpcId = -1;
+
         public string Name;
         public Sprite Avatar;
 

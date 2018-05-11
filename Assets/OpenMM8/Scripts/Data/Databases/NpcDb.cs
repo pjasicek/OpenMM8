@@ -1,5 +1,4 @@
-﻿using Assets.OpenMM8.Scripts.Data.Databases;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,21 +8,22 @@ using UnityEngine;
 
 namespace Assets.OpenMM8.Scripts.Gameplay.Data
 {
-    public class NpcDb : DataDb
+    public class NpcDb : DataDb<MonsterData>
     {
-        Dictionary<NpcType, NpcData> Npcs = new Dictionary<NpcType, NpcData>();
+        Dictionary<MonsterType, MonsterData> Npcs = new Dictionary<MonsterType, MonsterData>();
 
-        override public bool ProcessCsvDataRow(int row, string[] columns)
+        override public MonsterData ProcessCsvDataRow(int row, string[] columns)
         {
-            if (row < 5)
+            // Header
+            if (row == 0)
             {
-                return true;
+                return null;
             }
 
-            NpcData npcData = new NpcData();
+            MonsterData npcData = new MonsterData();
 
             npcData.Id = int.Parse(columns[0]);
-            npcData.NpcType = (NpcType)npcData.Id;
+            npcData.MonsterType = (MonsterType)npcData.Id;
             npcData.Name = columns[1];
             npcData.Picture = columns[2];
             npcData.Level = int.Parse(columns[3]);
@@ -91,20 +91,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             // Special
             npcData.SpecialAbility = columns[38];
 
-            Npcs.Add(npcData.NpcType, npcData);
-
-            return true;
-        }
-
-        public NpcData GetNpcData(NpcType npcType)
-        {
-            NpcData npc = null;
-            if (Npcs.ContainsKey(npcType))
-            {
-                npc = Npcs[npcType];
-            }
-
-            return npc;
+            return npcData;
         }
 
         private static SpellElement CsvSpellElementToEnum(string csv)

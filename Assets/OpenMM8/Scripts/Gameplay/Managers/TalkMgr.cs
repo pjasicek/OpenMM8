@@ -46,7 +46,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             // TODO: Add logic
             int currId = tlk.GreetId;
 
-            NpcGreetData greet = DbMgr.Instance.NpcGreetDb.GetNpcGreet(currId);
+            NpcGreetData greet = DbMgr.Instance.NpcGreetDb.Get(currId);
             if (greet != null)
             {
                 if (tlk.IsVisited == false)
@@ -77,7 +77,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             // TODO: Add logic
             int currId = tlk.GreetId;
 
-            NpcNewsData news = DbMgr.Instance.NpcNewsDb.GetNpcNews(currId);
+            NpcNewsData news = DbMgr.Instance.NpcNewsDb.Get(currId);
             if (news != null)
             {
                 newsText = news.Text;
@@ -152,19 +152,20 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 case 21:
                     if (IsTopicVisited(topicId))
                     {
-                        return DbMgr.Instance.NpcTextDb.GetNpcText(23).Text;
+                        return DbMgr.Instance.NpcTextDb.Get(23).Text;
                     }
                     else
                     {
-                        return DbMgr.Instance.NpcTextDb.GetNpcText(22).Text;
+                        return DbMgr.Instance.NpcTextDb.Get(22).Text;
                     }
 
                 default: break;
             }
 
             // Is this really necessary ? Should be always same, no logic here I think
-            NpcTopicData npcTopic = DbMgr.Instance.NpcTopicDb.GetNpcTopic(topicId);
-            return DbMgr.Instance.NpcTextDb.GetNpcText(npcTopic.TextId).Text;
+            NpcTopicData npcTopic = DbMgr.Instance.NpcTopicDb.Get(topicId);
+
+            return DbMgr.Instance.NpcTextDb.Get(npcTopic.TextId).Text;
         }
 
         public bool HasGreetText(TalkProperties talkProp)

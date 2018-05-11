@@ -5,9 +5,8 @@ using System.Text;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    public class ItemData
+    public class ItemData : DbData
     {
-        public int Id;
         public string ImageName;
         public string Name;
         public int GoldValue;

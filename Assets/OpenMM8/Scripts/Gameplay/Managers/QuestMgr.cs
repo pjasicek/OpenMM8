@@ -27,7 +27,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public bool Init()
         {
-            foreach (var qDataPair in DbMgr.Instance.QuestDb.QuestDataMap)
+            foreach (var qDataPair in DbMgr.Instance.QuestDb.Data)
             {
                 Quest q = new Quest();
                 q.Data = qDataPair.Value;

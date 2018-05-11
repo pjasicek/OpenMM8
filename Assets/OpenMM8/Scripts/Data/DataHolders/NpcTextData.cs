@@ -5,9 +5,8 @@ using System.Text;
 
 namespace Assets.OpenMM8.Scripts.Data
 {
-    public class NpcTextData
+    public class NpcTextData : DbData
     {
-        public int Id = -1;
         public string Text = "";
         public string Note = "";
         public string Owner = "";

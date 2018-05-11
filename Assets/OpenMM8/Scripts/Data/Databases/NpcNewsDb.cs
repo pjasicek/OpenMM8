@@ -5,16 +5,13 @@ using System.Text;
 using System.IO;
 
 using Assets.OpenMM8.Scripts.Gameplay.Items;
-using Assets.OpenMM8.Scripts.Data.Databases;
 using Assets.OpenMM8.Scripts.Data;
 
 namespace Assets.OpenMM8.Scripts.Gameplay.Data
 {
-    public class NpcNewsDb : DataDb
+    public class NpcNewsDb : DataDb<NpcNewsData>
     {
-        Dictionary<int, NpcNewsData> m_NpcNewsMap = new Dictionary<int, NpcNewsData>();
-
-        override public bool ProcessCsvDataRow(int row, string[] columns)
+        override public NpcNewsData ProcessCsvDataRow(int row, string[] columns)
         {
             // ID ; Text ; Notes
             int id;
@@ -25,21 +22,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                 npcNews.Text = columns[1];
                 npcNews.Notes = columns[2];
 
-                m_NpcNewsMap.Add(id, npcNews);
+                return npcNews;
             }
 
-            return true;
-        }
-
-        public NpcNewsData GetNpcNews(int id)
-        {
-            NpcNewsData npcNews = null;
-            if (m_NpcNewsMap.ContainsKey(id))
-            {
-                npcNews = m_NpcNewsMap[id];
-            }
-
-            return npcNews;
+            return null;
         }
     }
 }

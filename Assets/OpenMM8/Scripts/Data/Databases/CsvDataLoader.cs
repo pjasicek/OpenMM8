@@ -3,25 +3,53 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+using LINQtoCSV;
+
+internal class MyDataRow : List<DataRowItem>, IDataRow
+{
+}
+
 public class CsvDataLoader
 {
-    static public bool LoadRows(string csvPath, System.Func<int, string[], bool> rowProcessor, char csvDelim = ';')
+    static public bool LoadRows<T>(string csvPath, System.Func<int, string[], bool> rowProcessor, int headerRow = 1, char csvDelim = '\t')
     {
-        using (StreamReader reader = new StreamReader(csvPath))
+        CsvFileDescription inputFileDescription = new CsvFileDescription
         {
-            if (reader == null || reader.Peek() == -1)
+            FirstLineHasColumnNames = false,
+            SeparatorChar = csvDelim,
+            LinesToSkip = headerRow - 1
+        };
+        CsvContext cc = new CsvContext();
+
+        IEnumerable<MyDataRow> pr = cc.Read<MyDataRow>(csvPath, inputFileDescription);
+        
+        int rowNum = 0;
+        int numCols = 0;
+        string[] arr = null;
+        foreach (MyDataRow r in pr)
+        {
+            if (rowNum == 0)
             {
-                return false;
+                numCols = r.Count;
+                arr = new string[numCols];
+                rowNum++;
+                continue;
             }
 
-            int rowNum = 1;
-            while (!reader.EndOfStream)
+            int i = 0;
+            foreach (var item in r)
             {
-                string line = reader.ReadLine();
-                string[] columns = line.Split(csvDelim);
-                rowProcessor(rowNum, columns);
-                rowNum++;
+                if (i >= numCols)
+                {
+                    break;
+                }
+
+                arr[i] = r[i].Value;
+                i++;
             }
+
+            rowProcessor(rowNum, arr);
+            rowNum++;
         }
 
         return true;

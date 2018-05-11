@@ -5,16 +5,13 @@ using System.Text;
 using System.IO;
 
 using Assets.OpenMM8.Scripts.Gameplay.Items;
-using Assets.OpenMM8.Scripts.Data.Databases;
 using Assets.OpenMM8.Scripts.Data;
 
 namespace Assets.OpenMM8.Scripts.Gameplay.Data
 {
-    public class QuestDb : DataDb
+    public class QuestDb : DataDb<QuestData>
     {
-        public Dictionary<int, QuestData> QuestDataMap = new Dictionary<int, QuestData>();
-
-        override public bool ProcessCsvDataRow(int row, string[] columns)
+        override public QuestData ProcessCsvDataRow(int row, string[] columns)
         {
             // ID ; Text ; Note ; Owner ; Unknown
             int id;
@@ -24,21 +21,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                 questData.Id = id;
                 questData.QuestNote = columns[1];
 
-                QuestDataMap.Add(id, questData);
+                return questData;
             }
 
-            return true;
-        }
-
-        public QuestData GetQuestData(int id)
-        {
-            QuestData npcText = null;
-            if (QuestDataMap.ContainsKey(id))
-            {
-                npcText = QuestDataMap[id];
-            }
-
-            return npcText;
+            return null;
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Assets.OpenMM8.Scripts.Gameplay.Managers
+namespace Assets.OpenMM8.Scripts.Gameplay
 {
     class SoundMgr : Singleton<SoundMgr>
     {
@@ -231,7 +231,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
                             Vector3.Distance(result.Victim.transform.position, chr.Party.GetPosition()) < Constants.MeleeRangeDistance;
                         if (isVictimInMeleeRange)
                         {
-                            NpcData npcData = result.Victim.GetComponent<BaseNpc>().NpcData;
+                            MonsterData npcData = result.Victim.GetComponent<BaseNpc>().NpcData;
                             bool isNpcStrong = npcData.Level > chr.Data.DefaultStats.Level;
                             if (isNpcStrong)
                             {
@@ -273,7 +273,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
             // TODO - handle based on character's armor
         }
 
-        public void OnNpcInspect(Character inspectorChr, NpcData npcData)
+        public void OnNpcInspect(Character inspectorChr, MonsterData npcData)
         {
 
         }

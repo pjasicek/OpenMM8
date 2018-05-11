@@ -3,8 +3,8 @@ using System.Collections;
 
 using Assets.OpenMM8.Scripts.Gameplay;
 
-public delegate void NpcInspectStartDlg(Character inspector, BaseNpc npc, NpcData npcData);
-public delegate void NpcInspecEndDlg(Character inspector, BaseNpc npc, NpcData npcData);
+public delegate void NpcInspectStartDlg(Character inspector, BaseNpc npc, MonsterData npcData);
+public delegate void NpcInspecEndDlg(Character inspector, BaseNpc npc, MonsterData npcData);
 
 [RequireComponent(typeof(BaseNpc))]
 public class InspectableNpc : Inspectable
@@ -12,7 +12,7 @@ public class InspectableNpc : Inspectable
     static public event NpcInspectStartDlg OnNpcInspectStart;
     static public event NpcInspecEndDlg OnNpcInspectEnd;
 
-    private NpcData NpcData = null;
+    private MonsterData NpcData = null;
     private BaseNpc Npc = null;
 
     void Start()

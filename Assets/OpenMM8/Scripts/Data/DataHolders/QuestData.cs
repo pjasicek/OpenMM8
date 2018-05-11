@@ -5,9 +5,8 @@ using System.Text;
 
 namespace Assets.OpenMM8.Scripts.Data
 {
-    public class QuestData
+    public class QuestData : DbData
     {
-        public int Id = -1;
         public string QuestNote = "";
     }
 }

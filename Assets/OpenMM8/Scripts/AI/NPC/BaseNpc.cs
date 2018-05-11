@@ -33,8 +33,8 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
     // Public - Editor accessible
 
     // Gameplay
-    public NpcType NpcType;
-    public NpcData NpcData;
+    public MonsterType NpcType;
+    public MonsterData NpcData;
     public Loot Loot;
 
     public int CurrentHitPoints;
@@ -135,7 +135,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
         SetNavMeshAgentEnabled(true);
 
-        NpcData = DbMgr.Instance.NpcDb.GetNpcData(NpcType);
+        NpcData = DbMgr.Instance.MonsterDb.Get((int)NpcType);
         CurrentHitPoints = NpcData.HitPoints;
 
         Damageable damageable = GetComponent<Damageable>();
@@ -145,7 +145,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         Loot = new Loot();
         if (NpcData.Treasure.CertainItemId != 0)
         {
-            Loot.Item = DbMgr.Instance.ItemDb.GetItem(NpcData.Treasure.CertainItemId);
+            Loot.Item = DbMgr.Instance.ItemDb.Get(NpcData.Treasure.CertainItemId);
         }
         else
         {

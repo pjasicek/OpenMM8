@@ -444,8 +444,6 @@ MonoBehaviour:
   RestartAudio: 1
   VideoToPlay: {fileID: 32900000, guid: f323e00f5185b4646a7d35c2eee070aa, type: 3}
   AudioToPlay: {fileID: 8300000, guid: 1319aabcd936d684c952a09718e91f4c, type: 3}
-  StartSound: {fileID: 0}
-  EndSound: {fileID: 0}
 --- !u!82 &46526545
 AudioSource:
   m_ObjectHideFlags: 0
@@ -784,9 +782,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 0}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &64242148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -815,9 +818,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1650327787}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &66085507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1069,15 +1077,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1139485701}
   TalkProperties:
-  - Name: Some Guy
+  - NpcId: -1
+    Name: Some Guy
     Avatar: {fileID: 21300462, guid: e3722643b988de64081f361599138c8f, type: 3}
     IsNpcNews: 0
     GreetId: 10
     TopicIds: 28000000
     IsVisited: 0
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &101272221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1520,9 +1534,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: The Grog and Grub
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 922912667}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &130168555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3011,9 +3030,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 0}
   TalkProperties: []
+  AudioSource: {fileID: 0}
 --- !u!1 &177421252 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100020, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
@@ -3030,9 +3050,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1650327787}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &177421258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3929,6 +3954,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TalkProperties:
+    NpcId: -1
     Name: 
     Avatar: {fileID: 0}
     IsNpcNews: 0
@@ -3992,9 +4018,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 0}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &232589028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4735,9 +4766,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1586463976}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &333019779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6183,6 +6219,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TalkProperties:
+    NpcId: -1
     Name: 
     Avatar: {fileID: 0}
     IsNpcNews: 0
@@ -6627,9 +6664,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1094936839}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &454090365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7353,9 +7395,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 0}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &511789844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8570,9 +8617,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1650327787}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &637519341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9023,9 +9075,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1153133835}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &640164945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9217,9 +9274,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1650327787}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &672183472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10048,9 +10110,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 0}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &714895541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10680,8 +10747,6 @@ MonoBehaviour:
   RestartAudio: 1
   VideoToPlay: {fileID: 32900000, guid: 3c500f630c0d4704182dd95ffa26c2bf, type: 3}
   AudioToPlay: {fileID: 8300000, guid: 6c88e1343750f0548a7de26838f22498, type: 3}
-  StartSound: {fileID: 0}
-  EndSound: {fileID: 0}
 --- !u!1 &766165758
 GameObject:
   m_ObjectHideFlags: 0
@@ -11529,8 +11594,6 @@ MonoBehaviour:
   RestartAudio: 1
   VideoToPlay: {fileID: 32900000, guid: f55406d7f94390a4f86290822da75466, type: 3}
   AudioToPlay: {fileID: 8300000, guid: e6e7bb5c91df6114d988616515cdd411, type: 3}
-  StartSound: {fileID: 0}
-  EndSound: {fileID: 0}
 --- !u!1 &815100852
 GameObject:
   m_ObjectHideFlags: 0
@@ -11823,6 +11886,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TalkProperties:
+    NpcId: -1
     Name: 
     Avatar: {fileID: 0}
     IsNpcNews: 0
@@ -11970,6 +12034,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TalkProperties:
+    NpcId: -1
     Name: 
     Avatar: {fileID: 0}
     IsNpcNews: 0
@@ -12868,9 +12933,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1586463976}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &921599975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13095,8 +13165,6 @@ MonoBehaviour:
   RestartAudio: 1
   VideoToPlay: {fileID: 32900000, guid: 0ae35d97a664c754db256a0c14cd571b, type: 3}
   AudioToPlay: {fileID: 8300000, guid: 4bee4aa96bdab9345818ec48e906a675, type: 3}
-  StartSound: {fileID: 0}
-  EndSound: {fileID: 0}
 --- !u!1 &936119986
 GameObject:
   m_ObjectHideFlags: 0
@@ -14344,6 +14412,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TalkProperties:
+    NpcId: -1
     Name: 
     Avatar: {fileID: 0}
     IsNpcNews: 0
@@ -14949,8 +15018,6 @@ MonoBehaviour:
   RestartAudio: 1
   VideoToPlay: {fileID: 32900000, guid: 0b0db6ec5c092f94d983fa90f69b807d, type: 3}
   AudioToPlay: {fileID: 8300000, guid: d8b06ea6947a2244d899ca15993bff02, type: 3}
-  StartSound: {fileID: 0}
-  EndSound: {fileID: 0}
 --- !u!1 &1026982151
 GameObject:
   m_ObjectHideFlags: 0
@@ -15568,6 +15635,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TalkProperties:
+    NpcId: -1
     Name: 
     Avatar: {fileID: 0}
     IsNpcNews: 0
@@ -15791,8 +15859,6 @@ MonoBehaviour:
   RestartAudio: 1
   VideoToPlay: {fileID: 32900000, guid: d87106036a8ae984eb04ae5b43b67c0e, type: 3}
   AudioToPlay: {fileID: 8300000, guid: 8685d7f4a67ef514ca89a6517dad18da, type: 3}
-  StartSound: {fileID: 0}
-  EndSound: {fileID: 0}
 --- !u!1 &1100637103
 GameObject:
   m_ObjectHideFlags: 0
@@ -16232,9 +16298,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 0}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &1125541006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16263,9 +16334,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 0}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &1126478841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16403,8 +16479,6 @@ MonoBehaviour:
   RestartAudio: 1
   VideoToPlay: {fileID: 32900000, guid: 416099d3d09c9ef42af5330bbce8835c, type: 3}
   AudioToPlay: {fileID: 8300000, guid: dcec7038fab775a4abe9d586c2818b30, type: 3}
-  StartSound: {fileID: 0}
-  EndSound: {fileID: 0}
 --- !u!1 &1142049351
 GameObject:
   m_ObjectHideFlags: 0
@@ -16576,9 +16650,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1013571776}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &1147549827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16716,8 +16795,6 @@ MonoBehaviour:
   RestartAudio: 1
   VideoToPlay: {fileID: 32900000, guid: 73ac7a1a04589054986de97d693e6efb, type: 3}
   AudioToPlay: {fileID: 8300000, guid: 9cef789d1eac57243a8ab43590ddf0c7, type: 3}
-  StartSound: {fileID: 0}
-  EndSound: {fileID: 0}
 --- !u!1 &1153878536
 GameObject:
   m_ObjectHideFlags: 0
@@ -17052,9 +17129,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1650327787}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &1176765595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17377,9 +17459,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1586463976}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &1212372459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17408,9 +17495,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1586463976}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &1213351202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17581,9 +17673,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1460351492}
-  TalkProperties: []
+  TalkProperties:
+  - NpcId: 1
+    Name: 
+    Avatar: {fileID: 0}
+    IsNpcNews: 0
+    GreetId: 0
+    TopicIds: 
+    IsVisited: 0
+  - NpcId: 2
+    Name: 
+    Avatar: {fileID: 0}
+    IsNpcNews: 0
+    GreetId: 0
+    TopicIds: 
+    IsVisited: 0
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &1257883684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17612,9 +17723,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 0}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &1259157007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17730,9 +17846,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1971406025}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &1271541479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17938,9 +18059,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1650327787}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &1276749171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17969,9 +18095,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1650327787}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &1283118367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18598,9 +18729,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 802160687}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &1367537826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19488,9 +19624,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1586463976}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &1438501378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19815,8 +19956,6 @@ MonoBehaviour:
   RestartAudio: 1
   VideoToPlay: {fileID: 32900000, guid: 4e0ce6f3654db4c4398474971a6ca145, type: 3}
   AudioToPlay: {fileID: 8300000, guid: ae023dff5fc4a544e968efb2b16635cf, type: 3}
-  StartSound: {fileID: 0}
-  EndSound: {fileID: 0}
 --- !u!1 &1486750906
 GameObject:
   m_ObjectHideFlags: 0
@@ -20437,6 +20576,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TalkProperties:
+    NpcId: -1
     Name: 
     Avatar: {fileID: 0}
     IsNpcNews: 0
@@ -20972,9 +21112,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 46526542}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &1579098434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21003,9 +21148,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1586463976}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &1579165152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21366,8 +21516,6 @@ MonoBehaviour:
   RestartAudio: 1
   VideoToPlay: {fileID: 32900000, guid: e7dae42c5c9d0b34787377a4ba7dcde4, type: 3}
   AudioToPlay: {fileID: 8300000, guid: 14275708abe01804881fc453529657ac, type: 3}
-  StartSound: {fileID: 0}
-  EndSound: {fileID: 0}
 --- !u!1 &1587337822
 GameObject:
   m_ObjectHideFlags: 0
@@ -21659,6 +21807,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TalkProperties:
+    NpcId: -1
     Name: 
     Avatar: {fileID: 0}
     IsNpcNews: 0
@@ -21773,9 +21922,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1650327787}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &1606940752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22453,6 +22607,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TalkProperties:
+    NpcId: -1
     Name: 
     Avatar: {fileID: 0}
     IsNpcNews: 0
@@ -23027,8 +23182,6 @@ MonoBehaviour:
   RestartAudio: 1
   VideoToPlay: {fileID: 32900000, guid: d8890f680f13ad144b0b3d945948988e, type: 3}
   AudioToPlay: {fileID: 8300000, guid: fe70bb376236a584097c23221cf13d07, type: 3}
-  StartSound: {fileID: 0}
-  EndSound: {fileID: 0}
 --- !u!1 &1653726331
 GameObject:
   m_ObjectHideFlags: 0
@@ -25136,21 +25289,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: Location Text
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 0}
   TalkProperties:
-  - Name: Lizardman Vilager
+  - NpcId: 1
+    Name: Lizardman Vilager
     Avatar: {fileID: 21300018, guid: e3722643b988de64081f361599138c8f, type: 3}
     IsNpcNews: 0
     GreetId: 10
     TopicIds: 05000000060000000700000008000000
     IsVisited: 0
-  - Name: Lizardman Vilager 2
+  - NpcId: -1
+    Name: Lizardman Vilager 2
     Avatar: {fileID: 21300038, guid: e3722643b988de64081f361599138c8f, type: 3}
     IsNpcNews: 0
     GreetId: 10
     TopicIds: 05000000060000000700000008000000
     IsVisited: 0
+  AudioSource: {fileID: 0}
 --- !u!114 &1783903961
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25979,9 +26135,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1650327787}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &1825486475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26363,9 +26524,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 1650327787}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &1857878751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27319,8 +27485,6 @@ MonoBehaviour:
   RestartAudio: 1
   VideoToPlay: {fileID: 32900000, guid: 4ac83c83e9a2933438f0d8ea4eb51389, type: 3}
   AudioToPlay: {fileID: 8300000, guid: 0d2e57f71bfe62543bfb0394eb166542, type: 3}
-  StartSound: {fileID: 0}
-  EndSound: {fileID: 0}
 --- !u!1 &1975399173
 GameObject:
   m_ObjectHideFlags: 0
@@ -28294,9 +28458,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Location: 
-  IsHouse: 0
+  IsBuilding: 0
   VideoSceneHolder: {fileID: 0}
   TalkProperties: []
+  AudioSource: {fileID: 0}
+  SoundVolume: 0.6
+  EnterSound: {fileID: 0}
+  LeaveSound: {fileID: 0}
+  GreetSound: {fileID: 0}
 --- !u!114 &2049845885
 MonoBehaviour:
   m_ObjectHideFlags: 0

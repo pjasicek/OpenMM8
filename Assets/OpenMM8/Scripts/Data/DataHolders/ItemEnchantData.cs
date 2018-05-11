@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Assets.OpenMM8.Scripts.Gameplay.Data.DataClasses
 {
-    class ItemEnchantData
+    class ItemEnchantData : DbData
     {
     }
 }

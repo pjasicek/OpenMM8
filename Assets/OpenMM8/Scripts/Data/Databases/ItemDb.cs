@@ -5,21 +5,14 @@ using System.Text;
 using System.IO;
 
 using Assets.OpenMM8.Scripts.Gameplay.Items;
-using Assets.OpenMM8.Scripts.Data.Databases;
+using Assets.OpenMM8.Scripts.Data;
 
 namespace Assets.OpenMM8.Scripts.Gameplay.Data
 {
-    public class ItemDb : DataDb
+    public class ItemDb : DataDb<BaseItem>
     {
-        Dictionary<int, BaseItem> Items = new Dictionary<int, BaseItem>();
-
-        override public bool ProcessCsvDataRow(int row, string[] columns)
+        override public BaseItem ProcessCsvDataRow(int row, string[] columns)
         {
-            if (row < 4)
-            {
-                return true;
-            }
-
             ItemData itemData = new ItemData();
             itemData.Id = int.Parse(columns[0]);
             itemData.ImageName = columns[1];
@@ -83,19 +76,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             itemData.Notes = columns[16];
 
             BaseItem item = ItemFactory.CreateItem(ref itemData);
-
-            Items.Add(itemData.Id, item);
-
-            return true;
-        }
-
-        public BaseItem GetItem(int itemId)
-        {
-            BaseItem item = null;
-            if (Items.ContainsKey(itemId))
-            {
-                item = Items[itemId];
-            }
+            item.Id = itemData.Id;
 
             return item;
         }
