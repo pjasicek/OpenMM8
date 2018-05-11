@@ -18,6 +18,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         // State
         public bool IsVisited = false;
-        List<int> PrevTopicIds = new List<int>();
+        public Stack<List<int>> NestedTopicIds = new Stack<List<int>>();
     }
 }

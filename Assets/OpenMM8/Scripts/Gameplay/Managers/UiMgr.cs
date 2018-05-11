@@ -357,6 +357,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void RefreshNpcTalkTopics(TalkProperties talkProp)
         {
+            List<int> currentTopics;
+            if (talkProp.NestedTopicIds.Count == 0)
+            {
+                currentTopics = talkProp.TopicIds;
+            }
+            else
+            {
+                currentTopics = talkProp.NestedTopicIds.First();
+            }
 
             // NPC Topics
             foreach (GameObject topicButton in m_NpcTalkUI.TopicButtonList)
@@ -374,7 +383,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             
             float totalTextHeight = 0.0f;
             int buttIdx = 0;
-            foreach (int topicId in talkProp.TopicIds)
+            foreach (int topicId in currentTopics)
             {
                 string topic = DbMgr.Instance.NpcTopicDb.GetNpcTopic(topicId).Topic;
 
@@ -484,6 +493,29 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             m_CurrTalkProp = null;
+        }
+
+        private bool TryShowNpcGreet(TalkProperties talkProp)
+        {
+            if (TalkMgr.Instance.HasGreetText(talkProp))
+            {
+                String talkText = "Oops !";
+
+                if (talkProp.IsNpcNews)
+                {
+                    talkText = TalkMgr.GetCurrentNpcNews(talkProp);
+                }
+                else
+                {
+                    talkText = TalkMgr.GetCurrNpcGreet(talkProp);
+                }
+
+                UpdateNpcTalkText(talkText);
+
+                return true;
+            }
+
+            return false;
         }
 
         private void ReturnToGame()
@@ -747,21 +779,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             m_NpcTalkUI.TalkAvatar.Holder.SetActive(true);
 
-            if (TalkMgr.Instance.HasGreetText(talkProp))
+            if (TryShowNpcGreet(talkProp))
             {
                 m_NpcTalkUI.NpcTalkObj.SetActive(true);
-                String talkText = "Oops !";
-
-                if (talkProp.IsNpcNews)
-                {
-                    talkText = TalkMgr.GetCurrentNpcNews(talkProp);
-                }
-                else
-                {
-                    talkText = TalkMgr.GetCurrNpcGreet(talkProp);
-                }
-
-                UpdateNpcTalkText(talkText);
             }
             else
             {
@@ -778,28 +798,43 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnEscapePressed()
         {
+            bool returnToGame = true;
+
             // Check if we are talking
             if (m_CurrTalkable != null)
             {
-                if (m_CurrTalkable.TalkProperties.Count > 1)
+                // Check if we are in the middle of conversation
+                if (m_CurrTalkProp != null && m_CurrTalkProp.NestedTopicIds.Count > 0)
                 {
-                    if (m_CurrTalkProp == null)
-                    {
-                        ReturnToGame();
-                    }
-                    else
-                    {
-                        // Go back to the Avatar buttons "lobby"
-                        ShowTalkLobby(m_CurrTalkable);
-                    }
+                    // We are in the middle of conversation
+                    m_CurrTalkProp.NestedTopicIds.Pop();
+                    RefreshNpcTalkTopics(m_CurrTalkProp);
+
+                    // When returning - show greet text. TODO: Clarify if this is really the case
+                    TryShowNpcGreet(m_CurrTalkProp);
+                    returnToGame = false;
                 }
-                else
+
+                if (returnToGame)
                 {
-                    // 0 or 1 talkable NPCs, just go back to game
-                    ReturnToGame();
+                    // No action was taken yet
+                    if (m_CurrTalkable.TalkProperties.Count > 1)
+                    {
+                        
+                        // Multiple NPCs in the talkable 
+
+                        if (m_CurrTalkProp != null)
+                        {
+                            // Speaking to a concrete NPC when there are multiple people in the talkable
+                            // => Go back to the Avatar buttons "lobby"
+                            ShowTalkLobby(m_CurrTalkable);
+                            returnToGame = false;
+                        }
+                    }
                 }
             }
-            else
+            
+            if (returnToGame)
             {
                 ReturnToGame();
             }

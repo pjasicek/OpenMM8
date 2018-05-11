@@ -90,6 +90,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return newsText;
         }
 
+        // Ret: new topic ID (can remain unchanged - clickedTopicId is returned)
+        //      shouldTextChange - if false, then TalkText from the old topicId is displayed
         static public int TryUpdateClickedTopic(int clickedTopicId, TalkProperties talkProp, out bool shouldTextChange)
         {
             // Logic - This Talkmgr can access QuestMgr for possible update
@@ -109,6 +111,27 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             return newTopicId;
+        }
+
+        public List<int> GetNestedTopics(int topicId)
+        {
+            List<int> nestedTopics = new List<int>();
+
+            if (topicId == 5)
+            {
+                nestedTopics.Add(30);
+                nestedTopics.Add(31);
+                nestedTopics.Add(32);
+            }
+
+            if (nestedTopics.Count == 0)
+            {
+                return null;
+            }
+            else
+            {
+                return nestedTopics;
+            }
         }
 
         private bool IsTopicVisited(int topicId)
@@ -171,6 +194,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 talkProp.TopicIds[talkProp.TopicIds.FindIndex(id => id == topicId)] = updatedTopicId;
 
                 // Topic ID changed
+                if (OnNpcTalkTopicListChanged != null)
+                {
+                    OnNpcTalkTopicListChanged(talkProp);
+                }
+            }
+
+            List<int> nestedTopics = GetNestedTopics(origTopicId);
+            if (nestedTopics != null)
+            {
+                talkProp.NestedTopicIds.Push(nestedTopics);
+
+                // Topic list changed
                 if (OnNpcTalkTopicListChanged != null)
                 {
                     OnNpcTalkTopicListChanged(talkProp);
