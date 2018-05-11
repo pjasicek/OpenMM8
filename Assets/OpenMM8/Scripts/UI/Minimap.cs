@@ -31,7 +31,6 @@ public class Minimap : MonoBehaviour
         m_MinimapImage = GetComponent<RawImage>();
         m_PlayerTransform = GameObject.FindGameObjectWithTag("Player").transform;
 
-        Debug.Log(m_MinimapImage.rectTransform.sizeDelta.ToString());
         GameScreenResolution.x = Screen.width;
         GameScreenResolution.y = Screen.height;
 
@@ -69,10 +68,10 @@ public class Minimap : MonoBehaviour
         //Debug.Log("Max distance: X: " + MaxDistanceFromMarkerToPlayer.x);
         //Debug.Log("MinmapTexture width: " + m_MinimapImage.texture.width + " height: " + m_MinimapImage.texture.height);
 
-        InvokeRepeating("test", 0.0f, 0.05f);
+        InvokeRepeating("RefreshMinimapMarkers", 0.0f, 0.05f);
     }
 
-    private void test()
+    private void RefreshMinimapMarkers()
     {
         VisibleMinimapMarkers.Clear();
         foreach (MinimapMarker marker in MinimapMarkers)

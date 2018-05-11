@@ -16,8 +16,6 @@ public class VideoScene : MonoBehaviour
     //Video To Play [Assign from the Editor]
     public VideoClip VideoToPlay;
     public AudioClip AudioToPlay;
-    public AudioClip StartSound;
-    public AudioClip EndSound;
 
     // Dirty "Double buffering"...
     private VideoPlayer m_VideoPlayer1;
@@ -135,11 +133,6 @@ public class VideoScene : MonoBehaviour
 
         // This vid should already be buffered
         StartCoroutine(playVideo(m_VideoPlayer1));
-
-        if (StartSound != null)
-        {
-            m_AudioSource.PlayOneShot(StartSound);
-        }
     }
 
     public void Stop()
@@ -154,11 +147,6 @@ public class VideoScene : MonoBehaviour
             m_VideoPlayer2.Stop();
         }
         m_Image.enabled = false;
-
-        if (EndSound != null)
-        {
-            m_AudioSource.PlayOneShot(EndSound);
-        }
 
         // Pre-buffer
         StartCoroutine(Prepare(m_VideoPlayer1));

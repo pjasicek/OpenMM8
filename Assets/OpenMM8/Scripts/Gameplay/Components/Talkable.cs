@@ -13,10 +13,13 @@ public class Talkable : Interactable
     static public event Talk OnTalkStart;
     static public event EndTalk OnTalkEnd;
 
+    [Header("Talkable")]
     public string Location;
-    public bool IsHouse = false;
+    public bool IsBuilding = false;
     public GameObject VideoSceneHolder = null;
     public List<TalkProperties> TalkProperties = new List<TalkProperties>();
+
+    public AudioSource AudioSource;
 
     private void Awake()
     {
@@ -28,6 +31,8 @@ public class Talkable : Interactable
                 VideoSceneHolder = null;
             }
         }
+
+        AudioSource = gameObject.AddComponent<AudioSource>();
     }
 
     public override bool CanInteract(GameObject interacter, RaycastHit interactRay)

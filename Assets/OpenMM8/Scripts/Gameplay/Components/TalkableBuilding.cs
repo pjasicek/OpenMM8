@@ -5,24 +5,28 @@ using Assets.OpenMM8.Scripts.Gameplay;
 using UnityEngine.Experimental.UIElements;
 using System.Collections.Generic;
 
-public class TalkableHouse : Talkable
+public class TalkableBuilding : Talkable
 {
     private Dictionary<int, int[]> m_SubmeshTris = new Dictionary<int, int[]>();
-    private Mesh m_HouseMesh;
-    private int[] m_HouseTris;
+    private Mesh m_BuildingMesh;
+    private int[] m_BuildingTris;
+
+    [Header("Building")]
+    public float SoundVolume = 0.6f;
+    public AudioClip EnterSound;
+    public AudioClip LeaveSound;
+    public AudioClip GreetSound;
 
     private void Start()
     {
-        IsHouse = true;
+        IsBuilding = true;
 
-        m_HouseMesh = GetComponent<MeshFilter>().mesh;
-        Debug.Log("Mesh name: " + m_HouseMesh.name);
-        Debug.Log("Is readable: " + m_HouseMesh.isReadable);
-        m_HouseTris = m_HouseMesh.triangles;
+        m_BuildingMesh = GetComponent<MeshFilter>().mesh;
+        m_BuildingTris = m_BuildingMesh.triangles;
 
-        for (int i = 0; i < m_HouseMesh.subMeshCount; i++)
+        for (int i = 0; i < m_BuildingMesh.subMeshCount; i++)
         {
-            m_SubmeshTris.Add(i, m_HouseMesh.GetTriangles(i));
+            m_SubmeshTris.Add(i, m_BuildingMesh.GetTriangles(i));
         }
     }
 
@@ -43,12 +47,12 @@ public class TalkableHouse : Talkable
             return false;
         }
 
-        int triangleIdx1 = m_HouseTris[interactRay.triangleIndex * 3];
-        int triangleIdx2 = m_HouseTris[interactRay.triangleIndex * 3 + 1];
-        int triangleIdx3 = m_HouseTris[interactRay.triangleIndex * 3 + 2];
+        int triangleIdx1 = m_BuildingTris[interactRay.triangleIndex * 3];
+        int triangleIdx2 = m_BuildingTris[interactRay.triangleIndex * 3 + 1];
+        int triangleIdx3 = m_BuildingTris[interactRay.triangleIndex * 3 + 2];
 
         string texName = "oops";
-        for (int i = 0; i < m_HouseMesh.subMeshCount; i++)
+        for (int i = 0; i < m_BuildingMesh.subMeshCount; i++)
         {
             int[] subMeshTris = m_SubmeshTris[i];
 

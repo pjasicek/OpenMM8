@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets.OpenMM8.Scripts.Gameplay.Managers
 {
@@ -46,6 +47,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
         private void Awake()
         {
             // Events
+            SceneManager.sceneLoaded += OnSceneLoaded;
+
             GameMgr.OnPauseGame += OnGamePaused;
             GameMgr.OnUnpauseGame += OnGameUnpaused;
 
@@ -59,7 +62,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
             Character.OnGotHit += OnCharGotHit;
             Character.OnAttack += OnCharAttack;
 
-            Talkable.OnTalkStart += OnTalkWithNpc;
+            Talkable.OnTalkStart += OnTalkStart;
+            Talkable.OnTalkEnd += OnTalkEnd;
         }
 
         // Init sequence: DbMgr(1) -> GameMgr(1) -> *Mgr(1) -> GameMgr(2)
@@ -110,26 +114,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
             return true;
         }
 
-        private void OnCharacterJoinedParty(Character chr, PlayerParty party)
-        {
-            chr.Sounds = GetCharacterSounds(chr.Data.CharacterType);
-        }
-
-        private void OnCharacterLeftParty(Character chr, PlayerParty party)
-        {
-
-        }
-
         private void Start()
         {
 
         }
 
-        private void OnLevelWasLoaded(int level)
-        {
-            
-            Debug.Log("Loaded !");
-        }
 
         //=================================== Methods ===================================
 
@@ -167,6 +156,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
 
         //=================================== Events ===================================
 
+        private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
+        {
+            
+        }
+
         private void OnHealthChanged(Character chr, int maxHealth, int currHealth, int delta)
         {
             float prevHealthPerc = ((float)(currHealth - delta) / (float)maxHealth) * 100.0f;
@@ -176,6 +170,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
             {
                 PlayRandomSound(chr.Sounds.BadlyWounded, chr.Party.PlayerAudioSource);
             }
+        }
+
+        private void OnCharacterJoinedParty(Character chr, PlayerParty party)
+        {
+            chr.Sounds = GetCharacterSounds(chr.Data.CharacterType);
+        }
+
+        private void OnCharacterLeftParty(Character chr, PlayerParty party)
+        {
+
         }
 
         public void OnGamePaused()
@@ -274,15 +278,39 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Managers
 
         }
 
-        public void OnTalkWithNpc(Character talkerChr, Talkable talkedToObj)
+        public void OnTalkStart(Character talkerChr, Talkable talkedToObj)
         {
-            if (talkedToObj.IsHouse)
+            if (talkedToObj.IsBuilding)
             {
+                // Pause background music
                 m_AudioSource.Pause();
+
+                TalkableBuilding building = (TalkableBuilding)talkedToObj;
+                if (building.EnterSound)
+                {
+                    building.AudioSource.PlayOneShot(building.EnterSound, building.SoundVolume);
+                }
+
+                if (building.GreetSound)
+                {
+                    building.AudioSource.PlayOneShot(building.GreetSound, building.SoundVolume);
+                }
             }
             else
             {
                 PlayRandomSound(talkerChr.Sounds.Greeting, talkerChr.Party.PlayerAudioSource);
+            }
+        }
+
+        private void OnTalkEnd(Talkable talkedToObj)
+        {
+            if (talkedToObj.IsBuilding)
+            {
+                TalkableBuilding building = (TalkableBuilding)talkedToObj;
+                if (building.LeaveSound)
+                {
+                    building.AudioSource.PlayOneShot(building.LeaveSound, building.SoundVolume);
+                }
             }
         }
 
