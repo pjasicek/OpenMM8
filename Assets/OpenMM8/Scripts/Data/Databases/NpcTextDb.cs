@@ -21,9 +21,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                 NpcTextData npcText = new NpcTextData();
                 npcText.Id = id;
                 npcText.Text = columns[1];
-                npcText.Note = columns[2];
-                npcText.Owner = columns[3];
-
                 return npcText;
             }
 

@@ -13,6 +13,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
     {
         override public BaseItem ProcessCsvDataRow(int row, string[] columns)
         {
+            // Header
+            if (row == 0)
+            {
+                return null;
+            }
+
             ItemData itemData = new ItemData();
             itemData.Id = int.Parse(columns[0]);
             itemData.ImageName = columns[1];

@@ -20,7 +20,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                 NpcNewsData npcNews = new NpcNewsData();
                 npcNews.Id = id;
                 npcNews.Text = columns[1];
-                npcNews.Notes = columns[2];
 
                 return npcNews;
             }

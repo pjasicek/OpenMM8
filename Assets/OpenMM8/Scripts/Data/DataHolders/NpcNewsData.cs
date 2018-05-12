@@ -8,6 +8,5 @@ namespace Assets.OpenMM8.Scripts.Data
     public class NpcNewsData : DbData
     {
         public string Text = "";
-        public string Notes = "";
     }
 }

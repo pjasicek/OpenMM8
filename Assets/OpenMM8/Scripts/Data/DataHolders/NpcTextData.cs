@@ -8,8 +8,5 @@ namespace Assets.OpenMM8.Scripts.Data
     public class NpcTextData : DbData
     {
         public string Text = "";
-        public string Note = "";
-        public string Owner = "";
-        public string Unknown = "";
     }
 }

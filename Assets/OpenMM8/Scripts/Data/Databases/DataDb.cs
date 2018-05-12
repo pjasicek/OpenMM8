@@ -35,7 +35,7 @@ namespace Assets.OpenMM8.Scripts
             }
             else
             {
-                Logger.LogError("Failed data for id: " + id);
+                Logger.LogError(this.GetType().Name + ": Failed data for id: " + id);
             }
 
             return default(T);

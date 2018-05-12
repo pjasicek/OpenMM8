@@ -25,10 +25,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                 NpcTopicData npcTopic = new NpcTopicData();
                 npcTopic.Id = id;
                 npcTopic.Topic = columns[1];
-                // Skip Requires . not used anyway
-                npcTopic.Note = columns[3];
                 int.TryParse(columns[4], out npcTopic.TextId);
-                npcTopic.Owner = columns[5];
 
                 return npcTopic;
             }

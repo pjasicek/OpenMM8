@@ -28,12 +28,12 @@ public class CsvDataLoader
         string[] arr = null;
         foreach (MyDataRow r in pr)
         {
+            // This is the header - depending on its number of columns
+            // we parse the data from next rows
             if (rowNum == 0)
             {
                 numCols = r.Count;
                 arr = new string[numCols];
-                rowNum++;
-                continue;
             }
 
             int i = 0;

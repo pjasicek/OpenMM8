@@ -17,7 +17,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             int id;
             if (int.TryParse(columns[0], out id))
             {
-                return new NpcGreetData(id, columns[1], columns[2], columns[3], columns[4]);
+                return new NpcGreetData(id, columns[1], columns[2]);
             }
 
             return null;
