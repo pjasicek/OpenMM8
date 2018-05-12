@@ -20,6 +20,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int GreetId = 0;
         public List<int> TopicIds = new List<int>(5);
 
+        public bool IsPresent = true;
+        public bool HasGoodbyeMessage = false;
+
         // State
         public bool IsVisited = false;
         public Stack<List<int>> NestedTopicIds = new Stack<List<int>>();

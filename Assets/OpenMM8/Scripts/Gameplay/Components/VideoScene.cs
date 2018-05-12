@@ -117,6 +117,12 @@ public class VideoScene : MonoBehaviour
 
     public void Play()
     {
+        // Already playing
+        if (m_VideoPlayer1.isPlaying || m_VideoPlayer2.isPlaying)
+        {
+            return;
+        }
+
         if (VideoToPlay == null)
         {
             Debug.LogError("null video");

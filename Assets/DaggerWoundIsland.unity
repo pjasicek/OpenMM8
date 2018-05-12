@@ -3959,6 +3959,8 @@ MonoBehaviour:
     IsNpcNews: 0
     GreetId: 0
     TopicIds: 
+    IsPresent: 1
+    HasGoodbyeMessage: 0
     IsVisited: 0
   TopicId: 0
 --- !u!1 &231609487
@@ -4765,7 +4767,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
+  Location: Talimere's Hut
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1586463976}
   NpcIdList: 200000000000000000000000
@@ -4786,7 +4788,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b561696540b45764fae084f9bab51f54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HoverText: 
+  HoverText: Talimere's Hut
 --- !u!1 &345819623
 GameObject:
   m_ObjectHideFlags: 0
@@ -6226,6 +6228,8 @@ MonoBehaviour:
     IsNpcNews: 0
     GreetId: 0
     TopicIds: 
+    IsPresent: 1
+    HasGoodbyeMessage: 0
     IsVisited: 0
   Holder: {fileID: 0}
   AvatarButton: {fileID: 0}
@@ -11899,6 +11903,8 @@ MonoBehaviour:
     IsNpcNews: 0
     GreetId: 0
     TopicIds: 
+    IsPresent: 1
+    HasGoodbyeMessage: 0
     IsVisited: 0
   TopicId: 0
 --- !u!1 &836119652
@@ -12047,6 +12053,8 @@ MonoBehaviour:
     IsNpcNews: 0
     GreetId: 0
     TopicIds: 
+    IsPresent: 1
+    HasGoodbyeMessage: 0
     IsVisited: 0
   TopicId: 0
 --- !u!1 &839201338
@@ -14426,6 +14434,8 @@ MonoBehaviour:
     IsNpcNews: 0
     GreetId: 0
     TopicIds: 
+    IsPresent: 1
+    HasGoodbyeMessage: 0
     IsVisited: 0
   TopicId: 0
 --- !u!1 &968668493
@@ -15649,6 +15659,8 @@ MonoBehaviour:
     IsNpcNews: 0
     GreetId: 0
     TopicIds: 
+    IsPresent: 1
+    HasGoodbyeMessage: 0
     IsVisited: 0
   TopicId: 0
 --- !u!114 &1092680795
@@ -20589,6 +20601,8 @@ MonoBehaviour:
     IsNpcNews: 0
     GreetId: 0
     TopicIds: 
+    IsPresent: 1
+    HasGoodbyeMessage: 0
     IsVisited: 0
   Holder: {fileID: 0}
   AvatarButton: {fileID: 0}
@@ -21822,6 +21836,8 @@ MonoBehaviour:
     IsNpcNews: 0
     GreetId: 0
     TopicIds: 
+    IsPresent: 1
+    HasGoodbyeMessage: 0
     IsVisited: 0
   TopicId: 0
 --- !u!114 &1602556934
@@ -22623,6 +22639,8 @@ MonoBehaviour:
     IsNpcNews: 0
     GreetId: 0
     TopicIds: 
+    IsPresent: 1
+    HasGoodbyeMessage: 0
     IsVisited: 0
   Holder: {fileID: 0}
   AvatarButton: {fileID: 0}
@@ -25309,6 +25327,8 @@ MonoBehaviour:
     IsNpcNews: 1
     GreetId: 1
     TopicIds: 
+    IsPresent: 1
+    HasGoodbyeMessage: 0
     IsVisited: 0
   AudioSource: {fileID: 0}
 --- !u!114 &1783903961

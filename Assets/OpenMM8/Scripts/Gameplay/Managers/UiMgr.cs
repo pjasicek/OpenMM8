@@ -27,8 +27,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private float m_TimeSinceLastPartyText = 0.0f;
         private float m_PartyTextLockTime = 0.0f;
         //private Video m_SceneVideoPlayer;
+
+        // Talking with NPCs
         private VideoScene m_CurrVideoScene = null;
         private Talkable m_CurrTalkable = null;
+        private Character m_TalkCharInitiator = null;
         private TalkProperties m_CurrTalkProp = null;
 
         [Header("UI")]
@@ -82,7 +85,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Talkable.OnTalkStart += OnTalkStart;
 
             TalkEventMgr.OnNpcTalkTextChanged += OnNpcTalkTextChanged;
-            TalkEventMgr.OnNpcTalkTopicListChanged += OnNpcTalkTopicListChanged;
+            TalkEventMgr.OnRefreshNpcTalk += OnRefreshNpcTalk;
             TalkEventMgr.OnTalkWithConcreteNpc += OnTalkWithConcreteNpc;
         }
 
@@ -339,6 +342,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void RefreshNpcTalkTopics(TalkProperties talkProp)
         {
+            if (!talkProp.IsPresent)
+            {
+
+            }
+
             List<int> currentTopics;
             if (talkProp.NestedTopicIds.Count == 0)
             {
@@ -761,6 +769,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnTalkStart(Character talkerChr, Talkable talkable)
         {
+            m_TalkCharInitiator = talkerChr;
+
             SetupInitialTalkCanvas(talkable);
 
             if (talkable.TalkProperties.Count == 0)
@@ -801,9 +811,20 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             UpdateNpcTalkText(text);
         }
 
-        private void OnNpcTalkTopicListChanged(TalkProperties talkProp)
+        private void OnRefreshNpcTalk(TalkProperties talkProp)
         {
-            RefreshNpcTalkTopics(talkProp);
+            if (!talkProp.IsPresent)
+            {
+                OnTalkStart(m_TalkCharInitiator, m_CurrTalkable);
+                if (talkProp.HasGoodbyeMessage)
+                {
+                    m_NpcTalkUI.NpcTalkObj.SetActive(true);
+                }
+            }
+            else
+            {
+                RefreshNpcTalkTopics(talkProp);
+            }
         }
 
         private void OnTalkWithConcreteNpc(TalkProperties talkProp)

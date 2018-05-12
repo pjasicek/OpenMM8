@@ -199,6 +199,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
+        public void AddRosterNpcToParty(int rosterId)
+        {
+            if (PlayerParty.IsFull())
+            {
+                // Add to the Adventurerer's Inn
+            }
+            else
+            {
+                AddRandChar();
+            }
+        }
+
         public void AddRandChar()
         {
             var chrType = (CharacterType)UnityEngine.Random.Range(1, (int)Enum.GetValues(typeof(CharacterType)).Cast<CharacterType>().Max());

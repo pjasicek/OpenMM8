@@ -134,6 +134,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return transform.position;
         }
 
+        public bool IsFull()
+        {
+            return Characters.Count >= 5;
+        }
+
         private void Attack()
         {
             if (ActiveCharacter != null && ActiveCharacter.IsRecovered())

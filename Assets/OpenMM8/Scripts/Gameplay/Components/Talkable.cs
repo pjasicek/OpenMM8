@@ -44,6 +44,13 @@ public class Talkable : Interactable
         }
 
         AudioSource = gameObject.AddComponent<AudioSource>();
+
+        TalkEventMgr.OnNpcLeavingLocation += OnNpcLeavingLocation;
+    }
+
+    private void OnDestroy()
+    {
+        TalkEventMgr.OnNpcLeavingLocation -= OnNpcLeavingLocation;
     }
 
     public void OnInitComplete()
@@ -110,6 +117,17 @@ public class Talkable : Interactable
         if (OnTalkEnd != null)
         {
             OnTalkEnd(this);
+        }
+    }
+
+    // =============================== Events ===============================
+
+
+    private void OnNpcLeavingLocation(TalkProperties talkProp)
+    {
+        if (TalkProperties.Contains(talkProp))
+        {
+            TalkProperties.Remove(talkProp);
         }
     }
 }

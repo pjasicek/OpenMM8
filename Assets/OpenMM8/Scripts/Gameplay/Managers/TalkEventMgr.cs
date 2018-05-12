@@ -8,22 +8,34 @@ using UnityEngine.UI;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    public delegate void NpcTalkTopicListChanged(TalkProperties talkProp);
+    public delegate void RefreshNpcTalk(TalkProperties talkProp);
     public delegate void NpcTalkTextChanged(string text);
     public delegate void TalkWithConcreteNpc(TalkProperties talkProp);
+    public delegate void NpcLeavingLocation(TalkProperties talkProp);
 
     public class TalkEventMgr : Singleton<TalkEventMgr>
     {
         //=================================== Member Variables ===================================
 
         public static event NpcTalkTextChanged OnNpcTalkTextChanged;
-        public static event NpcTalkTopicListChanged OnNpcTalkTopicListChanged;
+        public static event RefreshNpcTalk OnRefreshNpcTalk;
         public static event TalkWithConcreteNpc OnTalkWithConcreteNpc;
+        public static event NpcLeavingLocation OnNpcLeavingLocation;
 
         private PlayerParty m_PlayerParty;
 
         private Dictionary<int, TalkProperties> m_TalkPropertiesMap = 
             new Dictionary<int, TalkProperties>();
+
+        // Event processing
+        internal class RosterInvite
+        {
+            public int CharRosterId;
+            public int PartyFullResponseId;
+            public List<int> YesNoTopics;
+        }
+
+        private RosterInvite m_RosterInvite = null;
 
         //=================================== Unity Lifecycle ===================================
 
@@ -63,6 +75,24 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                 m_TalkPropertiesMap.Add(talkDataPair.Key, talkProp);
             }
+
+            // Add Yes/No topics to the DB
+            NpcTopicData yes = new NpcTopicData()
+            {
+                Id = 10000,
+                TextId = 200,
+                Topic = "Yes"
+            };
+
+            NpcTopicData no = new NpcTopicData()
+            {
+                Id = 10001,
+                TextId = 200,
+                Topic = "No"
+            };
+
+            DbMgr.Instance.NpcTopicDb.Data.Add(yes.Id, yes);
+            DbMgr.Instance.NpcTopicDb.Data.Add(no.Id, no);
 
             return true;
         }
@@ -200,6 +230,38 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
+        private void SetGreetMessage(TalkProperties talkProp)
+        {
+            string greet = GetCurrNpcGreet(talkProp);
+            if (OnNpcTalkTextChanged != null)
+            {
+                OnNpcTalkTextChanged(greet);
+            }
+        }
+
+        private void HandleRosterJoinEvent(int rosterId, int partyFullMsgId, TalkProperties talkProp)
+        {
+            m_RosterInvite = new RosterInvite()
+            {
+                CharRosterId = rosterId,
+                PartyFullResponseId = partyFullMsgId,
+                YesNoTopics = new List<int>() { 10000, 10001 }
+            };
+
+            talkProp.NestedTopicIds.Push(m_RosterInvite.YesNoTopics);
+        }
+
+        private void EvictNpc(TalkProperties talkProp)
+        {
+            talkProp.IsPresent = false;
+            talkProp.NestedTopicIds.Clear();
+
+            if (OnNpcLeavingLocation != null)
+            {
+                OnNpcLeavingLocation(talkProp);
+            }
+        }
+
         private void AddAward(Character character, int awardId)
         {
 
@@ -237,7 +299,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private bool HaveItem(int itemId)
         {
-            return false;
+            return true;
         }
 
         private void RemoveItem(int itemId)
@@ -253,6 +315,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private void AddGold(int numGold)
         {
 
+        }
+
+        private void AddRosterNpcToParty(int rosterId)
+        {
+            GameMgr.Instance.AddRosterNpcToParty(rosterId);
         }
 
         /*
@@ -401,15 +468,49 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     }
                     break;
 
+                case 602: // "Roster Join Event" - Frederick Talimere
+                    SetMessage(202);
+                    HandleRosterJoinEvent(2, 203, talkProp);
+                    break;
+
+                case 10000: // "Yes" - Roster join event, custom
+                    if (m_PlayerParty.IsFull())
+                    {
+                        AddRosterNpcToParty(m_RosterInvite.CharRosterId);
+
+                        // This is ugly and unfortunately "coupled" with:
+                        // 1) UiMgr::OnRefreshNpcTalk
+                        // 2) Talkable::OnNpcLeavingLocation
+                        talkProp.HasGoodbyeMessage = true;
+                        EvictNpc(talkProp);
+                        if (OnRefreshNpcTalk != null)
+                        {
+                            OnRefreshNpcTalk(talkProp);
+                        }
+                        SetMessage(m_RosterInvite.PartyFullResponseId);
+                        return;
+                    }
+                    else
+                    {
+                        AddRosterNpcToParty(m_RosterInvite.CharRosterId);
+                        EvictNpc(talkProp);
+                    }
+                    break;
+
+                case 10001: // "No" - Roster join event, custom
+                    SetGreetMessage(talkProp);
+                    talkProp.NestedTopicIds.Pop();
+                    break;
+
                 default:
                     Logger.LogError("Unimplemented TalkEventId: " + topicId + " for Talker: " + talkProp.Name);
                     break;
             }
 
             // TODO: Better name. It did not need to change, but we want to refresh it.
-            if (OnNpcTalkTopicListChanged != null)
+            if (OnRefreshNpcTalk != null)
             {
-                OnNpcTalkTopicListChanged(talkProp);
+                OnRefreshNpcTalk(talkProp);
             }
         }
     }
