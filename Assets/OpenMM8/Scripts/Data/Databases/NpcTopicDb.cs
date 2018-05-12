@@ -14,10 +14,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
     {
         override public NpcTopicData ProcessCsvDataRow(int row, string[] columns)
         {
-            // Multi-lines in CSV => Remove the string letter
-            //columns[0] = columns[0].Replace("’", "'");
-            columns[0] = Regex.Replace(columns[0], "[^a-zA-Z0-9_.?! ]+", "");
-
             // ID ; Text ; Note ; Owner ; Unknown
             int id;
             if (int.TryParse(columns[0], out id))
@@ -26,6 +22,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                 npcTopic.Id = id;
                 npcTopic.Topic = columns[1];
                 int.TryParse(columns[4], out npcTopic.TextId);
+
+                if (npcTopic.Topic == "Roster Join Event")
+                {
+                    npcTopic.Topic = "Join";
+                }
 
                 return npcTopic;
             }

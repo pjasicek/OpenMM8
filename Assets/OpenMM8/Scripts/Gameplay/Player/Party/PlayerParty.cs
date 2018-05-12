@@ -622,6 +622,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return Characters[UnityEngine.Random.Range(0, Characters.Count - 1)];
         }
 
+        public Character GetActiveCharacter()
+        {
+            if (ActiveCharacter != null && ActiveCharacter.IsRecovered())
+            {
+                return ActiveCharacter;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public Character GetFirstCharacter()
         {
             return Characters[0];

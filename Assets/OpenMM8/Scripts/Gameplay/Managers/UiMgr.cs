@@ -52,6 +52,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private Dictionary<CharacterType, CharacterSprites> m_CharacterSpritesMap =
             new Dictionary<CharacterType, CharacterSprites>();
 
+        [Header("Sprites")]
+        private Sprite[] m_QuestEffectSprites;
 
         //=================================== Unity Lifecycle ===================================
 
@@ -87,6 +89,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             TalkEventMgr.OnNpcTalkTextChanged += OnNpcTalkTextChanged;
             TalkEventMgr.OnRefreshNpcTalk += OnRefreshNpcTalk;
             TalkEventMgr.OnTalkWithConcreteNpc += OnTalkWithConcreteNpc;
+            TalkEventMgr.OnCharacterFinishedEvent += OnCharacterFinishedEvent;
+
+            QuestMgr.OnQuestBitAdded += OnQuestBitAdded;
         }
 
         private void Start()
@@ -233,6 +238,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 int spriteId = int.Parse(idStr);
                 m_NpcAvatarsMap[spriteId] = npcSprite;
             }
+
+            m_QuestEffectSprites = Resources.LoadAll<Sprite>("UI/EffectFaceSprites/FaceEffect_Quest");
 
             return true;
         }
@@ -851,6 +858,26 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             m_NpcTalkUI.TalkAvatar.NpcNameText.text = talkProp.Name;
             m_NpcTalkUI.TalkAvatar.Avatar.sprite = talkProp.Avatar;
+        }
+
+        private void OnQuestBitAdded(int questId)
+        {
+            Character chr = m_PlayerParty.GetActiveCharacter();
+            if (chr == null)
+            {
+                chr = m_PlayerParty.GetFirstCharacter();
+            }
+
+            SpriteAnimation FaceOverlayAnim = chr.UI.FaceOverlayAnimation;
+            FaceOverlayAnim.AnimationSprites = m_QuestEffectSprites;
+            FaceOverlayAnim.Play();
+        }
+
+        private void OnCharacterFinishedEvent(Character chr)
+        {
+            SpriteAnimation FaceOverlayAnim = chr.UI.FaceOverlayAnimation;
+            FaceOverlayAnim.AnimationSprites = m_QuestEffectSprites;
+            FaceOverlayAnim.Play();
         }
 
         // =========== Game states

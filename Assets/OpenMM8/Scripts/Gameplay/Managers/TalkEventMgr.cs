@@ -12,6 +12,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public delegate void NpcTalkTextChanged(string text);
     public delegate void TalkWithConcreteNpc(TalkProperties talkProp);
     public delegate void NpcLeavingLocation(TalkProperties talkProp);
+    public delegate void CharacterFinishedEvent(Character character);
 
     public class TalkEventMgr : Singleton<TalkEventMgr>
     {
@@ -21,6 +22,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public static event RefreshNpcTalk OnRefreshNpcTalk;
         public static event TalkWithConcreteNpc OnTalkWithConcreteNpc;
         public static event NpcLeavingLocation OnNpcLeavingLocation;
+        public static event CharacterFinishedEvent OnCharacterFinishedEvent;
 
         private PlayerParty m_PlayerParty;
 
@@ -264,7 +266,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private void AddAward(Character character, int awardId)
         {
-
+            if (OnCharacterFinishedEvent != null)
+            {
+                OnCharacterFinishedEvent(character);
+            }
         }
 
         private void AddAutonote(int autonoteId)
@@ -277,7 +282,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         }
 
-        private IEnumerable<Character> PartyCharacters()
+        private List<Character> PartyCharacters()
         {
             return m_PlayerParty.Characters;
         }
@@ -315,6 +320,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private void AddGold(int numGold)
         {
 
+        }
+
+        private void AddExperience(Character chr, int numExperience)
+        {
+            // TODO: Add the experience
         }
 
         private void AddRosterNpcToParty(int rosterId)
@@ -371,19 +381,41 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     AddQuestBit(232);
                     break;
 
-                case 2:
+                case 2: // "Caravan Master"
+                    SetMessage(2);
+                    AddQuestBit(232);
                     break;
 
-                case 3:
+                case 3: // "Pirates of Regna"
+                    SetMessage(3);
+                    AddQuestBit(232);
                     break;
 
-                case 4:
+                case 4: // "Cataclysm"
+                    SetMessage(4);
+                    SetNpcTopic(2, 0, 20);
                     break;
 
-                case 5:
+                case 5: // "Pirates"
+                    if (IsQuestBitSet(6))
+                    {
+                        SetMessage(616);
+                    }
+                    else
+                    {
+                        SetMessage(5);
+                    }
                     break;
 
-                case 6:
+                case 6: // "Caravan"
+                    if (IsQuestBitSet(6))
+                    {
+                        SetMessage(617);
+                    }
+                    else
+                    {
+                        SetMessage(6);
+                    }
                     break;
 
                 case 7: // "Cataclysm" -- Brekish Onefang
@@ -416,11 +448,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                 case 12: // "Power Stone" -- Frederick Talimere
                     SetMessage(12);
-                    foreach (Character chr in PartyCharacters())
-                    {
-                        AddAward(chr, 2);
-                        // AddExperience(chr, 1500);
-                    }
+                    PartyCharacters().ForEach(chr => { AddAward(chr, 2); AddExperience(chr, 1500); });
                     RemoveQuestBit(7);
                     AddQuestBit(8);
                     SetNpcTopic(32, 2, 602);

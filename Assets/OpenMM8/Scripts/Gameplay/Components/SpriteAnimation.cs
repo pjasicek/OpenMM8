@@ -17,7 +17,6 @@ public class SpriteAnimation : MonoBehaviour
     void Start()
     {
         m_Image = GetComponent<Image>();
-        m_AnimationSpeed = AnimationTime / AnimationSprites.Length;
     }
 
     public void SetVisible(bool visible)
@@ -27,7 +26,10 @@ public class SpriteAnimation : MonoBehaviour
 
     public void Play()
     {
+        StopCoroutine(DoAnimate());
         m_CurrSpriteIdx = 0;
+        m_AnimationSpeed = AnimationTime / (float)AnimationSprites.Length;
+        SetVisible(true);
         StartCoroutine(DoAnimate());
     }
 
@@ -55,7 +57,11 @@ public class SpriteAnimation : MonoBehaviour
         }
         else
         {
-            SetVisible(HideAfterFinish);
+            StopCoroutine(DoAnimate());
+            if (HideAfterFinish)
+            {
+                SetVisible(false);
+            }
         }
     }
 
@@ -64,7 +70,9 @@ public class SpriteAnimation : MonoBehaviour
         for (int i = m_CurrSpriteIdx; i < AnimationSprites.Length; i++)
         {
             m_Image.sprite = AnimationSprites[i];
-            yield return new WaitForSeconds(m_AnimationSpeed);
+            yield return new WaitForSecondsRealtime(m_AnimationSpeed);
         }
+
+        OnAnimationFinished();
     }
 }

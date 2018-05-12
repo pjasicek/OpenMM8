@@ -8,13 +8,13 @@ using Assets.OpenMM8.Scripts.Data;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    public delegate void QuestTaken(Quest quest);
-    public delegate void QuestFinished(Quest quest);
-
+    public delegate void QuestBitAdded(int questId);
 
     public class QuestMgr : Singleton<QuestMgr>
     {
         //=================================== Member Variables ===================================
+
+        public static event QuestBitAdded OnQuestBitAdded;
 
         private Dictionary<int, Quest> m_QuestMap = new Dictionary<int, Quest>();
 
@@ -59,7 +59,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             if (m_QuestMap.ContainsKey(questId))
             {
+                bool isSetToOne = (m_QuestMap[questId].QuestBit == 0) && (value == 1);
                 m_QuestMap[questId].QuestBit = value;
+
+                if (isSetToOne && OnQuestBitAdded != null)
+                {
+                    OnQuestBitAdded(questId);
+                }
             }
             else
             {

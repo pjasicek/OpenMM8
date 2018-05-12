@@ -40,7 +40,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
 
         [Header("Sounds - Gold")]
-        public AudioClip m_GoldChanged;
+        private AudioClip m_GoldChanged;
+        private AudioClip m_Quest;
 
         //=================================== Unity Lifecycle ===================================
 
@@ -64,6 +65,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             Talkable.OnTalkStart += OnTalkStart;
             Talkable.OnTalkEnd += OnTalkEnd;
+
+            QuestMgr.OnQuestBitAdded += OnQuestBitAdded;
+
+            TalkEventMgr.OnCharacterFinishedEvent += OnCharacterFinishedEvent;
         }
 
         // Init sequence: DbMgr(1) -> GameMgr(1) -> *Mgr(1) -> GameMgr(2)
@@ -101,7 +106,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             // UI sounds
             m_GoldChanged = Resources.Load<AudioClip>("Player/Sounds/UI/GoldChanged");
-
+            m_Quest = Resources.Load<AudioClip>("Sounds/Quest");
 
             m_AudioSource = gameObject.AddComponent<AudioSource>();
             m_AudioSource.clip = m_BackgroundMusic;
@@ -159,6 +164,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
         {
             
+        }
+
+        private void OnQuestBitAdded(int questId)
+        {
+            m_AudioSource.PlayOneShot(m_Quest);
+        }
+
+        private void OnCharacterFinishedEvent(Character chr)
+        {
+            m_AudioSource.PlayOneShot(m_Quest);
         }
 
         private void OnHealthChanged(Character chr, int maxHealth, int currHealth, int delta)
