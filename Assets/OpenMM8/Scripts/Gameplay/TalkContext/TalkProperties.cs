@@ -18,7 +18,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public bool IsNpcNews = false;
         public int GreetId = 0;
-        public List<int> TopicIds = new List<int>();
+        public List<int> TopicIds = new List<int>(5);
 
         // State
         public bool IsVisited = false;

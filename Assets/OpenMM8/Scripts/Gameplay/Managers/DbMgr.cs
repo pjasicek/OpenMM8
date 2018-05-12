@@ -44,7 +44,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             NpcTopicDb.Initialize(MM8_DATA_PATH + @"NPC_TOPIC.txt");
             NpcNewsDb.Initialize(MM8_DATA_PATH + @"NPC_NEWS.txt");
             QuestDb.Initialize(MM8_DATA_PATH + @"QUESTS.txt");
-            NpcTalkDb.Initialize(MM8_DATA_PATH + @"NPC.txt");
+            NpcTalkDb.Initialize(MM8_DATA_PATH + @"NPC.txt", 2);
 
             stopwatch.Stop();
             UnityEngine.Debug.Log("elapsed ms: " + stopwatch.ElapsedMilliseconds);

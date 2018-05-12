@@ -22,6 +22,9 @@ public class Talkable : Interactable
     public GameObject VideoSceneHolder = null;
 
     [Header("Properties")]
+
+    [SerializeField]
+    private int[] NpcIdList = new int[3] { 0, 0, 0 };
     public List<TalkProperties> TalkProperties = new List<TalkProperties>();
 
     [HideInInspector]
@@ -47,30 +50,19 @@ public class Talkable : Interactable
     {
         InitMgr.OnInitComplete -= OnInitComplete;
 
-        /*
-         * Check TalkProperties are custom or used from MM8's original data
-         *    - If by data, load all corresponding fields by data
-         */
-        foreach (TalkProperties talkProp in TalkProperties)
+        // Populate with original game's NPCs
+        int idx = 0;
+        foreach (int npcId in NpcIdList)
         {
-            if (talkProp.NpcId > 0)
+            if (npcId < 1)
             {
-                // Load TalkProperties here
-                NpcTalkData talkData = DbMgr.Instance.NpcTalkDb.Get(talkProp.NpcId);
-                if (talkData == null)
-                {
-                    Debug.LogError("Talk data for id: " + talkProp.NpcId + " is  null");
-                    continue;
-                }
+                continue;
+            }
 
-                talkProp.Name = talkData.Name;
-                talkProp.GreetId = talkData.GreetId;
-                talkProp.Avatar = UiMgr.Instance.GetNpcAvatarSprite(talkData.PictureId);
-                talkProp.TopicIds.Clear();
-                foreach (int topicId in talkData.TopicList)
-                {
-                    talkProp.TopicIds.Add(topicId);
-                }
+            TalkProperties npcTalker = TalkEventMgr.Instance.GetNpcTalkProperties(npcId);
+            if (npcTalker != null)
+            {
+                TalkProperties.Insert(idx++, npcTalker);
             }
         }
     }

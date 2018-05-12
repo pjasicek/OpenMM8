@@ -784,6 +784,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 0}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -820,6 +821,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1650327787}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -1079,6 +1081,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1139485701}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -1529,6 +1532,7 @@ MonoBehaviour:
   Location: The Grog and Grub
   IsBuilding: 0
   VideoSceneHolder: {fileID: 922912667}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -3025,6 +3029,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 0}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
 --- !u!1 &177421252 stripped
@@ -3045,6 +3050,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1650327787}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -4013,6 +4019,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 0}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -4761,6 +4768,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1586463976}
+  NpcIdList: 200000000000000000000000
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -6659,6 +6667,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1094936839}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -7390,6 +7399,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 0}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -8612,6 +8622,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1650327787}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -9070,6 +9081,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1153133835}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -9269,6 +9281,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1650327787}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -10105,6 +10118,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 0}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -12928,6 +12942,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1586463976}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -16293,6 +16308,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 0}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -16329,6 +16345,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 0}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -16645,6 +16662,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1013571776}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -17124,6 +17142,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1650327787}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -17454,6 +17473,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1586463976}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -17490,6 +17510,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1586463976}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -17668,21 +17689,8 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1460351492}
-  TalkProperties:
-  - NpcId: 1
-    Name: 
-    Avatar: {fileID: 0}
-    IsNpcNews: 0
-    GreetId: 0
-    TopicIds: 
-    IsVisited: 0
-  - NpcId: 2
-    Name: 
-    Avatar: {fileID: 0}
-    IsNpcNews: 0
-    GreetId: 0
-    TopicIds: 
-    IsVisited: 0
+  NpcIdList: 010000000200000000000000
+  TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
   EnterSound: {fileID: 0}
@@ -17718,6 +17726,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 0}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -17841,6 +17850,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1971406025}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -18054,6 +18064,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1650327787}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -18090,6 +18101,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1650327787}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -18724,6 +18736,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 802160687}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -19619,6 +19632,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1586463976}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -21107,6 +21121,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 46526542}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -21143,6 +21158,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1586463976}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -21917,6 +21933,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1650327787}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -25281,23 +25298,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d93c3f5003ec1643b6e2736dfa8fe0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: Location Text
+  Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 0}
+  NpcIdList: 000000000000000000000000
   TalkProperties:
-  - NpcId: 1
-    Name: Lizardman Vilager
-    Avatar: {fileID: 21300002, guid: d94d90bf73d37d7448bfc0991f44c4e5, type: 3}
-    IsNpcNews: 0
-    GreetId: 10
-    TopicIds: 05000000060000000700000008000000
-    IsVisited: 0
   - NpcId: -1
-    Name: Lizardman Vilager 2
-    Avatar: {fileID: 21300004, guid: d94d90bf73d37d7448bfc0991f44c4e5, type: 3}
-    IsNpcNews: 0
-    GreetId: 10
-    TopicIds: 05000000060000000700000008000000
+    Name: Lizardman Villager
+    Avatar: {fileID: 21300000, guid: d94d90bf73d37d7448bfc0991f44c4e5, type: 3}
+    IsNpcNews: 1
+    GreetId: 1
+    TopicIds: 
     IsVisited: 0
   AudioSource: {fileID: 0}
 --- !u!114 &1783903961
@@ -26130,6 +26141,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1650327787}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -26519,6 +26531,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1650327787}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
@@ -28453,6 +28466,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 0}
+  NpcIdList: 
   TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6

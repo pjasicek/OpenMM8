@@ -81,9 +81,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             Talkable.OnTalkStart += OnTalkStart;
 
-            TalkMgr.OnNpcTalkTextChanged += OnNpcTalkTextChanged;
-            TalkMgr.OnNpcTalkTopicListChanged += OnNpcTalkTopicListChanged;
-            TalkMgr.OnTalkWithConcreteNpc += OnTalkWithConcreteNpc;
+            TalkEventMgr.OnNpcTalkTextChanged += OnNpcTalkTextChanged;
+            TalkEventMgr.OnNpcTalkTopicListChanged += OnNpcTalkTopicListChanged;
+            TalkEventMgr.OnTalkWithConcreteNpc += OnTalkWithConcreteNpc;
         }
 
         private void Start()
@@ -134,7 +134,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             foreach (GameObject topicBtn in m_NpcTalkUI.TopicButtonList)
             {
                 topicBtn.GetComponent<Button>().onClick.AddListener(
-                    delegate { TalkMgr.Instance.OnTopicClicked(topicBtn.GetComponent<TopicBtnContext>()); });
+                    delegate { TalkEventMgr.Instance.OnTopicClicked(topicBtn.GetComponent<TopicBtnContext>()); });
             }
 
             m_NpcTalkUI.AvatarBtnHolder = npcTalkCanvasObject.transform.Find("AvatarButtonsHolder").GetComponent<RectTransform>();
@@ -146,7 +146,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             foreach (AvatarBtnContext avatarCtx in m_NpcTalkUI.AvatarBtnList)
             {
                 avatarCtx.AvatarButton.onClick.AddListener(
-                    delegate { TalkMgr.Instance.OnAvatarClicked(avatarCtx); });
+                    delegate { TalkEventMgr.Instance.OnAvatarClicked(avatarCtx); });
             }
 
             m_PartyUI = new PartyUI();
@@ -263,19 +263,19 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         //=================================== Methods ===================================
 
-        public Sprite GetNpcAvatarSprite(int npcId)
+        public Sprite GetNpcAvatarSprite(int pictureId)
         {
             const int PLACEHOLDER_ID = 2200;
 
             Sprite sprite = null;
-            if (m_NpcAvatarsMap.ContainsKey(npcId))
+            if (m_NpcAvatarsMap.ContainsKey(pictureId))
             {
-                sprite = m_NpcAvatarsMap[npcId];
+                sprite = m_NpcAvatarsMap[pictureId];
             }
             else
             {
                 sprite = m_NpcAvatarsMap[PLACEHOLDER_ID];
-                Debug.LogError("Could not find NPC avatar with ID: " + npcId);
+                Debug.LogWarning("Could not find NPC avatar with ID: " + pictureId + ". Setting placeholder.");
             }
 
             return sprite;
@@ -367,6 +367,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             int buttIdx = 0;
             foreach (int topicId in currentTopics)
             {
+                // Only topic IDs > 0 are valid
+                if (!TalkEventMgr.Instance.CanShowTopic(topicId))
+                {
+                    continue;
+                }
+
                 string topic = DbMgr.Instance.NpcTopicDb.Get(topicId).Topic;
 
                 GameObject topicButton = m_NpcTalkUI.TopicButtonList[buttIdx];
@@ -479,17 +485,17 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private bool TryShowNpcGreet(TalkProperties talkProp)
         {
-            if (TalkMgr.Instance.HasGreetText(talkProp))
+            if (TalkEventMgr.Instance.HasGreetText(talkProp))
             {
                 String talkText = "Oops !";
 
                 if (talkProp.IsNpcNews)
                 {
-                    talkText = TalkMgr.GetCurrentNpcNews(talkProp);
+                    talkText = TalkEventMgr.GetCurrentNpcNews(talkProp);
                 }
                 else
                 {
-                    talkText = TalkMgr.GetCurrNpcGreet(talkProp);
+                    talkText = TalkEventMgr.GetCurrNpcGreet(talkProp);
                 }
 
                 UpdateNpcTalkText(talkText);
@@ -790,7 +796,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_CurrTalkable = talkable;
         }
 
-        private void OnNpcTalkTextChanged(string text, TalkProperties talkProp)
+        private void OnNpcTalkTextChanged(string text)
         {
             UpdateNpcTalkText(text);
         }

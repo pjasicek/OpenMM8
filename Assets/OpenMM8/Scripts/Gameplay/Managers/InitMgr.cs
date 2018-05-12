@@ -20,7 +20,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             UiMgr.Instance.Init();
             SoundMgr.Instance.Init();
             QuestMgr.Instance.Init();
-            TalkMgr.Instance.Init();
+            TalkEventMgr.Instance.Init();
 
             GameMgr.Instance.PostInit();
 

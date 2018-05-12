@@ -12,7 +12,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public delegate void QuestFinished(Quest quest);
 
 
-    public class QuestMgr : Singleton<DbMgr>
+    public class QuestMgr : Singleton<QuestMgr>
     {
         //=================================== Member Variables ===================================
 
@@ -31,7 +31,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 Quest q = new Quest();
                 q.Data = qDataPair.Value;
-                q.State = QuestState.NotTaken;
+                q.QuestBit = 0;
 
                 m_QuestMap.Add(q.Data.Id, q);
             }
@@ -41,61 +41,30 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         //=================================== Methods ===================================
 
-        public QuestState GetQuestState(int questId)
+        public bool IsQuestBitSet(int questId)
         {
             if (m_QuestMap.ContainsKey(questId))
             {
-                return m_QuestMap[questId].State;
+                return m_QuestMap[questId].QuestBit == 1;
+            }
+            else
+            {
+                Logger.LogError("Attempting to access nonexisting quest: " + questId);
             }
 
-            return QuestState.Invalid;
+            return false;
         }
 
-        public Quest GetQuest(int questId)
+        public void SetQuestBit(int questId, int value)
         {
             if (m_QuestMap.ContainsKey(questId))
             {
-                return m_QuestMap[questId];
+                m_QuestMap[questId].QuestBit = value;
             }
-
-            return null;
-        }
-
-        public bool IsQuestFinished(int questId)
-        {
-            Quest q = GetQuest(questId);
-            if (q != null)
+            else
             {
-                return q.State == QuestState.Completed;
+                Logger.LogError("Attempting to access nonexisting quest: " + questId);
             }
-
-            return false;
         }
-
-        public bool TryFinishQuest(int questId)
-        {
-            Quest q = GetQuest(questId);
-            if (q != null)
-            {
-                // TODO: Add logic
-                return false;
-            }
-
-            return false;
-        }
-
-        public bool TryStartQuest(int questId)
-        {
-            Quest q = GetQuest(questId);
-            if (q != null)
-            {
-                // TODO: Add logic
-                return false;
-            }
-
-            return false;
-        }
-
-        //=================================== Events ===================================
     }
 }
