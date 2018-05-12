@@ -202,7 +202,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             // ------ Load state-changing sprites ------ 
             Dictionary<string, Sprite> agroStSpriteMap = new Dictionary<string, Sprite>();
-            string path = "UI/BarsAgroStatus";
+            string path = "UI/Party/BarsAgroStatus";
             Sprite[] agroStSprites = Resources.LoadAll<Sprite>(path);
             foreach (Sprite sprite in agroStSprites)
             {
@@ -222,7 +222,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             InspectNpcUI.HealthbarSprite_Red = agroStSpriteMap["MHP_RED"];
 
             // Load Npc Avatars
-            Sprite[] npcAvatarSprites = Resources.LoadAll<Sprite>("UI/NpcAvatars");
+            Sprite[] npcAvatarSprites = Resources.LoadAll<Sprite>("UI/NPC/NpcAvatars");
             foreach (Sprite npcSprite in npcAvatarSprites)
             {
                 // Get ID from name

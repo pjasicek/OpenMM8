@@ -1079,14 +1079,7 @@ MonoBehaviour:
   Location: 
   IsBuilding: 0
   VideoSceneHolder: {fileID: 1139485701}
-  TalkProperties:
-  - NpcId: -1
-    Name: Some Guy
-    Avatar: {fileID: 21300462, guid: e3722643b988de64081f361599138c8f, type: 3}
-    IsNpcNews: 0
-    GreetId: 10
-    TopicIds: 28000000
-    IsVisited: 0
+  TalkProperties: []
   AudioSource: {fileID: 0}
   SoundVolume: 0.6
   EnterSound: {fileID: 0}
@@ -25294,14 +25287,14 @@ MonoBehaviour:
   TalkProperties:
   - NpcId: 1
     Name: Lizardman Vilager
-    Avatar: {fileID: 21300018, guid: e3722643b988de64081f361599138c8f, type: 3}
+    Avatar: {fileID: 21300002, guid: d94d90bf73d37d7448bfc0991f44c4e5, type: 3}
     IsNpcNews: 0
     GreetId: 10
     TopicIds: 05000000060000000700000008000000
     IsVisited: 0
   - NpcId: -1
     Name: Lizardman Vilager 2
-    Avatar: {fileID: 21300038, guid: e3722643b988de64081f361599138c8f, type: 3}
+    Avatar: {fileID: 21300004, guid: d94d90bf73d37d7448bfc0991f44c4e5, type: 3}
     IsNpcNews: 0
     GreetId: 10
     TopicIds: 05000000060000000700000008000000

@@ -616,5 +616,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             return Characters[UnityEngine.Random.Range(0, Characters.Count - 1)];
         }
+
+        public Character GetFirstCharacter()
+        {
+            return Characters[0];
+        }
     }
 }
