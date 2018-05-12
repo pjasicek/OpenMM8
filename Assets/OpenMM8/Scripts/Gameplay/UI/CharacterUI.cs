@@ -19,6 +19,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public Image SelectionRing;
         public Image BlessBuff;
         public Image EmptySlot;
+        public SpriteAnimation FaceOverlayAnimation;
 
         static public Sprite HealthBarSprite_Green;
         static public Sprite HealthBarSprite_Yellow;

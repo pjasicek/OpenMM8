@@ -550,6 +550,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             chrUI.HealthBar = pc.transform.Find("PC_HealthBar").GetComponent<Image>();
             chrUI.ManaBar = pc.transform.Find("PC_ManaBar").GetComponent<Image>();
             chrUI.BlessBuff = pc.transform.Find("PC_BlessBuff").GetComponent<Image>();
+            chrUI.FaceOverlayAnimation = pc.transform.Find("PC_AvatarAnim").GetComponent<SpriteAnimation>();
 
             chr.UI = chrUI;
 
