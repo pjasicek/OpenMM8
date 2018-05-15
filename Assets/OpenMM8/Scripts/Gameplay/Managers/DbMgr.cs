@@ -20,6 +20,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public NpcNewsDb NpcNewsDb = new NpcNewsDb();
         public QuestDb QuestDb = new QuestDb();
         public NpcTalkDb NpcTalkDb = new NpcTalkDb();
+        public BuildingDb BuildingDb = new BuildingDb();
 
         private const string MM8_DATA_PATH = @"Assets/OpenMM8/Resources/Data/";
 
@@ -45,6 +46,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             NpcNewsDb.Initialize(MM8_DATA_PATH + @"NPC_NEWS.txt");
             QuestDb.Initialize(MM8_DATA_PATH + @"QUESTS.txt");
             NpcTalkDb.Initialize(MM8_DATA_PATH + @"NPC.txt", 2);
+            BuildingDb.Initialize(MM8_DATA_PATH + @"BUILDINGS.txt");
 
             stopwatch.Stop();
             UnityEngine.Debug.Log("elapsed ms: " + stopwatch.ElapsedMilliseconds);

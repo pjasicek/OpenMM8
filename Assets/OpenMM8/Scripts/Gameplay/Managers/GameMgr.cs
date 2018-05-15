@@ -57,7 +57,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         void Awake()
         {
             // Events
-            Talkable.OnTalkStart += OnTalkStart;
+            TalkEventMgr.OnTalkSceneStart += OnTalkStart;
 
             UnityEngine.Assertions.Assert.IsTrue(Instance == null);
             Instance = this;
@@ -290,7 +290,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         //==================================== Events ====================================
 
-        public void OnTalkStart(Character talkerChr, Talkable talkedToObj)
+        public void OnTalkStart(Character talkerChr, TalkScene talkScene)
         {
             PauseGame();
         }

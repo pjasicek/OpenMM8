@@ -7,9 +7,6 @@ using Assets.OpenMM8.Scripts.Gameplay;
 
 public class VideoScene : MonoBehaviour
 {
-
-    //Raw Image to Show Video Images [Assign from the Editor]
-
     public bool UseAudioFromVideo = false;
     public bool RestartAudio = true;
 

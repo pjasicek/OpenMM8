@@ -63,12 +63,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Character.OnGotHit += OnCharGotHit;
             Character.OnAttack += OnCharAttack;
 
-            Talkable.OnTalkStart += OnTalkStart;
-            Talkable.OnTalkEnd += OnTalkEnd;
+            TalkEventMgr.OnTalkSceneStart += OnTalkSceneStart;
+            //Talkable.OnTalkEnd += OnTalkEnd;
 
             QuestMgr.OnQuestBitAdded += OnQuestBitAdded;
 
-            TalkEventMgr.OnCharacterFinishedEvent += OnCharacterFinishedEvent;
+            Game.OnCharacterFinishedEvent += OnCharacterFinishedEvent;
         }
 
         // Init sequence: DbMgr(1) -> GameMgr(1) -> *Mgr(1) -> GameMgr(2)
@@ -112,7 +112,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_AudioSource.clip = m_BackgroundMusic;
             m_AudioSource.loop = true;
             m_AudioSource.volume = 0.33f;
-            m_AudioSource.Play();
+            //m_AudioSource.Play();
 
             m_PlayerParty = GameMgr.Instance.PlayerParty;
 
@@ -293,9 +293,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         }
 
-        public void OnTalkStart(Character talkerChr, Talkable talkedToObj)
+        public void OnTalkSceneStart(Character talkerChr, TalkScene talkScene)
         {
-            if (talkedToObj.IsBuilding)
+            /*if (talkedToObj.IsBuilding)
             {
                 // Pause background music
                 m_AudioSource.Pause();
@@ -314,19 +314,19 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             else
             {
                 PlayRandomSound(talkerChr.Sounds.Greeting, talkerChr.Party.PlayerAudioSource);
-            }
+            }*/
         }
 
-        private void OnTalkEnd(Talkable talkedToObj)
+        private void OnTalkEnd(TalkScene talkScene)
         {
-            if (talkedToObj.IsBuilding)
+            /*if (talkedToObj.IsBuilding)
             {
                 TalkableBuilding building = (TalkableBuilding)talkedToObj;
                 if (building.LeaveSound)
                 {
                     building.AudioSource.PlayOneShot(building.LeaveSound, building.SoundVolume);
                 }
-            }
+            }*/
         }
 
         public void OnItemInspect(Character inspectorChr, ItemData itemData/*, InspectResult result*/)

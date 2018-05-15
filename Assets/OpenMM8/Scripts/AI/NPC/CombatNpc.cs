@@ -24,6 +24,8 @@ public class CombatNpc : BaseNpc
 
     private bool WasInit = false;
 
+    private float m_TimeWanderWalking = 0.0f;
+
     // Use this for initialization
     void Start()
     {
@@ -138,6 +140,7 @@ public class CombatNpc : BaseNpc
 
             if (!IsWalking())
             {
+                m_TimeWanderWalking = 0.0f;
                 if (DoWander)
                 {
                     if (RemainingWanderIdleTime > 0.0f)
@@ -150,6 +153,18 @@ public class CombatNpc : BaseNpc
                         WanderWithinSpawnArea(WanderRadius);
                         Animator.SetInteger("State", (int)NpcState.Walking);
                         RemainingWanderIdleTime = UnityEngine.Random.Range(MinWanderIdleTime, MaxWanderIdleTime);
+                    }
+                }
+            }
+            else
+            {
+                if (DoWander)
+                {
+                    m_TimeWanderWalking += UpdateIntervalMs / 1000.0f;
+                    if (m_TimeWanderWalking > 3.0f)
+                    {
+                        m_TimeWanderWalking = 0.0f;
+                        StopMoving();
                     }
                 }
             }

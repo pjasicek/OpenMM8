@@ -97,21 +97,21 @@ NavMeshSettings:
   m_BuildSettings:
     serializedVersion: 2
     agentTypeID: 0
-    agentRadius: 0.35
+    agentRadius: 0.1
     agentHeight: 2
-    agentSlope: 40
+    agentSlope: 45
     agentClimb: 0.4
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     minRegionArea: 100
     manualCellSize: 0
-    cellSize: 0.11666667
+    cellSize: 0.033333335
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: b3b23b08c80e841499e440b5187c8a04, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 3fd3a2f1b0b060449938789dd23477e4, type: 2}
 --- !u!1 &347391
 GameObject:
   m_ObjectHideFlags: 0
@@ -402,7 +402,8 @@ CanvasRenderer:
 --- !u!1 &46526542
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 1621858515121264, guid: 5c6c6d5a18908dd4491da2764208bf40,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 5
   m_Component:
@@ -419,7 +420,8 @@ GameObject:
 --- !u!4 &46526543
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 4140612121394202, guid: 5c6c6d5a18908dd4491da2764208bf40,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 46526542}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -432,7 +434,8 @@ Transform:
 --- !u!114 &46526544
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 114170788589796760, guid: 5c6c6d5a18908dd4491da2764208bf40,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 46526542}
   m_Enabled: 1
@@ -447,7 +450,8 @@ MonoBehaviour:
 --- !u!82 &46526545
 AudioSource:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 82383362271807206, guid: 5c6c6d5a18908dd4491da2764208bf40,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 46526542}
   m_Enabled: 1
@@ -770,27 +774,6 @@ Transform:
 GameObject:
   m_PrefabParentObject: {fileID: 100108, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
   m_PrefabInternal: {fileID: 2132611981}
---- !u!114 &64242147
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 64242142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 0}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
 --- !u!114 &64242148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -815,19 +798,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 66085501}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1650327787}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 1
+    AllowedTriangles: 
+    AllowedTextures: []
+  EventNumber: 0
 --- !u!114 &66085507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1075,19 +1053,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 101272215}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1139485701}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 2
+    AllowedTriangles: 81000000820000008300000084000000
+    AllowedTextures: []
+  EventNumber: 171
 --- !u!114 &101272221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1526,19 +1499,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 130168549}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: The Grog and Grub
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 922912667}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 2
+    AllowedTriangles: 3401000033010000
+    AllowedTextures: []
+  EventNumber: 179
 --- !u!114 &130168555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1551,6 +1519,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HoverText: The Grog and Grub
+--- !u!114 &130168556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 130168549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InteractSelector:
+    FilterType: 2
+    AllowedTriangles: 93010000920100003e0100003d01000094010000
+    AllowedTextures: []
+  EventNumber: 191
 --- !u!1 &137195564
 GameObject:
   m_ObjectHideFlags: 0
@@ -1770,18 +1754,18 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.35
-  m_Speed: 4
+  m_Speed: 3.5
   m_Acceleration: 100000000
   avoidancePriority: 50
   m_AngularSpeed: 80000
-  m_StoppingDistance: 1
-  m_AutoTraverseOffMeshLink: 1
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1.4000001
   m_BaseOffset: 1.1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &137195574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1901,8 +1885,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 6
+  Loot:
+    GoldAmount: 0
   CurrentHitPoints: 0
-  StoppingDistance: 0.5
+  StoppingDistance: 1.5
   DoWander: 1
   MinWanderIdleTime: 3
   MaxWanderIdleTime: 4
@@ -1926,7 +1912,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 137195564}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -39.4, y: 6.76, z: -45.86}
+  m_LocalPosition: {x: 2.3799953, y: 14.51, z: -34.39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1943,6 +1929,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99eb5860fc5e0544886d4a47c77cfb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractSelector:
+    FilterType: 0
+    AllowedTriangles: 
+    AllowedTextures: []
+  Loot:
+    GoldAmount: 0
 --- !u!114 &137195582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2501,6 +2493,8 @@ Transform:
   - {fileID: 1422469943}
   - {fileID: 1582000261}
   - {fileID: 291353739}
+  - {fileID: 853138495}
+  - {fileID: 2004684025}
   m_Father: {fileID: 0}
   m_RootOrder: 26
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2532,7 +2526,6 @@ GameObject:
   - component: {fileID: 172736401}
   - component: {fileID: 172736402}
   - component: {fileID: 172736403}
-  - component: {fileID: 172736404}
   m_Layer: 8
   m_Name: LizardmanVillager
   m_TagString: Villager
@@ -2873,6 +2866,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 1
+  Loot:
+    GoldAmount: 0
   CurrentHitPoints: 0
   StoppingDistance: 0.5
   DoWander: 0
@@ -2985,6 +2980,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99eb5860fc5e0544886d4a47c77cfb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractSelector:
+    FilterType: 0
+    AllowedTriangles: 
+    AllowedTextures: []
+  Loot:
+    GoldAmount: 0
 --- !u!114 &172736402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3015,23 +3016,6 @@ MonoBehaviour:
     y: 0
     width: 0
     height: 0
---- !u!114 &172736404
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 172736383}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d93c3f5003ec1643b6e2736dfa8fe0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 0}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
 --- !u!1 &177421252 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100020, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
@@ -3044,19 +3028,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 177421252}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1650327787}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 1
+    AllowedTriangles: 
+    AllowedTextures: []
+  EventNumber: 0
 --- !u!114 &177421258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3362,18 +3341,18 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.35
-  m_Speed: 4
+  m_Speed: 3.5
   m_Acceleration: 100000000
   avoidancePriority: 50
   m_AngularSpeed: 80000
-  m_StoppingDistance: 1
-  m_AutoTraverseOffMeshLink: 1
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1.4000001
   m_BaseOffset: 1.1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &195325170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3493,8 +3472,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 6
+  Loot:
+    GoldAmount: 0
   CurrentHitPoints: 0
-  StoppingDistance: 0.5
+  StoppingDistance: 1.5
   DoWander: 1
   MinWanderIdleTime: 3
   MaxWanderIdleTime: 4
@@ -3518,7 +3499,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 195325160}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -41.11, y: 6.76, z: -42.51}
+  m_LocalPosition: {x: 0.6700039, y: 14.51, z: -31.039993}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -3535,6 +3516,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99eb5860fc5e0544886d4a47c77cfb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractSelector:
+    FilterType: 0
+    AllowedTriangles: 
+    AllowedTextures: []
+  Loot:
+    GoldAmount: 0
 --- !u!114 &195325178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4007,27 +3994,6 @@ Transform:
 GameObject:
   m_PrefabParentObject: {fileID: 100114, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
   m_PrefabInternal: {fileID: 2132611981}
---- !u!114 &232589027
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 232589022}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 0}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
 --- !u!114 &232589028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4764,19 +4730,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 333019773}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: Talimere's Hut
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1586463976}
-  NpcIdList: 200000000000000000000000
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 2
+    AllowedTriangles: 1600000017000000
+    AllowedTextures: []
+  EventNumber: 37
 --- !u!114 &333019779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5337,18 +5298,18 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.35
-  m_Speed: 4
+  m_Speed: 3.5
   m_Acceleration: 100000000
   avoidancePriority: 50
   m_AngularSpeed: 80000
-  m_StoppingDistance: 1
-  m_AutoTraverseOffMeshLink: 1
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1.4000001
   m_BaseOffset: 1.1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &359520898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5468,8 +5429,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 6
+  Loot:
+    GoldAmount: 0
   CurrentHitPoints: 0
-  StoppingDistance: 0.5
+  StoppingDistance: 1.5
   DoWander: 1
   MinWanderIdleTime: 3
   MaxWanderIdleTime: 4
@@ -5493,7 +5456,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 359520888}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -43.02, y: 6.76, z: -45.86}
+  m_LocalPosition: {x: -1.24, y: 14.51, z: -34.39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -5510,6 +5473,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99eb5860fc5e0544886d4a47c77cfb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractSelector:
+    FilterType: 0
+    AllowedTriangles: 
+    AllowedTextures: []
+  Loot:
+    GoldAmount: 0
 --- !u!114 &359520906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6665,19 +6634,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 454090359}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1094936839}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 2
+    AllowedTriangles: 6e0000006f000000
+    AllowedTextures: []
+  EventNumber: 175
 --- !u!114 &454090365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7389,27 +7353,6 @@ CanvasRenderer:
 GameObject:
   m_PrefabParentObject: {fileID: 100112, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
   m_PrefabInternal: {fileID: 2132611981}
---- !u!114 &511789843
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 511789838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 0}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
 --- !u!114 &511789844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7641,18 +7584,18 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.35
-  m_Speed: 4
+  m_Speed: 3.5
   m_Acceleration: 100000000
   avoidancePriority: 50
   m_AngularSpeed: 80000
-  m_StoppingDistance: 1
-  m_AutoTraverseOffMeshLink: 1
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1.4000001
   m_BaseOffset: 1.1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &516606576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7772,8 +7715,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 6
+  Loot:
+    GoldAmount: 0
   CurrentHitPoints: 0
-  StoppingDistance: 0.5
+  StoppingDistance: 1.5
   DoWander: 1
   MinWanderIdleTime: 3
   MaxWanderIdleTime: 4
@@ -7797,7 +7742,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 516606566}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -41.11, y: 6.76, z: -40.99}
+  m_LocalPosition: {x: 0.6700039, y: 14.51, z: -29.520004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -7814,6 +7759,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99eb5860fc5e0544886d4a47c77cfb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractSelector:
+    FilterType: 0
+    AllowedTriangles: 
+    AllowedTextures: []
+  Loot:
+    GoldAmount: 0
 --- !u!114 &516606584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8620,19 +8571,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 637519335}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1650327787}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 2
+    AllowedTriangles: 54000000550000005600000057000000
+    AllowedTextures: []
+  EventNumber: 17
 --- !u!114 &637519341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8864,18 +8810,18 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.35
-  m_Speed: 4
+  m_Speed: 3.5
   m_Acceleration: 100000000
   avoidancePriority: 50
   m_AngularSpeed: 80000
-  m_StoppingDistance: 1
-  m_AutoTraverseOffMeshLink: 1
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1.4000001
   m_BaseOffset: 1.1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &638759255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8995,8 +8941,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 6
+  Loot:
+    GoldAmount: 0
   CurrentHitPoints: 0
-  StoppingDistance: 0.5
+  StoppingDistance: 1.5
   DoWander: 1
   MinWanderIdleTime: 3
   MaxWanderIdleTime: 4
@@ -9020,7 +8968,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 638759245}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -39.4, y: 6.76, z: -47.6}
+  m_LocalPosition: {x: 2.3799953, y: 14.51, z: -36.129997}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -9037,6 +8985,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99eb5860fc5e0544886d4a47c77cfb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractSelector:
+    FilterType: 0
+    AllowedTriangles: 
+    AllowedTextures: []
+  Loot:
+    GoldAmount: 0
 --- !u!114 &638759263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9079,19 +9033,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 640164939}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1153133835}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 1
+    AllowedTriangles: 
+    AllowedTextures: []
+  EventNumber: 74
 --- !u!114 &640164945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9279,19 +9228,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 672183466}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1650327787}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 2
+    AllowedTriangles: 5500000056000000
+    AllowedTextures: []
+  EventNumber: 11
 --- !u!114 &672183472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9678,18 +9622,18 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.35
-  m_Speed: 4
+  m_Speed: 3.5
   m_Acceleration: 100000000
   avoidancePriority: 50
   m_AngularSpeed: 80000
-  m_StoppingDistance: 1
-  m_AutoTraverseOffMeshLink: 1
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1.4000001
   m_BaseOffset: 1.1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &687431471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9809,8 +9753,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 6
+  Loot:
+    GoldAmount: 0
   CurrentHitPoints: 0
-  StoppingDistance: 0.5
+  StoppingDistance: 1.5
   DoWander: 1
   MinWanderIdleTime: 3
   MaxWanderIdleTime: 4
@@ -9834,7 +9780,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 687431461}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -41.11, y: 6.76, z: -47.6}
+  m_LocalPosition: {x: 0.6700039, y: 14.51, z: -36.129997}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -9851,6 +9797,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99eb5860fc5e0544886d4a47c77cfb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractSelector:
+    FilterType: 0
+    AllowedTriangles: 
+    AllowedTextures: []
+  Loot:
+    GoldAmount: 0
 --- !u!114 &687431479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10116,19 +10068,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 714895535}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 0}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 1
+    AllowedTriangles: 
+    AllowedTextures: []
+  EventNumber: 0
 --- !u!114 &714895541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11277,18 +11224,18 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.35
-  m_Speed: 4
+  m_Speed: 3.5
   m_Acceleration: 100000000
   avoidancePriority: 50
   m_AngularSpeed: 80000
-  m_StoppingDistance: 1
-  m_AutoTraverseOffMeshLink: 1
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1.4000001
   m_BaseOffset: 1.1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &796385864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11408,8 +11355,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 6
+  Loot:
+    GoldAmount: 0
   CurrentHitPoints: 0
-  StoppingDistance: 0.5
+  StoppingDistance: 1.5
   DoWander: 1
   MinWanderIdleTime: 3
   MaxWanderIdleTime: 4
@@ -11433,7 +11382,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 796385854}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -39.4, y: 6.76, z: -40.99}
+  m_LocalPosition: {x: 2.3799953, y: 14.51, z: -29.520004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -11450,6 +11399,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99eb5860fc5e0544886d4a47c77cfb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractSelector:
+    FilterType: 0
+    AllowedTriangles: 
+    AllowedTextures: []
+  Loot:
+    GoldAmount: 0
 --- !u!114 &796385872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12212,6 +12167,93 @@ Transform:
   m_Father: {fileID: 170042161}
   m_RootOrder: 45
   m_LocalEulerAnglesHint: {x: 0, y: -90.162, z: 0}
+--- !u!1 &853138494
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 853138495}
+  - component: {fileID: 853138498}
+  - component: {fileID: 853138497}
+  - component: {fileID: 853138496}
+  m_Layer: 0
+  m_Name: Cube (96)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &853138495
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 853138494}
+  m_LocalRotation: {x: -0.6693358, y: 0.24511626, z: 0.2504326, w: 0.65512687}
+  m_LocalPosition: {x: -63.59, y: 0.6, z: -33.05}
+  m_LocalScale: {x: -45.374424, y: 7.8884273, z: 11.77295}
+  m_Children: []
+  m_Father: {fileID: 170042161}
+  m_RootOrder: 96
+  m_LocalEulerAnglesHint: {x: -91.229, y: 41.026993, z: 0}
+--- !u!208 &853138496
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 853138494}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
+--- !u!23 &853138497
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 853138494}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &853138498
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 853138494}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &892050296
 GameObject:
   m_ObjectHideFlags: 0
@@ -12662,18 +12704,18 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.35
-  m_Speed: 4
+  m_Speed: 3.5
   m_Acceleration: 100000000
   avoidancePriority: 50
   m_AngularSpeed: 80000
-  m_StoppingDistance: 1
-  m_AutoTraverseOffMeshLink: 1
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1.4000001
   m_BaseOffset: 1.1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &916530821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12793,8 +12835,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 6
+  Loot:
+    GoldAmount: 0
   CurrentHitPoints: 0
-  StoppingDistance: 0.5
+  StoppingDistance: 1.5
   DoWander: 1
   MinWanderIdleTime: 3
   MaxWanderIdleTime: 4
@@ -12818,7 +12862,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 916530811}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -41.11, y: 6.76, z: -44.149998}
+  m_LocalPosition: {x: 0.6700039, y: 14.51, z: -32.679993}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -12835,6 +12879,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99eb5860fc5e0544886d4a47c77cfb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractSelector:
+    FilterType: 0
+    AllowedTriangles: 
+    AllowedTextures: []
+  Loot:
+    GoldAmount: 0
 --- !u!114 &916530829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12944,19 +12994,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 921599969}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1586463976}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 1
+    AllowedTriangles: 
+    AllowedTextures: []
+  EventNumber: 0
 --- !u!114 &921599975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13465,18 +13510,18 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.35
-  m_Speed: 4
+  m_Speed: 3.5
   m_Acceleration: 100000000
   avoidancePriority: 50
   m_AngularSpeed: 80000
-  m_StoppingDistance: 1
-  m_AutoTraverseOffMeshLink: 1
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1.4000001
   m_BaseOffset: 1.1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &938530862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13583,7 +13628,7 @@ MonoBehaviour:
   m_Race: 15
   m_SpecialHostileTo: 
   m_SpecialFriendlyTo: 
-  m_IsHostileToPlayer: 1
+  m_IsHostileToPlayer: 0
 --- !u!114 &938530867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13607,8 +13652,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 6
+  Loot:
+    GoldAmount: 0
   CurrentHitPoints: 0
-  StoppingDistance: 0.5
+  StoppingDistance: 1.5
   DoWander: 1
   MinWanderIdleTime: 3
   MaxWanderIdleTime: 4
@@ -13632,7 +13679,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 938530854}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -43.02, y: 6.76, z: -44.149998}
+  m_LocalPosition: {x: -1.2399998, y: 14.51, z: -32.679993}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -13660,6 +13707,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99eb5860fc5e0544886d4a47c77cfb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractSelector:
+    FilterType: 0
+    AllowedTriangles: 
+    AllowedTextures: []
+  Loot:
+    GoldAmount: 0
 --- !u!114 &938530872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13909,18 +13962,18 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.35
-  m_Speed: 4
+  m_Speed: 3.5
   m_Acceleration: 100000000
   avoidancePriority: 50
   m_AngularSpeed: 80000
-  m_StoppingDistance: 1
-  m_AutoTraverseOffMeshLink: 1
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1.4000001
   m_BaseOffset: 1.1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &940522514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14040,8 +14093,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 6
+  Loot:
+    GoldAmount: 0
   CurrentHitPoints: 0
-  StoppingDistance: 0.5
+  StoppingDistance: 1.5
   DoWander: 1
   MinWanderIdleTime: 3
   MaxWanderIdleTime: 4
@@ -14065,7 +14120,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 940522504}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -41.11, y: 6.76, z: -45.86}
+  m_LocalPosition: {x: 0.6700039, y: 14.51, z: -34.39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -14082,6 +14137,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99eb5860fc5e0544886d4a47c77cfb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractSelector:
+    FilterType: 0
+    AllowedTriangles: 
+    AllowedTextures: []
+  Loot:
+    GoldAmount: 0
 --- !u!114 &940522522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16314,19 +16375,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1125541000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 0}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 2
+    AllowedTriangles: f6000000f7000000f8000000f9000000
+    AllowedTextures: []
+  EventNumber: 0
 --- !u!114 &1125541006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16351,19 +16407,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1126478835}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 0}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 1
+    AllowedTriangles: 
+    AllowedTextures: []
+  EventNumber: 0
 --- !u!114 &1126478841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16668,19 +16719,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1147549821}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1013571776}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 2
+    AllowedTriangles: 2c0000002d0000005c0000005d000000
+    AllowedTextures: []
+  EventNumber: 187
 --- !u!114 &1147549827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17148,19 +17194,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1176765589}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1650327787}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 1
+    AllowedTriangles: 
+    AllowedTextures: []
+  EventNumber: 0
 --- !u!114 &1176765595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17479,19 +17520,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1212372453}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1586463976}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 2
+    AllowedTriangles: 7c0000007d000000
+    AllowedTextures: []
+  EventNumber: 47
 --- !u!114 &1212372459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17516,19 +17552,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1213351196}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1586463976}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 2
+    AllowedTriangles: 5100000052000000
+    AllowedTextures: []
+  EventNumber: 39
 --- !u!114 &1213351202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17695,19 +17726,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1257883678}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1460351492}
-  NpcIdList: 010000000200000000000000
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 2
+    AllowedTriangles: ad0000009800000099000000ac000000
+    AllowedTextures: []
+  EventNumber: 197
 --- !u!114 &1257883684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17724,27 +17750,6 @@ MonoBehaviour:
 GameObject:
   m_PrefabParentObject: {fileID: 100110, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
   m_PrefabInternal: {fileID: 2132611981}
---- !u!114 &1259157006
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1259157001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 0}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
 --- !u!114 &1259157007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17856,19 +17861,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1271541473}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1971406025}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 2
+    AllowedTriangles: 5e0000005f000000
+    AllowedTextures: []
+  EventNumber: 193
 --- !u!114 &1271541479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18070,19 +18070,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1276749165}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1650327787}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 1
+    AllowedTriangles: 
+    AllowedTextures: []
+  EventNumber: 0
 --- !u!114 &1276749171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18107,19 +18102,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1283118361}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1650327787}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 2
+    AllowedTriangles: 4100000042000000
+    AllowedTextures: []
+  EventNumber: 13
 --- !u!114 &1283118367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18742,19 +18732,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1367537820}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 802160687}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 2
+    AllowedTriangles: 5000000051000000
+    AllowedTextures: []
+  EventNumber: 173
 --- !u!114 &1367537826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19638,19 +19623,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1438501372}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1586463976}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 2
+    AllowedTriangles: 7000000071000000
+    AllowedTextures: []
+  EventNumber: 43
 --- !u!114 &1438501378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20914,18 +20894,18 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.35
-  m_Speed: 4
+  m_Speed: 3.5
   m_Acceleration: 100000000
   avoidancePriority: 50
   m_AngularSpeed: 80000
-  m_StoppingDistance: 1
-  m_AutoTraverseOffMeshLink: 1
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1.4000001
   m_BaseOffset: 1.1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &1572645715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21045,8 +21025,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 6
+  Loot:
+    GoldAmount: 0
   CurrentHitPoints: 0
-  StoppingDistance: 0.5
+  StoppingDistance: 1.5
   DoWander: 1
   MinWanderIdleTime: 3
   MaxWanderIdleTime: 4
@@ -21070,7 +21052,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1572645705}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -43.02, y: 6.76, z: -47.6}
+  m_LocalPosition: {x: -1.2399998, y: 14.51, z: -36.32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -21087,6 +21069,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99eb5860fc5e0544886d4a47c77cfb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractSelector:
+    FilterType: 0
+    AllowedTriangles: 
+    AllowedTextures: []
+  Loot:
+    GoldAmount: 0
 --- !u!114 &1572645723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21129,19 +21117,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1579098428}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 46526542}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 2
+    AllowedTriangles: 6a000000690000006b000000
+    AllowedTextures: []
+  EventNumber: 177
 --- !u!114 &1579098434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21166,19 +21149,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1579165146}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1586463976}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 2
+    AllowedTriangles: 7200000073000000
+    AllowedTextures: []
+  EventNumber: 49
 --- !u!114 &1579165152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21943,19 +21921,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1606940746}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1650327787}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 1
+    AllowedTriangles: 
+    AllowedTextures: []
+  EventNumber: 0
 --- !u!114 &1606940752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23210,6 +23183,34 @@ MonoBehaviour:
   RestartAudio: 1
   VideoToPlay: {fileID: 32900000, guid: d8890f680f13ad144b0b3d945948988e, type: 3}
   AudioToPlay: {fileID: 8300000, guid: fe70bb376236a584097c23221cf13d07, type: 3}
+--- !u!1 &1653290185
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1653290186}
+  m_Layer: 0
+  m_Name: VideoSceneHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1653290186
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1653290185}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -49.349037, y: 14.716245, z: -110.943535}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 29
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1653726331
 GameObject:
   m_ObjectHideFlags: 0
@@ -23429,18 +23430,18 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.35
-  m_Speed: 4
+  m_Speed: 3.5
   m_Acceleration: 100000000
   avoidancePriority: 50
   m_AngularSpeed: 80000
-  m_StoppingDistance: 1
-  m_AutoTraverseOffMeshLink: 1
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1.4000001
   m_BaseOffset: 1.1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &1653726341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23560,8 +23561,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 6
+  Loot:
+    GoldAmount: 0
   CurrentHitPoints: 0
-  StoppingDistance: 0.5
+  StoppingDistance: 1.5
   DoWander: 1
   MinWanderIdleTime: 3
   MaxWanderIdleTime: 4
@@ -23585,7 +23588,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1653726331}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -43.02, y: 6.76, z: -40.99}
+  m_LocalPosition: {x: -1.2399998, y: 14.51, z: -29.520004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -23602,6 +23605,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99eb5860fc5e0544886d4a47c77cfb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractSelector:
+    FilterType: 0
+    AllowedTriangles: 
+    AllowedTextures: []
+  Loot:
+    GoldAmount: 0
 --- !u!114 &1653726349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23787,6 +23796,436 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1662541758}
+--- !u!1 &1682719670
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1229141162549312, guid: c204c223bda1d2947a155d2a010eb7df,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1682719689}
+  - component: {fileID: 1682719688}
+  - component: {fileID: 1682719687}
+  - component: {fileID: 1682719686}
+  - component: {fileID: 1682719685}
+  - component: {fileID: 1682719684}
+  - component: {fileID: 1682719683}
+  - component: {fileID: 1682719682}
+  - component: {fileID: 1682719681}
+  - component: {fileID: 1682719680}
+  - component: {fileID: 1682719679}
+  - component: {fileID: 1682719678}
+  - component: {fileID: 1682719677}
+  - component: {fileID: 1682719676}
+  - component: {fileID: 1682719675}
+  - component: {fileID: 1682719674}
+  - component: {fileID: 1682719673}
+  - component: {fileID: 1682719672}
+  - component: {fileID: 1682719671}
+  m_Layer: 8
+  m_Name: LizardmanWarrior (33)
+  m_TagString: Enemy
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1682719671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1682719670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7c4b1da41da2a4aae233ccfadaa7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TextureMark: {fileID: 0}
+  DrawRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+--- !u!54 &1682719672
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1682719670}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &1682719673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1682719670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b561696540b45764fae084f9bab51f54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HoverText: 
+--- !u!114 &1682719674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1682719670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99eb5860fc5e0544886d4a47c77cfb51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InteractSelector:
+    FilterType: 0
+    AllowedTriangles: 
+    AllowedTextures: []
+  Loot:
+    GoldAmount: 0
+--- !u!114 &1682719675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1682719670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 179052246743a3f4ea776bb55244d954, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1682719676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1682719670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc94e886ff6e6f4fbffeb24937825cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!136 &1682719677
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1682719670}
+  m_Material: {fileID: 13400000, guid: f0022c636b0493e4b9a84ced90d67ff8, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1682719678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1682719670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f8ec5fa391193a44a4dbf66e3bde885, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RefreshRate: 50
+  LookLocked: 0
+--- !u!82 &1682719679
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1682719670}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 0.855
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+--- !u!95 &1682719680
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 95462186809635668, guid: c204c223bda1d2947a155d2a010eb7df,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1682719670}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 26d4fff4c9009e949935f273c8f71f9c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+--- !u!208 &1682719681
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1682719670}
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.25, y: 1, z: 0.25}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
+--- !u!195 &1682719682
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1682719670}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.35
+  m_Speed: 4
+  m_Acceleration: 100000000
+  avoidancePriority: 50
+  m_AngularSpeed: 80000
+  m_StoppingDistance: 1
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1.4000001
+  m_BaseOffset: 1.1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 1
+--- !u!114 &1682719683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1682719670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TriggerType: 2
+  ColliderShape: 0
+  SideLength: 20
+  Height: 30
+  LayerMask: NpcRangeTrigger
+--- !u!212 &1682719684
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 212662068134453654, guid: c204c223bda1d2947a155d2a010eb7df,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1682719670}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: 369a0b5c65e248242ad6b6396ebafc04, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300004, guid: 7c96bf6bac8c70b46a8ae06dc16b3e8e, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1.05, y: 1.98}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+--- !u!114 &1682719685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1682719670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df1472d31c4b4094eb9e71d2e2d5ba7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TriggerType: 1
+  ColliderShape: 0
+  SideLength: 2.5
+  Height: 2
+  LayerMask: NpcRangeTrigger
+--- !u!114 &1682719686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1682719670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8744681ee57b7f84ebedfa41ddbc448b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Camera: {fileID: 0}
+  amActive: 1
+  autoInit: 1
+--- !u!114 &1682719687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1682719670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2eb9ae6c0da3ce5469e477fa4743ef74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HostilityType: 0
+  m_Race: 15
+  m_SpecialHostileTo: 
+  m_SpecialFriendlyTo: 
+  m_IsHostileToPlayer: 0
+--- !u!114 &1682719688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1682719670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 645af68366d30ca4bb87082122745c3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NpcType: 6
+  Loot:
+    GoldAmount: 0
+  CurrentHitPoints: 0
+  StoppingDistance: 0.5
+  DoWander: 1
+  MinWanderIdleTime: 3
+  MaxWanderIdleTime: 4
+  WanderRadius: 15
+  DrawWaypoint: 0
+  UpdateIntervalMs: 150
+  AttackSound: {fileID: 8300000, guid: 583ea83de5f809349b61fc2f0c63cfe0, type: 3}
+  DeathSound: {fileID: 8300000, guid: c9ef2dd2f2897b143a1ed35a70c16345, type: 3}
+  AwareSound: {fileID: 8300000, guid: d32de25f51413fe4b9910caf2bb5e40c, type: 3}
+  WinceSound: {fileID: 8300000, guid: 91b9b5091d1fee74692d8eb1b5a313f2, type: 3}
+  PreviewImage: {fileID: 21300004, guid: 7c96bf6bac8c70b46a8ae06dc16b3e8e, type: 3}
+  SpawnPosition: {x: 0, y: 0, z: 0}
+  EnemiesInMeleeRange: []
+  EnemiesInAgroRange: []
+  AttackReuseTime: 0.8
+--- !u!4 &1682719689
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 4088794768574318, guid: c204c223bda1d2947a155d2a010eb7df,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1682719670}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -53.29, y: 9.33, z: -50.74}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 28
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1692008384
 GameObject:
   m_ObjectHideFlags: 0
@@ -24158,18 +24597,18 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.35
-  m_Speed: 4
+  m_Speed: 3.5
   m_Acceleration: 100000000
   avoidancePriority: 50
   m_AngularSpeed: 80000
-  m_StoppingDistance: 1
-  m_AutoTraverseOffMeshLink: 1
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1.4000001
   m_BaseOffset: 1.1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &1725178370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24289,8 +24728,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 6
+  Loot:
+    GoldAmount: 0
   CurrentHitPoints: 0
-  StoppingDistance: 0.5
+  StoppingDistance: 1.5
   DoWander: 1
   MinWanderIdleTime: 3
   MaxWanderIdleTime: 4
@@ -24314,7 +24755,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1725178360}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -39.4, y: 6.76, z: -42.51}
+  m_LocalPosition: {x: 2.3799953, y: 14.51, z: -31.039993}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -24331,6 +24772,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99eb5860fc5e0544886d4a47c77cfb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractSelector:
+    FilterType: 0
+    AllowedTriangles: 
+    AllowedTextures: []
+  Loot:
+    GoldAmount: 0
 --- !u!114 &1725178378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24805,18 +25252,18 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.35
-  m_Speed: 4
+  m_Speed: 3.5
   m_Acceleration: 100000000
   avoidancePriority: 50
   m_AngularSpeed: 80000
-  m_StoppingDistance: 1
-  m_AutoTraverseOffMeshLink: 1
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1.4000001
   m_BaseOffset: 1.1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &1760288211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24936,8 +25383,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 6
+  Loot:
+    GoldAmount: 0
   CurrentHitPoints: 0
-  StoppingDistance: 0.5
+  StoppingDistance: 1.5
   DoWander: 1
   MinWanderIdleTime: 3
   MaxWanderIdleTime: 4
@@ -24961,7 +25410,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1760288201}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -39.4, y: 6.76, z: -44.149998}
+  m_LocalPosition: {x: 2.3799953, y: 14.51, z: -32.679993}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -24978,6 +25427,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99eb5860fc5e0544886d4a47c77cfb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractSelector:
+    FilterType: 0
+    AllowedTriangles: 
+    AllowedTextures: []
+  Loot:
+    GoldAmount: 0
 --- !u!114 &1760288219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25279,7 +25734,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1783903980}
   - component: {fileID: 1783903979}
-  - component: {fileID: 1783903960}
   - component: {fileID: 1783903978}
   - component: {fileID: 1783903977}
   - component: {fileID: 1783903976}
@@ -25298,6 +25752,7 @@ GameObject:
   - component: {fileID: 1783903963}
   - component: {fileID: 1783903962}
   - component: {fileID: 1783903961}
+  - component: {fileID: 1783903981}
   m_Layer: 8
   m_Name: LizardmanVillager (1)
   m_TagString: Villager
@@ -25305,32 +25760,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1783903960
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1783903959}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d93c3f5003ec1643b6e2736dfa8fe0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 0}
-  NpcIdList: 000000000000000000000000
-  TalkProperties:
-  - NpcId: -1
-    Name: Lizardman Villager
-    Avatar: {fileID: 21300000, guid: d94d90bf73d37d7448bfc0991f44c4e5, type: 3}
-    IsNpcNews: 1
-    GreetId: 1
-    TopicIds: 
-    IsPresent: 1
-    HasGoodbyeMessage: 0
-    IsVisited: 0
-  AudioSource: {fileID: 0}
 --- !u!114 &1783903961
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25360,7 +25789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b561696540b45764fae084f9bab51f54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HoverText: 
+  HoverText: dsa
 --- !u!114 &1783903963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25372,6 +25801,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99eb5860fc5e0544886d4a47c77cfb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractSelector:
+    FilterType: 0
+    AllowedTriangles: 
+    AllowedTextures: []
+  Loot:
+    GoldAmount: 0
 --- !u!114 &1783903964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25731,6 +26166,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 1
+  Loot:
+    GoldAmount: 0
   CurrentHitPoints: 0
   StoppingDistance: 0.5
   DoWander: 0
@@ -25806,6 +26243,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1783903981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1783903959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InteractSelector:
+    FilterType: 0
+    AllowedTriangles: 
+    AllowedTextures: []
+  EventNumber: 1000
 --- !u!1 &1799340883
 GameObject:
   m_ObjectHideFlags: 0
@@ -26155,19 +26608,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1825486469}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1650327787}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 2
+    AllowedTriangles: 4b0000004c000000
+    AllowedTextures: []
+  EventNumber: 15
 --- !u!114 &1825486475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26545,19 +26993,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1857878745}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 1650327787}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 2
+    AllowedTriangles: 1300000014000000
+    AllowedTextures: []
+  EventNumber: 45
 --- !u!114 &1857878751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27587,6 +28030,93 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1975399173}
+--- !u!1 &2004684024
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2004684025}
+  - component: {fileID: 2004684028}
+  - component: {fileID: 2004684027}
+  - component: {fileID: 2004684026}
+  m_Layer: 0
+  m_Name: Cube (97)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &2004684025
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2004684024}
+  m_LocalRotation: {x: -0.65226567, y: 0.287475, z: 0.29187056, w: 0.63774544}
+  m_LocalPosition: {x: -28.52, y: 0.44, z: -72.9}
+  m_LocalScale: {x: -33.765938, y: 6.782339, z: 11.772954}
+  m_Children: []
+  m_Father: {fileID: 170042161}
+  m_RootOrder: 97
+  m_LocalEulerAnglesHint: {x: -91.229, y: 41.026993, z: 7.342987}
+--- !u!208 &2004684026
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2004684024}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
+--- !u!23 &2004684027
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2004684024}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &2004684028
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2004684024}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &2005902299
 GameObject:
   m_ObjectHideFlags: 0
@@ -27806,18 +28336,18 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.35
-  m_Speed: 4
+  m_Speed: 3.5
   m_Acceleration: 100000000
   avoidancePriority: 50
   m_AngularSpeed: 80000
-  m_StoppingDistance: 1
-  m_AutoTraverseOffMeshLink: 1
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1.4000001
   m_BaseOffset: 1.1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &2005902309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27937,8 +28467,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcType: 6
+  Loot:
+    GoldAmount: 0
   CurrentHitPoints: 0
-  StoppingDistance: 0.5
+  StoppingDistance: 1.5
   DoWander: 1
   MinWanderIdleTime: 3
   MaxWanderIdleTime: 4
@@ -27962,7 +28494,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2005902299}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -43.02, y: 6.76, z: -42.51}
+  m_LocalPosition: {x: -1.2399998, y: 14.51, z: -31.039993}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -27979,6 +28511,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99eb5860fc5e0544886d4a47c77cfb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractSelector:
+    FilterType: 0
+    AllowedTriangles: 
+    AllowedTextures: []
+  Loot:
+    GoldAmount: 0
 --- !u!114 &2005902317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28480,19 +29018,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2049845879}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abff0014dc54f0438181bcd79626b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6240a1e8ed5a6b47b42c81486827296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 
-  IsBuilding: 0
-  VideoSceneHolder: {fileID: 0}
-  NpcIdList: 
-  TalkProperties: []
-  AudioSource: {fileID: 0}
-  SoundVolume: 0.6
-  EnterSound: {fileID: 0}
-  LeaveSound: {fileID: 0}
-  GreetSound: {fileID: 0}
+  InteractSelector:
+    FilterType: 1
+    AllowedTriangles: 
+    AllowedTextures: []
+  EventNumber: 0
 --- !u!114 &2049845885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29643,6 +30176,294 @@ Prefab:
     - target: {fileID: 100116, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
       propertyPath: m_Name
       value: Dagger_Wound_Island_Map
+      objectReference: {fileID: 0}
+    - target: {fileID: 100074, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100064, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100104, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100020, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100112, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100128, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100022, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100032, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100016, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100134, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100082, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100018, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100122, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100058, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100086, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100088, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100118, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100120, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100052, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100044, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100026, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100024, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100106, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100140, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100130, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100030, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100070, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100138, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100060, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100078, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100116, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100100, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100066, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100034, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100062, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100036, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100102, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100014, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100080, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100124, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100038, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100136, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100114, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100098, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100094, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100142, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100028, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100072, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100050, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100076, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100110, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100092, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100108, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100040, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100126, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100054, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100068, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100096, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100132, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100042, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100084, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100090, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100046, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100056, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100048, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e454fc46b9a128444b07dc491e545d6e, type: 3}

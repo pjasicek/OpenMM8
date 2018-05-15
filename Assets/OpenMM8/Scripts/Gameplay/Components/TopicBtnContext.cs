@@ -7,6 +7,6 @@ using UnityEngine;
 
 public class TopicBtnContext : MonoBehaviour
 {
-    public TalkProperties TalkProperties;
+    public NpcTalkProperties TalkProperties;
     public int TopicId;
 }

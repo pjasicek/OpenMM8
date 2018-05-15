@@ -30,9 +30,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         // Talking with NPCs
         private VideoScene m_CurrVideoScene = null;
-        private Talkable m_CurrTalkable = null;
+        private TalkScene m_CurrTalkScene = null;
         private Character m_TalkCharInitiator = null;
-        private TalkProperties m_CurrTalkProp = null;
+        private NpcTalkProperties m_CurrTalkProp = null;
 
         [Header("UI")]
         private InspectNpcUI m_InspectNpcUI;
@@ -84,12 +84,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             MinimapMarker.OnMinimapMarkerCreated += OnMinimapMarkerCreated;
             MinimapMarker.OnMinimapMarkerDestroyed += OnMinimapMarkerDestroyed;
 
-            Talkable.OnTalkStart += OnTalkStart;
+            TalkEventMgr.OnTalkSceneStart += OnTalkSceneStart;
 
             TalkEventMgr.OnNpcTalkTextChanged += OnNpcTalkTextChanged;
             TalkEventMgr.OnRefreshNpcTalk += OnRefreshNpcTalk;
             TalkEventMgr.OnTalkWithConcreteNpc += OnTalkWithConcreteNpc;
-            TalkEventMgr.OnCharacterFinishedEvent += OnCharacterFinishedEvent;
+            Game.OnCharacterFinishedEvent += OnCharacterFinishedEvent;
 
             QuestMgr.OnQuestBitAdded += OnQuestBitAdded;
         }
@@ -347,7 +347,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return height;
         }
 
-        public void RefreshNpcTalkTopics(TalkProperties talkProp)
+        public void RefreshNpcTalkTopics(NpcTalkProperties talkProp)
         {
             if (!talkProp.IsPresent)
             {
@@ -445,9 +445,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_NpcTalkUI.NpcTalkBackgroundImg.rectTransform.anchoredPosition = v;
         }
 
-        private void SetupInitialTalkCanvas(Talkable talkable)
+        private void SetupInitialTalkCanvas(TalkScene talkScene)
         {
-            m_NpcTalkUI.LocationNameText.text = talkable.Location;
+            m_NpcTalkUI.LocationNameText.text = talkScene.Location;
             m_NpcTalkUI.NpcTalkCanvas.enabled = true;
 
             // avatar btns tmp
@@ -462,14 +462,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
-        private void ShowTalkLobby(Talkable talkable)
+        private void ShowTalkLobby(TalkScene talkScene)
         {
-            SetupInitialTalkCanvas(talkable);
+            SetupInitialTalkCanvas(talkScene);
 
             // If more than 1 talkables, then display location name and talkable buttons
-            if (talkable.TalkProperties.Count > 3)
+            if (talkScene.TalkProperties.Count > 3)
             {
-                Debug.LogError("Too many NPCs in talkable script: " + talkable.TalkProperties.Count
+                Debug.LogError("Too many NPCs in talkable script: " + talkScene.TalkProperties.Count
                     + ", Displaying only 3 avatar buttons, ignoring rest !");
             }
 
@@ -477,7 +477,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_NpcTalkUI.NpcTalkObj.SetActive(false);
 
             int talkPropIdx = 0;
-            foreach (TalkProperties talkProp in talkable.TalkProperties)
+            foreach (NpcTalkProperties talkProp in talkScene.TalkProperties)
             {
                 // This is the limitation of max 3 avatar buttons
                 if (talkPropIdx >= 3)
@@ -498,7 +498,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_CurrTalkProp = null;
         }
 
-        private bool TryShowNpcGreet(TalkProperties talkProp)
+        private bool TryShowNpcGreet(NpcTalkProperties talkProp)
         {
             if (TalkEventMgr.Instance.HasGreetText(talkProp))
             {
@@ -541,10 +541,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 m_CurrVideoScene = null;
             }
 
-            if (m_CurrTalkable != null)
+            if (m_CurrTalkScene != null)
             {
-                m_CurrTalkable.OnEndInteract();
-                m_CurrTalkable = null;
+                //m_CurrTalkScene.OnEndInteract();
+                m_CurrTalkScene = null;
             }
 
             GameMgr.Instance.UnpauseGame();
@@ -774,29 +774,29 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_Minimap.MinimapMarkers.Remove(marker);
         }
 
-        public void OnTalkStart(Character talkerChr, Talkable talkable)
+        public void OnTalkSceneStart(Character talkerChr, TalkScene talkScene)
         {
             m_TalkCharInitiator = talkerChr;
 
-            SetupInitialTalkCanvas(talkable);
+            SetupInitialTalkCanvas(talkScene);
 
-            if (talkable.TalkProperties.Count == 0)
+            if (talkScene.TalkProperties.Count == 0)
             {
                 // If noone in the house/etc then only location is displayed,
                 // everything else is hidden
                 m_NpcTalkUI.TalkAvatar.Holder.SetActive(false);
                 m_NpcTalkUI.NpcTalkObj.SetActive(false);
             }
-            else if (talkable.TalkProperties.Count == 1)
+            else if (talkScene.TalkProperties.Count == 1)
             {
                 // If only one talkable, then just display the one
-                OnTalkWithConcreteNpc(talkable.TalkProperties[0]);
+                OnTalkWithConcreteNpc(talkScene.TalkProperties[0]);
 
                 talkerChr.CharFaceUpdater.SetAvatar(RandomSprite(talkerChr.Sprites.Greet), 1.0f);
             }
             else
             {
-                ShowTalkLobby(talkable);
+                ShowTalkLobby(talkScene);
             }
 
             m_Minimap.enabled = false;
@@ -805,12 +805,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
-            if (talkable.VideoSceneHolder != null)
+            if (talkScene.VideoScene != null)
             {
-                m_CurrVideoScene = talkable.VideoSceneHolder.GetComponent<VideoScene>();
+                m_CurrVideoScene = talkScene.VideoScene;
                 m_CurrVideoScene.Play();
             }
-            m_CurrTalkable = talkable;
+            m_CurrTalkScene = talkScene;
         }
 
         private void OnNpcTalkTextChanged(string text)
@@ -818,11 +818,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             UpdateNpcTalkText(text);
         }
 
-        private void OnRefreshNpcTalk(TalkProperties talkProp)
+        private void OnRefreshNpcTalk(NpcTalkProperties talkProp)
         {
             if (!talkProp.IsPresent)
             {
-                OnTalkStart(m_TalkCharInitiator, m_CurrTalkable);
+                OnTalkSceneStart(m_TalkCharInitiator, m_CurrTalkScene);
                 if (talkProp.HasGoodbyeMessage)
                 {
                     m_NpcTalkUI.NpcTalkObj.SetActive(true);
@@ -834,11 +834,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
-        private void OnTalkWithConcreteNpc(TalkProperties talkProp)
+        private void OnTalkWithConcreteNpc(NpcTalkProperties talkProp)
         {
-            if (m_CurrTalkable != null)
+            if (m_CurrTalkScene != null)
             {
-                SetupInitialTalkCanvas(m_CurrTalkable);
+                SetupInitialTalkCanvas(m_CurrTalkScene);
             }
 
             m_CurrTalkProp = talkProp;
@@ -871,6 +871,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             SpriteAnimation FaceOverlayAnim = chr.UI.FaceOverlayAnimation;
             FaceOverlayAnim.AnimationSprites = m_QuestEffectSprites;
             FaceOverlayAnim.Play();
+            chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.Sprites.Smile), 1.0f);
         }
 
         private void OnCharacterFinishedEvent(Character chr)
@@ -878,6 +879,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             SpriteAnimation FaceOverlayAnim = chr.UI.FaceOverlayAnimation;
             FaceOverlayAnim.AnimationSprites = m_QuestEffectSprites;
             FaceOverlayAnim.Play();
+            chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.Sprites.Smile), 1.0f);
         }
 
         // =========== Game states
@@ -887,7 +889,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             bool returnToGame = true;
 
             // Check if we are talking
-            if (m_CurrTalkable != null)
+            if (m_CurrTalkScene != null)
             {
                 // Check if we are in the middle of conversation
                 if (m_CurrTalkProp != null && m_CurrTalkProp.NestedTopicIds.Count > 0)
@@ -904,7 +906,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 if (returnToGame)
                 {
                     // No action was taken yet
-                    if (m_CurrTalkable.TalkProperties.Count > 1)
+                    if (m_CurrTalkScene.TalkProperties.Count > 1)
                     {
                         
                         // Multiple NPCs in the talkable 
@@ -913,7 +915,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         {
                             // Speaking to a concrete NPC when there are multiple people in the talkable
                             // => Go back to the Avatar buttons "lobby"
-                            ShowTalkLobby(m_CurrTalkable);
+                            ShowTalkLobby(m_CurrTalkScene);
                             returnToGame = false;
                         }
                     }

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 using System.Collections;
 using UnityEngine.Video;
 using Assets.OpenMM8.Scripts.Gameplay;
@@ -25,7 +25,7 @@ public class Talkable : Interactable
 
     [SerializeField]
     private int[] NpcIdList = new int[3] { 0, 0, 0 };
-    public List<TalkProperties> TalkProperties = new List<TalkProperties>();
+    public List<NpcTalkProperties> TalkProperties = new List<NpcTalkProperties>();
 
     [HideInInspector]
     public AudioSource AudioSource;
@@ -66,7 +66,7 @@ public class Talkable : Interactable
                 continue;
             }
 
-            TalkProperties npcTalker = TalkEventMgr.Instance.GetNpcTalkProperties(npcId);
+            NpcTalkProperties npcTalker = TalkEventMgr.Instance.GetNpcTalkProperties(npcId);
             if (npcTalker != null)
             {
                 TalkProperties.Insert(idx++, npcTalker);
@@ -74,7 +74,7 @@ public class Talkable : Interactable
         }
     }
 
-    public override bool CanInteract(GameObject interacter, RaycastHit interactRay)
+    protected override bool CanInteract(GameObject interacter, RaycastHit interactRay)
     {
         if (!enabled)
         {
@@ -94,13 +94,8 @@ public class Talkable : Interactable
         return true;
     }
 
-    public override bool Interact(GameObject interacter, RaycastHit interactRay)
+    protected override bool Interact(GameObject interacter, RaycastHit interactRay)
     {
-        if (!CanInteract(interacter, interactRay))
-        {
-            return false;
-        }
-
         PlayerParty playerParty = interacter.GetComponent<PlayerParty>();
         Character talker = playerParty.GetMostRecoveredCharacter();
 
@@ -123,11 +118,11 @@ public class Talkable : Interactable
     // =============================== Events ===============================
 
 
-    private void OnNpcLeavingLocation(TalkProperties talkProp)
+    private void OnNpcLeavingLocation(NpcTalkProperties talkProp)
     {
         if (TalkProperties.Contains(talkProp))
         {
             TalkProperties.Remove(talkProp);
         }
     }
-}
+}*/

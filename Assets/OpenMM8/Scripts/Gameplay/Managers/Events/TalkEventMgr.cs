@@ -5,14 +5,16 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    public delegate void RefreshNpcTalk(TalkProperties talkProp);
+    public delegate void RefreshNpcTalk(NpcTalkProperties talkProp);
     public delegate void NpcTalkTextChanged(string text);
-    public delegate void TalkWithConcreteNpc(TalkProperties talkProp);
-    public delegate void NpcLeavingLocation(TalkProperties talkProp);
-    public delegate void CharacterFinishedEvent(Character character);
+    public delegate void TalkWithConcreteNpc(NpcTalkProperties talkProp);
+    public delegate void NpcLeavingLocation(NpcTalkProperties talkProp);
+    public delegate void TalkSceneStart(Character talkerChr, TalkScene talkScene);
+
 
     public class TalkEventMgr : Singleton<TalkEventMgr>
     {
@@ -22,12 +24,17 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public static event RefreshNpcTalk OnRefreshNpcTalk;
         public static event TalkWithConcreteNpc OnTalkWithConcreteNpc;
         public static event NpcLeavingLocation OnNpcLeavingLocation;
-        public static event CharacterFinishedEvent OnCharacterFinishedEvent;
+        static public event TalkSceneStart OnTalkSceneStart;
 
         private PlayerParty m_PlayerParty;
 
-        private Dictionary<int, TalkProperties> m_TalkPropertiesMap = 
-            new Dictionary<int, TalkProperties>();
+        private Dictionary<int, NpcTalkProperties> m_TalkPropertiesMap = 
+            new Dictionary<int, NpcTalkProperties>();
+
+        private Dictionary<int, TalkScene> m_BuildingTalkSceneMap =
+            new Dictionary<int, TalkScene>();
+
+        private TalkScene m_NpcTalkScene = new TalkScene();
 
         // Event processing
         internal class RosterInvite
@@ -60,7 +67,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                 NpcTalkData talkData = talkDataPair.Value;
 
-                TalkProperties talkProp = new TalkProperties();
+                NpcTalkProperties talkProp = new NpcTalkProperties();
                 talkProp.Name = talkData.Name;
                 talkProp.GreetId = talkData.GreetId;
                 talkProp.Avatar = UiMgr.Instance.GetNpcAvatarSprite(talkData.PictureId);
@@ -76,6 +83,51 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 }
 
                 m_TalkPropertiesMap.Add(talkDataPair.Key, talkProp);
+            }
+
+            foreach (var buildingDataPair in DbMgr.Instance.BuildingDb.Data)
+            {
+                BuildingData bd = buildingDataPair.Value;
+                TalkScene talkScene = new TalkScene();
+
+                talkScene.Location = bd.BuildingName;
+
+                // This will need to be checked upon level load to prevent
+                // loading all videos unnecessarily
+                if (bd.MapId == 1)
+                {
+                    if (!string.IsNullOrEmpty(bd.VideoResourcePath))
+                    {
+                        VideoClip video = Resources.Load<VideoClip>(bd.VideoResourcePath);
+                        AudioClip audio = Resources.Load<AudioClip>(bd.VideoResourcePath);
+                        if (video && audio)
+                        {
+                            GameObject videoSceneObj = (GameObject)Instantiate(Resources.Load("Prefabs/Videos/BuildingVideo"));
+                            talkScene.VideoScene = videoSceneObj.GetComponent<VideoScene>();
+                            talkScene.VideoScene.VideoToPlay = video;
+                            talkScene.VideoScene.AudioToPlay = audio;
+                            talkScene.VideoScene.enabled = true;
+                        }
+                        else
+                        {
+                            Logger.LogError("Failed to load: " + bd.VideoResourcePath);
+                        }
+                    }
+                }
+
+                foreach (int npcId in bd.NpcsInsideList)
+                {
+                    if (m_TalkPropertiesMap.ContainsKey(npcId))
+                    {
+                        talkScene.TalkProperties.Add(m_TalkPropertiesMap[npcId]);
+                    }
+                    else
+                    {
+                        Debug.LogError(bd.BuildingName + ": TalkProprties map does not contain NPC ID: " + npcId);
+                    }
+                }
+
+                m_BuildingTalkSceneMap.Add(bd.Id, talkScene);
             }
 
             // Add Yes/No topics to the DB
@@ -102,8 +154,62 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         //=================================== Methods ===================================
 
+        public void EnterBuilding(int buildingId)
+        {
+            if (!m_BuildingTalkSceneMap.ContainsKey(buildingId))
+            {
+                Debug.LogError("Trying to enter building " + buildingId + " which does not exist");
+                return;
+            }
 
-        public TalkProperties GetNpcTalkProperties(int npcId)
+            if (OnTalkSceneStart != null)
+            {
+                Character currChar = m_PlayerParty.GetMostRecoveredCharacter();
+                OnTalkSceneStart(currChar, m_BuildingTalkSceneMap[buildingId]);
+            }
+        }
+
+        public void TalkWithNPC(int npcId)
+        {
+            if (!m_TalkPropertiesMap.ContainsKey(npcId))
+            {
+                Debug.LogError("Trying to talk with NPC " + npcId + " which does not exist");
+                return;
+            }
+
+            m_NpcTalkScene.VideoScene = null;
+            m_NpcTalkScene.TalkProperties.Clear();
+            m_NpcTalkScene.TalkProperties.Add(m_TalkPropertiesMap[npcId]);
+
+            if (OnTalkSceneStart != null)
+            {
+                Character currChar = m_PlayerParty.GetMostRecoveredCharacter();
+                OnTalkSceneStart(currChar, m_NpcTalkScene);
+            }
+        }
+
+        public void TalkNPCNews(int npcId, int npcNews)
+        {
+            if (!m_TalkPropertiesMap.ContainsKey(npcId))
+            {
+                Debug.LogError("Trying to talk with NPC " + npcId + " which does not exist");
+                return;
+            }
+
+            m_NpcTalkScene.VideoScene = null;
+            m_NpcTalkScene.TalkProperties.Clear();
+            m_NpcTalkScene.TalkProperties.Add(m_TalkPropertiesMap[npcId]);
+            m_NpcTalkScene.TalkProperties[0].IsNpcNews = true;
+            m_NpcTalkScene.TalkProperties[0].GreetId = npcNews;
+
+            if (OnTalkSceneStart != null)
+            {
+                Character currChar = m_PlayerParty.GetMostRecoveredCharacter();
+                OnTalkSceneStart(currChar, m_NpcTalkScene);
+            }
+        }
+
+        public NpcTalkProperties GetNpcTalkProperties(int npcId)
         {
             if (m_TalkPropertiesMap.ContainsKey(npcId))
             {
@@ -118,7 +224,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         }
 
         // Regular greet, mostly in houses and such
-        static public string GetCurrNpcGreet(TalkProperties tlk)
+        static public string GetCurrNpcGreet(NpcTalkProperties tlk)
         {
             string greetText = "Oops !";
 
@@ -148,7 +254,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         // Base NPC News context -> Game NPC news context
         // e.g. at the start of the games NPC lizards are worried about pirates,
         //      but once pirates are gone they are happy
-        static public string GetCurrentNpcNews(TalkProperties tlk)
+        static public string GetCurrentNpcNews(NpcTalkProperties tlk)
         {
             string newsText = "Oops !";
 
@@ -168,7 +274,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return newsText;
         }
 
-        public bool HasGreetText(TalkProperties talkProp)
+        public bool HasGreetText(NpcTalkProperties talkProp)
         {
             return talkProp.GreetId > 0;
         }
@@ -215,7 +321,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private void SetNpcTopic(int npcId, int topicIdx, int setTopicId)
         {
-            TalkProperties talkProp = m_TalkPropertiesMap[npcId];
+            NpcTalkProperties talkProp = m_TalkPropertiesMap[npcId];
             if (talkProp != null)
             {
                 Debug.Log("Setting topic idx: " + topicIdx);
@@ -225,14 +331,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private void SetNpcGreeting(int npcId, int greetingId)
         {
-            TalkProperties talkProp = m_TalkPropertiesMap[npcId];
+            NpcTalkProperties talkProp = m_TalkPropertiesMap[npcId];
             if (talkProp != null)
             {
                 talkProp.GreetId = greetingId;
             }
         }
 
-        private void SetGreetMessage(TalkProperties talkProp)
+        private void SetGreetMessage(NpcTalkProperties talkProp)
         {
             string greet = GetCurrNpcGreet(talkProp);
             if (OnNpcTalkTextChanged != null)
@@ -241,7 +347,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
-        private void HandleRosterJoinEvent(int rosterId, int partyFullMsgId, TalkProperties talkProp)
+        private void HandleRosterJoinEvent(int rosterId, int partyFullMsgId, NpcTalkProperties talkProp)
         {
             m_RosterInvite = new RosterInvite()
             {
@@ -253,78 +359,19 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             talkProp.NestedTopicIds.Push(m_RosterInvite.YesNoTopics);
         }
 
-        private void EvictNpc(TalkProperties talkProp)
+        private void EvictNpc(NpcTalkProperties talkProp)
         {
             talkProp.IsPresent = false;
             talkProp.NestedTopicIds.Clear();
 
-            if (OnNpcLeavingLocation != null)
+            foreach (var housePair in m_BuildingTalkSceneMap)
             {
-                OnNpcLeavingLocation(talkProp);
+                TalkScene talkScene = housePair.Value;
+                if (talkScene.TalkProperties.Contains(talkProp))
+                {
+                    talkScene.TalkProperties.Remove(talkProp);
+                }
             }
-        }
-
-        private void AddAward(Character character, int awardId)
-        {
-            if (OnCharacterFinishedEvent != null)
-            {
-                OnCharacterFinishedEvent(character);
-            }
-        }
-
-        private void AddAutonote(int autonoteId)
-        {
-
-        }
-
-        private void RemoveAutonote(int autonoteId)
-        {
-
-        }
-
-        private List<Character> PartyCharacters()
-        {
-            return m_PlayerParty.Characters;
-        }
-
-        private void AddQuestBit(int questId)
-        {
-            QuestMgr.Instance.SetQuestBit(questId, 1);
-        }
-
-        private void RemoveQuestBit(int questId)
-        {
-            QuestMgr.Instance.SetQuestBit(questId, 0);
-        }
-
-        private bool IsQuestBitSet(int questId)
-        {
-            return QuestMgr.Instance.IsQuestBitSet(questId);
-        }
-
-        private bool HaveItem(int itemId)
-        {
-            return true;
-        }
-
-        private void RemoveItem(int itemId)
-        {
-
-        }
-
-        private void AddItem(int itemId)
-        {
-
-        }
-
-        private void AddGold(int numGold)
-        {
-
-        }
-
-        private void AddExperience(Character chr, int numExperience)
-        {
-            // TODO: Add the experience
         }
 
         private void AddRosterNpcToParty(int rosterId)
@@ -347,11 +394,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             switch (topicId)
             {
                 case 12: // Frederick Talimere - party has to have Power Stone
-                    if (!HaveItem(617)) { return false; }
+                    if (!Game.HaveItem(617)) { return false; }
                     break;
 
                 case 21: // Brekish Onefang - Power Stone quest cannot be finished
-                    if (IsQuestBitSet(8)) { return false; }
+                    if (Game.IsQuestBitSet(8)) { return false; }
                     break;
             }
 
@@ -370,7 +417,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
          *    
          * In MM8 this script had ~8000 lines
          */
-        private void ProcessTopicClickEvent(int topicId, TalkProperties talkProp)
+        private void ProcessTopicClickEvent(int topicId, NpcTalkProperties talkProp)
         {
             Debug.Log("[" + GetType().Name + "] " + talkProp.Name + ": Processing TalkEvent: #" + topicId);
 
@@ -378,17 +425,17 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 case 1: // "Cataclysm"
                     SetMessage(1);
-                    AddQuestBit(232);
+                    Game.AddQuestBit(232);
                     break;
 
                 case 2: // "Caravan Master"
                     SetMessage(2);
-                    AddQuestBit(232);
+                    Game.AddQuestBit(232);
                     break;
 
                 case 3: // "Pirates of Regna"
                     SetMessage(3);
-                    AddQuestBit(232);
+                    Game.AddQuestBit(232);
                     break;
 
                 case 4: // "Cataclysm"
@@ -397,7 +444,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case 5: // "Pirates"
-                    if (IsQuestBitSet(6))
+                    if (Game.IsQuestBitSet(6))
                     {
                         SetMessage(616);
                     }
@@ -408,7 +455,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case 6: // "Caravan"
-                    if (IsQuestBitSet(6))
+                    if (Game.IsQuestBitSet(6))
                     {
                         SetMessage(617);
                     }
@@ -419,7 +466,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case 7: // "Cataclysm" -- Brekish Onefang
-                    if (IsQuestBitSet(6))
+                    if (Game.IsQuestBitSet(6))
                     {
                         SetMessage(615);
                     }
@@ -448,9 +495,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                 case 12: // "Power Stone" -- Frederick Talimere
                     SetMessage(12);
-                    PartyCharacters().ForEach(chr => { AddAward(chr, 2); AddExperience(chr, 1500); });
-                    RemoveQuestBit(7);
-                    AddQuestBit(8);
+                    Game.PartyCharacters().ForEach(chr => { Game.AddAward(chr, 2); Game.AddExperience(chr, 1500); });
+                    Game.RemoveQuestBit(7);
+                    Game.AddQuestBit(8);
                     SetNpcTopic(32, 2, 602);
                     SetNpcTopic(1, 2, 0);
                     break;
@@ -481,16 +528,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case 21: // "Quest" (Portals of Stone) - Brekish Onefang
-                    if (IsQuestBitSet(7))
+                    if (Game.IsQuestBitSet(7))
                     {
                         SetMessage(23);
                     }
                     else
                     {
                         SetMessage(22);
-                        AddItem(617);
-                        AddQuestBit(212);
-                        AddQuestBit(7);
+                        Game.AddItem(617);
+                        Game.AddQuestBit(212);
+                        Game.AddQuestBit(7);
                         SetNpcTopic(32, 2, 12);
                         SetNpcTopic(32, 3, 13);
                     }

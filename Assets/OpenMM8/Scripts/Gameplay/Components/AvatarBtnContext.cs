@@ -9,7 +9,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class AvatarBtnContext : MonoBehaviour
 {
-    public TalkProperties TalkProperties;
+    public NpcTalkProperties TalkProperties;
 
     public GameObject Holder;
     public Button AvatarButton;

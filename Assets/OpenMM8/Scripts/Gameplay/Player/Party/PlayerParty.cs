@@ -212,6 +212,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 Vector3.Distance(transform.position, go.transform.position) > Constants.MeleeRangeDistance);
 
             // 1) Try to interact with object being targeted by Crosshair
+            List<Interactable> interactables = new List<Interactable>();
+
             RaycastHit hit;
             Ray ray = Camera.main.ViewportPointToRay(Constants.CrosshairScreenRelPos);
 
@@ -242,8 +244,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     {
                         if (interactable.enabled)
                         {
-                            interactObject = interactable;
-                            break;
+                            interactables.Add(interactable);
                         }
                     }
                 }
@@ -315,12 +316,21 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 }*/
             }
 
-            if (interactObject != null)
+            bool didInteract = false;
+            foreach (Interactable ir in interactables)
             {
-                return interactObject.Interact(this.gameObject, hit);
+                if (ir.TryInteract(this.gameObject, hit))
+                {
+                    didInteract = true;
+                }
             }
 
-            return false;
+            /*if (interactObject != null)
+            {
+                return interactObject.TryInteract(this.gameObject, hit);
+            }*/
+
+            return didInteract;
         }
 
         private bool HandleHover()

@@ -313,6 +313,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         {
             if (//comp.Equals(Animator) ||
                 //comp.Equals(SpriteLookRotator) ||
+                comp == null ||
                 comp.Equals(HoverInfo) ||
                 comp.Equals(GetComponent<CameraFacingBillboard>()) ||
                 comp.Equals(GetComponent<SpriteRenderer>()) ||

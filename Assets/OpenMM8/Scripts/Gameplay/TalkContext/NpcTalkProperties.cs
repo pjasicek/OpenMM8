@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
     [System.Serializable]
-    public class TalkProperties
+    public class NpcTalkProperties
     {
         // If this field is > 0 then the data will be loaded from the .CSV file
         // Otherwise it has to be specified by hand
