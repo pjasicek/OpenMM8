@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 146836576, guid: 0472bdc8d6d15384d98f22ee34302f9c, type: 3}
+  m_Name: ProBuilderPreferences
+  m_EditorClassIdentifier: 
+  m_Bool_keys:
+  - pbEnableBackfaceSelection
+  - pb_Debug_testOcclusion
+  - pbShowDetail
+  - pbShowTrigger
+  - pbGenerateUV2PerObject
+  - pbStripProBuilderOnBuild
+  - pbDisableAutoUV2Generation
+  - pbForceConvex
+  - pbMeshesAreAssets
+  m_Int_keys:
+  - pbDefaultEditLevel
+  - pbDefaultSelectionMode
+  - pbHandleAlignment
+  - pbDefaultExportFormat
+  - pb_GIWorkflowMode
+  - pb_Log::m_LogLevel
+  - pbDefaultEntity
+  - pbDefaultCollider
+  - pbShadowCastingMode
+  m_Float_keys:
+  - pbEditorScroll.x
+  - pbEditorScroll.y
+  - pb_Debug_elementLength
+  - pb_Debug_elementOffset
+  m_String_keys:
+  - pbCurrentMaterialPalette
+  m_Color_keys: []
+  m_Material_keys:
+  - pbDefaultMaterial
+  m_Bool_values: 000101010000000000
+  m_Int_values: 0100000002000000000000000000000000000000ff000000000000000200000002000000
+  m_Float_values:
+  - 0
+  - 0
+  - 0.103
+  - 0.0103
+  m_String_values:
+  - Assets/ProCore/ProBuilder/Data/Default Material Palette.asset
+  m_Color_values: []
+  m_Material_values:
+  - {fileID: 2100000, guid: 55296d1b6ee54e14e8eb4648d4b448ee, type: 2}

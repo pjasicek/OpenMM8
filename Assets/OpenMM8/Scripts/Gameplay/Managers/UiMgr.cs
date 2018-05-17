@@ -409,7 +409,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             // 7.5px spaces between buttons
-            const float spacerHeight = 200.0f;
+            const float spacerHeight = 240.0f;
             totalTextHeight += (buttIdx - 1) * spacerHeight;
 
             float topicCenterY = m_NpcTalkUI.TopicButtonHolder.anchoredPosition.y;

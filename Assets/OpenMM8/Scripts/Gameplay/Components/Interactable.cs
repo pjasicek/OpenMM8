@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using ProBuilder2.Common;
 
 public enum InteractFilter
 {
     AllowAll,
     ByTexture,
     ByTriangles,
+    ByFaces,
     DenyAll,
 }
 
@@ -17,6 +19,10 @@ abstract public class Interactable : MonoBehaviour
 
     // For the ByTexture filter
     private MeshInfo m_MeshInfo;
+
+    private pb_Object m_pbObject;
+
+    private static long m_TotalMsConvert = 0;
 
     protected void Start()
     {
@@ -37,6 +43,15 @@ abstract public class Interactable : MonoBehaviour
                     Debug.LogError("Failed to initialize MeshInfo.");
                     InteractSelector.FilterType = InteractFilter.DenyAll;
                 }
+            }
+        }
+        else if (InteractSelector.FilterType == InteractFilter.ByFaces)
+        {
+            m_pbObject = GetComponent<pb_Object>();
+            if (m_pbObject)
+            {
+                m_pbObject.ToMesh();
+                m_pbObject.Refresh(RefreshMask.All);
             }
         }
     }
@@ -85,6 +100,30 @@ abstract public class Interactable : MonoBehaviour
                 return false;
             }
         }
+        else if (InteractSelector.FilterType == InteractFilter.ByFaces)
+        {
+            if (m_pbObject)
+            {
+                Mesh m = m_pbObject.msh;
+                int[] tris = new int[3] {
+                    m.triangles[interactRay.triangleIndex * 3 + 0],
+                    m.triangles[interactRay.triangleIndex * 3 + 1],
+                    m.triangles[interactRay.triangleIndex * 3 + 2]
+                };
+
+                int faceIdx;
+                m_pbObject.FaceWithTriangle(tris, out faceIdx);
+
+                if (!InteractSelector.AllowedFaces.Contains(faceIdx))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         if (!CanInteract(interacter, interactRay))
         {
@@ -107,6 +146,7 @@ public class InteractSelector
     public InteractFilter FilterType = InteractFilter.AllowAll;
     public List<int> AllowedTriangles = new List<int>();
     public List<string> AllowedTextures = new List<string>();
+    public List<int> AllowedFaces = new List<int>(3);
 }
 
 public class MeshInfo
