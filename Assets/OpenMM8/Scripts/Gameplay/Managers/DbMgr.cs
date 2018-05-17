@@ -22,7 +22,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public NpcTalkDb NpcTalkDb = new NpcTalkDb();
         public BuildingDb BuildingDb = new BuildingDb();
 
-        private const string MM8_DATA_PATH = @"Assets/OpenMM8/Resources/Data/";
+        private const string MM8_DATA_PATH = @"Data/";
 
         private void Awake()
         {
@@ -38,15 +38,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             QuestDb.Initialize(MM8_DATA_PATH + @"Quests.csv");
             NpcTalkDb.Initialize(MM8_DATA_PATH + @"NpcTalkData.csv");*/
 
-            ItemDb.Initialize(MM8_DATA_PATH + @"ITEMS.txt", 2);
-            MonsterDb.Initialize(MM8_DATA_PATH + @"MONSTERS.txt", 2);
-            NpcGreetDb.Initialize(MM8_DATA_PATH + @"NPC_GREET.txt");
-            NpcTextDb.Initialize(MM8_DATA_PATH + @"NPC_TOPIC_TEXT.txt");
-            NpcTopicDb.Initialize(MM8_DATA_PATH + @"NPC_TOPIC.txt");
-            NpcNewsDb.Initialize(MM8_DATA_PATH + @"NPC_NEWS.txt");
-            QuestDb.Initialize(MM8_DATA_PATH + @"QUESTS.txt");
-            NpcTalkDb.Initialize(MM8_DATA_PATH + @"NPC.txt", 2);
-            BuildingDb.Initialize(MM8_DATA_PATH + @"BUILDINGS.txt");
+            ItemDb.Initialize(MM8_DATA_PATH + @"ITEMS", 2);
+            MonsterDb.Initialize(MM8_DATA_PATH + @"MONSTERS", 2);
+            NpcGreetDb.Initialize(MM8_DATA_PATH + @"NPC_GREET");
+            NpcTextDb.Initialize(MM8_DATA_PATH + @"NPC_TOPIC_TEXT");
+            NpcTopicDb.Initialize(MM8_DATA_PATH + @"NPC_TOPIC");
+            NpcNewsDb.Initialize(MM8_DATA_PATH + @"NPC_NEWS");
+            QuestDb.Initialize(MM8_DATA_PATH + @"QUESTS");
+            NpcTalkDb.Initialize(MM8_DATA_PATH + @"NPC", 2);
+            BuildingDb.Initialize(MM8_DATA_PATH + @"BUILDINGS");
 
             stopwatch.Stop();
             UnityEngine.Debug.Log("elapsed ms: " + stopwatch.ElapsedMilliseconds);

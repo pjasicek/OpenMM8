@@ -21,7 +21,12 @@ public class CsvDataLoader
         };
         CsvContext cc = new CsvContext();
 
-        IEnumerable<MyDataRow> pr = cc.Read<MyDataRow>(csvPath, inputFileDescription);
+        // To appease Unity
+        TextAsset textAsset = Resources.Load<TextAsset>(csvPath);
+        MemoryStream memoryStream = new MemoryStream(textAsset.bytes);
+        StreamReader reader = new StreamReader(memoryStream);
+
+        IEnumerable<MyDataRow> pr = cc.Read<MyDataRow>(reader, inputFileDescription);
         
         int rowNum = 0;
         int numCols = 0;
