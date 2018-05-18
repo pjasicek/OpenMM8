@@ -77,6 +77,27 @@ class EditorCallbackViewer : EditorWindow
 		AddLog("Edit Level Changed: " + (EditLevel) editLevel);
 	}
 
+    private List<int> GetSelectedTriangleIndexes(pb_Object pb)
+    {
+        List<int> triIndexes = new List<int>();
+
+        int[] selectedFaceTris = pb.SelectedTriangles;
+        
+
+        int triangleIdx = 0;
+        for (int i = 0; i < pb.msh.triangles.Length; i += 3, triangleIdx++)
+        {
+            if (selectedFaceTris.Contains(pb.msh.triangles[i + 0]) &&
+                selectedFaceTris.Contains(pb.msh.triangles[i + 1]) &&
+                selectedFaceTris.Contains(pb.msh.triangles[i + 2]))
+            {
+                triIndexes.Add(triangleIdx);
+            }
+        }
+
+        return triIndexes;
+    }
+
 	void OnSelectionUpdate(pb_Object[] selection)
 	{
 		/*AddLog("Selection Updated: " + string.Format("{0} objects and {1} vertices selected.",
@@ -93,22 +114,54 @@ class EditorCallbackViewer : EditorWindow
             {
                 logs.Clear();
 
-                int[] tris = new int[3];
-
-                string sel = "Selected: ";
-                foreach (int t in selection[0].SelectedFaces[0].indices)
+                List<int> selectedTriIdxs = GetSelectedTriangleIndexes(selection[0]);
+                string selTriStr = "";
+                foreach (int t in selectedTriIdxs)
                 {
-                    sel += t + " ";
+                    selTriStr += t + " ";
                 }
 
-                AddLog("Selected triangles: " + sel);
-                AddLog("Mesh Triangle Count: " + pb.msh.triangles.Length);
                 AddLog("Face: " + faceIdx);
+                AddLog("[" + selectedTriIdxs.Count + "] Selected triangles: " + selTriStr);
+                AddLog("Mesh Triangle Count: " + pb.msh.triangles.Length);
             }
             else
             {
                 Debug.LogError("Selected one face but cannot get its index ?!");
             }
+        }
+        else if (selection != null && 
+            selection.Length == 1 && 
+            selection[0] != null && 
+            selection[0].SelectedFaceCount > 1)
+        {
+            List<int> selectedTriIdxs = GetSelectedTriangleIndexes(selection[0]);
+            List<int> selectedFaces = new List<int>();
+
+            for (int faceIdx = 0; faceIdx < selection[0].faces.Length; faceIdx++)
+            {
+                if (selection[0].SelectedFaces.Contains(selection[0].faces[faceIdx]))
+                {
+                    selectedFaces.Add(faceIdx);
+                }
+            }
+
+            logs.Clear();
+
+            string faceSel = "Selected Faces [" + selectedFaces.Count + "]: ";
+            foreach (int faceIdx in selectedFaces)
+            {
+                faceSel += faceIdx + " ";
+            }
+
+            string selStr = "\n";
+            foreach (int t in selectedTriIdxs)
+            {
+                selStr += t + "\n";
+            }
+
+            AddLog(faceSel);
+            AddLog("[" + selectedTriIdxs.Count + "]      Selected triangles: " + selStr);
         }
 	}
 

@@ -50,8 +50,21 @@ abstract public class Interactable : MonoBehaviour
             m_pbObject = GetComponent<pb_Object>();
             if (m_pbObject)
             {
-                m_pbObject.ToMesh();
-                m_pbObject.Refresh(RefreshMask.All);
+                if (m_pbObject.msh.isReadable)
+                {
+                    m_pbObject.ToMesh();
+                    m_pbObject.Refresh(RefreshMask.All);
+                }
+                else
+                {
+                    Debug.LogError(gameObject.name + ": Interacting by faces with Read/Write enabled object (non-static)");
+                    InteractSelector.FilterType = InteractFilter.DenyAll;
+                }
+            }
+            else
+            {
+                Debug.LogError(gameObject.name + ": Interacting by faces only available with attach pb_Object (Probuilder)");
+                InteractSelector.FilterType = InteractFilter.DenyAll;
             }
         }
     }
