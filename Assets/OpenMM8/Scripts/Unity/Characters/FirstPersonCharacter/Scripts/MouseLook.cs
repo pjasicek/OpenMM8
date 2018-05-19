@@ -74,6 +74,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void InternalLockUpdate()
         {
+            // TODO: Comment this if so cursor is not unlocked by pressing
+            // escape in releases
             if(Input.GetKeyUp(KeyCode.Escape))
             {
                 m_cursorIsLocked = false;
