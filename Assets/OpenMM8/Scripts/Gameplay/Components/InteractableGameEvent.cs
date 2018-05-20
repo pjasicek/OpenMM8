@@ -8,6 +8,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 {
     class InteractableGameEvent : Interactable
     {
+        [Header("Event")]
         public int EventNumber;
 
         protected override bool Interact(GameObject interacter, RaycastHit interactRay)

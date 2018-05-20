@@ -107,6 +107,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 if (m_CurrVideoScene != null)
                 {
                     m_CurrVideoScene.Stop();
+                    m_CurrVideoScene.gameObject.SetActive(false);
                     m_CurrVideoScene = null;
                 }
             }
@@ -143,6 +144,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 if (talkScene.VideoScene != null)
                 {
                     m_CurrVideoScene = talkScene.VideoScene;
+                    m_CurrVideoScene.gameObject.SetActive(true);
                     m_CurrVideoScene.Play();
                 }
             }

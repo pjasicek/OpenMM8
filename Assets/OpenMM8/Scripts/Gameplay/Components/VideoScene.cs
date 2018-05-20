@@ -88,7 +88,7 @@ public class VideoScene : MonoBehaviour
         if (VideoToPlay != null)
         {
             // Pre-buffer
-            StartCoroutine(Prepare(m_VideoPlayer1));
+            //StartCoroutine(PrepareStart(m_VideoPlayer1));
         }
     }
 
@@ -131,10 +131,8 @@ public class VideoScene : MonoBehaviour
             Debug.LogWarning("null audio");
         }
 
-        m_Image.texture = m_VideoPlayer1.texture;
-        m_Image.enabled = true;
-
-        // This vid should already be buffered
+        // Videos are NOT pre-buffered...
+        // Pre-buffering eats 500 FPS for some reason
         StartCoroutine(playVideo(m_VideoPlayer1));
     }
 
@@ -151,8 +149,10 @@ public class VideoScene : MonoBehaviour
         }
         m_Image.enabled = false;
 
+        StopAllCoroutines();
+
         // Pre-buffer
-        StartCoroutine(Prepare(m_VideoPlayer1));
+        //StartCoroutine(PrepareStart(m_VideoPlayer1));
     }
 
     IEnumerator Prepare(VideoPlayer plr)
@@ -170,7 +170,6 @@ public class VideoScene : MonoBehaviour
 
     IEnumerator playVideo(VideoPlayer plr)
     {
-        // Vid should always be prepared
         if (!plr.isPrepared)
         {
             plr.Prepare();
@@ -180,9 +179,6 @@ public class VideoScene : MonoBehaviour
                 yield return null;
             }
         }
-
-        //Assign the Texture from Video to RawImage to be displayed
-        m_Image.texture = plr.texture;
 
         if (RestartAudio)
         {
@@ -197,6 +193,11 @@ public class VideoScene : MonoBehaviour
             }
         }
 
+        
+        m_Image.texture = plr.texture;
         plr.Play();
+
+        // Show image AFTER there is a video texture
+        m_Image.enabled = true;
     }
 }

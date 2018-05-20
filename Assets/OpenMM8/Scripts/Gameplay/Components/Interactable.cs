@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using ProBuilder2.Common;
+using ProBuilder.Core;
 
 public enum InteractFilter
 {
@@ -48,16 +48,22 @@ abstract public class Interactable : MonoBehaviour
         else if (InteractSelector.FilterType == InteractFilter.ByFaces)
         {
             m_pbObject = GetComponent<pb_Object>();
+            Mesh mesh = null;
+            if (GetComponent<MeshFilter>() != null)
+            {
+                mesh = GetComponent<MeshFilter>().mesh;
+            }
+
             if (m_pbObject)
             {
-                if (m_pbObject.msh.isReadable)
+                if (mesh.isReadable)
                 {
                     m_pbObject.ToMesh();
                     m_pbObject.Refresh(RefreshMask.All);
                 }
                 else
                 {
-                    Debug.LogError(gameObject.name + ": Interacting by faces with Read/Write enabled object (non-static)");
+                    Debug.LogError(gameObject.name + ": Interacting by faces with Read/Write disabled object (non-static)");
                     InteractSelector.FilterType = InteractFilter.DenyAll;
                 }
             }
@@ -117,7 +123,7 @@ abstract public class Interactable : MonoBehaviour
         {
             if (m_pbObject)
             {
-                Mesh m = m_pbObject.msh;
+                Mesh m = GetComponent<MeshFilter>().sharedMesh;
                 int[] tris = new int[3] {
                     m.triangles[interactRay.triangleIndex * 3 + 0],
                     m.triangles[interactRay.triangleIndex * 3 + 1],

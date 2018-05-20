@@ -118,6 +118,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                                 talkScene.VideoScene.VideoToPlay = video;
                                 talkScene.VideoScene.AudioToPlay = audio;
                                 talkScene.VideoScene.enabled = true;
+                                //videoSceneObj.SetActive(false);
 
                                 // Cache it
                                 m_VideoSceneMap[bd.VideoResourcePath] = talkScene.VideoScene;
