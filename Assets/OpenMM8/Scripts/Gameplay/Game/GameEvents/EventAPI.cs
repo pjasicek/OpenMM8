@@ -88,5 +88,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             // TODO: Add the experience
         }
+
+        static public void AddTimer(Timer t)
+        {
+            TimeMgr.Instance.AddTimer(t);
+        }
     }
 }

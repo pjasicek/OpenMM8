@@ -7,6 +7,20 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 {
     public class EP_DaggerWoundIsland : MapEventProcessor
     {
+        Timer m_StonTimer;
+
+        public override void Init()
+        {
+
+            m_StonTimer = new Timer()
+            {
+                Name = "S'ton Timer",
+                Delay = 10 * TimeMgr.HOUR_IN_MINUTES,
+                OnTimer = (Timer t, TimeInfo time) => { ProcessEvent(500); }
+            };
+            AddTimer(m_StonTimer);
+        }
+
         public override void ProcessEvent(int evtId)
         {
             switch (evtId)
@@ -141,6 +155,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
 
+
+                case 500: // S'ton
+                    if (!EventAPI.IsQuestBitSet(232))
+                    {
+                        EventAPI.TalkWithNPC(31);
+                        EventAPI.AddQuestBit(232);
+                    }
+                    break;
 
                 case 1000: // Lizardman Peasant - NPC News
                     if (EventAPI.IsQuestBitSet(6))

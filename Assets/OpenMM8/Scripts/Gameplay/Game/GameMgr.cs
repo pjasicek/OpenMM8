@@ -9,7 +9,6 @@ using UnityEngine.UI;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    public delegate void EscapePressed();
     public delegate void PauseGame();
     public delegate void UnpauseGame();
     /*public delegate void LevelUnloaded(int levelNum);
@@ -22,12 +21,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public static GameMgr Instance;
 
         // Events
-        static public event EscapePressed OnEscapePressed;
         static public event PauseGame OnPauseGame;
         static public event PauseGame OnUnpauseGame;
         /* static public event LevelUnloaded OnLevelUnloaded;
          static public event LevelLoaded OnLevelLoaded;*/
-        static public event MapButtonPressed OnMapButtonPressed;
 
         // States
         [Header("Game states")]
@@ -49,7 +46,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public AudioClip BackgroundMusic;
 
         [HideInInspector]
-        public bool IsGamePaused = false;
+        public bool m_IsGamePaused = false;
 
         // Private
         private Inspectable m_InspectedObj;
@@ -97,18 +94,43 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         void Update()
         {
-            if (Input.GetButtonDown("Escape"))
-            {
-                PressEscape();
-            }
+            
 
             bool wasInspectEnabled = (m_InspectedObj != null);
             bool isInspectEnabled = false;
             Inspectable inspectedObj = null;
 
-            if (Input.GetButton("InspectObject"))
+            // IDEA: When game is paused then maybe UiMgr should check if it can consume the event first ?
+            if (Input.GetButtonDown("Escape"))
             {
-                if (!IsGamePaused)
+                UiMgr.Instance.HandleButtonDown("Escape");
+            }
+            if (Input.GetButtonDown("Map"))
+            {
+                UiMgr.Instance.HandleButtonDown("Map");
+            }
+            /*if (Input.GetButtonDown("Queust"))
+            {
+                UiMgr.Instance.HandleButtonDown("Queust");
+            }
+            if (Input.GetButtonDown("Notes"))
+            {
+                UiMgr.Instance.HandleButtonDown("Notes");
+            }
+            if (Input.GetButtonDown("Rest"))
+            {
+                UiMgr.Instance.HandleButtonDown("Rest");
+            }
+            if (Input.GetButtonDown("Inventory"))
+            {
+                UiMgr.Instance.HandleButtonDown("Inventory");
+            }*/
+            
+
+
+            if (Input.GetButton("InspectObject") && !UiMgr.Instance.IsInGameBlockingState())
+            {
+                if (!m_IsGamePaused)
                 {
                     Time.timeScale = 0;
                 }
@@ -132,7 +154,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
             else
             {
-                if (!IsGamePaused)
+                if (!m_IsGamePaused)
                 {
                     Time.timeScale = 1;
                 }
@@ -160,30 +182,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             m_InspectedObj = inspectedObj;
 
-            if (Input.GetButtonDown("Map"))
-            {
-                if (OnMapButtonPressed != null)
-                {
-                    OnMapButtonPressed();
-                }
-
-                /*if (!(IsGamePaused && !MapQuestNotesUI.Canvas.enabled))
-                {
-                    if (MapQuestNotesUI.Canvas.enabled)
-                    {
-                        ReturnToGame();
-                    }
-                    else
-                    {
-                        Cursor.lockState = CursorLockMode.None;
-                        Cursor.visible = true;
-                        PauseGame();
-                        MapQuestNotesUI.Canvas.enabled = true;
-                        GameMgr.Instance.Minimap.enabled = false;
-                    }
-                }*/
-            }
-
             if (Input.GetKeyDown(KeyCode.F2))
             {
                 PlayerParty.RemoveCharacter(PlayerParty.Characters[0]);
@@ -196,6 +194,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     PlayerParty.RemoveCharacter(PlayerParty.Characters[0]);
                 }
                 AddRandChar();
+            }
+
+            if (Input.GetKeyDown(KeyCode.F3))
+            {
+                TimeMgr.Instance.AddMinutes(30);
+            }
+
+            if (Input.GetKeyDown(KeyCode.F4))
+            {
+                TimeMgr.Instance.AddMinutes(TimeMgr.DAY_IN_MINUTES / 2);
             }
         }
 
@@ -248,16 +256,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void PressEscape()
         {
-            if (OnEscapePressed != null)
-            {
-                OnEscapePressed();
-            }
+            UiMgr.Instance.HandleButtonDown("Escape");
+        }
+
+        public bool IsGamePaused()
+        {
+            return m_IsGamePaused || UiMgr.Instance.IsInGameBlockingState();
         }
 
         public void PauseGame()
         {
             Time.timeScale = 0;
-            IsGamePaused = true;
+            m_IsGamePaused = true;
             //OnGamePaused();
 
             if (OnPauseGame != null)
@@ -269,7 +279,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public void UnpauseGame()
         {
             Time.timeScale = 1;
-            IsGamePaused = false;
+            m_IsGamePaused = false;
             //OnGameUnpaused();
 
             if (OnUnpauseGame != null)

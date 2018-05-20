@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    public class UiMgr : Singleton<UiMgr>
+    public partial class UiMgr : Singleton<UiMgr>
     {
         public RawImage SceneVideoImage;
 
@@ -56,8 +56,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private void Awake()
         {
             GameMgr.OnPauseGame += OnPauseGame;
-            GameMgr.OnEscapePressed += OnEscapePressed;
-            GameMgr.OnMapButtonPressed += OnMapButtonPressed;
 
             PlayerParty.OnCharacterJoinedParty += OnCharacterJoinedParty;
             PlayerParty.OnCharacterLeftParty += OnCharacterLeftParty;
@@ -238,6 +236,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return true;
         }
 
+        public bool PostInit()
+        {
+            return true;
+        }
+
         private void UpdateEmptySlotBanners(PlayerParty party)
         {
             int numPartyMembers = party.Characters.Count;
@@ -295,6 +298,61 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         //=================================== Methods ===================================
 
+
+        public bool HandleButtonDown(string button)
+        {
+            if (m_CurrUIState != null)
+            {
+                // Actions need to know how to handle it
+                return m_CurrUIState.OnActionPressed(button);
+            }
+            else
+            {
+                // Check the button corresponds to any UI state
+                switch (button)
+                {
+                    case "Escape":
+                        break;
+
+                    case "Map":
+                        m_CurrUIState = new MapUIState();
+                        m_CurrUIState.EnterState(null);
+                        break;
+
+                    case "Quest":
+                        break;
+
+                    case "Story":
+                        break;
+
+                    case "Notes":
+                        break;
+
+                    case "Rest":
+                        break;
+
+                    case "Inventory":
+                        break;
+
+                    case "Spellbook":
+                        break;
+
+                    case "Stats":
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            return false;
+        }
+
+        public bool IsInGameBlockingState()
+        {
+            return m_CurrUIState != null && m_CurrUIState.IsGameBlocking();
+        }
+
         public Sprite GetNpcAvatarSprite(int pictureId)
         {
             const int PLACEHOLDER_ID = 2200;
@@ -313,7 +371,36 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return sprite;
         }
 
-        
+        public void SetupForFullscreenUiState(UIState invoker)
+        {
+            m_Minimap.enabled = false;
+            m_PartyBuffsAndButtonsCanvas.enabled = false;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            foreach (Character chr in m_PlayerParty.Characters)
+            {
+                chr.UI.Holder.SetActive(false);
+            }
+
+            if (invoker.IsGameBlocking())
+            {
+                GameMgr.Instance.PauseGame();
+            }
+        }
+
+        public void SetupForPartialUiState(UIState invoker)
+        {
+            m_Minimap.enabled = false;
+            m_PartyBuffsAndButtonsCanvas.enabled = false;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            if (invoker.IsGameBlocking())
+            {
+                GameMgr.Instance.PauseGame();
+            }
+        }
 
         private void SetPartyInfoText(string text, bool forceRewrite = true)
         {
@@ -366,6 +453,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 m_CurrUIState.LeaveState();
                 m_CurrUIState = null;
+            }
+
+            foreach (Character chr in m_PlayerParty.Characters)
+            {
+                chr.UI.Holder.SetActive(true);
             }
 
             GameMgr.Instance.UnpauseGame();
@@ -595,13 +687,17 @@ namespace Assets.OpenMM8.Scripts.Gameplay
          */
         public void OnTalkSceneStart(Character talkerChr, TalkScene talkScene)
         {
-            m_Minimap.enabled = false;
-            m_MinimapCloseButtonImage.enabled = true;
-            m_PartyBuffsAndButtonsCanvas.enabled = false;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            if (m_CurrUIState != null)
+            {
+                Debug.LogError("Talk attempt when already talking. Not supported now !");
+                return;
+            }
 
             m_CurrUIState = new TalkUIState();
+
+            SetupForPartialUiState(m_CurrUIState);
+            m_MinimapCloseButtonImage.enabled = true;
+
             m_CurrUIState.EnterState(new TalkUIStateArgs(talkerChr, talkScene, m_NpcTalkUI));
         }
 
@@ -629,17 +725,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         // =========== Game states
 
-        public void OnEscapePressed()
-        {
-            if (m_CurrUIState != null)
-            {
-                if (m_CurrUIState.OnActionPressed("Escape"))
-                {
-                    Debug.Log("Event consumed");
-                }
-            }
-        }
-
         public void OnPauseGame()
         {
 
@@ -649,7 +734,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private void OnMapButtonPressed()
         {
-            if (!(GameMgr.Instance.IsGamePaused && !m_MapQuestNotesUI.Canvas.enabled))
+            if (!(GameMgr.Instance.IsGamePaused() && !m_MapQuestNotesUI.Canvas.enabled))
             {
                 if (m_MapQuestNotesUI.Canvas.enabled)
                 {

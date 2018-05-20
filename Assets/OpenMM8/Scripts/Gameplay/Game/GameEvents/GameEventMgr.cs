@@ -28,6 +28,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public bool Init()
         {
+            m_MapEventProcessorMap[m_CurrentMap].Init();
+
             return true;   
         }
 

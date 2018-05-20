@@ -77,7 +77,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 character.OnFixedUpdate(deltaTime);
             }
 
-            if (GameMgr.Instance.IsGamePaused)
+            // TODO: Make some generic way to determine whether PlayerParty can act ...
+            if (GameMgr.Instance.IsGamePaused() || Time.timeScale == 0.0f)
             {
                 return;
             }

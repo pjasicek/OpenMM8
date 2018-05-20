@@ -34,6 +34,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private Dictionary<int, TalkScene> m_BuildingTalkSceneMap =
             new Dictionary<int, TalkScene>();
 
+        private Dictionary<string, VideoScene> m_VideoSceneMap = 
+            new Dictionary<string, VideoScene>();
+
         private TalkScene m_NpcTalkScene = new TalkScene();
 
         // Event processing
@@ -98,19 +101,31 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 {
                     if (!string.IsNullOrEmpty(bd.VideoResourcePath))
                     {
-                        VideoClip video = Resources.Load<VideoClip>(bd.VideoResourcePath);
-                        AudioClip audio = Resources.Load<AudioClip>(bd.VideoResourcePath);
-                        if (video && audio)
+                        
+                        if (m_VideoSceneMap.ContainsKey(bd.VideoResourcePath))
                         {
-                            GameObject videoSceneObj = (GameObject)Instantiate(Resources.Load("Prefabs/Videos/BuildingVideo"));
-                            talkScene.VideoScene = videoSceneObj.GetComponent<VideoScene>();
-                            talkScene.VideoScene.VideoToPlay = video;
-                            talkScene.VideoScene.AudioToPlay = audio;
-                            talkScene.VideoScene.enabled = true;
+                            // Take it from Cache
+                            talkScene.VideoScene = m_VideoSceneMap[bd.VideoResourcePath];
                         }
                         else
                         {
-                            Logger.LogError("Failed to load: " + bd.VideoResourcePath);
+                            VideoClip video = Resources.Load<VideoClip>(bd.VideoResourcePath);
+                            AudioClip audio = Resources.Load<AudioClip>(bd.VideoResourcePath);
+                            if (video && audio)
+                            {
+                                GameObject videoSceneObj = (GameObject)Instantiate(Resources.Load("Prefabs/Videos/BuildingVideo"));
+                                talkScene.VideoScene = videoSceneObj.GetComponent<VideoScene>();
+                                talkScene.VideoScene.VideoToPlay = video;
+                                talkScene.VideoScene.AudioToPlay = audio;
+                                talkScene.VideoScene.enabled = true;
+
+                                // Cache it
+                                m_VideoSceneMap[bd.VideoResourcePath] = talkScene.VideoScene;
+                            }
+                            else
+                            {
+                                Logger.LogError("Failed to load: " + bd.VideoResourcePath);
+                            }
                         }
                     }
                 }
