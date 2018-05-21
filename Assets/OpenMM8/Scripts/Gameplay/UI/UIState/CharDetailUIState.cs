@@ -10,17 +10,27 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 {
     public partial class UiMgr
     {
+        public enum CharDetailState
+        {
+            None,
+            Stats,
+            Inventory,
+            Skills,
+            Awards
+        }
+
+        public class CharDetailUIStateArgs
+        {
+            public CharDetailState EnterState = CharDetailState.None;
+
+            public CharDetailUIStateArgs(CharDetailState enterState)
+            {
+                EnterState = enterState;
+            }
+        }
+
         public class CharDetailUIState : UIState
         {
-            private enum CharDetailState
-            {
-                None,
-                Stats,
-                Inventory,
-                Skills,
-                Awards
-            }
-
             private CharDetailState m_State;
 
             public override bool OnActionPressed(string action)
@@ -33,19 +43,19 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 }
                 else if (action == "Stats")
                 {
-
+                    SwitchState(CharDetailState.Stats);
                 }
                 else if (action == "Inventory")
                 {
-
+                    SwitchState(CharDetailState.Inventory);
                 }
                 else if (action == "Skills")
                 {
-
+                    SwitchState(CharDetailState.Skills);
                 }
                 else if (action == "Awards")
                 {
-
+                    SwitchState(CharDetailState.Awards);
                 }
 
                 return false;
@@ -53,7 +63,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             public override bool EnterState(object stateArgs)
             {
+                CharDetailUIStateArgs args = (CharDetailUIStateArgs)stateArgs;
+
                 UiMgr.Instance.SetupForPartialUiState(this);
+
+                UiMgr.Instance.m_CharDetailUI.CanvasHolder.enabled = true;
+                SwitchState(args.EnterState);
 
                 // Register for party member change event
 
@@ -64,8 +79,53 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 // Unregister from registered events
 
-                // Hide shown UI elements
-                UiMgr.Instance.m_MapQuestNotesUI.Canvas.enabled = true;
+                UiMgr.Instance.m_CharDetailUI.CanvasHolder.enabled = false;
+            }
+
+            private void HideAllSubstates()
+            {
+                UiMgr.Instance.m_CharDetailUI.StatsUI.Holder.SetActive(false);
+                UiMgr.Instance.m_CharDetailUI.SkillsUI.Holder.SetActive(false);
+                UiMgr.Instance.m_CharDetailUI.InventoryUI.Holder.SetActive(false);
+                UiMgr.Instance.m_CharDetailUI.AwardsUI.Holder.SetActive(false);
+            }
+
+            private void SwitchState(CharDetailState newState)
+            {
+                if (m_State == newState)
+                {
+                    return;
+                }
+
+                m_State = newState;
+
+                HideAllSubstates();
+
+                switch (newState)
+                {
+                    case CharDetailState.Stats:
+                        UiMgr.Instance.m_CharDetailUI.StatsUI.Holder.SetActive(true);
+                        break;
+
+                    case CharDetailState.Skills:
+                        UiMgr.Instance.m_CharDetailUI.SkillsUI.Holder.SetActive(true);
+                        break;
+
+                    case CharDetailState.Inventory:
+                        UiMgr.Instance.m_CharDetailUI.InventoryUI.Holder.SetActive(true);
+                        break;
+
+                    case CharDetailState.Awards:
+                        UiMgr.Instance.m_CharDetailUI.AwardsUI.Holder.SetActive(true);
+                        break;
+
+                    case CharDetailState.None:
+                        UiMgr.Instance.ReturnToGame();
+                        break;
+
+                    default:
+                        break;
+                }
             }
         }
     } // public partial class UiMgr

@@ -38,6 +38,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private Image m_MinimapCloseButtonImage;
         private MapQuestNotesUI m_MapQuestNotesUI;
         private List<Image> m_EmptySlotBanners = new List<Image>();
+        private CharDetailUI m_CharDetailUI;
 
         [Header("UI - Map, Quest, Notes, History")]
         int placeholder;
@@ -191,6 +192,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_EmptySlotBanners.Add(m_PartyCanvasObj.transform.Find("PC5_EmptySlot").GetComponent<Image>());
 
             m_InspectNpcUI.PreviewImage = npcInfoBackgroundObject.transform.Find("PreviewImageMask").transform.Find("PreviewImage").GetComponent<Image>();
+
+            m_CharDetailUI = CharDetailUI.Load();
         }
 
         // Init sequence: DbMgr(1) -> GameMgr(1) -> UiMgr(1) -> GameMgr(2)
@@ -332,6 +335,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         break;
 
                     case "Inventory":
+                        m_CurrUIState = new CharDetailUIState();
+                        m_CurrUIState.EnterState(new CharDetailUIStateArgs(CharDetailState.Inventory));
                         break;
 
                     case "Spellbook":
@@ -732,35 +737,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         // =========== Buttons
 
-        private void OnMapButtonPressed()
+        public void OnCharDetailButtonPressed(string action)
         {
-            if (!(GameMgr.Instance.IsGamePaused() && !m_MapQuestNotesUI.Canvas.enabled))
+            if ((m_CurrUIState != null) && (m_CurrUIState.GetType() == typeof(CharDetailUIState)))
             {
-                if (m_MapQuestNotesUI.Canvas.enabled)
-                {
-                    // Close map -> Return back to game
-                    GameMgr.Instance.PauseGame();
-
-                    foreach (Character chr in m_PlayerParty.Characters)
-                    {
-                        chr.UI.Holder.SetActive(true);
-                    }
-                }
-                else
-                {
-                    // Open map -> Pause game
-                    Cursor.lockState = CursorLockMode.None;
-                    Cursor.visible = true;
-                    m_MapQuestNotesUI.Canvas.enabled = true;
-                    m_Minimap.enabled = false;
-
-                    GameMgr.Instance.PauseGame();
-
-                    foreach (Character chr in m_PlayerParty.Characters)
-                    {
-                        chr.UI.Holder.SetActive(false);
-                    }
-                }
+                m_CurrUIState.OnActionPressed(action);
             }
         }
     }

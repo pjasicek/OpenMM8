@@ -69,10 +69,7 @@ class FaceIndexViewer : EditorWindow
 
     void OnSelectionUpdate(pb_Object[] selection)
     {
-        /*AddLog("Selection Updated: " + string.Format("{0} objects and {1} vertices selected.",
-			selection != null ? selection.Length : 0,
-			selection != null ? selection.Sum(x => x.SelectedTriangleCount) : 0));*/
-
+        // Selected 1 face on 1 model
         if (selection != null && selection.Length == 1 && selection[0].SelectedFaceCount == 1)
         {
             pb_Object pb = selection[0];
@@ -108,6 +105,8 @@ class FaceIndexViewer : EditorWindow
             selection[0] != null &&
             selection[0].SelectedFaceCount > 1)
         {
+            // Selected multiple faces on 1 model
+
             pb_Object pb = selection[0];
             pb.ToMesh();
             pb.Refresh();

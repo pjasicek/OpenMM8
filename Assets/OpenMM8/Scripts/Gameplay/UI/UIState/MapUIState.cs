@@ -34,7 +34,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             public override void LeaveState()
             {
-                UiMgr.Instance.m_MapQuestNotesUI.Canvas.enabled = true;
+                UiMgr.Instance.m_MapQuestNotesUI.Canvas.enabled = false;
             }
         }
     } // public partial class UiMgr

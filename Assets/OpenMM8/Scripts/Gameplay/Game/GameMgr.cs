@@ -109,6 +109,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 UiMgr.Instance.HandleButtonDown("Map");
             }
+            if (Input.GetButtonDown("Inventory"))
+            {
+                UiMgr.Instance.HandleButtonDown("Inventory");
+            }
             /*if (Input.GetButtonDown("Queust"))
             {
                 UiMgr.Instance.HandleButtonDown("Queust");
@@ -121,12 +125,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 UiMgr.Instance.HandleButtonDown("Rest");
             }
-            if (Input.GetButtonDown("Inventory"))
-            {
-                UiMgr.Instance.HandleButtonDown("Inventory");
-            }*/
-            
-
+            */
 
             if (Input.GetButton("InspectObject") && !UiMgr.Instance.IsInGameBlockingState())
             {

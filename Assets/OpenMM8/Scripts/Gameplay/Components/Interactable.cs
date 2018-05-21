@@ -163,9 +163,9 @@ abstract public class Interactable : MonoBehaviour
 public class InteractSelector
 {
     public InteractFilter FilterType = InteractFilter.AllowAll;
-    public List<int> AllowedTriangles = new List<int>();
+    public List<int> AllowedTriangles = new List<int>(3);
     public List<string> AllowedTextures = new List<string>();
-    public List<int> AllowedFaces = new List<int>(3);
+    public List<int> AllowedFaces = new List<int>();
 }
 
 public class MeshInfo
