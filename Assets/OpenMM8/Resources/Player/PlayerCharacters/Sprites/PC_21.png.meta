@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: 57a5b5997856ff7449a1b3f8c7f51b06
-timeCreated: 1518181896
-licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: PC21-01
@@ -60,8 +58,15 @@ TextureImporter:
     21300106: PC21-54
     21300108: PC21-55
     21300110: PC21-56
+    21300112: pc21bod
+    21300114: PC21LHd
+    21300116: PC21LHo
+    21300118: PC21LHu
+    21300120: PC21RHb
+    21300122: PC21RHd
+    21300124: PC21RHu
   externalObjects: {}
-  serializedVersion: 4
+  serializedVersion: 5
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -101,18 +106,21 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
+  singleChannelComponent: 0
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
   platformSettings:
-  - buildTarget: DefaultTexturePlatform
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -121,6 +129,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -128,7 +137,7 @@ TextureImporter:
       name: PC21-01
       rect:
         serializedVersion: 2
-        x: 1
+        x: 101
         y: 944
         width: 59
         height: 79
@@ -138,11 +147,17 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 7b88a716f629baa4ca5345f44587f237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-02
       rect:
         serializedVersion: 2
-        x: 62
+        x: 162
         y: 944
         width: 59
         height: 79
@@ -152,11 +167,17 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 21e4f809d9028124a95f75f459b834d8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-03
       rect:
         serializedVersion: 2
-        x: 123
+        x: 223
         y: 944
         width: 59
         height: 79
@@ -166,11 +187,17 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: b27830ffde3c1294d922cd046c65f159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-04
       rect:
         serializedVersion: 2
-        x: 184
+        x: 284
         y: 944
         width: 59
         height: 79
@@ -180,11 +207,17 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 6c57dcec184c7264ab46631fb2301a31
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-05
       rect:
         serializedVersion: 2
-        x: 245
+        x: 345
         y: 944
         width: 59
         height: 79
@@ -194,11 +227,17 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 27881b2b8c80d1545a77af743a4df405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-06
       rect:
         serializedVersion: 2
-        x: 306
+        x: 406
         y: 944
         width: 59
         height: 79
@@ -208,12 +247,18 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 018b0a9633789454584eddff6a627a0a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-07
       rect:
         serializedVersion: 2
-        x: 367
-        y: 944
+        x: 101
+        y: 863
         width: 59
         height: 79
       alignment: 0
@@ -222,12 +267,18 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: c8e4b752f617eb44f9b41e7f4bb66754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-08
       rect:
         serializedVersion: 2
-        x: 428
-        y: 944
+        x: 162
+        y: 863
         width: 59
         height: 79
       alignment: 0
@@ -236,11 +287,17 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: f4c022f3cf62e324e9362b34f4cacc4a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-09
       rect:
         serializedVersion: 2
-        x: 1
+        x: 223
         y: 863
         width: 59
         height: 79
@@ -250,11 +307,17 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 9ea1359872c1451418192ab1dd63d541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-10
       rect:
         serializedVersion: 2
-        x: 62
+        x: 284
         y: 863
         width: 59
         height: 79
@@ -264,11 +327,17 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: a52cce38dbd24344eac9f3f673527894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-11
       rect:
         serializedVersion: 2
-        x: 123
+        x: 345
         y: 863
         width: 59
         height: 79
@@ -278,11 +347,17 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 9985ecee52ac1cd47b35c63ca514d8dd
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-12
       rect:
         serializedVersion: 2
-        x: 184
+        x: 406
         y: 863
         width: 59
         height: 79
@@ -292,12 +367,18 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 163cfb272358c6f4ab094b0ac5179daf
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-13
       rect:
         serializedVersion: 2
-        x: 245
-        y: 863
+        x: 101
+        y: 782
         width: 59
         height: 79
       alignment: 0
@@ -306,12 +387,18 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 478fa6a0532ccd547a3816756e249100
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-14
       rect:
         serializedVersion: 2
-        x: 306
-        y: 863
+        x: 162
+        y: 782
         width: 59
         height: 79
       alignment: 0
@@ -320,12 +407,18 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: e4fd05788c564b44a8b2f98da4ab1c37
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-15
       rect:
         serializedVersion: 2
-        x: 367
-        y: 863
+        x: 223
+        y: 782
         width: 59
         height: 79
       alignment: 0
@@ -334,12 +427,18 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 9a85fda68869d1c4f9623a814ce9c676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-16
       rect:
         serializedVersion: 2
-        x: 428
-        y: 863
+        x: 284
+        y: 782
         width: 59
         height: 79
       alignment: 0
@@ -348,11 +447,17 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: e897bf562c032504d986f0c0719ce2b6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-17
       rect:
         serializedVersion: 2
-        x: 1
+        x: 345
         y: 782
         width: 59
         height: 79
@@ -362,11 +467,17 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 7ddf26de11b528445a02abb7d4f4aa8e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-18
       rect:
         serializedVersion: 2
-        x: 62
+        x: 406
         y: 782
         width: 59
         height: 79
@@ -376,12 +487,18 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 07687e02d4a00ae4cb27166ac673d4bd
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-19
       rect:
         serializedVersion: 2
-        x: 123
-        y: 782
+        x: 101
+        y: 701
         width: 59
         height: 79
       alignment: 0
@@ -390,12 +507,18 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: d885cff43b9e3504da7cdab9981fce80
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-20
       rect:
         serializedVersion: 2
-        x: 184
-        y: 782
+        x: 1
+        y: 632
         width: 59
         height: 79
       alignment: 0
@@ -404,12 +527,18 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: b30a2b24821342a4087b0101a4b013b8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-21
       rect:
         serializedVersion: 2
-        x: 245
-        y: 782
+        x: 162
+        y: 701
         width: 59
         height: 79
       alignment: 0
@@ -418,12 +547,18 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 650e36a10532142448fe6b83a41e6f37
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-22
       rect:
         serializedVersion: 2
-        x: 306
-        y: 782
+        x: 223
+        y: 701
         width: 59
         height: 79
       alignment: 0
@@ -432,12 +567,18 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: e619004edf053dc43adf2268b8bd274c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-23
       rect:
         serializedVersion: 2
-        x: 367
-        y: 782
+        x: 284
+        y: 701
         width: 59
         height: 79
       alignment: 0
@@ -446,12 +587,18 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 95d2fc31e4d0e5c4da1b0202abeadd9b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-24
       rect:
         serializedVersion: 2
-        x: 428
-        y: 782
+        x: 345
+        y: 701
         width: 59
         height: 79
       alignment: 0
@@ -460,11 +607,17 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 0776da4ab407fc341b9364f8da6604e0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-25
       rect:
         serializedVersion: 2
-        x: 1
+        x: 406
         y: 701
         width: 59
         height: 79
@@ -474,109 +627,17 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: be5671efab86cff41824d272b747e0ec
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-26
       rect:
         serializedVersion: 2
-        x: 62
-        y: 701
-        width: 59
-        height: 79
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: PC21-27
-      rect:
-        serializedVersion: 2
-        x: 123
-        y: 701
-        width: 59
-        height: 79
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: PC21-28
-      rect:
-        serializedVersion: 2
-        x: 184
-        y: 701
-        width: 59
-        height: 79
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: PC21-29
-      rect:
-        serializedVersion: 2
-        x: 245
-        y: 701
-        width: 59
-        height: 79
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: PC21-30
-      rect:
-        serializedVersion: 2
-        x: 306
-        y: 701
-        width: 59
-        height: 79
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: PC21-31
-      rect:
-        serializedVersion: 2
-        x: 367
-        y: 701
-        width: 59
-        height: 79
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: PC21-32
-      rect:
-        serializedVersion: 2
-        x: 428
-        y: 701
-        width: 59
-        height: 79
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: PC21-33
-      rect:
-        serializedVersion: 2
-        x: 1
+        x: 84
         y: 620
         width: 59
         height: 79
@@ -586,12 +647,158 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 9cb2ec9430cc625459603965aff0caf1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC21-27
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 551
+        width: 59
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7cf544b4ffd1194bbec82ad91fc2ceb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC21-28
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 620
+        width: 59
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cccd029c6a1b6ea40b56d93830923261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC21-29
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 620
+        width: 59
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9849d9fbf9cf2934f986af58aa04cda5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC21-30
+      rect:
+        serializedVersion: 2
+        x: 267
+        y: 620
+        width: 59
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89152565924e1cd4a99b94c483e4da4c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC21-31
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 620
+        width: 59
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f1a5ee9eb45b0243b9c5deb38469129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC21-32
+      rect:
+        serializedVersion: 2
+        x: 389
+        y: 620
+        width: 59
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4dfded13ee3d7434e9c1def89dd44c76
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC21-33
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 620
+        width: 59
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c31e6d07c4a27b045b7de63eba397a7b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-34
       rect:
         serializedVersion: 2
         x: 62
-        y: 620
+        y: 539
         width: 59
         height: 79
       alignment: 0
@@ -600,12 +807,18 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 85a94e48b7559cf44ab385d1643ef233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-35
       rect:
         serializedVersion: 2
-        x: 123
-        y: 620
+        x: 1
+        y: 470
         width: 59
         height: 79
       alignment: 0
@@ -614,108 +827,16 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 275d3a952003b5b43a36df6c8f721b22
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-36
       rect:
         serializedVersion: 2
-        x: 184
-        y: 620
-        width: 59
-        height: 79
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: PC21-37
-      rect:
-        serializedVersion: 2
-        x: 245
-        y: 620
-        width: 59
-        height: 79
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: PC21-38
-      rect:
-        serializedVersion: 2
-        x: 306
-        y: 620
-        width: 59
-        height: 79
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: PC21-39
-      rect:
-        serializedVersion: 2
-        x: 367
-        y: 620
-        width: 59
-        height: 79
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: PC21-40
-      rect:
-        serializedVersion: 2
-        x: 428
-        y: 620
-        width: 59
-        height: 79
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: PC21-41
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 539
-        width: 59
-        height: 79
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: PC21-42
-      rect:
-        serializedVersion: 2
-        x: 62
-        y: 539
-        width: 59
-        height: 79
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: PC21-43
-      rect:
-        serializedVersion: 2
         x: 123
         y: 539
         width: 59
@@ -726,8 +847,14 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: bbdb51e26fda9c04aa92079b2fd417e2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: PC21-44
+      name: PC21-37
       rect:
         serializedVersion: 2
         x: 184
@@ -740,8 +867,14 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 9394ba5ca9a4ac646ad80e6cd37540e4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: PC21-45
+      name: PC21-38
       rect:
         serializedVersion: 2
         x: 245
@@ -754,8 +887,14 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: db6bd9e9030a414478da0c3ae5a0a3c8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: PC21-46
+      name: PC21-39
       rect:
         serializedVersion: 2
         x: 306
@@ -768,8 +907,14 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: ff11b88bc5c51bc4ab6476270d9034bb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: PC21-47
+      name: PC21-40
       rect:
         serializedVersion: 2
         x: 367
@@ -782,8 +927,14 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 4c692e72edf1d164dbd4aab110974095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: PC21-48
+      name: PC21-41
       rect:
         serializedVersion: 2
         x: 428
@@ -796,11 +947,117 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: d5ab091168631a941b6764c1eada351f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: PC21-49
+      name: PC21-42
       rect:
         serializedVersion: 2
         x: 1
+        y: 389
+        width: 59
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 669b5961468d3c141aded2805af0101f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC21-43
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 308
+        width: 59
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c1c2b5ff1ce825499f447fe0e8ede12
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC21-44
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 227
+        width: 59
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f7a22013f0b81d4f9de4f8672db0b1c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC21-45
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 146
+        width: 59
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 81d0a69396fcc014e8c5d8093f3cf805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC21-46
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 65
+        width: 59
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84effd9d4edee9d45befadf3b5f71462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC21-47
+      rect:
+        serializedVersion: 2
+        x: 105
         y: 458
         width: 59
         height: 79
@@ -810,11 +1067,117 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: e6fb9b9ed0a5a2247801cd6ea5bb06c5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC21-48
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 458
+        width: 59
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0b2c1f4204a4114297ce8954df9c138
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC21-49
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 458
+        width: 59
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0dd9919ca3e4c0b49be15153364c18bf
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: PC21-50
       rect:
         serializedVersion: 2
-        x: 1
+        x: 288
+        y: 458
+        width: 59
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1501282746eb04479438657f5bf6592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC21-51
+      rect:
+        serializedVersion: 2
+        x: 349
+        y: 458
+        width: 59
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca5eafcdc7f8fb142b046f18b824de6f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC21-52
+      rect:
+        serializedVersion: 2
+        x: 410
+        y: 458
+        width: 59
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63acd5bdf2f15b349b23ad06767fbe31
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC21-53
+      rect:
+        serializedVersion: 2
+        x: 62
         y: 377
         width: 59
         height: 79
@@ -824,11 +1187,17 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 0b857ff1ef36ad44f99223619b9160f1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: PC21-51
+      name: PC21-54
       rect:
         serializedVersion: 2
-        x: 1
+        x: 62
         y: 296
         width: 59
         height: 79
@@ -838,11 +1207,17 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 7a0544f36abe32c4b98666f750d31440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: PC21-52
+      name: PC21-55
       rect:
         serializedVersion: 2
-        x: 1
+        x: 62
         y: 215
         width: 59
         height: 79
@@ -852,11 +1227,17 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 6f31eaeaff7cb664ba7a038422d60e88
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: PC21-53
+      name: PC21-56
       rect:
         serializedVersion: 2
-        x: 1
+        x: 62
         y: 134
         width: 59
         height: 79
@@ -866,13 +1247,79 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: ec936bdf6adc64440a02719e83061bbb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: PC21-54
+      name: pc21bod
       rect:
         serializedVersion: 2
         x: 1
-        y: 53
-        width: 59
+        y: 713
+        width: 98
+        height: 310
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 805838da41e77b3448d2988ae8e646dc
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC21LHd
+      rect:
+        serializedVersion: 2
+        x: 467
+        y: 778
+        width: 31
+        height: 76
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80a4dee6333430a47ae42a4e94a4385e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC21LHo
+      rect:
+        serializedVersion: 2
+        x: 467
+        y: 856
+        width: 32
+        height: 86
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e626901b38708844a2fa3775ca75fd3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC21LHu
+      rect:
+        serializedVersion: 2
+        x: 467
+        y: 944
+        width: 34
         height: 79
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -880,36 +1327,80 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 92c4921d53e1e1445ab19590fcc423d3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: PC21-55
+      name: PC21RHb
       rect:
         serializedVersion: 2
         x: 62
-        y: 458
-        width: 59
-        height: 79
+        y: 691
+        width: 20
+        height: 20
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 9c87599652fe6994ea7ceb13b5980a55
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: PC21-56
+      name: PC21RHd
       rect:
         serializedVersion: 2
-        x: 123
-        y: 458
-        width: 59
-        height: 79
+        x: 1
+        y: 8
+        width: 49
+        height: 55
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 0e1114810f2abe84d81c580638b3e99f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC21RHu
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 39
+        width: 51
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68768e168d767914682a70779531a32b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
+    bones: []
+    spriteID: 1cb234489b8682e41aae91790c85c3ae
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
   spritePackingTag: 
   userData: 
   assetBundleName: 

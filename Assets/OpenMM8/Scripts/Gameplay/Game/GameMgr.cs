@@ -113,6 +113,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 UiMgr.Instance.HandleButtonDown("Inventory");
             }
+            if (Input.GetButtonDown("NextPlayer"))
+            {
+                UiMgr.Instance.HandleButtonDown("NextPlayer");
+            }
             /*if (Input.GetButtonDown("Queust"))
             {
                 UiMgr.Instance.HandleButtonDown("Queust");

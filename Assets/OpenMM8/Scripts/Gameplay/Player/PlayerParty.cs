@@ -13,6 +13,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public delegate void GoldChanged(int oldGold, int newGold, int delta);
     public delegate void FoodChanged(int oldFood, int newFood, int delta);
     public delegate void FoundGold(int amount);
+    public delegate void ActiveCharacterChanged(Character newSelChar);
 
     [RequireComponent(typeof(HostilityChecker))]
     [RequireComponent(typeof(Damageable))]
@@ -28,6 +29,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         static public event GoldChanged OnGoldChanged;
         static public event FoodChanged OnFoodChanged;
         static public event FoundGold OnFoundGold;
+        static public event ActiveCharacterChanged OnActiveCharacterChanged;
 
         [SerializeField]
         private int MinutesSinceSleep;
@@ -94,8 +96,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 {
                     if (character.IsRecovered() && ((ActiveCharacter == null) || !ActiveCharacter.IsRecovered()))
                     {
-                        ActiveCharacter = character;
-                        ActiveCharacter.UI.SelectionRing.enabled = true;
+                        SetActiveCharacter(character);
                     }
                     else
                     {
@@ -117,6 +118,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 Interact();
             }
 
+            if (Input.GetButtonDown("NextPlayer"))
+            {
+                TrySelectNextCharacter(true);
+            }
+
             UpdateAgroStatus();
 
             AttackDelayTimeLeft -= Time.deltaTime;
@@ -127,6 +133,82 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             foreach (Character character in Characters)
             {
                 character.OnFixedUpdate(0.05f);
+            }
+        }
+
+        public void SelectNextCharacter()
+        {
+            if (Characters.Count == 0)
+            {
+                return;
+            }
+
+            if (ActiveCharacter == null)
+            {
+                SelectCharacter(0);
+            }
+
+            TrySelectNextCharacter(false);
+        }
+
+        public bool TrySelectNextCharacter(bool onlyRecovered)
+        {
+            if (ActiveCharacter == null || Characters.Count <= 1)
+            {
+                return false;
+            }
+
+            bool found = false;
+            int tries = Characters.Count - 1;
+            int tryCharIndex = ActiveCharacter.GetPartyIndex() + 1;
+            for (int i = 0; i < tries; i++)
+            {
+                if (tryCharIndex >= Characters.Count)
+                {
+                    tryCharIndex = 0;
+                }
+
+                if (!onlyRecovered || Characters[tryCharIndex].IsRecovered())
+                {
+                    SelectCharacter(tryCharIndex);
+                    found = true;
+                    break;
+                }
+
+                tryCharIndex++;
+            }
+
+            return found;
+        }
+
+        public bool TrySelectCharacter(int chrIndex)
+        {
+            if (chrIndex < Characters.Count && Characters[chrIndex].IsRecovered())
+            {
+                Characters.ForEach(ch => ch.UI.SelectionRing.enabled = false);
+                SetActiveCharacter(Characters[chrIndex]);
+                return true;
+            }
+
+            return false;
+        }
+
+        public void SelectCharacter(int chrIndex)
+        {
+            if (chrIndex < Characters.Count)
+            {
+                Characters.ForEach(ch => ch.UI.SelectionRing.enabled = false);
+                SetActiveCharacter(Characters[chrIndex]);
+            }
+        }
+
+        private void SetActiveCharacter(Character chr)
+        {
+            ActiveCharacter = chr;
+            ActiveCharacter.UI.SelectionRing.enabled = true;
+            if (OnActiveCharacterChanged != null)
+            {
+                OnActiveCharacterChanged(chr);
             }
         }
 
@@ -187,7 +269,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 }*/
 
                 ActiveCharacter.Attack(victim);
-                ActiveCharacter = null;
+                if (!TrySelectNextCharacter(true))
+                {
+                    ActiveCharacter = null;
+                }
                 AttackDelayTimeLeft = 0.2f;
             }
         }

@@ -9,6 +9,8 @@ namespace Assets.OpenMM8.Scripts
 {
     public class OpenMM8Util
     {
+        // Returns a GameObject at specified scene path, e.g. /PartyCanvas/GoldFood. 
+        // Can search from root - specified GameObject.
         static public GameObject GetGameObjAtScenePath(string path, GameObject origin = null, char delim = '/')
         {
             if (path.Length > 0 && path[0] == delim)

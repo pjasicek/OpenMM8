@@ -306,7 +306,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             if (m_CurrUIState != null)
             {
-                // Actions need to know how to handle it
+                // States need to know how to handle actions
                 return m_CurrUIState.OnActionPressed(button);
             }
             else

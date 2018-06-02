@@ -57,12 +57,21 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 {
                     SwitchState(CharDetailState.Awards);
                 }
+                else if (action == "NextPlayer")
+                {
+                    UiMgr.Instance.m_PlayerParty.SelectNextCharacter();
+                }
 
                 return false;
             }
 
             public override bool EnterState(object stateArgs)
             {
+                if (UiMgr.Instance.m_PlayerParty.ActiveCharacter == null)
+                {
+                    UiMgr.Instance.m_PlayerParty.SelectCharacter(0);
+                }
+
                 CharDetailUIStateArgs args = (CharDetailUIStateArgs)stateArgs;
 
                 UiMgr.Instance.SetupForPartialUiState(this);
@@ -70,7 +79,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 UiMgr.Instance.m_CharDetailUI.CanvasHolder.enabled = true;
                 SwitchState(args.EnterState);
 
-                // Register for party member change event
+                // Register events
+                PlayerParty.OnActiveCharacterChanged += OnActiveCharacterChanged;
 
                 return true;
             }
@@ -78,8 +88,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             public override void LeaveState()
             {
                 // Unregister from registered events
+                PlayerParty.OnActiveCharacterChanged -= OnActiveCharacterChanged;
 
                 UiMgr.Instance.m_CharDetailUI.CanvasHolder.enabled = false;
+            }
+
+            private void OnActiveCharacterChanged(Character chr)
+            {
+                Debug.Log("Selected character: " + chr.Data.Name);
             }
 
             private void HideAllSubstates()
