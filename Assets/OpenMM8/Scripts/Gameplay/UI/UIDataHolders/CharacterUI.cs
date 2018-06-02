@@ -12,6 +12,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     {
         public GameObject Holder;
 
+        public CharacterSprites Sprites;
+
         public Image PlayerCharacter;
         public Image HealthBar;
         public Image ManaBar;

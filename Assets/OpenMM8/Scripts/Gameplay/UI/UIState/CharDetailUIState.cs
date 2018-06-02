@@ -95,7 +95,42 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             private void OnActiveCharacterChanged(Character chr)
             {
-                Debug.Log("Selected character: " + chr.Data.Name);
+                DisplayDetailState(chr);
+            }
+
+            private void DisplayDetailState(Character chr)
+            {
+                if (chr == null)
+                {
+                    Logger.LogError("NULL character - cannot display char detail state info");
+                    return;
+                }
+
+                UiMgr.Instance.m_CharDetailUI.DollBodyImage.sprite = chr.UI.Sprites.DollBody;
+                UiMgr.Instance.m_CharDetailUI.DollBodyImage.SetNativeSize();
+                UiMgr.Instance.m_CharDetailUI.DollLeftHandImage.sprite = chr.UI.Sprites.DollLeftHandOpen;
+                UiMgr.Instance.m_CharDetailUI.DollLeftHandImage.SetNativeSize();
+                UiMgr.Instance.m_CharDetailUI.DollRightHandImage.sprite = chr.UI.Sprites.DollRightHandDown;
+                UiMgr.Instance.m_CharDetailUI.DollRightHandImage.SetNativeSize();
+
+                switch (m_State)
+                {
+                    case CharDetailState.Stats:
+                        break;
+
+                    case CharDetailState.Inventory:
+                        break;
+
+                    case CharDetailState.Skills:
+                        break;
+
+                    case CharDetailState.Awards:
+                        break;
+
+                    default:
+                        Debug.Log("Unknown state: " + m_State.ToString());
+                        break;
+                }
             }
 
             private void HideAllSubstates()
@@ -142,6 +177,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     default:
                         break;
                 }
+
+                DisplayDetailState(UiMgr.Instance.m_PlayerParty.ActiveCharacter);
             }
         }
     } // public partial class UiMgr

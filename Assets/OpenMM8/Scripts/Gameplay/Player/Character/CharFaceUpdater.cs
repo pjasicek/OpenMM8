@@ -25,7 +25,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void Reset()
         {
-            chr.UI.PlayerCharacter.sprite = chr.Sprites.ConditionToSpriteMap[chr.Data.Condition];
+            chr.UI.PlayerCharacter.sprite = chr.UI.Sprites.ConditionToSpriteMap[chr.Data.Condition];
             ResetTimer();
         }
 
@@ -44,12 +44,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnFixedUpdate(float secDiff)
         {
-            if (chr.UI.PlayerCharacter.sprite != chr.Sprites.ConditionToSpriteMap[chr.Data.Condition])
+            if (chr.UI.PlayerCharacter.sprite != chr.UI.Sprites.ConditionToSpriteMap[chr.Data.Condition])
             {
                 m_TimeInOtherAvatar += secDiff;
                 if (m_TimeInOtherAvatar > m_AvatarDuration)
                 {
-                    chr.UI.PlayerCharacter.sprite = chr.Sprites.ConditionToSpriteMap[chr.Data.Condition];
+                    chr.UI.PlayerCharacter.sprite = chr.UI.Sprites.ConditionToSpriteMap[chr.Data.Condition];
                     m_TimeUntilIdleAvatar = UnityEngine.Random.Range(m_MinIdleAvatar, m_MaxIdleAvatar);
                     m_TimeInOtherAvatar = 0.0f;
                     m_AvatarDuration = m_IdleAvatarDuration;
@@ -60,7 +60,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 m_TimeUntilIdleAvatar -= secDiff;
                 if (m_TimeUntilIdleAvatar < 0.0f)
                 {
-                    chr.UI.PlayerCharacter.sprite = chr.Sprites.Idle[UnityEngine.Random.Range(0, chr.Sprites.Idle.Count)];
+                    chr.UI.PlayerCharacter.sprite = chr.UI.Sprites.Idle[UnityEngine.Random.Range(0, chr.UI.Sprites.Idle.Count)];
                 }
             }
         }

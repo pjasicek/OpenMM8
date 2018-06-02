@@ -450,7 +450,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_MinimapCloseButtonImage.enabled = false;
             m_PartyBuffsAndButtonsCanvas.enabled = true;
 
-            Debug.Log("Locking");
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
@@ -496,7 +495,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             chr.UI = chrUI;
 
             chr.CharFaceUpdater = new CharFaceUpdater(chr);
-            chr.Sprites = GetCharacterSprites(chr.Data.CharacterType);
+            chr.UI.Sprites = GetCharacterSprites(chr.Data.CharacterType);
 
             UpdateEmptySlotBanners(party);
         }
@@ -575,12 +574,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 case AttackResultType.Kill:
                     hitText = chr.Data.Name + " inflicts " + result.DamageDealt + 
                         " points killing " + result.VictimName;
-                    chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.Sprites.Smile), 0.75f);
+                    chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.UI.Sprites.Smile), 0.75f);
                     break;
 
                 case AttackResultType.Miss:
                     hitText = chr.Data.Name + " missed attack on " + result.VictimName;
-                    chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.Sprites.FailAction), 0.75f);
+                    chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.UI.Sprites.FailAction), 0.75f);
                     break;
 
                 default:
@@ -595,7 +594,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             if (attackResult.Type == AttackResultType.Hit)
             {
-                chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.Sprites.TakeDamage), 0.5f);
+                chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.UI.Sprites.TakeDamage), 0.5f);
             }
         }
 
@@ -717,7 +716,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             SpriteAnimation FaceOverlayAnim = chr.UI.FaceOverlayAnimation;
             FaceOverlayAnim.AnimationSprites = m_QuestEffectSprites;
             FaceOverlayAnim.Play();
-            chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.Sprites.Smile), 1.0f);
+            chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.UI.Sprites.Smile), 1.0f);
         }
 
         private void OnCharacterFinishedEvent(Character chr)
@@ -725,7 +724,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             SpriteAnimation FaceOverlayAnim = chr.UI.FaceOverlayAnimation;
             FaceOverlayAnim.AnimationSprites = m_QuestEffectSprites;
             FaceOverlayAnim.Play();
-            chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.Sprites.Smile), 1.0f);
+            chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.UI.Sprites.Smile), 1.0f);
         }
 
         // =========== Game states

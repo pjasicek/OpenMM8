@@ -29,7 +29,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public CharacterUI UI;
         public PlayerParty Party;
         public CharacterSounds Sounds;
-        public CharacterSprites Sprites;
 
         public CharFaceUpdater CharFaceUpdater;
 
@@ -47,7 +46,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         static public event ItemInspect OnItemInspect;
         static public event ItemEquip OnItemEquip;
         static public event ItemHold OnItemHold;
-        static public event ItemHoldEnd OnItemHoldEnd;
+        static public event ItemHoldEnd OnItemHoldEnd;  
 
 
         private float m_TimeUntilRecovery = 0.0f;
@@ -216,19 +215,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public void ModifyResistance(SpellElement element, int amount)
         {
 
-        }
-
-        // Avatar expressions
-        public void Smile()
-        {
-            UI.PlayerCharacter.sprite =
-                Sprites.Smile[UnityEngine.Random.Range(0, Sprites.Smile.Count)];
-        }
-
-        public void TakeDamage()
-        {
-            UI.PlayerCharacter.sprite =
-                Sprites.TakeDamage[UnityEngine.Random.Range(0, Sprites.TakeDamage.Count)];
         }
     }
 }
