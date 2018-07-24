@@ -1,7 +1,7 @@
 # OpenMM8 - Might & Magic 8 (2001) reimplementation
 
  - This project is a Unity reimplementation of original Might & Magic 8 RPG
- - Unity 2017 2.0f3 Personal is used
+ - Unity 2018.1.1f1 Personal is used
  - No third-party assets are currently used
 ## Current State
  - Original maps are loadable
