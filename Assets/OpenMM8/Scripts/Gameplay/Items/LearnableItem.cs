@@ -7,7 +7,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Items
 {
     class LearnableItem : BaseItem
     {
-        public LearnableItem(ref ItemData itemData) : base(ref itemData)
+        public LearnableItem(ItemData itemData) : base(itemData)
         {
             
         }

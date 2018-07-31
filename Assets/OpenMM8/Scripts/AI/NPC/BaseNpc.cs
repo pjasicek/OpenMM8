@@ -7,6 +7,7 @@ using System;
 
 using Assets.OpenMM8.Scripts.Gameplay;
 using Assets.OpenMM8.Scripts.Gameplay.Data;
+using Assets.OpenMM8.Scripts.Gameplay.Items;
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(NavMeshObstacle))]
@@ -145,7 +146,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         Loot = new Loot();
         if (NpcData.Treasure.CertainItemId != 0)
         {
-            Loot.Item = DbMgr.Instance.ItemDb.Get(NpcData.Treasure.CertainItemId);
+            Loot.Item = ItemFactory.CreateItem(DbMgr.Instance.ItemDb.Get(NpcData.Treasure.CertainItemId));
         }
         else
         {

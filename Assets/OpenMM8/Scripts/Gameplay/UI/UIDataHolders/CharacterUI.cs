@@ -13,6 +13,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public GameObject Holder;
 
         public CharacterSprites Sprites;
+        public DollUI DollUI;
+        public InventoryUI InventoryUI;
 
         public Image PlayerCharacter;
         public Image HealthBar;

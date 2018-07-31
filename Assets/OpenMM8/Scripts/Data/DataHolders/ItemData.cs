@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
@@ -23,5 +24,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int EquipX;
         public int EquipY;
         public string Notes;
+
+        // Unity specific but common for all items with this specific data
+        // This is set up upon UiMgr initialization
+        public Sprite InvSprite;
+        public List<Sprite> EquipSprites = new List<Sprite>();
+        public Vector2Int InvSize;
     }
 }

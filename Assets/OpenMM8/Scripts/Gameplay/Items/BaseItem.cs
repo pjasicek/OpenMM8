@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Assets.OpenMM8.Scripts.Gameplay.Items
 {
     public class BaseItem : DbData
     {
-        public ItemData ItemData;
+        public ItemData Data;
+        public Vector2Int InvCellPosition;
 
-        public BaseItem(ref ItemData itemData)
+        public BaseItem(ItemData itemData)
         {
-            ItemData = itemData;
+            Data = itemData;
         }
 
         virtual public ItemInteractResult InteractWithDoll(Character player)

@@ -7,7 +7,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Items
 {
     class ReadableItem : BaseItem
     {
-        public ReadableItem(ref ItemData itemData) : base(ref itemData)
+        public ReadableItem(ItemData itemData) : base(itemData)
         {
             
         }

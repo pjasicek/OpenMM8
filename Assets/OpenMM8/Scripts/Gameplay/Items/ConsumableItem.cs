@@ -7,7 +7,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Items
 {
     class ConsumableItem : BaseItem
     {
-        public ConsumableItem(ref ItemData itemData) : base(ref itemData)
+        public ConsumableItem(ItemData itemData) : base(itemData)
         {
             
         }

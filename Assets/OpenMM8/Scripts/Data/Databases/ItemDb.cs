@@ -9,9 +9,9 @@ using Assets.OpenMM8.Scripts.Data;
 
 namespace Assets.OpenMM8.Scripts.Gameplay.Data
 {
-    public class ItemDb : DataDb<BaseItem>
+    public class ItemDb : DataDb<ItemData>
     {
-        override public BaseItem ProcessCsvDataRow(int row, string[] columns)
+        override public ItemData ProcessCsvDataRow(int row, string[] columns)
         {
             // Header
             if (row == 0)
@@ -19,9 +19,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                 return null;
             }
 
+            if (columns[1].ToLower().Equals("null"))
+            {
+                return null;
+            }
+
             ItemData itemData = new ItemData();
             itemData.Id = int.Parse(columns[0]);
-            itemData.ImageName = columns[1];
+            itemData.ImageName = columns[1].ToLower();
             itemData.Name = columns[2];
             itemData.GoldValue = int.Parse(columns[3]);
             switch (columns[4])
@@ -81,10 +86,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             itemData.EquipY = int.Parse(columns[15]);
             itemData.Notes = columns[16];
 
-            BaseItem item = ItemFactory.CreateItem(ref itemData);
-            item.Id = itemData.Id;
-
-            return item;
+            return itemData;
         }
     }
 }

@@ -208,6 +208,21 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 TimeMgr.Instance.AddMinutes(TimeMgr.DAY_IN_MINUTES / 2);
             }
+
+            if (Input.GetKeyDown(KeyCode.F5))
+            {
+                if (PlayerParty.ActiveCharacter != null)
+                {
+                    PlayerParty.ActiveCharacter.Inventory.AddItem(538);
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.F6))
+            {
+                if (PlayerParty.ActiveCharacter != null)
+                {
+                    PlayerParty.ActiveCharacter.Inventory.AddItem(143);
+                }
+            }
         }
 
         public void AddRosterNpcToParty(int rosterId)

@@ -12,7 +12,7 @@ public class InspectableItem : Inspectable
     // Use this for initialization
     void Start()
     {
-        ItemData = GetComponent<BaseItem>().ItemData;
+        ItemData = GetComponent<BaseItem>().Data;
     }
 
     public override void StartInspect(Character inspector)

@@ -22,15 +22,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         
         public Dictionary<Condition, Sprite> ConditionToSpriteMap = new Dictionary<Condition, Sprite>();
 
-        // Dolls
-        public Sprite DollBody;
-        public Sprite DollLeftHandDown;
-        public Sprite DollLeftHandUp;
-        public Sprite DollLeftHandOpen;
-        public Sprite DollRightHandDown;
-        public Sprite DollRightHandUp;
-        public Sprite DollRightHandHold;
-
         public static CharacterSprites Load(CharacterType type)
         {
             CharacterSprites characterSprites = new CharacterSprites();
@@ -114,28 +105,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             characterSprites.ConditionToSpriteMap[Condition.Paralyzed] = sprites[9];
             characterSprites.ConditionToSpriteMap[Condition.Sleeping] = sprites[3];
             characterSprites.ConditionToSpriteMap[Condition.Drunk] = sprites[5];
-
-            if (sprites.Length > 56)
-            {
-                characterSprites.DollBody = sprites[56];
-                if (sprites.Length == 63)
-                {
-                    characterSprites.DollLeftHandDown = sprites[57];
-                    characterSprites.DollLeftHandOpen = sprites[58];
-                    characterSprites.DollLeftHandUp = sprites[59];
-                    characterSprites.DollRightHandHold = sprites[60];
-                    characterSprites.DollRightHandDown = sprites[61];
-                    characterSprites.DollRightHandUp = sprites[62];
-                }
-                else
-                {
-                    Debug.Log(type.ToString() + " only has " + sprites.Length + " sprites");
-                }
-            }
-            else
-            {
-                Debug.LogError(type.ToString() + " does not contain doll sprites !");
-            }
 
             return characterSprites;
         }

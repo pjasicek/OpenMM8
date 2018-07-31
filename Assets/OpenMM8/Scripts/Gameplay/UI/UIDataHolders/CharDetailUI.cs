@@ -17,12 +17,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public CharInventoryUI InventoryUI;
         public CharAwardsUI AwardsUI;
 
-        public GameObject DollHolder;
-        public Image DollBackgroundImage;
-        public Image DollRightHandImage;
-        public Image DollLeftHandImage;
-        public Image DollBodyImage;
-        public Image JewelryViewImage;
+        public DollUI CurrDollUI = null;
 
         static public CharDetailUI Load()
         {
@@ -34,13 +29,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 Debug.Log("Holder is null");
             }
             ui.CanvasHolder = holder.GetComponent<Canvas>();
-
-            ui.DollHolder = OpenMM8Util.GetGameObjAtScenePath("Doll", holder);
-            ui.DollBackgroundImage = OpenMM8Util.GetComponentAtScenePath<Image>("Doll_Background", ui.DollHolder);
-            ui.DollRightHandImage = OpenMM8Util.GetComponentAtScenePath<Image>("Doll_RightHand", ui.DollHolder);
-            ui.DollLeftHandImage = OpenMM8Util.GetComponentAtScenePath<Image>("Doll_LeftHand", ui.DollHolder);
-            ui.DollBodyImage = OpenMM8Util.GetComponentAtScenePath<Image>("Doll_Body", ui.DollHolder);
-            ui.JewelryViewImage = OpenMM8Util.GetComponentAtScenePath<Image>("JewelryView", ui.DollHolder);
 
             ui.StatsUI = CharStatsUI.Load(holder);
             ui.SkillsUI = CharSkillsUI.Load(holder);
@@ -97,6 +85,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public class CharInventoryUI
     {
         public GameObject Holder;
+        public InventoryUI InventoryUI;
 
         static public CharInventoryUI Load(GameObject origin)
         {

@@ -29,8 +29,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public CharacterUI UI;
         public PlayerParty Party;
         public CharacterSounds Sounds;
-
         public CharFaceUpdater CharFaceUpdater;
+
+        public Inventory Inventory = new Inventory();
 
         // Events
         static public event HealthChanged OnHealthChanged;
@@ -67,6 +68,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public Character(CharacterData charData)
         {
             Data = charData;
+            Inventory.Owner = this;
         }
 
         // ============================ PUBLIC API ============================ 

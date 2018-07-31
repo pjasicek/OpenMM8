@@ -7,7 +7,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Items
 {
     class ArmorItem : BaseItem
     {
-        public ArmorItem(ref ItemData itemData) : base(ref itemData)
+        public ArmorItem(ItemData itemData) : base(itemData)
         {
             
         }

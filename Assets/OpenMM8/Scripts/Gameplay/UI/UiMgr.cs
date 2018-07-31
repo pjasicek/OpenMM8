@@ -1,4 +1,5 @@
 ﻿using Assets.OpenMM8.Scripts.Data;
+using Assets.OpenMM8.Scripts.Gameplay.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private Dictionary<CharacterType, CharacterSprites> m_CharacterSpritesMap =
             new Dictionary<CharacterType, CharacterSprites>();
+
+        private Dictionary<string, Sprite> m_InventoryItemSpriteMap =
+            new Dictionary<string, Sprite>();
+
+        private Dictionary<string, Sprite> m_EquippableItemSpriteMap =
+            new Dictionary<string, Sprite>();
 
         [Header("Sprites")]
         private Sprite[] m_QuestEffectSprites;
@@ -235,6 +242,49 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             m_QuestEffectSprites = Resources.LoadAll<Sprite>("UI/EffectFaceSprites/FaceEffect_Quest");
+
+            Sprite[] invItemSprites = Resources.LoadAll<Sprite>("UI/Items/ITEMS");
+            foreach (Sprite sprite in invItemSprites)
+            {
+                m_InventoryItemSpriteMap[sprite.name.ToLower()] = sprite;
+            }
+
+            Sprite[] invEqItemSprites = Resources.LoadAll<Sprite>("UI/Items/ARMOR_EQ_ITEMS");
+            foreach (Sprite sprite in invEqItemSprites)
+            {
+                m_EquippableItemSpriteMap[sprite.name.ToLower()] = sprite;
+            }
+
+            // Assign sprites to all items
+            foreach (var spritePair in DbMgr.Instance.ItemDb.Data)
+            {
+                ItemData itemData = spritePair.Value;
+                if (m_InventoryItemSpriteMap.ContainsKey(itemData.ImageName))
+                {
+                    itemData.InvSprite = m_InventoryItemSpriteMap[itemData.ImageName];
+
+                    // Calculate how many inventory cells it occupies
+                    int width = (int)itemData.InvSprite.rect.width;
+                    int height = (int)itemData.InvSprite.rect.height;
+
+                    itemData.InvSize.x = width / 32;
+                    itemData.InvSize.y = height / 32;
+                    if ((width % 32) >= 16)
+                    {
+                        itemData.InvSize.x++;
+                    }
+                    if ((height % 32) >= 16)
+                    {
+                        itemData.InvSize.y++;
+                    }
+
+                    Debug.Log(itemData.Id + ": " + itemData.Name + ": " + itemData.InvSize.ToString());
+                }
+                else
+                {
+                    Debug.LogWarning(itemData.Name + ": No inventory sprite found");
+                }
+            }
 
             return true;
         }
@@ -497,6 +547,21 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             chr.CharFaceUpdater = new CharFaceUpdater(chr);
             chr.UI.Sprites = GetCharacterSprites(chr.Data.CharacterType);
 
+            // Doll for char detail UI (Inventory/Stats/Awards/Skills UI, Adventurer's Inn, Character creation page)
+            chr.UI.DollUI = new DollUI();
+            chr.UI.DollUI.Holder = (GameObject)Instantiate(Resources.Load("Prefabs/UI/Dolls/DOLL_PC_1"), m_CharDetailUI.CanvasHolder.transform);
+            chr.UI.DollUI.Holder.transform.SetSiblingIndex(0);
+            chr.UI.DollUI.BackgroundImage = OpenMM8Util.GetComponentAtScenePath<Image>("Background", chr.UI.DollUI.Holder);
+            chr.UI.DollUI.BodyImage = OpenMM8Util.GetComponentAtScenePath<Image>("Body", chr.UI.DollUI.Holder);
+            chr.UI.DollUI.LH_OpenImage = OpenMM8Util.GetComponentAtScenePath<Image>("LeftHand_Open", chr.UI.DollUI.Holder);
+            chr.UI.DollUI.LH_ClosedImage = OpenMM8Util.GetComponentAtScenePath<Image>("LeftHand_Closed", chr.UI.DollUI.Holder);
+            chr.UI.DollUI.LH_ClosedImage = OpenMM8Util.GetComponentAtScenePath<Image>("LeftHand_Hold", chr.UI.DollUI.Holder);
+            chr.UI.DollUI.RH_OpenImage = OpenMM8Util.GetComponentAtScenePath<Image>("RightHand_Open", chr.UI.DollUI.Holder);
+            chr.UI.DollUI.RH_HoldImage = OpenMM8Util.GetComponentAtScenePath<Image>("RightHand_Hold", chr.UI.DollUI.Holder);
+            chr.UI.DollUI.RH_HoldFingersImage = OpenMM8Util.GetComponentAtScenePath<Image>("RightHand_HoldFingers", chr.UI.DollUI.Holder);
+
+            chr.UI.InventoryUI = InventoryUI.Create();
+
             UpdateEmptySlotBanners(party);
         }
 
@@ -509,6 +574,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 chr.UI.Holder.transform.localPosition =
                     new Vector3(Constants.PC_WidthDelta, 0.0f, 0.0f) * chr.GetPartyIndex();
             }
+
+            GameObject.Destroy(removedChr.UI.DollUI.Holder);
 
             UpdateEmptySlotBanners(party);
         }
