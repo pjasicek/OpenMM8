@@ -55,9 +55,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             itemImage.sprite = item.Data.InvSprite;
             itemImage.SetNativeSize();
 
-            inventoryItemObj.transform.localPosition = new Vector3(
+            /*inventoryItemObj.transform.localPosition = new Vector3(
                 offset.x + m_TopLeftOffset.x + itemImage.sprite.rect.width / 2.0f,
                 offset.y + m_TopLeftOffset.y - itemImage.sprite.rect.height / 2.0f,
+                0.0f);*/
+
+            inventoryItemObj.transform.localPosition = new Vector3(
+                offset.x + m_TopLeftOffset.x + (item.Data.InvSize.x * INVENTORY_CELL_SIZE) / 2.0f,
+                offset.y + m_TopLeftOffset.y - (item.Data.InvSize.y * INVENTORY_CELL_SIZE) / 2.0f,
                 0.0f);
 
             inventoryItem.Item = item;

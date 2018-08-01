@@ -94,12 +94,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         void Update()
         {
-            
-
-            bool wasInspectEnabled = (m_InspectedObj != null);
-            bool isInspectEnabled = false;
-            Inspectable inspectedObj = null;
-
             // IDEA: When game is paused then maybe UiMgr should check if it can consume the event first ?
             if (Input.GetButtonDown("Escape"))
             {
@@ -130,6 +124,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 UiMgr.Instance.HandleButtonDown("Rest");
             }
             */
+
+            bool wasInspectEnabled = (m_InspectedObj != null);
+            bool isInspectEnabled = false;
+            Inspectable inspectedObj = null;
 
             if (Input.GetButton("InspectObject") && !UiMgr.Instance.IsInGameBlockingState())
             {
@@ -220,7 +218,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 if (PlayerParty.ActiveCharacter != null)
                 {
-                    PlayerParty.ActiveCharacter.Inventory.AddItem(143);
+                    var randomEntry = DbMgr.Instance.ItemDb.Data.ElementAt(
+                        UnityEngine.Random.Range(0, DbMgr.Instance.ItemDb.Data.Count));
+
+                    PlayerParty.ActiveCharacter.Inventory.AddItem(randomEntry.Key);
                 }
             }
         }

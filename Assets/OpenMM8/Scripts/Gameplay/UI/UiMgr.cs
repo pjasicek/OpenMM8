@@ -28,6 +28,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private float m_TimeSinceLastPartyText = 0.0f;
         private float m_PartyTextLockTime = 0.0f;
 
+        private InventoryItem m_HoveredItem;
+
         // State
         private UIState m_CurrUIState = null;
 
@@ -92,6 +94,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             EventAPI.OnCharacterFinishedEvent += OnCharacterFinishedEvent;
 
             QuestMgr.OnQuestBitAdded += OnQuestBitAdded;
+
+            InventoryItem.OnInventoryItemHoverStart += OnInventoryItemHoverStart;
+            InventoryItem.OnInventoryItemHoverEnd += OnInventoryItemHoverEnd;
         }
 
         private void Start()
@@ -278,6 +283,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         itemData.InvSize.y++;
                     }
 
+                    if (itemData.InvSize.x == 0)
+                    {
+                        itemData.InvSize.x = 1;
+                    }
+                    if (itemData.InvSize.y == 0)
+                    {
+                        itemData.InvSize.y = 1;
+                    }
+
                     Debug.Log(itemData.Id + ": " + itemData.Name + ": " + itemData.InvSize.ToString());
                 }
                 else
@@ -319,6 +333,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             m_PartyTextLockTime -= Time.deltaTime;
+
+            if (Input.GetButton("InspectObject") && m_HoveredItem != null)
+            {
+                // Show item info
+            }
+            else
+            {
+                // Hide item info
+            }
         }
 
         //=================================== Static Helpers ===================================
@@ -792,6 +815,21 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             FaceOverlayAnim.AnimationSprites = m_QuestEffectSprites;
             FaceOverlayAnim.Play();
             chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.UI.Sprites.Smile), 1.0f);
+        }
+
+        private void OnInventoryItemHoverStart(InventoryItem inventoryItem)
+        {
+            Debug.Log("Hovered over item: " + inventoryItem.Item.Data.Name);
+            m_HoveredItem = inventoryItem;
+        }
+
+        private void OnInventoryItemHoverEnd(InventoryItem inventoryItem)
+        {
+            Debug.Log("Unhovered over item: " + inventoryItem.Item.Data.Name);
+            if (m_HoveredItem && m_HoveredItem == inventoryItem)
+            {
+                m_HoveredItem = null;
+            }
         }
 
         // =========== Game states
