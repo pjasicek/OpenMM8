@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 222355167743029266}
   - component: {fileID: 114715688685356286}
   - component: {fileID: 114016713143592204}
+  - component: {fileID: 114447370881179574}
   m_Layer: 5
   m_Name: InventoryItem
   m_TagString: Untagged
@@ -40,6 +41,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d67b11289f479e40a0da479e5a573e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114447370881179574
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1556842639597226}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!114 &114715688685356286
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -35,6 +35,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         [Header("UI")]
         private InspectNpcUI m_InspectNpcUI;
+        private InspectItemUI m_InspectItemUI;
         private PartyUI m_PartyUI;
         private NpcTalkUI m_NpcTalkUI;
         private Minimap m_Minimap;
@@ -99,7 +100,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             InventoryItem.OnInventoryItemHoverEnd += OnInventoryItemHoverEnd;
         }
 
-        private void Start()
+        // Init sequence: DbMgr(1) -> GameMgr(1) -> UiMgr(1) -> GameMgr(2)
+        public bool Init()
         {
             m_PartyCanvasObj = GameObject.Find("PartyCanvas");
             if (m_PartyCanvasObj != null)
@@ -166,7 +168,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_PartyUI.GoldText = m_PartyCanvasObj.transform.Find("GoldCountText").GetComponent<Text>();
             m_PartyUI.FoodText = m_PartyCanvasObj.transform.Find("FoodCountText").GetComponent<Text>();
             m_PartyUI.HoverInfoText = m_PartyCanvasObj.transform.Find("BaseBarImage").transform.Find("HoverInfoText").GetComponent<Text>();
-            
+
+            // ------------ InspectNpcUI --------------
 
             GameObject objectInfoCanvasObject = GameObject.Find("NpcInfoCanvas");
             Debug.Assert(objectInfoCanvasObject != null);
@@ -197,6 +200,23 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_InspectNpcUI.DarkResistanceText = npcInfoBackgroundObject.transform.Find("DarkResistanceText").GetComponent<Text>();
             m_InspectNpcUI.PhysicalResistanceText = npcInfoBackgroundObject.transform.Find("PhysicalResistanceText").GetComponent<Text>();
 
+            // ------------ InspectItemUI --------------
+
+            m_InspectItemUI = new InspectItemUI();
+            m_InspectItemUI.Holder = OpenMM8Util.GetGameObjAtScenePath("ItemInfoCanvas");
+            m_InspectItemUI.BackgroundTransfrom = OpenMM8Util.GetComponentAtScenePath<RectTransform>("Background", m_InspectItemUI.Holder);
+
+            GameObject btmAnchor = OpenMM8Util.GetGameObjAtScenePath("Background/BottomAnchor", m_InspectItemUI.Holder);
+            m_InspectItemUI.Value = OpenMM8Util.GetComponentAtScenePath<Text>("ValueText", btmAnchor);
+
+            GameObject topAnchor = OpenMM8Util.GetGameObjAtScenePath("Background/TopAnchor", m_InspectItemUI.Holder);
+            m_InspectItemUI.ItemName = OpenMM8Util.GetComponentAtScenePath<Text>("ItemNameText", topAnchor);
+            m_InspectItemUI.ItemSpecific = OpenMM8Util.GetComponentAtScenePath<Text>("TypeText", topAnchor);
+            m_InspectItemUI.Description = OpenMM8Util.GetComponentAtScenePath<Text>("TypeText/DescriptionText", topAnchor);
+            m_InspectItemUI.ItemImage = OpenMM8Util.GetComponentAtScenePath<Image>("ItemImage", topAnchor);
+            m_InspectItemUI.LeftEdge = OpenMM8Util.GetComponentAtScenePath<Image>("Edge_Left", topAnchor);
+            m_InspectItemUI.RightEdge = OpenMM8Util.GetComponentAtScenePath<Image>("Edge_Right", topAnchor);
+
             m_EmptySlotBanners.Add(m_PartyCanvasObj.transform.Find("PC1_EmptySlot").GetComponent<Image>());
             m_EmptySlotBanners.Add(m_PartyCanvasObj.transform.Find("PC2_EmptySlot").GetComponent<Image>());
             m_EmptySlotBanners.Add(m_PartyCanvasObj.transform.Find("PC3_EmptySlot").GetComponent<Image>());
@@ -205,12 +225,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             m_InspectNpcUI.PreviewImage = npcInfoBackgroundObject.transform.Find("PreviewImageMask").transform.Find("PreviewImage").GetComponent<Image>();
 
+            Debug.Log("Load");
             m_CharDetailUI = CharDetailUI.Load();
-        }
 
-        // Init sequence: DbMgr(1) -> GameMgr(1) -> UiMgr(1) -> GameMgr(2)
-        public bool Init()
-        {
             m_PartyCanvasObj = GameObject.Find("PartyCanvas");
             m_NpcInfoCanvasObj = GameObject.Find("NpcInfoCanvas");
             m_PlayerParty = GameMgr.Instance.PlayerParty;
@@ -337,10 +354,55 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             if (Input.GetButton("InspectObject") && m_HoveredItem != null)
             {
                 // Show item info
+                BaseItem item = m_HoveredItem.Item;
+                m_InspectItemUI.ItemImage.sprite = item.Data.InvSprite;
+                m_InspectItemUI.ItemImage.SetNativeSize();
+
+                m_InspectItemUI.ItemName.text = item.Data.Name;
+
+                m_InspectItemUI.ItemSpecific.text = "Item Specific, TBD...\nNewLine";
+                float specHeight = GetTextHeight(m_InspectItemUI.ItemSpecific);
+                m_InspectItemUI.ItemSpecific.rectTransform.sizeDelta = new Vector2(
+                        m_InspectItemUI.ItemSpecific.rectTransform.rect.width,
+                        specHeight);
+
+                m_InspectItemUI.Description.text = item.Data.Notes;
+                float descHeight = GetTextHeight(m_InspectItemUI.Description);
+                m_InspectItemUI.Description.rectTransform.sizeDelta = new Vector2(
+                        m_InspectItemUI.Description.rectTransform.rect.width,
+                        descHeight);
+
+                m_InspectItemUI.Value.text = "Value: " + item.Data.GoldValue.ToString();
+                float valueHeight = GetTextHeight(m_InspectItemUI.Value);
+
+                // TODO: ...
+                float dynTextHeight = (specHeight / 10.0f) + (descHeight / 10.0f) + (valueHeight / 10.0f) + 35.0f;
+                float imageHeight = m_InspectItemUI.ItemImage.transform.GetComponent<RectTransform>().rect.height;
+
+                Debug.Log("Text: " + dynTextHeight + ", Image: " + imageHeight);
+                if (imageHeight > dynTextHeight)
+                {
+                    m_InspectItemUI.BackgroundTransfrom.sizeDelta = new Vector2(
+                        m_InspectItemUI.BackgroundTransfrom.rect.width,
+                        imageHeight + InspectItemUI.TOP_SPACE_PX + InspectItemUI.BOTTOM_SPACE_PX);
+                }
+                else
+                {
+                    m_InspectItemUI.BackgroundTransfrom.sizeDelta = new Vector2(
+                        m_InspectItemUI.BackgroundTransfrom.rect.width,
+                        dynTextHeight + InspectItemUI.TOP_SPACE_PX + InspectItemUI.BOTTOM_SPACE_PX);
+                }
+
+                float edgeFillAmount = (m_InspectItemUI.BackgroundTransfrom.rect.height - 20.0f) /
+                    m_InspectItemUI.LeftEdge.rectTransform.rect.height;
+                m_InspectItemUI.LeftEdge.fillAmount = edgeFillAmount;
+                m_InspectItemUI.RightEdge.fillAmount = edgeFillAmount;
+
+                m_InspectItemUI.Holder.SetActive(true);
             }
             else
             {
-                // Hide item info
+                m_InspectItemUI.Holder.SetActive(false);
             }
         }
 
@@ -352,16 +414,23 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return Camera.main.ViewportPointToRay(Constants.CrosshairScreenRelPos);
         }
 
-        static public float GetTextHeight(Text text)
+        static public float GetTextHeight(Text text, bool applyScale = false)
         {
 
             Vector2 extents = new Vector2(text.rectTransform.rect.width, 1);
+
+            float scaleY = 1.0f;
+            if (applyScale)
+            {
+                scaleY = text.transform.GetComponent<RectTransform>().localScale.y;
+            }
 
             TextGenerator textGen = new TextGenerator();
             TextGenerationSettings generationSettings =
                 text.GetGenerationSettings(extents);
             textGen.GetPreferredHeight(text.text, generationSettings);
-            float height = textGen.lineCount * (text.fontSize * 1.15f);
+            float lineSpacing = text.lineSpacing;
+            float height = (textGen.lineCount * (text.fontSize * lineSpacing * 1.15f)) * scaleY;
 
             return height;
         }
