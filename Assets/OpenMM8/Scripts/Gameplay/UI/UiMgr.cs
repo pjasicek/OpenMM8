@@ -12,6 +12,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 {
     public partial class UiMgr : Singleton<UiMgr>
     {
+        public const int UI_WIDTH = 640;
+        public const int UI_HEIGHT = 480;
+
         public RawImage SceneVideoImage;
 
         // Public
@@ -28,7 +31,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private float m_TimeSinceLastPartyText = 0.0f;
         private float m_PartyTextLockTime = 0.0f;
 
-        private InventoryItem m_HoveredItem;
+        private InventoryItem m_HoveredItem = null;
+        private InventoryItem m_HeldItem = null;
 
         // State
         private UIState m_CurrUIState = null;
@@ -82,6 +86,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Character.OnHitNpc += OnCharHitNpc;
             Character.OnGotHit += OnCharGotHit;
             Character.OnAttack += OnCharAttack;
+            Character.OnItemEquipped += OnItemEquipped;
 
             InspectableNpc.OnNpcInspectStart += OnNpcInspectStart;
             InspectableNpc.OnNpcInspectEnd += OnNpcInspectEnd;
@@ -98,6 +103,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             InventoryItem.OnInventoryItemHoverStart += OnInventoryItemHoverStart;
             InventoryItem.OnInventoryItemHoverEnd += OnInventoryItemHoverEnd;
+            InventoryItem.OnInventoryItemClicked += OnInventoryItemClicked;
+
+            InventoryClickHandler.OnInventoryCellClicked += OnInventoryCellClicked;
+            DollClickHandler.OnDollClicked += OnDollClicked;
+
+            CharacterAvatar.OnCharacterAvatarClicked += OnCharacterAvatarClicked;
         }
 
         // Init sequence: DbMgr(1) -> GameMgr(1) -> UiMgr(1) -> GameMgr(2)
@@ -274,6 +285,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Sprite[] invEqItemSprites = Resources.LoadAll<Sprite>("UI/Items/ARMOR_EQ_ITEMS");
             foreach (Sprite sprite in invEqItemSprites)
             {
+                Debug.Log(sprite.name.ToLower());
                 m_EquippableItemSpriteMap[sprite.name.ToLower()] = sprite;
             }
 
@@ -309,11 +321,21 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         itemData.InvSize.y = 1;
                     }
 
-                    Debug.Log(itemData.Id + ": " + itemData.Name + ": " + itemData.InvSize.ToString());
+                    //Debug.Log(itemData.Id + ": " + itemData.Name + ": " + itemData.InvSize.ToString());
                 }
                 else
                 {
                     Debug.LogWarning(itemData.Name + ": No inventory sprite found");
+                }
+
+                string[] itemEqExts = { "v1", "v1a", "v1b", "v2", "v2a", "v2b", "v3", "v3a", "v3b", "v4", "v4a", "v4b" };
+                foreach (string itemEqExt in itemEqExts)
+                {
+                    var itemEqKey = itemData.ImageName + itemEqExt;
+                    if (m_EquippableItemSpriteMap.ContainsKey(itemEqKey))
+                    {
+                        itemData.EquipSprites.Add(m_EquippableItemSpriteMap[itemEqKey]);
+                    }
                 }
             }
 
@@ -351,6 +373,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             m_PartyTextLockTime -= Time.deltaTime;
 
+            // Item inspect
             if (Input.GetButton("InspectObject") && m_HoveredItem != null)
             {
                 // Show item info
@@ -379,7 +402,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 float dynTextHeight = (specHeight / 10.0f) + (descHeight / 10.0f) + (valueHeight / 10.0f) + 35.0f;
                 float imageHeight = m_InspectItemUI.ItemImage.transform.GetComponent<RectTransform>().rect.height;
 
-                Debug.Log("Text: " + dynTextHeight + ", Image: " + imageHeight);
                 if (imageHeight > dynTextHeight)
                 {
                     m_InspectItemUI.BackgroundTransfrom.sizeDelta = new Vector2(
@@ -398,12 +420,112 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 m_InspectItemUI.LeftEdge.fillAmount = edgeFillAmount;
                 m_InspectItemUI.RightEdge.fillAmount = edgeFillAmount;
 
+                Vector2 mouseNormPos = GetMouseRatioCoord();
+                Vector2 mousePixelPosUI = new Vector2(mouseNormPos.x * UI_WIDTH, mouseNormPos.y * UI_HEIGHT);
+
+                const float cursorSpace = InspectItemUI.CURSOR_SPACE;
+                float rightEdgePos = mouseNormPos.x * UI_WIDTH + cursorSpace + m_InspectItemUI.BackgroundTransfrom.rect.width;
+
+                Vector2 inspectTopLeft = new Vector2();
+                bool isItemInspectLeft = (rightEdgePos - 50)  > UI_WIDTH;
+                if (isItemInspectLeft)
+                {
+                    bool isCursorOverlapping = mousePixelPosUI.x < (m_InspectItemUI.BackgroundTransfrom.rect.width + cursorSpace);
+                    if (isCursorOverlapping)
+                    {
+                        bool isTopLeft = (UI_HEIGHT - mousePixelPosUI.y) + m_InspectItemUI.BackgroundTransfrom.rect.height + cursorSpace > UI_HEIGHT;
+                        if (isTopLeft)
+                        {
+                            // No room to be neither left nor below the cursor => in the top left corner
+                            inspectTopLeft.Set(0, UI_HEIGHT);
+                        }
+                        else
+                        {
+                            // Below cursor on the left side
+                            inspectTopLeft.Set(0, mousePixelPosUI.y - cursorSpace);
+                        }
+                    }
+                    else
+                    {
+                        // Above curser on the left side
+                        inspectTopLeft.Set(
+                            mousePixelPosUI.x - cursorSpace - m_InspectItemUI.BackgroundTransfrom.rect.width,
+                            InspectItemUI.DEFAULT_Y);
+                    }
+                }
+                else
+                {
+                    bool isCursorOverlapping = mousePixelPosUI.x > (UI_WIDTH - m_InspectItemUI.BackgroundTransfrom.rect.width);
+                    if (isCursorOverlapping)
+                    {
+                        bool isTopRight = (UI_HEIGHT - mousePixelPosUI.y) + m_InspectItemUI.BackgroundTransfrom.rect.height + cursorSpace > UI_HEIGHT;
+                        if (isTopRight)
+                        {
+                            // No room to be neither right nor below the cursor => in the top right corner
+                            inspectTopLeft.Set(UI_WIDTH - m_InspectItemUI.BackgroundTransfrom.rect.width, UI_HEIGHT);
+                        }
+                        else
+                        {
+                            // Below cursor on the right side
+                            inspectTopLeft.Set(UI_WIDTH - m_InspectItemUI.BackgroundTransfrom.rect.width, mousePixelPosUI.y - cursorSpace);
+                        }
+                    }
+                    else
+                    {
+                        // Above curspr on the right side
+                        float x = Mathf.Min(UI_WIDTH - m_InspectItemUI.BackgroundTransfrom.rect.width, mousePixelPosUI.x + cursorSpace);
+                        inspectTopLeft.Set(
+                            x,
+                            InspectItemUI.DEFAULT_Y);
+                    }
+                }
+
+                m_InspectItemUI.BackgroundTransfrom.anchoredPosition = inspectTopLeft;
+
                 m_InspectItemUI.Holder.SetActive(true);
             }
             else
             {
                 m_InspectItemUI.Holder.SetActive(false);
             }
+
+            // Held item position update
+            if (m_HeldItem != null)
+            {
+                //transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition.x, Input.mousePosition.y);
+                //m_HeldItem.gameObject.GetComponent<RectTransform>().rect.
+                //Debug.Log(m_HeldItem.gameObject.GetComponent<RectTransform>().rect.ToString());
+                /*m_HeldItem.gameObject.GetComponent<RectTransform>().anchoredPosition =
+                    new Vector2(Input.mousePosition.x, Input.mousePosition.y);*/
+
+
+                var rt = m_HeldItem.gameObject.GetComponent<RectTransform>();
+
+                Vector2 mouseNormPos = GetMouseRatioCoord();
+                Vector2 mousePixelPosUI = new Vector2(mouseNormPos.x * UI_WIDTH, mouseNormPos.y * UI_HEIGHT);
+
+                /*Vector2 outPoint;
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(rt, mousePixelPosUI, null, out outPoint);
+                Debug.Log("----- Post: " + outPoint.ToString());*/
+
+                //mousePixelPosUI += outPoint;
+
+                rt.anchoredPosition = mousePixelPosUI;
+            }
+        }
+
+
+        
+        public Rect GetScreenCoordinates(RectTransform uiElement)
+        {
+            var worldCorners = new Vector3[4];
+            uiElement.GetWorldCorners(worldCorners);
+            var result = new Rect(
+                          worldCorners[0].x,
+                          worldCorners[0].y,
+                          worldCorners[2].x - worldCorners[0].x,
+                          worldCorners[2].y - worldCorners[0].y);
+            return result;
         }
 
         //=================================== Static Helpers ===================================
@@ -438,6 +560,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         static public Sprite RandomSprite(List<Sprite> sprites)
         {
             return sprites[UnityEngine.Random.Range(0, sprites.Count)];
+        }
+
+        static Vector2 GetMouseRatioCoord()
+        {
+            return new Vector2(
+                (float)Input.mousePosition.x / (float)Screen.width,
+                (float)Input.mousePosition.y / (float)Screen.height);
         }
 
 
@@ -609,6 +738,32 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             GameMgr.Instance.UnpauseGame();
         }
 
+        void SetHeldItem(BaseItem item)
+        {
+            if (m_HeldItem)
+            {
+                Logger.LogDebug("Destroying already held item: " + m_HeldItem.Item.Data.Name);
+                GameObject.Destroy(m_HeldItem.gameObject);
+                m_HeldItem = null;
+            }
+
+            GameObject inventoryItemObj = (GameObject)GameObject.Instantiate(
+                Resources.Load("Prefabs/UI/Inventory/InventoryItem"), m_PartyCanvasObj.transform);
+
+            InventoryItem inventoryItem = inventoryItemObj.GetComponent<InventoryItem>();
+            m_HeldItem = inventoryItemObj.GetComponent<InventoryItem>();
+            m_HeldItem.IsHeld = true;
+            m_HeldItem.Item = item;
+            m_HeldItem.Image.raycastTarget = false;
+
+            RectTransform rt = m_HeldItem.GetComponent<RectTransform>();
+            rt.anchorMin = rt.anchorMax = Vector2.zero;
+            rt.pivot = new Vector2(0.0f, 1.0f);
+
+            m_HeldItem.Image.sprite = item.Data.InvSprite;
+            m_HeldItem.Image.SetNativeSize();
+        }
+
 
         //=================================== Events ===================================
 
@@ -640,17 +795,39 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             chr.UI.Sprites = GetCharacterSprites(chr.Data.CharacterType);
 
             // Doll for char detail UI (Inventory/Stats/Awards/Skills UI, Adventurer's Inn, Character creation page)
+            string dollPrefabName = "DOLL_PC_" + ((int)chr.Data.CharacterType).ToString();
             chr.UI.DollUI = new DollUI();
-            chr.UI.DollUI.Holder = (GameObject)Instantiate(Resources.Load("Prefabs/UI/Dolls/DOLL_PC_1"), m_CharDetailUI.CanvasHolder.transform);
+            chr.UI.DollUI.Holder = (GameObject)Instantiate(Resources.Load("Prefabs/UI/Dolls/" + dollPrefabName), m_CharDetailUI.CanvasHolder.transform);
             chr.UI.DollUI.Holder.transform.SetSiblingIndex(0);
             chr.UI.DollUI.BackgroundImage = OpenMM8Util.GetComponentAtScenePath<Image>("Background", chr.UI.DollUI.Holder);
             chr.UI.DollUI.BodyImage = OpenMM8Util.GetComponentAtScenePath<Image>("Body", chr.UI.DollUI.Holder);
             chr.UI.DollUI.LH_OpenImage = OpenMM8Util.GetComponentAtScenePath<Image>("LeftHand_Open", chr.UI.DollUI.Holder);
             chr.UI.DollUI.LH_ClosedImage = OpenMM8Util.GetComponentAtScenePath<Image>("LeftHand_Closed", chr.UI.DollUI.Holder);
-            chr.UI.DollUI.LH_ClosedImage = OpenMM8Util.GetComponentAtScenePath<Image>("LeftHand_Hold", chr.UI.DollUI.Holder);
+            chr.UI.DollUI.LH_HoldImage = OpenMM8Util.GetComponentAtScenePath<Image>("LeftHand_Hold", chr.UI.DollUI.Holder);
             chr.UI.DollUI.RH_OpenImage = OpenMM8Util.GetComponentAtScenePath<Image>("RightHand_Open", chr.UI.DollUI.Holder);
             chr.UI.DollUI.RH_HoldImage = OpenMM8Util.GetComponentAtScenePath<Image>("RightHand_Hold", chr.UI.DollUI.Holder);
-            chr.UI.DollUI.RH_HoldFingersImage = OpenMM8Util.GetComponentAtScenePath<Image>("RightHand_HoldFingers", chr.UI.DollUI.Holder);
+            chr.UI.DollUI.BowAnchorHolder = OpenMM8Util.GetGameObjAtScenePath("BowHoldAnchor", chr.UI.DollUI.Holder);
+            chr.UI.DollUI.RH_WeaponAnchorHolder = OpenMM8Util.GetGameObjAtScenePath("RightHand_WeaponHoldAnchor", chr.UI.DollUI.Holder);
+            //chr.UI.DollUI.RH_HoldFingersImage = OpenMM8Util.GetComponentAtScenePath<Image>("RightHand_HoldFingers", chr.UI.DollUI.Holder);
+            chr.UI.DollUI.Cloak = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("CloakSlot", chr.UI.DollUI.Holder);
+            chr.UI.DollUI.Bow = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("BowHoldAnchor/BowSlot", chr.UI.DollUI.Holder);
+            chr.UI.DollUI.Armor = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("ArmorSlot", chr.UI.DollUI.Holder);
+            chr.UI.DollUI.Boots = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("BootsSlot", chr.UI.DollUI.Holder);
+            chr.UI.DollUI.Helmet = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("HelmetSlot", chr.UI.DollUI.Holder);
+            chr.UI.DollUI.Belt = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("BeltSlot", chr.UI.DollUI.Holder);
+            chr.UI.DollUI.RH_Weapon = 
+                OpenMM8Util.GetComponentAtScenePath<InventoryItem>("RightHand_WeaponHoldAnchor/RightHand_WeaponSlot", chr.UI.DollUI.Holder);
+
+            // To raycast only non-transparent areas
+            // Settings for the texture-import for dolls was also changed because of this
+            // Read-Write - enabled
+            // Mesh Type - Full Rect
+            chr.UI.DollUI.BodyImage.alphaHitTestMinimumThreshold = 0.4f;
+            chr.UI.DollUI.LH_OpenImage.alphaHitTestMinimumThreshold = 0.4f;
+            chr.UI.DollUI.LH_ClosedImage.alphaHitTestMinimumThreshold = 0.4f;
+            chr.UI.DollUI.LH_HoldImage.alphaHitTestMinimumThreshold = 0.4f;
+            chr.UI.DollUI.RH_OpenImage.alphaHitTestMinimumThreshold = 0.4f;
+            chr.UI.DollUI.RH_HoldImage.alphaHitTestMinimumThreshold = 0.4f;
 
             chr.UI.InventoryUI = InventoryUI.Create();
 
@@ -894,10 +1071,177 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private void OnInventoryItemHoverEnd(InventoryItem inventoryItem)
         {
-            Debug.Log("Unhovered over item: " + inventoryItem.Item.Data.Name);
+            //Debug.Log("Unhovered over item: " + inventoryItem.Item.Data.Name);
             if (m_HoveredItem && m_HoveredItem == inventoryItem)
             {
                 m_HoveredItem = null;
+            }
+        }
+
+        private void OnInventoryItemClicked(InventoryItem inventoryItem)
+        {
+            if (inventoryItem.isEquipped)
+            {
+                HandleDollItemClicked(inventoryItem);
+                return;
+            }
+
+            if (m_HeldItem != null)
+            {
+                // Check if we can replace the existing item
+                //GameObject.Destroy(m_HeldItem.gameObject);
+
+                Vector2Int newPos;
+                if (m_PlayerParty.ActiveCharacter.Inventory.CanReplaceItem(inventoryItem.Item, m_HeldItem.Item, out newPos))
+                {
+                    BaseItem heldItem = m_HeldItem.Item;
+                    GameObject.Destroy(m_HeldItem.gameObject);
+
+                    SetHeldItem(inventoryItem.Item);
+
+                    m_PlayerParty.ActiveCharacter.Inventory.RemoveItem(inventoryItem.Item);
+                    m_PlayerParty.ActiveCharacter.Inventory.PlaceItem(heldItem, newPos.x, newPos.y);
+                }
+                else
+                {
+                    Debug.Log("Cannot replace");
+                    return;
+                }
+            }
+            else
+            {
+                SetHeldItem(inventoryItem.Item);
+
+                m_PlayerParty.ActiveCharacter.Inventory.RemoveItem(inventoryItem.Item);
+            }
+        }
+
+        private void OnInventoryCellClicked(int x, int y)
+        {
+            // Try to place on cell
+            if (m_HeldItem != null)
+            {
+                // Check if we can replace the existing item
+                if (m_PlayerParty.ActiveCharacter.Inventory.PlaceItem(m_HeldItem.Item, x, y, true))
+                {
+                    GameObject.Destroy(m_HeldItem.gameObject);
+                }
+            }
+        }
+
+        // Item equipped by doll was clicked
+        public void HandleDollItemClicked(InventoryItem clickedItem)
+        {
+            if (!m_HeldItem)
+            {
+                // If not holding anything, remove the item from doll and hold it
+                SetHeldItem(clickedItem.Item);
+
+                clickedItem.Image.enabled = false;
+                clickedItem.Item = null;
+            }
+            else
+            {
+                // If holding an item already, just do doll clicked routine
+                OnDollClicked(null);
+            }
+        }
+
+        // When holding an item and clicked on a doll
+        private void OnDollClicked(DollClickHandler sender)
+        {
+            if (!m_HeldItem)
+            {
+                // If we are not holding any item, we cant do anything
+                return;
+            }
+
+            Debug.Log("Doll click handling");
+
+            // TODO: This should really be handled by Character class, not in UiMgr
+
+            Character currChar = m_PlayerParty.ActiveCharacter;
+            if (currChar == null)
+            {
+                Debug.LogError("null active character when doll is clicked ?");
+                return;
+            }
+
+            // InteractWithItem invokes 2 events - interact result and item equipped if item was equipped
+            ItemInteractResult interactResult = currChar.InteractWithItem(m_HeldItem.Item);
+            if (interactResult == ItemInteractResult.Learned ||
+                interactResult == ItemInteractResult.Consumed ||
+                interactResult == ItemInteractResult.Casted)
+            {
+                GameObject.Destroy(m_HeldItem.gameObject);
+                m_HeldItem = null;
+
+                // If item was equiipped it is handled in OnItemEquipped event
+            }
+
+
+            /*ItemInteractResult interactResult = ItemInteractResult.Invalid;
+            if (m_HeldItem.Item.IsEquippable())
+            {
+                // Try to equip the item. If success, we may have replaced the item by the old item on doll
+                BaseItem replacedItem = null;
+                 interactResult = currChar.Inventory.TryEquipItem(m_HeldItem.Item, out replacedItem);
+                if (interactResult == ItemInteractResult.Equipped)
+                {
+                    // Held item was equipped by the doll - destroy it
+                    GameObject.Destroy(m_HeldItem.gameObject);
+                    m_HeldItem = null;
+
+                    if (replacedItem != null)
+                    {
+                        // If we replaced an item which was equipped by doll, then we have to hold this item
+                        SetHeldItem(replacedItem);
+                    }
+                }
+            }
+            else if (m_HeldItem.Item.IsCastable())
+            {
+
+            }
+            else if (m_HeldItem.Item.IsConsumable())
+            {
+
+            }
+            else if (m_HeldItem.Item.IsLearnable())
+            {
+
+            }
+            else if (m_HeldItem.Item.IsReadable())
+            {
+
+            }*/
+
+            // Invoke event
+
+        }
+
+        private void OnCharacterAvatarClicked(Character chr)
+        {
+            // Try to add item to inventory
+            if (m_HeldItem != null)
+            {
+                // Check if we can replace the existing item
+                if (chr.Inventory.PlaceItem(m_HeldItem.Item, 0 , 0, true))
+                {
+                    GameObject.Destroy(m_HeldItem.gameObject);
+                }
+            }
+        }
+
+        private void OnItemEquipped(Character chr, BaseItem equippedItem, BaseItem replacedItem)
+        {
+            GameObject.Destroy(m_HeldItem.gameObject);
+            m_HeldItem = null;
+
+            if (replacedItem != null)
+            {
+                // If we replaced an item which was equipped by doll, then we have to hold this item
+                SetHeldItem(replacedItem);
             }
         }
 

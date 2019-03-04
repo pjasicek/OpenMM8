@@ -82,7 +82,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             itemData.SpriteIndex = int.Parse(columns[11]);
             itemData.VarA = columns[12];
             itemData.VarB = columns[13];
-            itemData.EquipX = int.Parse(columns[14]);
+            itemData.EquipX = -1 * int.Parse(columns[14]);
             itemData.EquipY = int.Parse(columns[15]);
             itemData.Notes = columns[16];
 

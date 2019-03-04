@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.OpenMM8.Scripts.Gameplay.Items;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public delegate void ItemEquip(/*Item item, EquipResult equipResult*/);
     public delegate void ItemHold(/*Item item*/);
     public delegate void ItemHoldEnd();
+    public delegate void ItemEquipped(Character chr, BaseItem equippedItem, BaseItem replacedItem);
+    public delegate void InteractedWithItem(Character chr, BaseItem item, ItemInteractResult interactResult);
 
     public class Character
     {
@@ -47,7 +50,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         static public event ItemInspect OnItemInspect;
         static public event ItemEquip OnItemEquip;
         static public event ItemHold OnItemHold;
-        static public event ItemHoldEnd OnItemHoldEnd;  
+        static public event ItemHoldEnd OnItemHoldEnd;
+        static public event ItemEquipped OnItemEquipped;
+        static public event InteractedWithItem OnInteractedWithItem;
 
 
         private float m_TimeUntilRecovery = 0.0f;
@@ -86,6 +91,89 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int GetPartyIndex()
         {
             return Party.Characters.FindIndex(ch => ch == this);
+        }
+
+        public bool IsFemale()
+        {
+            CharacterType chrType = Data.CharacterType;
+
+            if (chrType == CharacterType.ClericFemale_1 ||
+                chrType == CharacterType.ClericFemale_2 ||
+                chrType == CharacterType.DarkElfFemale_1 ||
+                chrType == CharacterType.DarkElfFemale_2 ||
+                chrType == CharacterType.KnightFemale_1 ||
+                chrType == CharacterType.KnightFemale_2 ||
+                chrType == CharacterType.LichFemale_1 ||
+                chrType == CharacterType.NecromancerFemale_1 ||
+                chrType == CharacterType.NecromancerFemale_2 ||
+                chrType == CharacterType.VampireFemale_1 ||
+                chrType == CharacterType.VampireFemale_1)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsMale()
+        {
+            CharacterType chrType = Data.CharacterType;
+
+            if (chrType == CharacterType.Cleric_1 ||
+                chrType == CharacterType.Cleric_2||
+                chrType == CharacterType.DarkElf_1 ||
+                chrType == CharacterType.DarkElf_2 ||
+                chrType == CharacterType.Knight_1 ||
+                chrType == CharacterType.Knight_2 ||
+                chrType == CharacterType.Lich_1 ||
+                chrType == CharacterType.Necromancer_1 ||
+                chrType == CharacterType.Necromancer_2 ||
+                chrType == CharacterType.Vampire_1 ||
+                chrType == CharacterType.Vampire_1)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsTroll()
+        {
+            CharacterType chrType = Data.CharacterType;
+
+            if (chrType == CharacterType.Troll_1 ||
+                chrType == CharacterType.Troll_2)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsMinotaur()
+        {
+            CharacterType chrType = Data.CharacterType;
+
+            if (chrType == CharacterType.Minotaur_1 ||
+                chrType == CharacterType.Minotaur_2)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsDragom()
+        {
+            CharacterType chrType = Data.CharacterType;
+
+            if (chrType == CharacterType.Dragon_1 ||
+                chrType == CharacterType.Dragon_2)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         // ====================================================================
@@ -217,6 +305,56 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public void ModifyResistance(SpellElement element, int amount)
         {
 
+        }
+
+        public ItemInteractResult InteractWithItem(BaseItem item)
+        {
+            ItemInteractResult interactResult = ItemInteractResult.Invalid;
+            if (item.IsEquippable())
+            {
+                // Try to equip the item. If success, we may have replaced the item by the old item on doll
+                BaseItem replacedItem = null;
+                interactResult = Inventory.TryEquipItem(item, out replacedItem);
+                if (interactResult == ItemInteractResult.Equipped)
+                {
+                    /*// Held item was equipped by the doll - destroy it
+                    GameObject.Destroy(m_HeldItem.gameObject);
+                    m_HeldItem = null;
+
+                    if (replacedItem != null)
+                    {
+                        // If we replaced an item which was equipped by doll, then we have to hold this item
+                        SetHeldItem(replacedItem);
+                    }*/
+                    if (OnItemEquipped != null)
+                    {
+                        OnItemEquipped(this, item, replacedItem);
+                    }
+                }
+            }
+            else if (item.IsCastable())
+            {
+                interactResult = ItemInteractResult.Casted;
+            }
+            else if (item.IsConsumable())
+            {
+                interactResult = ItemInteractResult.Consumed;
+            }
+            else if (item.IsLearnable())
+            {
+                interactResult = ItemInteractResult.Learned;
+            }
+            else if (item.IsReadable())
+            {
+                interactResult = ItemInteractResult.Read;
+            }
+
+            if (OnInteractedWithItem != null)
+            {
+                OnInteractedWithItem(this, item, interactResult);
+            }
+
+            return interactResult;
         }
     }
 }

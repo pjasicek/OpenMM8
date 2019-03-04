@@ -5,23 +5,35 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
     public delegate void InventoryItemHoverStart(InventoryItem inventoryItem);
     public delegate void InventoryItemHoverEnd(InventoryItem inventoryItem);
+    public delegate void InventoryItemClicked(InventoryItem inventoryItem);
 
-    public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    [RequireComponent(typeof(Image))]
+    public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
     {
-        public BaseItem Item;
+        public BaseItem Item = null;
+        public Image Image;
+        public bool IsHeld = false;
+        public bool isEquipped = false;
 
         // Events
         static public event InventoryItemHoverStart OnInventoryItemHoverStart;
         static public event InventoryItemHoverEnd OnInventoryItemHoverEnd;
+        static public event InventoryItemClicked OnInventoryItemClicked;
+
+        public void Awake()
+        {
+            Image = GetComponent<Image>();
+        }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (OnInventoryItemHoverStart != null)
+            if (!IsHeld && OnInventoryItemHoverStart != null)
             {
                 OnInventoryItemHoverStart(this);
             }
@@ -29,10 +41,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (OnInventoryItemHoverEnd != null)
+            if (!IsHeld && OnInventoryItemHoverEnd != null)
             {
                 OnInventoryItemHoverEnd(this);
             }
+        }
+
+        public void SetOwnImage(CharacterType chrType)
+        {
+            Sprite sprite = Item.Data.EquipSprites[0];
+            // TODO: Add the logic here ... e.g. Armor + female = itemXXXv2a etc
+
+            GetComponent<Image>().sprite = sprite;
         }
 
         /*public void OnPointerClick(PointerEventData eventData)
@@ -45,14 +65,21 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 Debug.Log("Left Click on: " + Item.Data.Name);
             }
-        }
+        }*/
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            Debug.Log("Pointer Down: " + Item.Data.Name);
+            if (!IsHeld && eventData.button == PointerEventData.InputButton.Left)
+            {
+                Debug.Log("Pointer Down: " + Item.Data.Name);
+                if (OnInventoryItemClicked != null)
+                {
+                    OnInventoryItemClicked(this);
+                }
+            }
         }
 
-        public void OnPointerUp(PointerEventData eventData)
+        /*public void OnPointerUp(PointerEventData eventData)
         {
             Debug.Log("Pointer Up: " + Item.Data.Name);
         }*/

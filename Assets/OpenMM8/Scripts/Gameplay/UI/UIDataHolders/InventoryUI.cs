@@ -72,7 +72,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void RemoveItem(BaseItem item)
         {
-
+            var uiInventoryItem = Items.Find(invItem => invItem.Item.Equals(item));
+            if (uiInventoryItem != null)
+            {
+                Items.Remove(uiInventoryItem);
+                GameObject.Destroy(uiInventoryItem.gameObject);
+            }
         }
 
     }

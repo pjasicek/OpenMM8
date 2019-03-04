@@ -79,10 +79,44 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public bool PostInit()
         {
+            /*AddChar(CharacterType.KnightFemale_1);
             AddRandChar();
             AddRandChar();
             AddRandChar();
-            AddRandChar();
+            AddRandChar();*/
+            AddChar(CharacterType.VampireFemale_2);
+            PlayerParty.Characters[0].Inventory.AddItem(513);
+            /*PlayerParty.Characters[0].Inventory.AddItem(84);
+            PlayerParty.Characters[0].Inventory.AddItem(85);
+            PlayerParty.Characters[0].Inventory.AddItem(86);
+            PlayerParty.Characters[0].Inventory.AddItem(87);
+            PlayerParty.Characters[0].Inventory.AddItem(88);
+            PlayerParty.Characters[0].Inventory.AddItem(89);
+            PlayerParty.Characters[0].Inventory.AddItem(90);
+            PlayerParty.Characters[0].Inventory.AddItem(91);
+            PlayerParty.Characters[0].Inventory.AddItem(92);
+            PlayerParty.Characters[0].Inventory.AddItem(93);
+            PlayerParty.Characters[0].Inventory.AddItem(94);
+            PlayerParty.Characters[0].Inventory.AddItem(95);
+            PlayerParty.Characters[0].Inventory.AddItem(96);
+            PlayerParty.Characters[0].Inventory.AddItem(97);
+            PlayerParty.Characters[0].Inventory.AddItem(98);
+            PlayerParty.Characters[0].Inventory.AddItem(514);*/
+            /*AddChar(CharacterType.VampireFemale_2);
+            AddChar(CharacterType.VampireFemale_2);
+            AddChar(CharacterType.VampireFemale_2);
+            AddChar(CharacterType.VampireFemale_2);*/
+            PlayerParty.Characters[0].Inventory.AddItem(109);
+            PlayerParty.Characters[0].Inventory.AddItem(117);
+            PlayerParty.Characters[0].Inventory.AddItem(132);
+            PlayerParty.Characters[0].Inventory.AddItem(522);
+            PlayerParty.Characters[0].Inventory.AddItem(522);
+            PlayerParty.Characters[0].Inventory.AddItem(522);
+            PlayerParty.Characters[0].Inventory.AddItem(512);
+            PlayerParty.Characters[0].Inventory.AddItem(532);
+            PlayerParty.Characters[0].Inventory.AddItem(529);
+            PlayerParty.Characters[0].Inventory.AddItem(115);
+            PlayerParty.Characters[0].Inventory.AddItem(536);
 
             return true;
         }
@@ -224,6 +258,32 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     PlayerParty.ActiveCharacter.Inventory.AddItem(randomEntry.Key);
                 }
             }
+            if (Input.GetKeyDown(KeyCode.F11))
+            {
+                if (PlayerParty.ActiveCharacter != null)
+                {
+                    var randomEntry = PlayerParty.ActiveCharacter.Inventory.InventoryItems.ElementAt(
+                        UnityEngine.Random.Range(0, PlayerParty.ActiveCharacter.Inventory.InventoryItems.Count));
+
+                    if (randomEntry != null)
+                    {
+                        PlayerParty.ActiveCharacter.Inventory.RemoveItem(randomEntry);
+                    }
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.F8))
+            {
+                if (PlayerParty.ActiveCharacter != null)
+                {
+                    for (int i = 0; i < 100; i++)
+                    {
+                        var randomEntry = DbMgr.Instance.ItemDb.Data.ElementAt(
+                        UnityEngine.Random.Range(0, DbMgr.Instance.ItemDb.Data.Count));
+
+                        PlayerParty.ActiveCharacter.Inventory.AddItem(randomEntry.Key);
+                    }
+                }
+            }
         }
 
         public void AddRosterNpcToParty(int rosterId)
@@ -236,6 +296,39 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 AddRandChar();
             }
+        }
+
+        public void AddChar(CharacterType type)
+        {
+            CharacterData charData = new CharacterData();
+            charData.CharacterType = type;
+            charData.Name = "Tyrkys";
+            charData.Class = Class.Knight;
+            charData.Experience = 0;
+            charData.SkillPoints = 0;
+            charData.CurrHitPoints = 500;
+            charData.CurrSpellPoints = 50;
+            charData.Condition = Condition.Good;
+            charData.DefaultStats.Age = 30;
+            charData.DefaultStats.Level = 1;
+            charData.DefaultStats.MaxHitPoints = 500;
+            charData.DefaultStats.MaxSpellPoints = 50;
+
+            foreach (Attribute attr in Enum.GetValues(typeof(Attribute)))
+            {
+                charData.DefaultStats.Attributes[attr] = 0;
+                charData.BonusStats.Attributes[attr] = 0;
+            }
+
+            foreach (SpellElement resist in Enum.GetValues(typeof(SpellElement)))
+            {
+                charData.DefaultStats.Resistances[resist] = 0;
+                charData.BonusStats.Resistances[resist] = 0;
+            }
+
+            Character chr = new Character(charData);
+
+            PlayerParty.AddCharacter(chr);
         }
 
         public void AddRandChar()

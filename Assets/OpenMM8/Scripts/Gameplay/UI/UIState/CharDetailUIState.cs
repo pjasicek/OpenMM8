@@ -201,6 +201,19 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             // Inventory methods
             // ====================================================================================
 
+            /*
+             * Equip char's right hand item offset calculation:
+             * PosY = ItemOffsetY - ItemHeight
+             * PosX = ItemOffsetX
+             * Item is Middle+Center aligned in UI
+             */
+
+            /*
+             * Equip FEMALE char's armor offset calculation:
+             * 
+             * 
+             */
+
             BaseItem GetItemAtSlot(int row, int col)
             {
                 return null;

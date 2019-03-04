@@ -46,11 +46,18 @@ namespace Assets.OpenMM8.Scripts
             GameObject go = GetGameObjAtScenePath(path, origin, delim);
             if (go == null)
             {
+                Debug.LogError("No gameobject found: " + path);
                 return default(T);
             }
             else
             {
-                return go.GetComponent<T>();
+                T component = go.GetComponent<T>();
+                if (component == null)
+                {
+                    Debug.LogError("No component found: " + path);
+                }
+
+                return component;
             }
         }
     }

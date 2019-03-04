@@ -18,7 +18,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public Image LH_HoldImage;
         public Image RH_OpenImage;
         public Image RH_HoldImage;
-        public Image RH_HoldFingersImage;
+        public GameObject RH_WeaponAnchorHolder;
+        public GameObject BowAnchorHolder;
+        //public Image RH_HoldFingersImage;
         public Image BodyImage;
+
+        public InventoryItem Cloak;
+        public InventoryItem Bow;
+        public InventoryItem Armor;
+        public InventoryItem Boots;
+        public InventoryItem Helmet;
+        public InventoryItem Belt;
+        public InventoryItem RH_Weapon;
+        public InventoryItem LF_Weapon;
     }
 }

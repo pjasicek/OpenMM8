@@ -206,6 +206,21 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         NotAvailable
     }
 
+    public enum EquipSlot
+    {
+        LeftHand,
+        RightHand,
+        Bow,
+        Armor,
+        Helmet,
+        Boots,
+        Belt,
+        Cloak,
+        Gauntlets,
+        Necklace,
+        Ring
+    }
+
     public enum SkillGroup
     {
         Sword,
@@ -231,6 +246,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         CannotLearn,
         AlreadyLearned,
         Consumed,
+        Casted,
         Read,
         Invalid
     }
