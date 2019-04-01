@@ -107,7 +107,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 chrType == CharacterType.NecromancerFemale_1 ||
                 chrType == CharacterType.NecromancerFemale_2 ||
                 chrType == CharacterType.VampireFemale_1 ||
-                chrType == CharacterType.VampireFemale_1)
+                chrType == CharacterType.VampireFemale_2)
             {
                 return true;
             }
@@ -129,7 +129,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 chrType == CharacterType.Necromancer_1 ||
                 chrType == CharacterType.Necromancer_2 ||
                 chrType == CharacterType.Vampire_1 ||
-                chrType == CharacterType.Vampire_1)
+                chrType == CharacterType.Vampire_2)
             {
                 return true;
             }
@@ -163,7 +163,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return false;
         }
 
-        public bool IsDragom()
+        public bool IsDragon()
         {
             CharacterType chrType = Data.CharacterType;
 
@@ -305,6 +305,94 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public void ModifyResistance(SpellElement element, int amount)
         {
 
+        }
+
+        public ItemInteractResult CanEquipItem(BaseItem item)
+        {
+            EquipType itemType = item.Data.EquipType;
+            SkillGroup skillGroup = item.Data.SkillGroup;
+
+            if (!item.IsEquippable())
+            {
+                return ItemInteractResult.Invalid;
+            }
+
+            // For now I do not support shields
+            if (itemType == EquipType.Shield)
+            {
+                return ItemInteractResult.Invalid;
+            }
+
+            // Filter races
+            if (IsMinotaur())
+            {
+                if (itemType == EquipType.Boots ||
+                    itemType == EquipType.Helmet)
+                {
+                    return ItemInteractResult.Invalid;
+                }
+            }
+            if (IsDragon())
+            {
+                if (itemType == EquipType.Amulet ||
+                    itemType == EquipType.Ring)
+                {
+                    return ItemInteractResult.Equipped;
+                }
+                else
+                {
+                    return ItemInteractResult.Invalid;
+                }
+            }
+
+            // Filter Item x Skill
+            /*if (skillGroup == SkillGroup.Sword && Data.Skills[SkillType.Sword] <= 0)
+            {
+                return ItemInteractResult.CannotEquip;
+            }
+            if (skillGroup == SkillGroup.Dagger && Data.Skills[SkillType.Dagger] <= 0)
+            {
+                return ItemInteractResult.CannotEquip;
+            }
+            if (skillGroup == SkillGroup.Axe && Data.Skills[SkillType.Axe] <= 0)
+            {
+                return ItemInteractResult.CannotEquip;
+            }
+            if (skillGroup == SkillGroup.Spear && Data.Skills[SkillType.Spear] <= 0)
+            {
+                return ItemInteractResult.CannotEquip;
+            }
+            if (skillGroup == SkillGroup.Bow && Data.Skills[SkillType.Bow] <= 0)
+            {
+                return ItemInteractResult.CannotEquip;
+            }
+            if (skillGroup == SkillGroup.Mace && Data.Skills[SkillType.Mace] <= 0)
+            {
+                return ItemInteractResult.CannotEquip;
+            }
+            if (skillGroup == SkillGroup.Staff && Data.Skills[SkillType.Staff] <= 0)
+            {
+                return ItemInteractResult.CannotEquip;
+            }
+            if (skillGroup == SkillGroup.Leather && Data.Skills[SkillType.LeatherArmor] <= 0)
+            {
+                return ItemInteractResult.CannotEquip;
+            }
+            if (skillGroup == SkillGroup.Chain && Data.Skills[SkillType.ChainArmor] <= 0)
+            {
+                return ItemInteractResult.CannotEquip;
+            }
+            if (skillGroup == SkillGroup.Plate && Data.Skills[SkillType.PlateArmor] <= 0)
+            {
+                return ItemInteractResult.CannotEquip;
+            }
+            if (skillGroup == SkillGroup.Shield && Data.Skills[SkillType.Shield] <= 0)
+            {
+                return ItemInteractResult.CannotEquip;
+            }*/
+
+
+            return ItemInteractResult.Equipped;
         }
 
         public ItemInteractResult InteractWithItem(BaseItem item)

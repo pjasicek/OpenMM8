@@ -16,6 +16,7 @@ public class Lootable : Interactable
 
         if (interacter.CompareTag("Player"))
         {
+            Debug.Log("[Lootable] Acquired loot");
             interacter.GetComponent<PlayerParty>().OnAcquiredLoot(Loot);
         }
 

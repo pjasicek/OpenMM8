@@ -6,10 +6,16 @@ using UnityEngine;
 
 namespace Assets.OpenMM8.Scripts.Gameplay.Items
 {
-    public class BaseItem : DbData
+    public class BaseItem
     {
         public ItemData Data;
         public Vector2Int InvCellPosition;
+
+        public bool CanBeEnchanted = false;
+        public ItemEnchant Enchant = null;
+        public bool IsIdentified = true;
+        public bool IsBroken = false;
+
 
         public BaseItem(ItemData itemData)
         {
@@ -19,6 +25,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Items
         virtual public ItemInteractResult InteractWithDoll(Character player)
         {
             return ItemInteractResult.Invalid;
+        }
+
+        virtual public string GetItemDescription()
+        {
+            return "Placeholder";
+        }
+
+        virtual public int GetValue()
+        {
+            return -1;
         }
 
         public bool IsEquippable()

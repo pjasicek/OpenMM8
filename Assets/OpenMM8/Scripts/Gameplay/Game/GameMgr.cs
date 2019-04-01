@@ -84,7 +84,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             AddRandChar();
             AddRandChar();
             AddRandChar();*/
+            AddChar(CharacterType.Minotaur_1);
+            AddChar(CharacterType.Knight_2);
             AddChar(CharacterType.VampireFemale_2);
+            AddChar(CharacterType.Knight_1);
+            
             PlayerParty.Characters[0].Inventory.AddItem(513);
             /*PlayerParty.Characters[0].Inventory.AddItem(84);
             PlayerParty.Characters[0].Inventory.AddItem(85);
@@ -106,7 +110,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             AddChar(CharacterType.VampireFemale_2);
             AddChar(CharacterType.VampireFemale_2);
             AddChar(CharacterType.VampireFemale_2);*/
-            PlayerParty.Characters[0].Inventory.AddItem(109);
+            PlayerParty.Characters[0].Inventory.AddItem(514);
             PlayerParty.Characters[0].Inventory.AddItem(117);
             PlayerParty.Characters[0].Inventory.AddItem(132);
             PlayerParty.Characters[0].Inventory.AddItem(522);
@@ -117,6 +121,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             PlayerParty.Characters[0].Inventory.AddItem(529);
             PlayerParty.Characters[0].Inventory.AddItem(115);
             PlayerParty.Characters[0].Inventory.AddItem(536);
+
+            PlayerParty.Characters[0].Inventory.AddItem(151);
+            PlayerParty.Characters[0].Inventory.AddItem(517);
+
+            PlayerParty.Characters[0].Inventory.AddItem(141);
+            PlayerParty.Characters[0].Inventory.AddItem(141);
+            PlayerParty.Characters[0].Inventory.AddItem(141);
+            PlayerParty.Characters[0].Inventory.AddItem(141);
+            PlayerParty.Characters[0].Inventory.AddItem(141);
+            PlayerParty.Characters[0].Inventory.AddItem(141);
+            PlayerParty.Characters[0].Inventory.AddItem(141);
+            PlayerParty.Characters[0].Inventory.AddItem(519);
 
             return true;
         }

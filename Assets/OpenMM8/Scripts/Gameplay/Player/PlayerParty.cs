@@ -13,6 +13,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public delegate void GoldChanged(int oldGold, int newGold, int delta);
     public delegate void FoodChanged(int oldFood, int newFood, int delta);
     public delegate void FoundGold(int amount);
+    public delegate void PickedUpLoot(Loot loot);
     public delegate void ActiveCharacterChanged(Character newSelChar);
 
     [RequireComponent(typeof(HostilityChecker))]
@@ -29,6 +30,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         static public event GoldChanged OnGoldChanged;
         static public event FoodChanged OnFoodChanged;
         static public event FoundGold OnFoundGold;
+        static public event PickedUpLoot OnPickedUpLoot;
         static public event ActiveCharacterChanged OnActiveCharacterChanged;
 
         [SerializeField]
@@ -107,7 +109,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             HandleHover();
 
-            if (Input.GetButton("Attack") && (AttackDelayTimeLeft <= 0.0f))
+            if (Input.GetButton("Attack") && UiMgr.Instance.m_HeldItem != null)
+            {
+                // TODO: Handle this more elegantly, this should not know anything about UiMgr
+                // Throw the item 
+                Ray throwRay = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.8f, 0.0f));
+                ItemMgr.ThrowItem(transform, throwRay.direction, UiMgr.Instance.m_HeldItem.Item);
+                GameObject.Destroy(UiMgr.Instance.m_HeldItem.gameObject);
+                AttackDelayTimeLeft = 0.1f;
+            }
+            else if (Input.GetButton("Attack") && (AttackDelayTimeLeft <= 0.0f))
             {
                 //Debug.Log("AttackDelayTimeLeft: " + AttackDelayTimeLeft);
                 Attack();
@@ -676,6 +687,37 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public void OnAcquiredLoot(Loot loot)
         {
             // Handle item
+            if (loot.Item != null)
+            {
+                bool placed = false;
+                if (!GetMostRecoveredCharacter().Inventory.AddItem(loot.Item))
+                {
+                    foreach (Character chr in Characters)
+                    {
+                        if (chr.Inventory.AddItem(loot.Item))
+                        {
+                            placed = true;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    placed = true;
+                }
+
+                if (!placed)
+                {
+                    if (UiMgr.Instance.m_HeldItem != null)
+                    {
+                        Ray throwRay = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.8f, 0.0f));
+                        ItemMgr.ThrowItem(transform, throwRay.direction, UiMgr.Instance.m_HeldItem.Item);
+                        GameObject.Destroy(UiMgr.Instance.m_HeldItem.gameObject);
+                    }
+
+                    UiMgr.Instance.SetHeldItem(loot.Item);
+                }
+            }
 
             if (loot.GoldAmount > 0)
             {
@@ -685,6 +727,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 {
                     OnFoundGold(loot.GoldAmount);
                 }
+            }
+
+            if (OnPickedUpLoot != null && (loot.Item != null || loot.GoldAmount > 0))
+            {
+                OnPickedUpLoot(loot);
             }
         }
 

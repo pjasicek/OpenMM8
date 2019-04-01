@@ -84,7 +84,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         // Sorry but there is really no other way other than hard-coding this..
         // this cannot be computed from any available values
         // Armor, Helmet, Belt, Boots
-        static public Vector2 GetArmorItemPos(BaseItem item, Character chr)
+        /*static public Vector2 GetArmorItemPos(BaseItem item, Character chr)
         {
             Vector2 pos = new Vector2();
 
@@ -193,6 +193,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             return pos;
-        }
+        }*/
     }
 }

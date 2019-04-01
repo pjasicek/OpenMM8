@@ -16,10 +16,17 @@ namespace Assets.OpenMM8.Scripts
 
         private bool _ProcessCsvDataRow(int row, string[] columns)
         {
-            T data = ProcessCsvDataRow(row, columns);
-            if (data != null)
+            try
             {
-                Data.Add(data.Id, data);
+                T data = ProcessCsvDataRow(row, columns);
+                if (data != null)
+                {
+                    Data.Add(data.Id, data);
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.LogError("Error parsing: " + columns.ToString() + ", Exception: " + e.Message);
             }
 
             return true;

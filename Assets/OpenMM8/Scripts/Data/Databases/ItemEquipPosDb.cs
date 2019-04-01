@@ -28,10 +28,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             data.Name = columns[2];
             data.MaleItemPos.Set(int.Parse(columns[4]), -1 * int.Parse(columns[5]));
             data.FemaleItemPos.Set(int.Parse(columns[6]), -1 * int.Parse(columns[7]));
-            data.TrollItemPos.Set(int.Parse(columns[8]), -1 * int.Parse(columns[9]));
-            data.MinotaurItemPos.Set(int.Parse(columns[10]), -1 * int.Parse(columns[11]));
+            data.MinotaurItemPos.Set(int.Parse(columns[8]), -1 * int.Parse(columns[9]));
+            data.TrollItemPos.Set(int.Parse(columns[10]), -1 * int.Parse(columns[11]));
 
-            Logger.LogDebug("ItemEqPos ID: " + data.Id);
+            //Logger.LogDebug("ItemEqPos ID: " + data.Id);
 
             return data;
         }

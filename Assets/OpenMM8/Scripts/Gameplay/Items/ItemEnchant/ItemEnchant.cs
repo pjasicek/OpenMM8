@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    class ItemEnchant
+    public class ItemEnchant
     {
+
     }
 }

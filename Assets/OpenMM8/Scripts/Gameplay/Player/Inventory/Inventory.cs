@@ -21,19 +21,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         // Items in inventory
         public List<BaseItem> InventoryItems = new List<BaseItem>();
 
-        // Equipped items
-        public BaseItem RightHandSlot;
-        public BaseItem LeftHandSlot;
-        public BaseItem BowSlot;
-        public BaseItem ArmorSlot;
-        public BaseItem HelmetSlot;
-        public BaseItem BeltSlot;
-        public BaseItem CloakSlot;
-        public BaseItem BootsSlot;
-        public BaseItem AmuletSlot;
-        public BaseItem GauntletsSlot;
-        public BaseItem[] RingSlots = new BaseItem[6];
-
         //=================================== Methods ===================================
 
         public Inventory()
@@ -48,39 +35,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             replacedItem = null;
 
-            // 1) Check if item is equippable
-
-            /* bool ok = false; //tmp
-             switch (heldItem.Data.EquipType)
-             {
-                 case EquipType.Armor:
-                 case EquipType.Missile:
-                 case EquipType.Helmet:
-                 case EquipType.Belt:
-                 case EquipType.Cloak:
-                 case EquipType.Boots:
-                     ok = true;
-                     break;
-                 default:
-                     break;
-             }
-
-             if (!ok)
-             {
-                 return ItemInteractResult.Invalid;
-             }*/
-
-            // 2) Filter if character can use this item (Skill group)
-            // ....
-
-            // 
-            
-            // TODO: Add support for this
-            if (heldItem.Data.EquipType == EquipType.Amulet ||
-                heldItem.Data.EquipType == EquipType.Gauntlets ||
-                heldItem.Data.EquipType == EquipType.Ring)
+            if (!heldItem.IsEquippable())
             {
                 return ItemInteractResult.Invalid;
+            }
+
+            ItemInteractResult eqResult = Owner.CanEquipItem(heldItem);
+            if (eqResult != ItemInteractResult.Equipped)
+            {
+                return eqResult;
             }
 
             bool isWeapon = false;
@@ -105,6 +68,42 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 case EquipType.Boots:
                     placedInvItem = Owner.UI.DollUI.Boots;
                     break;
+                case EquipType.Amulet:
+                    placedInvItem = Owner.UI.DollUI.Necklace;
+                    break;
+                case EquipType.Gauntlets:
+                    placedInvItem = Owner.UI.DollUI.Gauntlets;
+                    break;
+                case EquipType.Ring:
+                    if (Owner.UI.DollUI.Ring_1.Item == null)
+                    {
+                        placedInvItem = Owner.UI.DollUI.Ring_1;
+                    }
+                    else if (Owner.UI.DollUI.Ring_2.Item == null)
+                    {
+                        placedInvItem = Owner.UI.DollUI.Ring_2;
+                    }
+                    else if (Owner.UI.DollUI.Ring_3.Item == null)
+                    {
+                        placedInvItem = Owner.UI.DollUI.Ring_3;
+                    }
+                    else if (Owner.UI.DollUI.Ring_4.Item == null)
+                    {
+                        placedInvItem = Owner.UI.DollUI.Ring_4;
+                    }
+                    else if (Owner.UI.DollUI.Ring_5.Item == null)
+                    {
+                        placedInvItem = Owner.UI.DollUI.Ring_5;
+                    }
+                    else if (Owner.UI.DollUI.Ring_6.Item == null)
+                    {
+                        placedInvItem = Owner.UI.DollUI.Ring_6;
+                    }
+                    else
+                    {
+                        placedInvItem = Owner.UI.DollUI.Ring_1;
+                    }
+                    break;
                 case EquipType.Wand:
                 case EquipType.WeaponDualWield:
                 case EquipType.WeaponOneHanded:
@@ -126,7 +125,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 replacedItem = placedInvItem.Item;
             }
 
-            Vector2Int equipPos;
+            Vector2 equipPos = new Vector2(0, 0);
             Sprite equipSprite = null;
             if (isWeapon)
             {
@@ -143,24 +142,94 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 equipPos = new Vector2Int(-1 * heldItem.Data.EquipX, heldItem.Data.EquipY);
                 equipSprite = heldItem.Data.InvSprite;
             }
+            else if (heldItem.Data.EquipType == EquipType.Amulet ||
+                     heldItem.Data.EquipType == EquipType.Gauntlets ||
+                     heldItem.Data.EquipType == EquipType.Ring)
+            {
+                equipPos = new Vector2(placedInvItem.Image.rectTransform.anchoredPosition.x,
+                    placedInvItem.Image.rectTransform.anchoredPosition.y);
+                equipSprite = heldItem.Data.InvSprite;
+            }
             else
             {
-                equipPos = DbMgr.Instance.ItemEquipPosDb.Get(heldItem.Data.Id).FemaleItemPos;
-                heldItem.Data.EquipSprites.Find(sprite => sprite.name.Contains("v2a"));
-                if (equipSprite == null)
+                List<string> preferredEqSpriteExts = new List<string>();
+                if (Owner.IsMale())
                 {
-                    equipSprite = heldItem.Data.EquipSprites.Find(sprite => sprite.name.Contains("v2"));
+                    equipPos = DbMgr.Instance.ItemEquipPosDb.Get(heldItem.Data.Id).MaleItemPos;
+
+                    if (Owner.UI.DollUI.RH_Weapon.Item == null)
+                    {
+                        preferredEqSpriteExts.Add("v1a");
+                        preferredEqSpriteExts.Add("v1");
+                    }
+                    else
+                    {
+                        preferredEqSpriteExts.Add("v1");
+                        preferredEqSpriteExts.Add("v1a");
+                    }
+                }
+                else if (Owner.IsFemale())
+                {
+                    equipPos = DbMgr.Instance.ItemEquipPosDb.Get(heldItem.Data.Id).FemaleItemPos;
+
+                    if (Owner.UI.DollUI.RH_Weapon.Item == null)
+                    {
+                        preferredEqSpriteExts.Add("v2a");
+                        preferredEqSpriteExts.Add("v2");
+                    }
+                    else
+                    {
+                        preferredEqSpriteExts.Add("v2");
+                        preferredEqSpriteExts.Add("v2a");
+                    }
+                }
+                else if (Owner.IsMinotaur())
+                {
+                    equipPos = DbMgr.Instance.ItemEquipPosDb.Get(heldItem.Data.Id).MinotaurItemPos;
+
+                    if (heldItem.Data.EquipType == EquipType.Cloak ||
+                        heldItem.Data.EquipType == EquipType.Belt)
+                    {
+                        preferredEqSpriteExts.Add("v1");
+                    }
+                    else
+                    {
+                        preferredEqSpriteExts.Add("v3");
+                    }
+                }
+                else if (Owner.IsTroll())
+                {
+                    equipPos = DbMgr.Instance.ItemEquipPosDb.Get(heldItem.Data.Id).TrollItemPos;
+
+                    if (heldItem.Data.EquipType == EquipType.Cloak ||
+                        heldItem.Data.EquipType == EquipType.Belt)
+                    {
+                        preferredEqSpriteExts.Add("v1");
+                    }
+                    else
+                    {
+                        preferredEqSpriteExts.Add("v4");
+                    }
+                }
+                else
+                {
+                    Logger.LogError("Unhandled race: " + Owner.Data.CharacterType);
                 }
 
-                if (equipSprite == null)
+                foreach (string prefferedExt in preferredEqSpriteExts)
                 {
-                    Logger.LogError("No equip for female for item: " + heldItem.Data.ImageName);
-                    //return ItemInteractResult.Invalid;
+                    equipSprite = heldItem.Data.EquipSprites.Find(sprite => sprite.name.Contains(prefferedExt));
+                    if (equipSprite != null)
+                    {
+                        break;
+                    }
                 }
+                
 
                 if (equipSprite == null)
                 {
                     // Fallback to inventory display sprite
+                    Logger.LogDebug("No equip for character: " + Owner.Data.Name + " for item: " + heldItem.Data.ImageName);
                     equipSprite = heldItem.Data.InvSprite;
                 }
             }
@@ -188,9 +257,39 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public bool AddItem(BaseItem item)
         {
-            
+            ItemData itemData = DbMgr.Instance.ItemDb.Get(item.Data.Id);
+
+            Vector2Int itemPos;
+            if (!CanPlaceItem(itemData, out itemPos))
+            {
+                Debug.Log("Inventory full");
+                return false;
+            }
+
+            item.InvCellPosition = itemPos;
+            GetCells(itemPos.x, itemPos.y, itemData.InvSize.x, itemData.InvSize.y)
+                .ForEach(cell => cell.Item = item);
+
+            InventoryItems.Add(item);
+             
+            Owner.UI.InventoryUI.AddItem(item);
+
+            Debug.Log("Item (" + item.Data.Id + ") added");
 
             return true;
+        }
+
+        public void RemoveItemFromDoll(InventoryItem inventoryItem)
+        {
+            if (inventoryItem.Equals(Owner.UI.DollUI.RH_Weapon))
+            {
+                Owner.UI.DollUI.RH_OpenImage.gameObject.SetActive(true);
+                Owner.UI.DollUI.RH_HoldImage.gameObject.SetActive(false);
+                Owner.UI.DollUI.RH_WeaponAnchorHolder.gameObject.SetActive(false);
+            }
+
+            inventoryItem.Image.enabled = false;
+            inventoryItem.Item = null;
         }
 
         public bool AddItem(int itemId)

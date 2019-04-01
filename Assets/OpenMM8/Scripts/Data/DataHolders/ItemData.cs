@@ -28,6 +28,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         // Unity specific but common for all items with this specific data
         // This is set up upon UiMgr initialization
         public Sprite InvSprite;
+        public Sprite OutdoorSprite;
         public List<Sprite> EquipSprites = new List<Sprite>();
         public Vector2Int InvSize;
     }

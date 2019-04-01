@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.OpenMM8.Scripts.Gameplay.Items;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,9 +40,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private List<AudioClip> m_CharGotHit_Metal = new List<AudioClip>();
 
 
-        [Header("Sounds - Gold")]
+        [Header("Sounds")]
         private AudioClip m_GoldChanged;
         private AudioClip m_Quest;
+        private AudioClip m_Error;
+
+        private Dictionary<string, AudioClip> m_SoundMap = new Dictionary<string, AudioClip>();
 
         //=================================== Unity Lifecycle ===================================
 
@@ -57,11 +61,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             PlayerParty.OnCharacterLeftParty += OnCharacterLeftParty;
             PlayerParty.OnGoldChanged += OnGoldChanged;
             PlayerParty.OnFoodChanged += OnFoodChanged;
+            PlayerParty.OnPickedUpLoot += OnPickedUpLoot;
 
             Character.OnHealthChanged += OnHealthChanged;
             Character.OnHitNpc += OnCharHitNpc;
             Character.OnGotHit += OnCharGotHit;
             Character.OnAttack += OnCharAttack;
+            Character.OnInteractedWithItem += OnInteractedWithItem;
 
             TalkEventMgr.OnTalkSceneStart += OnTalkSceneStart;
             //Talkable.OnTalkEnd += OnTalkEnd;
@@ -107,6 +113,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             // UI sounds
             m_GoldChanged = Resources.Load<AudioClip>("Player/Sounds/UI/GoldChanged");
             m_Quest = Resources.Load<AudioClip>("Sounds/Quest");
+            m_Error = Resources.Load<AudioClip>("Sounds/Error");
 
             m_AudioSource = gameObject.AddComponent<AudioSource>();
             m_AudioSource.clip = m_BackgroundMusic;
@@ -115,6 +122,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             //m_AudioSource.Play();
 
             m_PlayerParty = GameMgr.Instance.PlayerParty;
+
+            AudioClip[] sounds = Resources.LoadAll<AudioClip>("Sounds");
+            foreach (AudioClip sound in sounds)
+            {
+                m_SoundMap[sound.name] = sound;
+            }
 
             return true;
         }
@@ -220,9 +233,55 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         }
 
+        public void OnPickedUpLoot(Loot loot)
+        {
+            m_AudioSource.PlayOneShot(m_GoldChanged, 1.5f);
+        }
+
         public void OnCharConditionChanged(Character chr, Condition newCondition)
         {
             
+        }
+
+        public void OnInteractedWithItem(Character chr, BaseItem item, ItemInteractResult interactResult)
+        {
+            switch (interactResult)
+            {
+                case ItemInteractResult.AlreadyLearned:
+                    PlayRandomSound(chr.Sounds.CantLearnSpell);
+                    break;
+
+                case ItemInteractResult.Equipped:
+                    break;
+
+                case ItemInteractResult.CannotEquip:
+                    PlayRandomSound(chr.Sounds.CantEquipItem);
+                    break;
+
+                case ItemInteractResult.Learned:
+                    PlayRandomSound(chr.Sounds.LearnedNewSpell);
+                    break;
+
+                case ItemInteractResult.CannotLearn:
+                    PlayRandomSound(chr.Sounds.CantLearnSpell);
+                    break;
+
+                case ItemInteractResult.Consumed:
+                    
+                    break;
+
+                case ItemInteractResult.Casted:
+
+                    break;
+
+                case ItemInteractResult.Read:
+                    
+                    break;
+
+                case ItemInteractResult.Invalid:
+                    m_AudioSource.PlayOneShot(m_SoundMap["Error"]);
+                    break;
+            }
         }
 
         private void OnCharAttack(Character chr, AttackInfo attackInfo)

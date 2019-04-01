@@ -31,8 +31,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private float m_TimeSinceLastPartyText = 0.0f;
         private float m_PartyTextLockTime = 0.0f;
 
-        private InventoryItem m_HoveredItem = null;
-        private InventoryItem m_HeldItem = null;
+        public BaseItem m_HoveredItem = null;
+        public InventoryItem m_HeldItem = null;
 
         // State
         private UIState m_CurrUIState = null;
@@ -54,13 +54,20 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private Dictionary<int, Sprite> m_NpcAvatarsMap = 
             new Dictionary<int, Sprite>();
 
+        // Character type (e.g. Knight_1) -> class holding facial sprites
         private Dictionary<CharacterType, CharacterSprites> m_CharacterSpritesMap =
             new Dictionary<CharacterType, CharacterSprites>();
 
+        // Item name (e.g. item001) -> Sprite
         private Dictionary<string, Sprite> m_InventoryItemSpriteMap =
             new Dictionary<string, Sprite>();
 
+        // Item name (e.g. item001) -> Sprite
         private Dictionary<string, Sprite> m_EquippableItemSpriteMap =
+            new Dictionary<string, Sprite>();
+
+        // Object (item) name -> Sprite
+        private Dictionary<string, Sprite> m_OutdoorItemSpriteMap =
             new Dictionary<string, Sprite>();
 
         [Header("Sprites")]
@@ -104,6 +111,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             InventoryItem.OnInventoryItemHoverStart += OnInventoryItemHoverStart;
             InventoryItem.OnInventoryItemHoverEnd += OnInventoryItemHoverEnd;
             InventoryItem.OnInventoryItemClicked += OnInventoryItemClicked;
+
+            InspectableItem.OnOutdoorItemInspectStart += OnOutdoorItemInspectStart;
+            InspectableItem.OnOutdoorItemInspectEnd += OnOutdoorItemInspectEnd;
 
             InventoryClickHandler.OnInventoryCellClicked += OnInventoryCellClicked;
             DollClickHandler.OnDollClicked += OnDollClicked;
@@ -285,8 +295,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Sprite[] invEqItemSprites = Resources.LoadAll<Sprite>("UI/Items/ARMOR_EQ_ITEMS");
             foreach (Sprite sprite in invEqItemSprites)
             {
-                Debug.Log(sprite.name.ToLower());
+                //Debug.Log(sprite.name.ToLower());
                 m_EquippableItemSpriteMap[sprite.name.ToLower()] = sprite;
+            }
+
+            Sprite[] outdoorItemSprites = Resources.LoadAll<Sprite>("UI/Items/OUTDOOR_ITEMS");
+            foreach (Sprite sprite in outdoorItemSprites)
+            {
+                //Debug.Log(sprite.name.ToLower());
+                m_OutdoorItemSpriteMap[sprite.name.ToLower()] = sprite;
             }
 
             // Assign sprites to all items
@@ -328,6 +345,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     Debug.LogWarning(itemData.Name + ": No inventory sprite found");
                 }
 
+                // Equip sprite
                 string[] itemEqExts = { "v1", "v1a", "v1b", "v2", "v2a", "v2b", "v3", "v3a", "v3b", "v4", "v4a", "v4b" };
                 foreach (string itemEqExt in itemEqExts)
                 {
@@ -336,6 +354,24 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     {
                         itemData.EquipSprites.Add(m_EquippableItemSpriteMap[itemEqKey]);
                     }
+                }
+
+                // Outdoor sprite
+                ObjectDisplayData outdoorDisplayData = DbMgr.Instance.ObjectDisplayDb.Get(itemData.SpriteIndex);
+                if (outdoorDisplayData != null)
+                {
+                    if (m_OutdoorItemSpriteMap.ContainsKey(outdoorDisplayData.SpriteName))
+                    {
+                        itemData.OutdoorSprite = m_OutdoorItemSpriteMap[outdoorDisplayData.SpriteName];
+                    }
+                    else
+                    {
+                        Debug.LogError("Item: " + itemData.Name + " does not have outoor display sprite");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Item: " + itemData.Name + " does not have outoor display data");
                 }
             }
 
@@ -377,7 +413,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             if (Input.GetButton("InspectObject") && m_HoveredItem != null)
             {
                 // Show item info
-                BaseItem item = m_HoveredItem.Item;
+                BaseItem item = m_HoveredItem;
                 m_InspectItemUI.ItemImage.sprite = item.Data.InvSprite;
                 m_InspectItemUI.ItemImage.SetNativeSize();
 
@@ -426,67 +462,78 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 const float cursorSpace = InspectItemUI.CURSOR_SPACE;
                 float rightEdgePos = mouseNormPos.x * UI_WIDTH + cursorSpace + m_InspectItemUI.BackgroundTransfrom.rect.width;
 
+                // If outdoor put it in center of the crosshair
                 Vector2 inspectTopLeft = new Vector2();
-                bool isItemInspectLeft = (rightEdgePos - 50)  > UI_WIDTH;
-                if (isItemInspectLeft)
+                if (m_CurrUIState == null)
                 {
-                    bool isCursorOverlapping = mousePixelPosUI.x < (m_InspectItemUI.BackgroundTransfrom.rect.width + cursorSpace);
-                    if (isCursorOverlapping)
-                    {
-                        bool isTopLeft = (UI_HEIGHT - mousePixelPosUI.y) + m_InspectItemUI.BackgroundTransfrom.rect.height + cursorSpace > UI_HEIGHT;
-                        if (isTopLeft)
-                        {
-                            // No room to be neither left nor below the cursor => in the top left corner
-                            inspectTopLeft.Set(0, UI_HEIGHT);
-                        }
-                        else
-                        {
-                            // Below cursor on the left side
-                            inspectTopLeft.Set(0, mousePixelPosUI.y - cursorSpace);
-                        }
-                    }
-                    else
-                    {
-                        // Above curser on the left side
-                        inspectTopLeft.Set(
-                            mousePixelPosUI.x - cursorSpace - m_InspectItemUI.BackgroundTransfrom.rect.width,
-                            InspectItemUI.DEFAULT_Y);
-                    }
+                    inspectTopLeft.Set(Constants.CrosshairScreenRelPos.x * UI_WIDTH -
+                        m_InspectItemUI.BackgroundTransfrom.rect.width / 2,
+                        Constants.CrosshairScreenRelPos.y * UI_HEIGHT +
+                        m_InspectItemUI.BackgroundTransfrom.rect.height / 2);
                 }
                 else
                 {
-                    bool isCursorOverlapping = mousePixelPosUI.x > (UI_WIDTH - m_InspectItemUI.BackgroundTransfrom.rect.width);
-                    if (isCursorOverlapping)
+                    bool isItemInspectLeft = (rightEdgePos - 50) > UI_WIDTH;
+                    if (isItemInspectLeft)
                     {
-                        bool isTopRight = (UI_HEIGHT - mousePixelPosUI.y) + m_InspectItemUI.BackgroundTransfrom.rect.height + cursorSpace > UI_HEIGHT;
-                        if (isTopRight)
+                        bool isCursorOverlapping = mousePixelPosUI.x < (m_InspectItemUI.BackgroundTransfrom.rect.width + cursorSpace);
+                        if (isCursorOverlapping)
                         {
-                            // No room to be neither right nor below the cursor => in the top right corner
-                            inspectTopLeft.Set(UI_WIDTH - m_InspectItemUI.BackgroundTransfrom.rect.width, UI_HEIGHT);
+                            bool isTopLeft = (UI_HEIGHT - mousePixelPosUI.y) + m_InspectItemUI.BackgroundTransfrom.rect.height + cursorSpace > UI_HEIGHT;
+                            if (isTopLeft)
+                            {
+                                // No room to be neither left nor below the cursor => in the top left corner
+                                inspectTopLeft.Set(0, UI_HEIGHT);
+                            }
+                            else
+                            {
+                                // Below cursor on the left side
+                                inspectTopLeft.Set(0, mousePixelPosUI.y - cursorSpace);
+                            }
                         }
                         else
                         {
-                            // Below cursor on the right side
-                            inspectTopLeft.Set(UI_WIDTH - m_InspectItemUI.BackgroundTransfrom.rect.width, mousePixelPosUI.y - cursorSpace);
+                            // Above curser on the left side
+                            inspectTopLeft.Set(
+                                mousePixelPosUI.x - cursorSpace - m_InspectItemUI.BackgroundTransfrom.rect.width,
+                                InspectItemUI.DEFAULT_Y);
                         }
                     }
                     else
                     {
-                        // Above curspr on the right side
-                        float x = Mathf.Min(UI_WIDTH - m_InspectItemUI.BackgroundTransfrom.rect.width, mousePixelPosUI.x + cursorSpace);
-                        inspectTopLeft.Set(
-                            x,
-                            InspectItemUI.DEFAULT_Y);
+                        bool isCursorOverlapping = mousePixelPosUI.x > (UI_WIDTH - m_InspectItemUI.BackgroundTransfrom.rect.width);
+                        if (isCursorOverlapping)
+                        {
+                            bool isTopRight = (UI_HEIGHT - mousePixelPosUI.y) + m_InspectItemUI.BackgroundTransfrom.rect.height + cursorSpace > UI_HEIGHT;
+                            if (isTopRight)
+                            {
+                                // No room to be neither right nor below the cursor => in the top right corner
+                                inspectTopLeft.Set(UI_WIDTH - m_InspectItemUI.BackgroundTransfrom.rect.width, UI_HEIGHT);
+                            }
+                            else
+                            {
+                                // Below cursor on the right side
+                                inspectTopLeft.Set(UI_WIDTH - m_InspectItemUI.BackgroundTransfrom.rect.width, mousePixelPosUI.y - cursorSpace);
+                            }
+                        }
+                        else
+                        {
+                            // Above curspr on the right side
+                            float x = Mathf.Min(UI_WIDTH - m_InspectItemUI.BackgroundTransfrom.rect.width, mousePixelPosUI.x + cursorSpace);
+                            inspectTopLeft.Set(
+                                x,
+                                InspectItemUI.DEFAULT_Y);
+                        }
                     }
                 }
 
                 m_InspectItemUI.BackgroundTransfrom.anchoredPosition = inspectTopLeft;
 
-                m_InspectItemUI.Holder.SetActive(true);
+                m_InspectItemUI.Holder.GetComponent<Canvas>().enabled = true;
             }
             else
             {
-                m_InspectItemUI.Holder.SetActive(false);
+                m_InspectItemUI.Holder.GetComponent<Canvas>().enabled = false;
             }
 
             // Held item position update
@@ -500,9 +547,19 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
 
                 var rt = m_HeldItem.gameObject.GetComponent<RectTransform>();
+                Vector2 mousePixelPosUI = new Vector2();
 
-                Vector2 mouseNormPos = GetMouseRatioCoord();
-                Vector2 mousePixelPosUI = new Vector2(mouseNormPos.x * UI_WIDTH, mouseNormPos.y * UI_HEIGHT);
+                if (m_CurrUIState == null)
+                {
+                    mousePixelPosUI.Set(Constants.CrosshairScreenRelPos.x * UI_WIDTH - rt.rect.width / 2, 
+                        Constants.CrosshairScreenRelPos.y * UI_HEIGHT + rt.rect.height / 2);
+                }
+                else
+                {
+                    Vector2 mouseNormPos = GetMouseRatioCoord();
+                    mousePixelPosUI.Set(mouseNormPos.x * UI_WIDTH, mouseNormPos.y * UI_HEIGHT);
+                }
+                
 
                 /*Vector2 outPoint;
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(rt, mousePixelPosUI, null, out outPoint);
@@ -724,6 +781,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
+            m_HoveredItem = null;
+
             if (m_CurrUIState != null)
             {
                 m_CurrUIState.LeaveState();
@@ -738,7 +797,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             GameMgr.Instance.UnpauseGame();
         }
 
-        void SetHeldItem(BaseItem item)
+        public void SetHeldItem(BaseItem item)
         {
             if (m_HeldItem)
             {
@@ -817,6 +876,21 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             chr.UI.DollUI.Belt = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("BeltSlot", chr.UI.DollUI.Holder);
             chr.UI.DollUI.RH_Weapon = 
                 OpenMM8Util.GetComponentAtScenePath<InventoryItem>("RightHand_WeaponHoldAnchor/RightHand_WeaponSlot", chr.UI.DollUI.Holder);
+
+            chr.UI.DollUI.AccessoryBackgroundHolder = OpenMM8Util.GetGameObjAtScenePath("AccessoryBackground", chr.UI.DollUI.Holder);
+            chr.UI.DollUI.Ring_1 = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("RingSlot_1", chr.UI.DollUI.AccessoryBackgroundHolder);
+            chr.UI.DollUI.Ring_2 = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("RingSlot_2", chr.UI.DollUI.AccessoryBackgroundHolder);
+            chr.UI.DollUI.Ring_3 = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("RingSlot_3", chr.UI.DollUI.AccessoryBackgroundHolder);
+            chr.UI.DollUI.Ring_4 = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("RingSlot_4", chr.UI.DollUI.AccessoryBackgroundHolder);
+            chr.UI.DollUI.Ring_5 = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("RingSlot_5", chr.UI.DollUI.AccessoryBackgroundHolder);
+            chr.UI.DollUI.Ring_6 = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("RingSlot_6", chr.UI.DollUI.AccessoryBackgroundHolder);
+            chr.UI.DollUI.Gauntlets = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("GauntletSlot", chr.UI.DollUI.AccessoryBackgroundHolder);
+            chr.UI.DollUI.Necklace = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("NecklaceSlot", chr.UI.DollUI.AccessoryBackgroundHolder);
+
+            chr.UI.DollUI.Holder.SetActive(false);
+
+            OpenMM8Util.GetComponentAtScenePath<Button>("MagnifyGlass", chr.UI.DollUI.Holder).onClick.AddListener(
+                delegate { chr.UI.DollUI.AccessoryBackgroundHolder.SetActive(!chr.UI.DollUI.AccessoryBackgroundHolder.active); });
 
             // To raycast only non-transparent areas
             // Settings for the texture-import for dolls was also changed because of this
@@ -1066,13 +1140,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private void OnInventoryItemHoverStart(InventoryItem inventoryItem)
         {
             Debug.Log("Hovered over item: " + inventoryItem.Item.Data.Name);
-            m_HoveredItem = inventoryItem;
+            m_HoveredItem = inventoryItem.Item;
         }
 
         private void OnInventoryItemHoverEnd(InventoryItem inventoryItem)
         {
             //Debug.Log("Unhovered over item: " + inventoryItem.Item.Data.Name);
-            if (m_HoveredItem && m_HoveredItem == inventoryItem)
+            if (m_HoveredItem != null && m_HoveredItem == inventoryItem.Item)
             {
                 m_HoveredItem = null;
             }
@@ -1116,6 +1190,21 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
+        private void OnOutdoorItemInspectStart(BaseItem item)
+        {
+            Debug.Log("Hovered over item: " + item.Data.Name);
+            m_HoveredItem = item;
+        }
+
+        private void OnOutdoorItemInspectEnd(BaseItem item)
+        {
+            //Debug.Log("Unhovered over item: " + inventoryItem.Item.Data.Name);
+            if (m_HoveredItem != null && m_HoveredItem == item)
+            {
+                m_HoveredItem = null;
+            }
+        }
+
         private void OnInventoryCellClicked(int x, int y)
         {
             // Try to place on cell
@@ -1137,13 +1226,27 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 // If not holding anything, remove the item from doll and hold it
                 SetHeldItem(clickedItem.Item);
 
-                clickedItem.Image.enabled = false;
-                clickedItem.Item = null;
+                m_PlayerParty.ActiveCharacter.Inventory.RemoveItemFromDoll(clickedItem);
             }
             else
             {
-                // If holding an item already, just do doll clicked routine
-                OnDollClicked(null);
+                // HACK: We try to "replace" rings
+                if (clickedItem.Item.Data.EquipType == EquipType.Ring &&
+                    m_HeldItem.Item.Data.EquipType == EquipType.Ring)
+                {
+                    BaseItem tmpClickedItem = clickedItem.Item;
+
+                    clickedItem.Image.sprite = m_HeldItem.Item.Data.InvSprite;
+                    clickedItem.Image.SetNativeSize();
+                    clickedItem.Item = m_HeldItem.Item;
+
+                    SetHeldItem(tmpClickedItem);
+                }
+                else
+                {
+                    // If holding an item already, just do doll clicked routine
+                    OnDollClicked(null);
+                }
             }
         }
 
@@ -1178,46 +1281,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                 // If item was equiipped it is handled in OnItemEquipped event
             }
-
-
-            /*ItemInteractResult interactResult = ItemInteractResult.Invalid;
-            if (m_HeldItem.Item.IsEquippable())
-            {
-                // Try to equip the item. If success, we may have replaced the item by the old item on doll
-                BaseItem replacedItem = null;
-                 interactResult = currChar.Inventory.TryEquipItem(m_HeldItem.Item, out replacedItem);
-                if (interactResult == ItemInteractResult.Equipped)
-                {
-                    // Held item was equipped by the doll - destroy it
-                    GameObject.Destroy(m_HeldItem.gameObject);
-                    m_HeldItem = null;
-
-                    if (replacedItem != null)
-                    {
-                        // If we replaced an item which was equipped by doll, then we have to hold this item
-                        SetHeldItem(replacedItem);
-                    }
-                }
-            }
-            else if (m_HeldItem.Item.IsCastable())
-            {
-
-            }
-            else if (m_HeldItem.Item.IsConsumable())
-            {
-
-            }
-            else if (m_HeldItem.Item.IsLearnable())
-            {
-
-            }
-            else if (m_HeldItem.Item.IsReadable())
-            {
-
-            }*/
-
-            // Invoke event
-
         }
 
         private void OnCharacterAvatarClicked(Character chr)

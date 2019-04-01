@@ -24,7 +24,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public CharacterStats DefaultStats = new CharacterStats();
         public CharacterStats BonusStats = new CharacterStats();
-        public List<Skill> Skills = new List<Skill>();
+        public Dictionary<SkillType, int> Skills = new Dictionary<SkillType, int>();
         public Dictionary<SkillType, int> SkillBonuses = new Dictionary<SkillType, int>();
         public List<Award> Awards = new List<Award>();
         public List<Spell> Spells = new List<Spell>();
