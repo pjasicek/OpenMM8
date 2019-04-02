@@ -7,14 +7,7 @@ using UnityEngine;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    public delegate void CharacterJoinedParty(Character chr, PlayerParty party);
-    public delegate void CharacterLeftParty(Character chr, PlayerParty party);
-    public delegate void HoverObject(HoverInfo hoverInfo);
-    public delegate void GoldChanged(int oldGold, int newGold, int delta);
-    public delegate void FoodChanged(int oldFood, int newFood, int delta);
-    public delegate void FoundGold(int amount);
-    public delegate void PickedUpLoot(Loot loot);
-    public delegate void ActiveCharacterChanged(Character newSelChar);
+    
 
     [RequireComponent(typeof(HostilityChecker))]
     [RequireComponent(typeof(Damageable))]
@@ -22,16 +15,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     {
         public List<Character> Characters = new List<Character>();
         public Character ActiveCharacter;
-
-        // Events
-        static public event CharacterJoinedParty OnCharacterJoinedParty;
-        static public event CharacterLeftParty OnCharacterLeftParty;
-        static public event HoverObject OnHoverObject;
-        static public event GoldChanged OnGoldChanged;
-        static public event FoodChanged OnFoodChanged;
-        static public event FoundGold OnFoundGold;
-        static public event PickedUpLoot OnPickedUpLoot;
-        static public event ActiveCharacterChanged OnActiveCharacterChanged;
 
         [SerializeField]
         private int MinutesSinceSleep;
@@ -217,10 +200,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             ActiveCharacter = chr;
             ActiveCharacter.UI.SelectionRing.enabled = true;
-            if (OnActiveCharacterChanged != null)
-            {
-                OnActiveCharacterChanged(chr);
-            }
+
+            GameEvents.InvokeEvent_OnActiveCharacterChanged(chr);
         }
 
         public Vector3 GetPosition()
@@ -360,10 +341,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 if ((objectHit.GetComponent<HoverInfo>() != null) &&
                     (objectHit.GetComponent<HoverInfo>().enabled))
                 {
-                    if (OnHoverObject != null)
-                    {
-                        OnHoverObject(objectHit.GetComponent<HoverInfo>());
-                    }
+
+                    GameEvents.InvokeEvent_OnHoverObject(objectHit.GetComponent<HoverInfo>());
 
                     /*string hoverText = objectHit.GetComponent<HoverInfo>().HoverText;
                     SetPartyInfoText(hoverText, true);*/
@@ -442,11 +421,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 if ((objectHit.GetComponent<HoverInfo>() != null) &&
                     (objectHit.GetComponent<HoverInfo>().enabled))
                 {
-                    if (OnHoverObject != null)
-                    {
-                        OnHoverObject(objectHit.GetComponent<HoverInfo>());
-                    }
-
+                    GameEvents.InvokeEvent_OnHoverObject(objectHit.GetComponent<HoverInfo>());
                     return true;
                 }
             }
@@ -483,10 +458,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             character.Party = this;
             Characters.Add(character);
             
-            if (OnCharacterJoinedParty != null)
-            {
-                OnCharacterJoinedParty(character, this);
-            }
+            GameEvents.InvokeEvent_OnCharacterJoinedParty(character, this);
         }
 
         public void RemoveCharacter(Character character)
@@ -497,10 +469,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 return;
             }
 
-            if (OnCharacterLeftParty != null)
-            {
-                OnCharacterLeftParty(character, this);
-            }
+            GameEvents.InvokeEvent_OnCharacterLeftParty(character, this);
 
             if (ActiveCharacter == character)
             {
@@ -723,15 +692,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 AddGold(loot.GoldAmount);
 
-                if (OnFoundGold != null)
-                {
-                    OnFoundGold(loot.GoldAmount);
-                }
+                GameEvents.InvokeEvent_OnFoundGold(loot.GoldAmount);
             }
 
-            if (OnPickedUpLoot != null && (loot.Item != null || loot.GoldAmount > 0))
+            if (loot.Item != null || loot.GoldAmount > 0)
             {
-                OnPickedUpLoot(loot);
+                GameEvents.InvokeEvent_OnPickedUpLoot(loot);
             }
         }
 
@@ -739,10 +705,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             Gold += amount;
 
-            if (OnGoldChanged != null)
-            {
-                OnGoldChanged(Gold - amount, Gold, amount);
-            }
+            GameEvents.InvokeEvent_OnGoldChanged(Gold - amount, Gold, amount);
         }
 
         public void AddFood(int amount)

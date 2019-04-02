@@ -4,12 +4,10 @@ using UnityEngine;
 using Assets.OpenMM8.Scripts.Gameplay;
 using UnityEngine.EventSystems;
 
-public delegate void InventoryCellClicked(int x, int y);
+
 
 public class InventoryClickHandler : MonoBehaviour, IPointerDownHandler
 {
-    static public event InventoryCellClicked OnInventoryCellClicked;
-
     private int m_NumCellsX = 0;
     private int m_NumCellsY = 0;
     private RectTransform m_Rect;
@@ -47,10 +45,7 @@ public class InventoryClickHandler : MonoBehaviour, IPointerDownHandler
             int x = (int)posClick.x / InventoryUI.INVENTORY_CELL_SIZE;
             int y = (int)posClick.y / InventoryUI.INVENTORY_CELL_SIZE;
 
-            if (OnInventoryCellClicked != null)
-            {
-                OnInventoryCellClicked(x, y);
-            }
+            GameEvents.InvokeEvent_OnInventoryCellClicked(x, y);
         }
     }
 }

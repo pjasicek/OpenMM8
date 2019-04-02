@@ -7,12 +7,10 @@ using UnityEngine;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    public delegate void InitComplete();
+    
 
     class InitMgr : MonoBehaviour
     {
-        static public event InitComplete OnInitComplete;
-
         private void Start()
         {
             DbMgr.Instance.Init();
@@ -27,10 +25,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             GameMgr.Instance.PostInit();
             UiMgr.Instance.PostInit();
 
-            if (OnInitComplete != null)
-            {
-                OnInitComplete();
-            }
+            GameEvents.InvokeEvent_OnInitComplete();
         }
     }
 }

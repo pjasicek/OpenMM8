@@ -5,12 +5,10 @@ using System.Text;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    public delegate void CharacterFinishedEvent(Character character);
+    
 
     public class EventAPI
     {
-        public static event CharacterFinishedEvent OnCharacterFinishedEvent;
-
         static public void EnterHouse(int houseId)
         {
             TalkEventMgr.Instance.EnterBuilding(houseId);
@@ -28,10 +26,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         static public void AddAward(Character character, int awardId)
         {
-            if (OnCharacterFinishedEvent != null)
-            {
-                OnCharacterFinishedEvent(character);
-            }
+            GameEvents.InvokeEvent_OnCharacterFinishedEvent(character);
         }
 
         static public void AddAutonote(int autonoteId)

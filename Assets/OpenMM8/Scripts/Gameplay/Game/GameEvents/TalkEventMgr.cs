@@ -9,22 +9,12 @@ using UnityEngine.Video;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    public delegate void RefreshNpcTalk(NpcTalkProperties talkProp);
-    public delegate void NpcTalkTextChanged(string text);
-    public delegate void TalkWithConcreteNpc(NpcTalkProperties talkProp);
-    public delegate void NpcLeavingLocation(NpcTalkProperties talkProp);
-    public delegate void TalkSceneStart(Character talkerChr, TalkScene talkScene);
+    
 
 
     public class TalkEventMgr : Singleton<TalkEventMgr>
     {
         //=================================== Member Variables ===================================
-
-        public static event NpcTalkTextChanged OnNpcTalkTextChanged;
-        public static event RefreshNpcTalk OnRefreshNpcTalk;
-        public static event TalkWithConcreteNpc OnTalkWithConcreteNpc;
-        public static event NpcLeavingLocation OnNpcLeavingLocation;
-        static public event TalkSceneStart OnTalkSceneStart;
 
         private PlayerParty m_PlayerParty;
 
@@ -178,11 +168,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 return;
             }
 
-            if (OnTalkSceneStart != null)
-            {
-                Character currChar = m_PlayerParty.GetMostRecoveredCharacter();
-                OnTalkSceneStart(currChar, m_BuildingTalkSceneMap[buildingId]);
-            }
+            Character currChar = m_PlayerParty.GetMostRecoveredCharacter();
+            GameEvents.InvokeEvent_OnTalkSceneStart(currChar, m_BuildingTalkSceneMap[buildingId]);
         }
 
         public void TalkWithNPC(int npcId)
@@ -197,11 +184,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_NpcTalkScene.TalkProperties.Clear();
             m_NpcTalkScene.TalkProperties.Add(m_TalkPropertiesMap[npcId]);
 
-            if (OnTalkSceneStart != null)
-            {
-                Character currChar = m_PlayerParty.GetMostRecoveredCharacter();
-                OnTalkSceneStart(currChar, m_NpcTalkScene);
-            }
+            Character currChar = m_PlayerParty.GetMostRecoveredCharacter();
+            GameEvents.InvokeEvent_OnTalkSceneStart(currChar, m_NpcTalkScene);
         }
 
         public void TalkNPCNews(int npcId, int npcNews)
@@ -218,11 +202,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_NpcTalkScene.TalkProperties[0].IsNpcNews = true;
             m_NpcTalkScene.TalkProperties[0].GreetId = npcNews;
 
-            if (OnTalkSceneStart != null)
-            {
-                Character currChar = m_PlayerParty.GetMostRecoveredCharacter();
-                OnTalkSceneStart(currChar, m_NpcTalkScene);
-            }
+            Character currChar = m_PlayerParty.GetMostRecoveredCharacter();
+            GameEvents.InvokeEvent_OnTalkSceneStart(currChar, m_NpcTalkScene);
         }
 
         public NpcTalkProperties GetNpcTalkProperties(int npcId)
@@ -310,10 +291,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnAvatarClicked(AvatarBtnContext avatarBtnContext)
         {
-            if (OnTalkWithConcreteNpc != null)
-            {
-                OnTalkWithConcreteNpc(avatarBtnContext.TalkProperties);
-            }
+            GameEvents.InvokeEvent_OnTalkWithConcreteNpc(avatarBtnContext.TalkProperties);
         }
 
 
@@ -329,10 +307,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 message = textData.Text;
             }
             
-            if (OnNpcTalkTextChanged != null)
-            {
-                OnNpcTalkTextChanged(message);
-            }
+            GameEvents.InvokeEvent_OnNpcTalkTextChanged(message);
         }
 
         private void SetNpcTopic(int npcId, int topicIdx, int setTopicId)
@@ -357,10 +332,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private void SetGreetMessage(NpcTalkProperties talkProp)
         {
             string greet = GetCurrNpcGreet(talkProp);
-            if (OnNpcTalkTextChanged != null)
-            {
-                OnNpcTalkTextChanged(greet);
-            }
+            GameEvents.InvokeEvent_OnNpcTalkTextChanged(greet);
         }
 
         private void HandleRosterJoinEvent(int rosterId, int partyFullMsgId, NpcTalkProperties talkProp)
@@ -574,10 +546,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         // 2) Talkable::OnNpcLeavingLocation
                         talkProp.HasGoodbyeMessage = true;
                         EvictNpc(talkProp);
-                        if (OnRefreshNpcTalk != null)
-                        {
-                            OnRefreshNpcTalk(talkProp);
-                        }
+
+                        GameEvents.InvokeEvent_OnRefreshNpcTalk(talkProp);
                         SetMessage(m_RosterInvite.PartyFullResponseId);
                         return;
                     }
@@ -599,10 +569,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             // TODO: Better name. It did not need to change, but we want to refresh it.
-            if (OnRefreshNpcTalk != null)
-            {
-                OnRefreshNpcTalk(talkProp);
-            }
+            GameEvents.InvokeEvent_OnRefreshNpcTalk(talkProp);
         }
     }
 }

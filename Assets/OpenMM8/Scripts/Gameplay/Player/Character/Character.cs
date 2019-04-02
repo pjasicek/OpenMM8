@@ -9,22 +9,7 @@ using UnityEngine;
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
     // public delegate SpellResult SpellReceived(SpellInfo hitInfo, GameObject source);
-    public delegate void HealthChanged(Character chr, int maxHealth, int currHealth, int delta);
-    public delegate void ManaChanged(Character chr, int maxMana, int currMana);
-    public delegate void Recovered(Character chr);
-    public delegate void RecoveryTimeChanged(Character chr, float recoveryTime);
-    public delegate void CharConditionChanged(Character chr, Condition newCondition);
-    public delegate void CharHitNpc(Character chr, AttackInfo attackInfo, AttackResult result);
-    public delegate void CharGotHit(Character chr, AttackInfo attackInfo, AttackResult attackResult);
-    public delegate void CharAttack(Character chr, AttackInfo attackInfo);
-    public delegate void NpcInspect(Character inspectorChr, MonsterData npcData);
-    public delegate void NpcInspectEnd();
-    public delegate void ItemInspect(Character inspectorChr, ItemData itemData/*, InspectResult result*/);
-    public delegate void ItemEquip(/*Item item, EquipResult equipResult*/);
-    public delegate void ItemHold(/*Item item*/);
-    public delegate void ItemHoldEnd();
-    public delegate void ItemEquipped(Character chr, BaseItem equippedItem, BaseItem replacedItem);
-    public delegate void InteractedWithItem(Character chr, BaseItem item, ItemInteractResult interactResult);
+    
 
     public class Character
     {
@@ -35,25 +20,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public CharFaceUpdater CharFaceUpdater;
 
         public Inventory Inventory = new Inventory();
-
-        // Events
-        static public event HealthChanged OnHealthChanged;
-        static public event ManaChanged OnManaChanged;
-        static public event Recovered OnRecovered;
-        static public event RecoveryTimeChanged OnRecoveryTimeChanged;
-        static public event CharConditionChanged OnConditionChanged;
-        static public event CharHitNpc OnHitNpc;
-        static public event CharGotHit OnGotHit;
-        static public event CharAttack OnAttack;
-        static public event NpcInspect OnNpcInspect;
-        static public event NpcInspectEnd OnNpcInspectEnd;
-        static public event ItemInspect OnItemInspect;
-        static public event ItemEquip OnItemEquip;
-        static public event ItemHold OnItemHold;
-        static public event ItemHoldEnd OnItemHoldEnd;
-        static public event ItemEquipped OnItemEquipped;
-        static public event InteractedWithItem OnInteractedWithItem;
-
 
         private float m_TimeUntilRecovery = 0.0f;
         public float TimeUntilRecovery
@@ -66,7 +32,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             set
             {
                 m_TimeUntilRecovery = value;
-                OnRecoveryTimeChanged(this, m_TimeUntilRecovery);
+                GameEvents.InvokeEvent_OnRecoveryTimeChanged(this, m_TimeUntilRecovery);
             }
         }
 
@@ -190,10 +156,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             if (!wasRecovered && IsRecovered())
             {
-                if (OnRecovered != null)
-                {
-                    OnRecovered(this);
-                }
+                GameEvents.InvokeEvent_OnRecovered(this);
             }
         }
 
@@ -217,19 +180,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             attackInfo.AttackMod = 10000;
             attackInfo.DamageType = SpellElement.Physical;
 
-            if (OnAttack != null)
-            {
-                OnAttack(this, attackInfo);
-            }
+            GameEvents.InvokeEvent_OnCharAttack(this, attackInfo);
 
             if (victim)
             {
                 AttackResult result = victim.ReceiveAttack(attackInfo, Party.gameObject);
                 
-                if (OnHitNpc != null)
-                {
-                    OnHitNpc(this, attackInfo, result);
-                }
+                GameEvents.InvokeEvent_OnCharHitNpc(this, attackInfo, result);
             }
 
             return true;
@@ -237,10 +194,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnAttackReceived(AttackInfo attackInfo, AttackResult result)
         {
-            if (OnGotHit != null &&
-                (result.Type == AttackResultType.Hit || result.Type == AttackResultType.Kill))
+            if (result.Type == AttackResultType.Hit || result.Type == AttackResultType.Kill)
             {
-                OnGotHit(this, attackInfo, result);
+                GameEvents.InvokeEvent_OnCharGotHit(this, attackInfo, result);
             }
         }
 
@@ -270,21 +226,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             int maxHP = Data.DefaultStats.MaxHitPoints + Data.BonusStats.MaxHitPoints;
             Data.CurrHitPoints = Mathf.Min(Data.CurrHitPoints + numHitPoints, maxHP);
 
-            if (OnHealthChanged != null)
-            {
-                OnHealthChanged(this, maxHP, Data.CurrHitPoints, numHitPoints);
-            }
+            GameEvents.InvokeEvent_OnCharHealthChanged(this, maxHP, Data.CurrHitPoints, numHitPoints);
         }
 
         public void AddCurrSpellPoints(int numSpellPoints)
         {
             int maxMP = Data.DefaultStats.MaxSpellPoints + Data.BonusStats.MaxSpellPoints;
             Data.CurrSpellPoints = Mathf.Min(Data.CurrSpellPoints + numSpellPoints, maxMP);
-
-            if (OnManaChanged != null)
-            {
-                OnManaChanged(this, maxMP, Data.CurrSpellPoints);
-            }
+    
+            GameEvents.InvokeEvent_OnCharManaChanged(this, maxMP, Data.CurrSpellPoints);
         }
 
         public void AddLevel()
@@ -405,19 +355,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 interactResult = Inventory.TryEquipItem(item, out replacedItem);
                 if (interactResult == ItemInteractResult.Equipped)
                 {
-                    /*// Held item was equipped by the doll - destroy it
-                    GameObject.Destroy(m_HeldItem.gameObject);
-                    m_HeldItem = null;
-
-                    if (replacedItem != null)
-                    {
-                        // If we replaced an item which was equipped by doll, then we have to hold this item
-                        SetHeldItem(replacedItem);
-                    }*/
-                    if (OnItemEquipped != null)
-                    {
-                        OnItemEquipped(this, item, replacedItem);
-                    }
+                    GameEvents.InvokeEvent_OnItemEquipped(this, item, replacedItem);
                 }
             }
             else if (item.IsCastable())
@@ -437,10 +375,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 interactResult = ItemInteractResult.Read;
             }
 
-            if (OnInteractedWithItem != null)
-            {
-                OnInteractedWithItem(this, item, interactResult);
-            }
+            GameEvents.InvokeEvent_OnInteractedWithItem(this, item, interactResult);
 
             return interactResult;
         }

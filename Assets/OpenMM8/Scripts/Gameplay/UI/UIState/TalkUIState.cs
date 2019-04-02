@@ -89,9 +89,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 m_NpcTalkUI = args.NpcTalkUI;
 
                 // Register for events
-                TalkEventMgr.OnNpcTalkTextChanged += OnNpcTalkTextChanged;
-                TalkEventMgr.OnRefreshNpcTalk += OnRefreshNpcTalk;
-                TalkEventMgr.OnTalkWithConcreteNpc += OnTalkWithConcreteNpc;
+                GameEvents.OnNpcTalkTextChanged += OnNpcTalkTextChanged;
+                GameEvents.OnRefreshNpcTalk += OnRefreshNpcTalk;
+                GameEvents.OnTalkWithConcreteNpc += OnTalkWithConcreteNpc;
 
                 ShowTalkScene(m_TalkCharInitiator, m_TalkScene);
 
@@ -100,9 +100,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             public override void LeaveState()
             {
-                TalkEventMgr.OnNpcTalkTextChanged -= OnNpcTalkTextChanged;
-                TalkEventMgr.OnRefreshNpcTalk -= OnRefreshNpcTalk;
-                TalkEventMgr.OnTalkWithConcreteNpc -= OnTalkWithConcreteNpc;
+                GameEvents.OnNpcTalkTextChanged -= OnNpcTalkTextChanged;
+                GameEvents.OnRefreshNpcTalk -= OnRefreshNpcTalk;
+                GameEvents.OnTalkWithConcreteNpc -= OnTalkWithConcreteNpc;
 
                 if (m_CurrVideoScene != null)
                 {
@@ -303,7 +303,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 }
 
                 // NPC Topics
-                foreach (GameObject topicButton in m_NpcTalkUI.TopicButtonList)
+                Debug.Log("xx");
+                foreach (GameObject topicButton in m_NpcTalkUI.TopicButtonList.ToList())
                 {
                     topicButton.SetActive(false);
 
@@ -315,6 +316,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         m_NpcTalkUI.TopicButtonList[m_NpcTalkUI.TopicButtonList.Count - 1] = topicButton;
                     }
                 }
+                Debug.Log("yy");
 
                 float totalTextHeight = 0.0f;
                 int buttIdx = 0;

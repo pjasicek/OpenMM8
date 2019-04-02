@@ -90,7 +90,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 SwitchState(args.EnterState);
 
                 // Register events
-                PlayerParty.OnActiveCharacterChanged += OnActiveCharacterChanged;
+                GameEvents.OnActiveCharacterChanged += OnActiveCharacterChanged;
 
                 return true;
             }
@@ -98,7 +98,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             public override void LeaveState()
             {
                 // Unregister from registered events
-                PlayerParty.OnActiveCharacterChanged -= OnActiveCharacterChanged;
+                GameEvents.OnActiveCharacterChanged -= OnActiveCharacterChanged;
 
                 UiMgr.Instance.m_CharDetailUI.CanvasHolder.enabled = false;
             }

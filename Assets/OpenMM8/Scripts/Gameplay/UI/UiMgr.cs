@@ -77,48 +77,48 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private void Awake()
         {
-            GameMgr.OnPauseGame += OnPauseGame;
+            GameEvents.OnPauseGame += OnPauseGame;
 
-            PlayerParty.OnCharacterJoinedParty += OnCharacterJoinedParty;
-            PlayerParty.OnCharacterLeftParty += OnCharacterLeftParty;
-            PlayerParty.OnGoldChanged += OnGoldChanged;
-            PlayerParty.OnFoodChanged += OnFoodChanged;
-            PlayerParty.OnFoundGold += OnFoundGold;
-            PlayerParty.OnHoverObject += OnHoverObject;
+            GameEvents.OnCharacterJoinedParty += OnCharacterJoinedParty;
+            GameEvents.OnCharacterLeftParty += OnCharacterLeftParty;
+            GameEvents.OnGoldChanged += OnGoldChanged;
+            GameEvents.OnFoodChanged += OnFoodChanged;
+            GameEvents.OnFoundGold += OnFoundGold;
+            GameEvents.OnHoverObject += OnHoverObject;
 
-            Character.OnHealthChanged += OnCharHealthChanged;
-            Character.OnManaChanged += OnCharManaChanged;
-            Character.OnRecovered += OnCharRecovered;
-            Character.OnRecoveryTimeChanged += OnCharRecoveryTimeChanged;
-            Character.OnHitNpc += OnCharHitNpc;
-            Character.OnGotHit += OnCharGotHit;
-            Character.OnAttack += OnCharAttack;
-            Character.OnItemEquipped += OnItemEquipped;
+            GameEvents.OnCharHealthChanged += OnCharHealthChanged;
+            GameEvents.OnCharManaChanged += OnCharManaChanged;
+            GameEvents.OnRecovered += OnCharRecovered;
+            GameEvents.OnRecoveryTimeChanged += OnCharRecoveryTimeChanged;
+            GameEvents.OnCharHitNpc += OnCharHitNpc;
+            GameEvents.OnCharGotHit += OnCharGotHit;
+            GameEvents.OnCharAttack += OnCharAttack;
+            GameEvents.OnItemEquipped += OnItemEquipped;
 
-            InspectableNpc.OnNpcInspectStart += OnNpcInspectStart;
-            InspectableNpc.OnNpcInspectEnd += OnNpcInspectEnd;
+            GameEvents.OnNpcInspectStart += OnNpcInspectStart;
+            GameEvents.OnNpcInspectEnd += OnNpcInspectEnd;
 
-            MinimapMarker.OnMinimapMarkerCreated += OnMinimapMarkerCreated;
-            MinimapMarker.OnMinimapMarkerDestroyed += OnMinimapMarkerDestroyed;
+            GameEvents.OnMinimapMarkerCreated += OnMinimapMarkerCreated;
+            GameEvents.OnMinimapMarkerDestroyed += OnMinimapMarkerDestroyed;
 
-            TalkEventMgr.OnTalkSceneStart += OnTalkSceneStart;
+            GameEvents.OnTalkSceneStart += OnTalkSceneStart;
 
-            
-            EventAPI.OnCharacterFinishedEvent += OnCharacterFinishedEvent;
 
-            QuestMgr.OnQuestBitAdded += OnQuestBitAdded;
+            GameEvents.OnCharacterFinishedEvent += OnCharacterFinishedEvent;
 
-            InventoryItem.OnInventoryItemHoverStart += OnInventoryItemHoverStart;
-            InventoryItem.OnInventoryItemHoverEnd += OnInventoryItemHoverEnd;
-            InventoryItem.OnInventoryItemClicked += OnInventoryItemClicked;
+            GameEvents.OnQuestBitAdded += OnQuestBitAdded;
 
-            InspectableItem.OnOutdoorItemInspectStart += OnOutdoorItemInspectStart;
-            InspectableItem.OnOutdoorItemInspectEnd += OnOutdoorItemInspectEnd;
+            GameEvents.OnInventoryItemHoverStart += OnInventoryItemHoverStart;
+            GameEvents.OnInventoryItemHoverEnd += OnInventoryItemHoverEnd;
+            GameEvents.OnInventoryItemClicked += OnInventoryItemClicked;
 
-            InventoryClickHandler.OnInventoryCellClicked += OnInventoryCellClicked;
-            DollClickHandler.OnDollClicked += OnDollClicked;
+            GameEvents.OnOutdoorItemInspectStart += OnOutdoorItemInspectStart;
+            GameEvents.OnOutdoorItemInspectEnd += OnOutdoorItemInspectEnd;
 
-            CharacterAvatar.OnCharacterAvatarClicked += OnCharacterAvatarClicked;
+            GameEvents.OnInventoryCellClicked += OnInventoryCellClicked;
+            GameEvents.OnDollClicked += OnDollClicked;
+
+            GameEvents.OnCharacterAvatarClicked += OnCharacterAvatarClicked;
         }
 
         // Init sequence: DbMgr(1) -> GameMgr(1) -> UiMgr(1) -> GameMgr(2)

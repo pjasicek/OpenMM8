@@ -3,14 +3,8 @@ using System.Collections;
 
 using Assets.OpenMM8.Scripts.Gameplay;
 
-public delegate void MinimapMarkerCreatedDlg(MinimapMarker marker);
-public delegate void MinimapMarkerDestroyedDlg(MinimapMarker marker);
-
 public class MinimapMarker : MonoBehaviour
 {
-    static public event MinimapMarkerCreatedDlg OnMinimapMarkerCreated;
-    static public event MinimapMarkerDestroyedDlg OnMinimapMarkerDestroyed;
-
     private Color _Color;
     public Color Color
     {
@@ -43,18 +37,13 @@ public class MinimapMarker : MonoBehaviour
         TextureMark.SetPixel(0, 0, Color);
         TextureMark.Apply();
         //UiMgr.Instance.Minimap.MinimapMarkers.Add(this);
-        if (OnMinimapMarkerCreated != null)
-        {
-            OnMinimapMarkerCreated(this);
-        }
+
+        GameEvents.InvokeEvent_OnMinimapMarkerCreated(this);
     }
 
     private void OnDestroy()
     {
-        if (OnMinimapMarkerDestroyed != null)
-        {
-            OnMinimapMarkerDestroyed(this);
-        }
+        GameEvents.InvokeEvent_OnMinimapMarkerDestroyed(this);
 
         /*if (UiMgr.Instance)
         {

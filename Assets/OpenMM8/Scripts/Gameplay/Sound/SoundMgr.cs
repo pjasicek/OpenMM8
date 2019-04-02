@@ -54,27 +54,27 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             // Events
             SceneManager.sceneLoaded += OnSceneLoaded;
 
-            GameMgr.OnPauseGame += OnGamePaused;
-            GameMgr.OnUnpauseGame += OnGameUnpaused;
+            GameEvents.OnPauseGame += OnGamePaused;
+            GameEvents.OnUnpauseGame += OnGameUnpaused;
 
-            PlayerParty.OnCharacterJoinedParty += OnCharacterJoinedParty;
-            PlayerParty.OnCharacterLeftParty += OnCharacterLeftParty;
-            PlayerParty.OnGoldChanged += OnGoldChanged;
-            PlayerParty.OnFoodChanged += OnFoodChanged;
-            PlayerParty.OnPickedUpLoot += OnPickedUpLoot;
+            GameEvents.OnCharacterJoinedParty += OnCharacterJoinedParty;
+            GameEvents.OnCharacterLeftParty += OnCharacterLeftParty;
+            GameEvents.OnGoldChanged += OnGoldChanged;
+            GameEvents.OnFoodChanged += OnFoodChanged;
+            GameEvents.OnPickedUpLoot += OnPickedUpLoot;
 
-            Character.OnHealthChanged += OnHealthChanged;
-            Character.OnHitNpc += OnCharHitNpc;
-            Character.OnGotHit += OnCharGotHit;
-            Character.OnAttack += OnCharAttack;
-            Character.OnInteractedWithItem += OnInteractedWithItem;
+            GameEvents.OnCharHealthChanged += OnHealthChanged;
+            GameEvents.OnCharHitNpc += OnCharHitNpc;
+            GameEvents.OnCharGotHit += OnCharGotHit;
+            GameEvents.OnCharAttack += OnCharAttack;
+            GameEvents.OnInteractedWithItem += OnInteractedWithItem;
 
-            TalkEventMgr.OnTalkSceneStart += OnTalkSceneStart;
+            GameEvents.OnTalkSceneStart += OnTalkSceneStart;
             //Talkable.OnTalkEnd += OnTalkEnd;
 
-            QuestMgr.OnQuestBitAdded += OnQuestBitAdded;
+            GameEvents.OnQuestBitAdded += OnQuestBitAdded;
 
-            EventAPI.OnCharacterFinishedEvent += OnCharacterFinishedEvent;
+            GameEvents.OnCharacterFinishedEvent += OnCharacterFinishedEvent;
         }
 
         // Init sequence: DbMgr(1) -> GameMgr(1) -> *Mgr(1) -> GameMgr(2)

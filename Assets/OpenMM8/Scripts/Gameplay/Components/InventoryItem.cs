@@ -9,9 +9,7 @@ using UnityEngine.UI;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    public delegate void InventoryItemHoverStart(InventoryItem inventoryItem);
-    public delegate void InventoryItemHoverEnd(InventoryItem inventoryItem);
-    public delegate void InventoryItemClicked(InventoryItem inventoryItem);
+    
 
     [RequireComponent(typeof(Image))]
     public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
@@ -21,11 +19,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public bool IsHeld = false;
         public bool isEquipped = false;
 
-        // Events
-        static public event InventoryItemHoverStart OnInventoryItemHoverStart;
-        static public event InventoryItemHoverEnd OnInventoryItemHoverEnd;
-        static public event InventoryItemClicked OnInventoryItemClicked;
-
         public void Awake()
         {
             Image = GetComponent<Image>();
@@ -33,17 +26,17 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (!IsHeld && OnInventoryItemHoverStart != null)
+            if (!IsHeld)
             {
-                OnInventoryItemHoverStart(this);
+                GameEvents.InvokeEvent_OnInventoryItemHoverStart(this);
             }
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (!IsHeld && OnInventoryItemHoverEnd != null)
+            if (!IsHeld)
             {
-                OnInventoryItemHoverEnd(this);
+                GameEvents.InvokeEvent_OnInventoryItemHoverEnd(this);
             }
         }
 
@@ -71,11 +64,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             if (!IsHeld && eventData.button == PointerEventData.InputButton.Left)
             {
-                Debug.Log("Pointer Down: " + Item.Data.Name);
-                if (OnInventoryItemClicked != null)
-                {
-                    OnInventoryItemClicked(this);
-                }
+                GameEvents.InvokeEvent_OnInventoryItemClicked(this);
             }
         }
 

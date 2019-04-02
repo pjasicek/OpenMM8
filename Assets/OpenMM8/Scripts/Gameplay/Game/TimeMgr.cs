@@ -28,8 +28,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public Action<Timer, TimeInfo> OnTimer;
     }
 
-    public delegate void MinuteElapsed(TimeInfo currTime);
-
     public class TimeMgr : Singleton<TimeMgr>
     {
         //=================================== Member Variables ===================================
@@ -40,8 +38,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public const int HOUR_IN_MINUTES = 60;
 
         private const int REALTIME_SECOND_TO_INGAME_MINUTES = 2;
-
-        static public event MinuteElapsed OnMinuteElapsed;
 
         public TimeInfo CurrentTime = new TimeInfo();
 

@@ -9,8 +9,7 @@ using UnityEngine.UI;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    public delegate void PauseGame();
-    public delegate void UnpauseGame();
+    
     /*public delegate void LevelUnloaded(int levelNum);
     public delegate void LevelLoaded(int levelNum);*/
 
@@ -21,8 +20,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public static GameMgr Instance;
 
         // Events
-        static public event PauseGame OnPauseGame;
-        static public event PauseGame OnUnpauseGame;
+        
         /* static public event LevelUnloaded OnLevelUnloaded;
          static public event LevelLoaded OnLevelLoaded;*/
 
@@ -36,8 +34,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public PlayerParty PlayerParty;
 
         // Events
-        public delegate void GamePausedAction();
-        public delegate void GameUnpausedAction();
+        
 
         /*public event GamePausedAction OnGamePaused;
         public event GameUnpausedAction OnGameUnpaused;*/
@@ -54,7 +51,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         void Awake()
         {
             // Events
-            TalkEventMgr.OnTalkSceneStart += OnTalkStart;
+            GameEvents.OnTalkSceneStart += OnTalkStart;
 
             UnityEngine.Assertions.Assert.IsTrue(Instance == null);
             Instance = this;
@@ -398,10 +395,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_IsGamePaused = true;
             //OnGamePaused();
 
-            if (OnPauseGame != null)
-            {
-                OnPauseGame();
-            }
+            GameEvents.InvokeEvent_OnPauseGame();
         }
 
         public void UnpauseGame()
@@ -410,10 +404,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_IsGamePaused = false;
             //OnGameUnpaused();
 
-            if (OnUnpauseGame != null)
-            {
-                OnUnpauseGame();
-            }
+            GameEvents.InvokeEvent_OnUnpauseGame();
         }
 
         public void ChangeGameState(GameState newState)
