@@ -913,6 +913,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             chr.UI.DollUI.RH_HoldImage.alphaHitTestMinimumThreshold = 0.4f;
 
             chr.UI.InventoryUI = InventoryUI.Create();
+            chr.UI.StatsUI = StatsUI.Create();
+
+
+            //chr.UI.StatsUI.Holder = 
 
             UpdateEmptySlotBanners(party);
         }

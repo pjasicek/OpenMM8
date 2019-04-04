@@ -9,9 +9,6 @@ using UnityEngine.Video;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    
-
-
     public class TalkEventMgr : Singleton<TalkEventMgr>
     {
         //=================================== Member Variables ===================================

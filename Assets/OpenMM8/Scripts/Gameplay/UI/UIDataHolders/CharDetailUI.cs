@@ -57,6 +57,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public class CharStatsUI
     {
         public GameObject Holder;
+        public StatsUI StatsUI;
 
         static public CharStatsUI Load(GameObject origin)
         {

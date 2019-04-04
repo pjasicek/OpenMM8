@@ -126,6 +126,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 switch (m_State)
                 {
                     case CharDetailState.Stats:
+                        if (m_UI.StatsUI.StatsUI != null)
+                        {
+                            m_UI.StatsUI.StatsUI.Holder.SetActive(false);
+                        }
+                        m_UI.StatsUI.StatsUI = chr.UI.StatsUI;
+                        m_UI.StatsUI.StatsUI.Holder.SetActive(true);
                         break;
 
                     case CharDetailState.Inventory:
