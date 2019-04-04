@@ -536,6 +536,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 m_InspectItemUI.Holder.GetComponent<Canvas>().enabled = false;
             }
 
+            if (Input.GetButton("InspectObject") && m_HoveredItem != null)
+            {
+
+            }
+            else
+            {
+
+            }
+
             // Held item position update
             if (m_HeldItem != null)
             {
@@ -910,15 +919,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private void OnCharacterLeftParty(Character removedChr, PlayerParty party)
         {
-            Destroy(removedChr.UI.Holder);
+            removedChr.UI.Destroy();
 
             foreach (Character chr in party.Characters)
             {
                 chr.UI.Holder.transform.localPosition =
                     new Vector3(Constants.PC_WidthDelta, 0.0f, 0.0f) * chr.GetPartyIndex();
             }
-
-            GameObject.Destroy(removedChr.UI.DollUI.Holder);
 
             UpdateEmptySlotBanners(party);
         }

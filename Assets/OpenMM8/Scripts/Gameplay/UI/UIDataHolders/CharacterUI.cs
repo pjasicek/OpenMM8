@@ -34,6 +34,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         static public Sprite AgroStatusSprite_Red;
         static public Sprite AgroStatusSprite_Gray;
 
+        public void Destroy()
+        {
+            GameObject.Destroy(DollUI.Holder);
+            GameObject.Destroy(InventoryUI.Holder);
+        }
+
         public void SetHealth(float percentage)
         {
             if (percentage > 50.0f)

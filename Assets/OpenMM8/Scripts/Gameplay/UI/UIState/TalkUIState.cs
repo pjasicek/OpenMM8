@@ -302,8 +302,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     currentTopics = talkProp.NestedTopicIds.First();
                 }
 
-                // NPC Topics
-                Debug.Log("xx");
+                // TODO: Verify that "ToList()" does not screw everything up
                 foreach (GameObject topicButton in m_NpcTalkUI.TopicButtonList.ToList())
                 {
                     topicButton.SetActive(false);
@@ -316,7 +315,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         m_NpcTalkUI.TopicButtonList[m_NpcTalkUI.TopicButtonList.Count - 1] = topicButton;
                     }
                 }
-                Debug.Log("yy");
 
                 float totalTextHeight = 0.0f;
                 int buttIdx = 0;
