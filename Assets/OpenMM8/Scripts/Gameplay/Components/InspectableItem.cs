@@ -6,7 +6,8 @@ using Assets.OpenMM8.Scripts.Gameplay.Items;
 
 
 
-
+// InspectableItem = "3D" item laying in the world (e.g. on the ground)
+// InventoryItem = "2D" item in inventory or on character's doll
 public class InspectableItem : Inspectable
 {
     public BaseItem Item;
@@ -21,12 +22,10 @@ public class InspectableItem : Inspectable
     public override void StartInspect(Character inspector)
     {
         GameEvents.InvokeEvent_OnOutdoorItemInspectStart(Item);
-        Debug.Log("Inspect start");
     }
 
     public override void EndInspect(Character inspector)
     {
         GameEvents.InvokeEvent_OnOutdoorItemInspectEnd(Item);
-        Debug.Log("Inspect end");
     }
 }

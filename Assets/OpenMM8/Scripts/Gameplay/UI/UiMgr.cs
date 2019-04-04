@@ -33,6 +33,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public BaseItem m_HoveredItem = null;
         public InventoryItem m_HeldItem = null;
+        public InspectableUiText m_HoveredInspectableUiText = null;
 
         // State
         private UIState m_CurrUIState = null;
@@ -40,6 +41,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         [Header("UI")]
         private InspectNpcUI m_InspectNpcUI;
         private InspectItemUI m_InspectItemUI;
+        private InspectUiTextUI m_InspectUiTextUI;
         private PartyUI m_PartyUI;
         private NpcTalkUI m_NpcTalkUI;
         private Minimap m_Minimap;
@@ -119,6 +121,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             GameEvents.OnDollClicked += OnDollClicked;
 
             GameEvents.OnCharacterAvatarClicked += OnCharacterAvatarClicked;
+
+            GameEvents.OnInspectableUiTextHoverStart += OnInspectableUiTextHoverStart;
+            GameEvents.OnInspectableUiTextHoverEnd += OnInspectableUiTextHoverEnd;
         }
 
         // Init sequence: DbMgr(1) -> GameMgr(1) -> UiMgr(1) -> GameMgr(2)
@@ -237,6 +242,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_InspectItemUI.ItemImage = OpenMM8Util.GetComponentAtScenePath<Image>("ItemImage", topAnchor);
             m_InspectItemUI.LeftEdge = OpenMM8Util.GetComponentAtScenePath<Image>("Edge_Left", topAnchor);
             m_InspectItemUI.RightEdge = OpenMM8Util.GetComponentAtScenePath<Image>("Edge_Right", topAnchor);
+
+
+            m_InspectUiTextUI = new InspectUiTextUI();
+            m_InspectUiTextUI.Holder = OpenMM8Util.GetGameObjAtScenePath("UiTextInfoCanvas");
+            m_InspectUiTextUI.BackgroundTransfrom = OpenMM8Util.GetComponentAtScenePath<RectTransform>("Background", m_InspectUiTextUI.Holder);
+
+            topAnchor = OpenMM8Util.GetGameObjAtScenePath("Background/TopAnchor", m_InspectUiTextUI.Holder);
+            m_InspectUiTextUI.NameText = OpenMM8Util.GetComponentAtScenePath<Text>("NameText", topAnchor);
+            m_InspectUiTextUI.InfoText = OpenMM8Util.GetComponentAtScenePath<Text>("InfoText", topAnchor);
+            m_InspectUiTextUI.LeftEdge = OpenMM8Util.GetComponentAtScenePath<Image>("Edge_Left", topAnchor);
+            m_InspectUiTextUI.RightEdge = OpenMM8Util.GetComponentAtScenePath<Image>("Edge_Right", topAnchor);
+
 
             m_EmptySlotBanners.Add(m_PartyCanvasObj.transform.Find("PC1_EmptySlot").GetComponent<Image>());
             m_EmptySlotBanners.Add(m_PartyCanvasObj.transform.Find("PC2_EmptySlot").GetComponent<Image>());
@@ -536,13 +553,40 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 m_InspectItemUI.Holder.GetComponent<Canvas>().enabled = false;
             }
 
-            if (Input.GetButton("InspectObject") && m_HoveredItem != null)
+            if (Input.GetButton("InspectObject") && m_HoveredInspectableUiText != null)
             {
+                // Header + Text
+                m_InspectUiTextUI.NameText.text = m_HoveredInspectableUiText.GetHeader();
+                m_InspectUiTextUI.InfoText.text = m_HoveredInspectableUiText.GetInfoText();
 
+                // Inspect canvas height
+                float nameHeight = GetTextHeight(m_InspectUiTextUI.NameText);
+                float infoHeight = GetTextHeight(m_InspectUiTextUI.InfoText);
+
+                // TODO: ...
+                float dynTextHeight = (nameHeight / 10.0f) + (infoHeight / 10.0f) + 10.0f;
+                m_InspectUiTextUI.BackgroundTransfrom.sizeDelta = new Vector2(
+                    m_InspectUiTextUI.BackgroundTransfrom.rect.width,
+                    dynTextHeight + InspectItemUI.TOP_SPACE_PX + InspectItemUI.BOTTOM_SPACE_PX);
+
+                float edgeFillAmount = (m_InspectUiTextUI.BackgroundTransfrom.rect.height - 20.0f) /
+                    m_InspectUiTextUI.LeftEdge.rectTransform.rect.height;
+                m_InspectUiTextUI.LeftEdge.fillAmount = edgeFillAmount;
+                m_InspectUiTextUI.RightEdge.fillAmount = edgeFillAmount;
+
+                // Y position - below cursor
+                Vector2 mouseNormPos = GetMouseRatioCoord();
+                Vector2 mousePixelPosUI = new Vector2(mouseNormPos.x * UI_WIDTH, mouseNormPos.y * UI_HEIGHT);
+
+                Vector2 inspectTopLeft = new Vector2(m_InspectUiTextUI.BackgroundTransfrom.anchoredPosition.x,
+                    mousePixelPosUI.y - 30.0f);
+
+                m_InspectUiTextUI.BackgroundTransfrom.anchoredPosition = inspectTopLeft;
+                m_InspectUiTextUI.Holder.GetComponent<Canvas>().enabled = true;
             }
             else
             {
-
+                m_InspectUiTextUI.Holder.GetComponent<Canvas>().enabled = false;
             }
 
             // Held item position update
@@ -1318,6 +1362,21 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 SetHeldItem(replacedItem);
             }
         }
+
+        private void OnInspectableUiTextHoverStart(InspectableUiText inspectableUiText)
+        {
+            m_HoveredInspectableUiText = inspectableUiText;
+            Debug.Log(inspectableUiText.GetHeader());
+        }
+
+        private void OnInspectableUiTextHoverEnd(InspectableUiText inspectableUiText)
+        {
+            if (m_HoveredInspectableUiText == inspectableUiText)
+            {
+                m_HoveredInspectableUiText = null;
+            }
+        }
+
 
         // =========== Game states
 

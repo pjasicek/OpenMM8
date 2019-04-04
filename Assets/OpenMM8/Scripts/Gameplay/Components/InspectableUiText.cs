@@ -10,36 +10,21 @@ using UnityEngine.UI;
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
     [RequireComponent(typeof(Text))]
-    public class InspectableUiText : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
+    abstract public class InspectableUiText : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
     {
-        [SerializeField]
-        public string Header;
-        [SerializeField]
-        public string InfoText;
+        public Character Owner;
 
-        public void Awake()
-        {
-            
-        }
-
-        public string GetHeader()
-        {
-            return Header;
-        }
-
-        public string GetInfoText()
-        {
-            return InfoText;
-        }
+        abstract public string GetHeader();
+        abstract public string GetInfoText();
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            
+            GameEvents.InvokeEvent_OnInspectableUiTextHoverStart(this);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            
+            GameEvents.InvokeEvent_OnInspectableUiTextHoverEnd(this);
         }
 
         public void OnPointerDown(PointerEventData eventData)

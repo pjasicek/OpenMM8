@@ -52,6 +52,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         Spear,
         Bow,
         Mace,
+        Blaster,
         Shield,
         LeatherArmor,
         ChainArmor,
@@ -68,7 +69,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         DarkElf,
         Dragon,
         Vampire,
-        Trade,
+        Merchant,
         RepairItem,
         IdentifyItem,
         IdentifyMonster,
@@ -79,7 +80,20 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         DisarmTrap,
         Bodybuilding,
         Armsmaster,
-        Learning
+        Learning,
+        Dodging,
+        Unarmed,
+        Stealing,
+        None
+    }
+
+    public enum SkillGroupType
+    {
+        Weapon,
+        Armor,
+        Magic,
+        Misc,
+        None
     }
 
     public enum SkillMastery

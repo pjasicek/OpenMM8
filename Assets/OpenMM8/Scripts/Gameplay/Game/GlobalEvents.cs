@@ -55,6 +55,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public delegate void QuestBitAdded(int questId);
     public delegate void MinimapMarkerCreatedDlg(MinimapMarker marker);
     public delegate void MinimapMarkerDestroyedDlg(MinimapMarker marker);
+    public delegate void InspectableUiTextHoverStart(InspectableUiText inspectableUiText);
+    public delegate void InspectableUiTextHoverEnd(InspectableUiText inspectableUiText);
 
     public class GameEvents
     {
@@ -104,6 +106,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public static event CharacterFinishedEvent OnCharacterFinishedEvent;
         public static event MinuteElapsed OnMinuteElapsed;
         public static event QuestBitAdded OnQuestBitAdded;
+        public static event InspectableUiTextHoverStart OnInspectableUiTextHoverStart;
+        public static event InspectableUiTextHoverEnd OnInspectableUiTextHoverEnd;
+
+        static public void InvokeEvent_OnInspectableUiTextHoverStart(InspectableUiText inspectableUiText)
+        {
+            OnInspectableUiTextHoverStart?.Invoke(inspectableUiText);
+        }
+
+        static public void InvokeEvent_OnInspectableUiTextHoverEnd(InspectableUiText inspectableUiText)
+        {
+            OnInspectableUiTextHoverEnd?.Invoke(inspectableUiText);
+        }
 
         static public void InvokeEvent_OnDollClicked(DollClickHandler sender)
         {
