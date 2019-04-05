@@ -327,7 +327,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             charData.DefaultStats.MaxHitPoints = 500;
             charData.DefaultStats.MaxSpellPoints = 50;
 
-            foreach (Attribute attr in Enum.GetValues(typeof(Attribute)))
+            foreach (CharAttribute attr in Enum.GetValues(typeof(CharAttribute)))
             {
                 charData.DefaultStats.Attributes[attr] = 0;
                 charData.BonusStats.Attributes[attr] = 0;
@@ -362,7 +362,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             charData.DefaultStats.MaxHitPoints = 500;
             charData.DefaultStats.MaxSpellPoints = 50;
 
-            foreach (Attribute attr in Enum.GetValues(typeof(Attribute)))
+            foreach (CharAttribute attr in Enum.GetValues(typeof(CharAttribute)))
             {
                 charData.DefaultStats.Attributes[attr] = 0;
                 charData.BonusStats.Attributes[attr] = 0;

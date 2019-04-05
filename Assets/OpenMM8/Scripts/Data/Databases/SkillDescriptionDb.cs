@@ -10,7 +10,7 @@ using Assets.OpenMM8.Scripts.Data;
 
 namespace Assets.OpenMM8.Scripts.Gameplay.Data
 {
-    public class SkillDescriptionDb : DataDb<SkillDescriptionData>
+    public class SkillDescriptionDb : DataDb<SkillDescriptionData, SkillType>
     {
         override public SkillDescriptionData ProcessCsvDataRow(int row, string[] columns)
         {
@@ -40,9 +40,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                 case "Body Magic": skillType = SkillType.BodyMagic; skillGroup = SkillGroupType.Magic; break;
                 case "Light Magic": skillType = SkillType.LightMagic; skillGroup = SkillGroupType.Magic; break;
                 case "Dark Magic": skillType = SkillType.DarkMagic; skillGroup = SkillGroupType.Magic; break;
-                case "Dark Elf Ability": skillType = SkillType.DarkElf; skillGroup = SkillGroupType.Magic; break;
-                case "Vampire Ability": skillType = SkillType.Vampire; skillGroup = SkillGroupType.Magic; break;
-                case "Dragon Ability": skillType = SkillType.Dragon; skillGroup = SkillGroupType.Magic; break;
+                case "Dark Elf Ability": skillType = SkillType.DarkElfAbility; skillGroup = SkillGroupType.Magic; break;
+                case "Vampire Ability": skillType = SkillType.VampireAbility; skillGroup = SkillGroupType.Magic; break;
+                case "Dragon Ability": skillType = SkillType.DragonAbility; skillGroup = SkillGroupType.Magic; break;
                 case "Identify Item": skillType = SkillType.IdentifyItem; skillGroup = SkillGroupType.Misc; break;
                 case "Merchant": skillType = SkillType.Merchant; skillGroup = SkillGroupType.Misc; break;
                 case "Repair": skillType = SkillType.RepairItem; skillGroup = SkillGroupType.Misc; break;
@@ -50,7 +50,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                 case "Meditation": skillType = SkillType.Meditation; skillGroup = SkillGroupType.Misc; break;
                 case "Perception": skillType = SkillType.Perception; skillGroup = SkillGroupType.Misc; break;
                 case "Regeneration": skillType = SkillType.Regeneration; skillGroup = SkillGroupType.Misc; break;
-                case "Disarm Traps": skillType = SkillType.DisarmTrap; skillGroup = SkillGroupType.Misc; break;
+                case "Disarm Traps": skillType = SkillType.DisarmTraps; skillGroup = SkillGroupType.Misc; break;
                 case "Dodging": skillType = SkillType.Dodging; skillGroup = SkillGroupType.Misc; break;
                 case "Unarmed": skillType = SkillType.Unarmed; skillGroup = SkillGroupType.Misc; break;
                 case "Identify Monster": skillType = SkillType.IdentifyMonster; skillGroup = SkillGroupType.Misc; break;
@@ -67,7 +67,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             }
 
             SkillDescriptionData data = new SkillDescriptionData();
-            data.Id = (int)skillType;
+            data.Id = skillType;
             data.SkillType = skillType;
             data.SkillGroup = skillGroup;
             data.Name = columns[0];

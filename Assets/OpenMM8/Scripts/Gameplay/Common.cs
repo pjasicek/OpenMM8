@@ -66,9 +66,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         BodyMagic,
         LightMagic,
         DarkMagic,
-        DarkElf,
-        Dragon,
-        Vampire,
+        DarkElfAbility,
+        DragonAbility,
+        VampireAbility,
         Merchant,
         RepairItem,
         IdentifyItem,
@@ -77,7 +77,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         Alchemy,
         Perception,
         Regeneration,
-        DisarmTrap,
+        DisarmTraps,
         Bodybuilding,
         Armsmaster,
         Learning,
@@ -98,6 +98,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
     public enum SkillMastery
     {
+        None,
         Normal,
         Expert,
         Master,
@@ -119,7 +120,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         None
     }
 
-    public enum Attribute
+    public enum CharAttribute
     {
         Might,
         Intellect,
@@ -127,7 +128,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         Endurance,
         Accuracy,
         Speed,
-        Luck
+        Luck,
+        None
     }
 
     public enum Condition
@@ -198,6 +200,20 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         Dragon_2,
         Lich_1,
         LichFemale_1,
+    }
+
+    public enum CharacterRace
+    {
+        Human,
+        Vampire,
+        DarkElf,
+        Minotaur,
+        Troll,
+        Dragon,
+        Undead,
+        Elf,
+        Goblin,
+        None
     }
 
     public enum EquipType

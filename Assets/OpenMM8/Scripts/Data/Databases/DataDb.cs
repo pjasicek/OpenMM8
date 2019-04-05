@@ -5,13 +5,15 @@ using System.Text;
 
 namespace Assets.OpenMM8.Scripts
 {
-    public abstract class DataDb<T> where T : DbData
+    public abstract class DataDb<T, KeyType> where T : DbData<KeyType>
     {
-        public Dictionary<int, T> Data = new Dictionary<int, T>();
+        public Dictionary<KeyType, T> Data = new Dictionary<KeyType, T>();
 
         public bool Initialize(string csvFile, int headerRow = 1, char csvDelim = '\t')
         {
-            return CsvDataLoader.LoadRows<T>(csvFile, _ProcessCsvDataRow, headerRow, csvDelim);
+            bool ret = CsvDataLoader.LoadRows<T>(csvFile, _ProcessCsvDataRow, headerRow, csvDelim);
+            Finalize();
+            return ret;
         }
 
         private bool _ProcessCsvDataRow(int row, string[] columns)
@@ -34,7 +36,9 @@ namespace Assets.OpenMM8.Scripts
 
         abstract public T ProcessCsvDataRow(int row, string[] columns);
 
-        public T Get(int id)
+        protected virtual void Finalize() { }
+
+        public T Get(KeyType id)
         {
             if (Data.ContainsKey(id))
             {
@@ -48,4 +52,6 @@ namespace Assets.OpenMM8.Scripts
             return default(T);
         }
     }
+
+    public abstract class DataDb<TValue> : DataDb<TValue, int> where TValue : DbData<int> { }
 }

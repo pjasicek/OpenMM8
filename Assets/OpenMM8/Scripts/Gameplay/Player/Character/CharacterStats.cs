@@ -14,7 +14,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int Age;
         public int Level;
 
-        public Dictionary<Attribute, int> Attributes = new Dictionary<Attribute, int>();
+        public Dictionary<CharAttribute, int> Attributes = new Dictionary<CharAttribute, int>();
         public Dictionary<SpellElement, int> Resistances = new Dictionary<SpellElement, int>();
     }
 }

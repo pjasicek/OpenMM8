@@ -24,6 +24,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public ItemEquipPosDb ItemEquipPosDb = new ItemEquipPosDb();
         public ObjectDisplayDb ObjectDisplayDb = new ObjectDisplayDb();
         public SkillDescriptionDb SkillDescriptionDb = new SkillDescriptionDb();
+        public ClassSkillsDb ClassSkillsDb = new ClassSkillsDb();
 
         private const string MM8_DATA_PATH = @"Data/";
 
@@ -53,6 +54,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             ItemEquipPosDb.Initialize(MM8_DATA_PATH + @"ITEM_EQUIP_POS");
             ObjectDisplayDb.Initialize(MM8_DATA_PATH + @"OBJLIST");
             SkillDescriptionDb.Initialize(MM8_DATA_PATH + @"SKILL_DESCRIPTION", 2);
+            ClassSkillsDb.Initialize(MM8_DATA_PATH + @"CLASS_SKILLS");
 
             stopwatch.Stop();
             UnityEngine.Debug.Log("elapsed ms: " + stopwatch.ElapsedMilliseconds);

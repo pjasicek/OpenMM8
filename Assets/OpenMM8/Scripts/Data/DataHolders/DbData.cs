@@ -5,8 +5,13 @@ using System.Text;
 
 namespace Assets.OpenMM8.Scripts
 {
-    public abstract class DbData
+    public abstract class DbData<KeyType>
     {
-        public int Id;
+        public KeyType Id;
+    }
+
+    // Default database data - Key is int
+    public abstract class DbData : DbData<int>
+    {
     }
 }

@@ -522,7 +522,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             AttackResult result = DamageCalculator.DamageFromNpcToPlayer(hitInfo,
                 hitCharacter.Data.DefaultStats.Resistances,
                 hitCharacter.Data.DefaultStats.ArmorClass,
-                hitCharacter.Data.DefaultStats.Attributes[Attribute.Luck]);
+                hitCharacter.Data.DefaultStats.Attributes[CharAttribute.Luck]);
             result.Victim = this.gameObject;
             /*if (result.Type == AttackResultType.Miss)
             {

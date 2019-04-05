@@ -6,8 +6,9 @@ using System.Text;
 
 namespace Assets.OpenMM8.Scripts.Data
 {
-    public class SkillDescriptionData : DbData
+    public class SkillDescriptionData : DbData<SkillType>
     {
+        // SkillType Id = SkillType
         public SkillType SkillType;
         public SkillGroupType SkillGroup;
         public string Name;

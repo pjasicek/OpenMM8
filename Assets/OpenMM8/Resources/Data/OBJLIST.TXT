@@ -82,150 +82,150 @@ Gem	obj195	79	64	64	0	0	bounce
 Key	obj205	80	64	64	0	0	bounce
 //  Spell Effects							
 // Red							
-Fire Bolt	fire02	1010	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	null	1011	16	16	64	0	"NoPickup,NoGravity,LifeTime"
-Fireball	fire04	1050	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	spell01	1051	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Fire Spike	spell07	1060	16	16	7680	1000	"NoPickup,Bounce,FlagOnIntercept,LifeTime"
-explosion	null	1061	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Immolation	null	1070	16	16	64	0	"NoPickup,NoGravity,LifeTime"
-Meteor Shower	spell09	1080	16	16	768	1000	"NoPickup,FlagOnIntercept,LifeTime"
-explosion	null	1081	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Inferno	null	1090	16	16	64	1000	"NoPickup,NoGravity,LifeTime"
-explosion	null	1091	16	16	64	0	"NoPickup,NoGravity,LifeTime"
-Incinerate	spell11	1100	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	null	1101	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
+Fire Bolt	fire02	1010	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	null	1011	16	16	64	0	NoPickup,NoGravity,LifeTime
+Fireball	fire04	1050	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	spell01	1051	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Fire Spike	spell07	1060	16	16	7680	1000	NoPickup,Bounce,FlagOnIntercept,LifeTime
+explosion	null	1061	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Immolation	null	1070	16	16	64	0	NoPickup,NoGravity,LifeTime
+Meteor Shower	spell09	1080	16	16	768	1000	NoPickup,FlagOnIntercept,LifeTime
+explosion	null	1081	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Inferno	null	1090	16	16	64	1000	NoPickup,NoGravity,LifeTime
+explosion	null	1091	16	16	64	0	NoPickup,NoGravity,LifeTime
+Incinerate	spell11	1100	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	null	1101	16	16	0	0	NoPickup,NoGravity,FTLifeTime
 // Air Spell Objects							
 // Yellow							
-Sparks	spell02	2030	16	16	768	1000	"NoPickup,FlagOnIntercept,LifeTime"
-explosion	null	2031	16	16	64	0	"NoPickup,NoGravity,LifeTime"
-Lightning Bolt	spell18	2060	16	16	128	8000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	null	2061	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Implosion	spell57c	2080	16	16	64	0	"NoPickup,NoGravity,LifeTime"
-explosion	spell57c	2081	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Starburst	spell22	2100	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	null	2101	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
+Sparks	spell02	2030	16	16	768	1000	NoPickup,FlagOnIntercept,LifeTime
+explosion	null	2031	16	16	64	0	NoPickup,NoGravity,LifeTime
+Lightning Bolt	spell18	2060	16	16	128	8000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	null	2061	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Implosion	spell57c	2080	16	16	64	0	NoPickup,NoGravity,LifeTime
+explosion	spell57c	2081	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Starburst	spell22	2100	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	null	2101	16	16	0	0	NoPickup,NoGravity,FTLifeTime
 // Water Spell Objects							
 // Blue							
-Poison Spray	null	3010	16	16	768	1500	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	null	3011	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Ice Bolt	spell26	3030	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	null	3031	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Acid Burst	null	3060	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	spell29	3061	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Ice Blast	spell26	3090	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	null	3091	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-shard	spell26	3092	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
+Poison Spray	null	3010	16	16	768	1500	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	null	3011	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Ice Bolt	spell26	3030	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	null	3031	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Acid Burst	null	3060	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	spell29	3061	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Ice Blast	spell26	3090	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	null	3091	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+shard	spell26	3092	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
 // Earth Spell Objects							
 // Gray							
-Stun	spell03	4000	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-Slow	earth02	4010	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	earthX02	4011	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Deadly Swarm	spell37	4030	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	spell37c	4031	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Blades	spell39	4050	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	spell39c	4051	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Rock Blast	spell41	4070	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	earthX08	4071	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Death Blossom	spell41	4090	16	16	320	1500	"NoPickup,FlagOnIntercept,LifeTime"
-explosion	earthX10	4091	16	16	64	0	"NoPickup,NoGravity,FTLifeTime"
-shard	spell41	4092	16	16	1000	500	"NoPickup,FlagOnIntercept,LifeTime"
-Mass Distortion	earth11	4100	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	earthX11	4101	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
+Stun	spell03	4000	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+Slow	earth02	4010	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	earthX02	4011	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Deadly Swarm	spell37	4030	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	spell37c	4031	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Blades	spell39	4050	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	spell39c	4051	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Rock Blast	spell41	4070	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	earthX08	4071	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Death Blossom	spell41	4090	16	16	320	1500	NoPickup,FlagOnIntercept,LifeTime
+explosion	earthX10	4091	16	16	64	0	NoPickup,NoGravity,FTLifeTime
+shard	spell41	4092	16	16	1000	500	NoPickup,FlagOnIntercept,LifeTime
+Mass Distortion	earth11	4100	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	earthX11	4101	16	16	0	0	NoPickup,NoGravity,FTLifeTime
 // Spirit Spell Objects							
 // Color?							
-Spirit Lash	null	5070	16	16	0	0	"NoPickup,NoGravity,LifeTime"
-explosion	null	5071	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
+Spirit Lash	null	5070	16	16	0	0	NoPickup,NoGravity,LifeTime
+explosion	null	5071	16	16	0	0	NoPickup,NoGravity,FTLifeTime
 // Mind Spell Objects							
 // Orange							
-Mind Blast	spell57	6030	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	spell57c	6031	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Telepathy	spell59	6000	16	16	768	0	"NoPickup,NoGravity,FTLifeTime"
-Charm	spell60	6040	16	16	768	4000	"NoPickup,NoGravity,FTLifeTime"
-explosion	mindX05	6041	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Berzerk	spell62	6060	16	16	768	0	"NoPickup,NoGravity,FTLifeTime"
-explosion	null	6061	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Mass Fear	mind08	6070	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	mindX08	6071	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Psychic Shock	spell65	6090	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	spell57c	6091	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Enslave	spell66	6100	16	16	768	0	"NoPickup,NoGravity,FTLifeTime"
-explosion	null	6101	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
+Mind Blast	spell57	6030	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	spell57c	6031	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Telepathy	spell59	6000	16	16	768	0	NoPickup,NoGravity,FTLifeTime
+Charm	spell60	6040	16	16	768	4000	NoPickup,NoGravity,FTLifeTime
+explosion	mindX05	6041	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Berzerk	spell62	6060	16	16	768	0	NoPickup,NoGravity,FTLifeTime
+explosion	null	6061	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Mass Fear	mind08	6070	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	mindX08	6071	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Psychic Shock	spell65	6090	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	spell57c	6091	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Enslave	spell66	6100	16	16	768	0	NoPickup,NoGravity,FTLifeTime
+explosion	null	6101	16	16	0	0	NoPickup,NoGravity,FTLifeTime
 // Body Spell Objects							
 // Green							
-Harm	spell70	7030	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	bodyX04	7031	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Flying Fist	spell76	7090	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	bodyX10	7091	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
+Harm	spell70	7030	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	bodyX04	7031	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Flying Fist	spell76	7090	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	bodyX10	7091	16	16	0	0	NoPickup,NoGravity,FTLifeTime
 // Light Spell Objects							
 // White							
-Light Bolt	sp78b	8000	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	sp78c	8001	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Destroy Undead	light02	8010	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	lightX02	8011	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Paralyze	light04	8030	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	lightX04	8031	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Prismatic Light	spell84	8060	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	null	8061	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Sunray	spell87	8090	16	16	128	8000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	null	8091	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
+Light Bolt	sp78b	8000	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	sp78c	8001	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Destroy Undead	light02	8010	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	lightX02	8011	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Paralyze	light04	8030	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	lightX04	8031	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Prismatic Light	spell84	8060	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	null	8061	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Sunray	spell87	8090	16	16	128	8000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	null	8091	16	16	0	0	NoPickup,NoGravity,FTLifeTime
 // Dark Spell Objects							
 // Purple							
-Toxic Cloud	spell90	9010	16	16	768	2000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	darkX02	9011	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Shrinking Ray	spell92	9030	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	null	9031	16	16	0	0	"NoPickup,NoGravity,LifeTime"
-Shrap Metal	spell93	9040	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	spell57c	9041	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Control Undead	spell94	9050	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Dark Grasp	null	9070	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	null	9071	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Dragon Breath	spell97	9080	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	spell97c	9081	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Souldrinker	null	9100	16	16	0	0	"NoPickup,NoGravity,LifeTime"
-explosion	null	9110	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
+Toxic Cloud	spell90	9010	16	16	768	2000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	darkX02	9011	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Shrinking Ray	spell92	9030	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	null	9031	16	16	0	0	NoPickup,NoGravity,LifeTime
+Shrap Metal	spell93	9040	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	spell57c	9041	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Control Undead	spell94	9050	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Dark Grasp	null	9070	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	null	9071	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Dragon Breath	spell97	9080	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	spell97c	9081	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Souldrinker	null	9100	16	16	0	0	NoPickup,NoGravity,LifeTime
+explosion	null	9110	16	16	0	0	NoPickup,NoGravity,FTLifeTime
 // Dark Elf Ability Objects							
 // Purple							
-Blind	spell98	10020	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	null	10021	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-DarkFire Bolt	spell99	10030	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	spell99x	10031	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
+Blind	spell98	10020	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	null	10021	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+DarkFire Bolt	spell99	10030	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	spell99x	10031	16	16	0	0	NoPickup,NoGravity,FTLifeTime
 // Vampire Ability Objects							
 // Purple							
-LifeDrain	spell107	11000	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	null	11001	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Vampire Charm	spell60	11020	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	null	11021	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
+LifeDrain	spell107	11000	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	null	11001	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Vampire Charm	spell60	11020	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	null	11021	16	16	0	0	NoPickup,NoGravity,FTLifeTime
 // Dragon Ability Objects							
 // Purple							
-Fear	mind08	12000	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	null	12001	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Breath Weapon 2	spell100	12010	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	spell100x	12011	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
+Fear	mind08	12000	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	null	12001	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Breath Weapon 2	spell100	12010	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	spell100x	12011	16	16	0	0	NoPickup,NoGravity,FTLifeTime
 // Objects							
-Air	spell101	500	16	16	768	6000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-Earth	spell102	505	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-Fire	spell103	510	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-Water	spell104	515	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-Body	spell105	520	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-Mind	spell105	525	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-Spirit	spell105	530	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-Light	spell106	535	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-Dark	spell107	540	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-Arrow	arrow	545	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-FireArrow	FrArw	550	16	16	768	4000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-Laser	lzrbolt	555	16	16	768	6000	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	null	556	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Cannonball	spell70c	560	16	16	768	4000	"NoPickup,FlagOnIntercept,LifeTime"
-explosive death	null	600	16	16	0	0	"NoPickup,NoGravity,FlagOnIntercept,LifeTime"
-explosion	spell97c	601	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-FireTrap	spell103	811	16	16	768	0	"NoPickup,NoGravity,FTLifeTime"
-ElecTrap	spell101	812	16	16	768	0	"NoPickup,NoGravity,FTLifeTime"
-ColdTrap	spell104	813	16	16	768	0	"NoPickup,NoGravity,FTLifeTime"
-PoisonTrap	spell105	814	16	16	768	0	"NoPickup,NoGravity,FTLifeTime"
-launchobject	null	570	16	16	768	3000	"NoPickup,LifeTime"
-Splash	splash	800	16	16	0	0	"NoPickup,NoGravity,FTLifeTime"
-Cylops Projectile	boulder	560	16	16	768	3000	"NoPickup,FlagOnIntercept,LifeTime"
+Air	spell101	500	16	16	768	6000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+Earth	spell102	505	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+Fire	spell103	510	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+Water	spell104	515	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+Body	spell105	520	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+Mind	spell105	525	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+Spirit	spell105	530	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+Light	spell106	535	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+Dark	spell107	540	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+Arrow	arrow	545	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+FireArrow	FrArw	550	16	16	768	4000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+Laser	lzrbolt	555	16	16	768	6000	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	null	556	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+// Cannonball	spell70c	560	16	16	768	4000	NoPickup,FlagOnIntercept,LifeTime
+explosive death	null	600	16	16	0	0	NoPickup,NoGravity,FlagOnIntercept,LifeTime
+explosion	spell97c	601	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+FireTrap	spell103	811	16	16	768	0	NoPickup,NoGravity,FTLifeTime
+ElecTrap	spell101	812	16	16	768	0	NoPickup,NoGravity,FTLifeTime
+ColdTrap	spell104	813	16	16	768	0	NoPickup,NoGravity,FTLifeTime
+PoisonTrap	spell105	814	16	16	768	0	NoPickup,NoGravity,FTLifeTime
+launchobject	null	570	16	16	768	3000	NoPickup,LifeTime
+Splash	splash	800	16	16	0	0	NoPickup,NoGravity,FTLifeTime
+Cylops Projectile	boulder	560	16	16	768	3000	NoPickup,FlagOnIntercept,LifeTime
 Will O' Wisp Heart	obj133	81	64	64	0	0	bounce
 Dragon Turtle Fang	obj134	82	64	64	0	0	bounce
 small pile of coins	obj187	83	64	64	0	0	bounce

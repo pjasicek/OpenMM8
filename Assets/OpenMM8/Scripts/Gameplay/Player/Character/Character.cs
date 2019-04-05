@@ -247,7 +247,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         }
 
-        public void ModifyAttribute(Attribute attribute, int amount)
+        public void ModifyAttribute(CharAttribute attribute, int amount)
         {
 
         }
