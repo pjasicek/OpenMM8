@@ -95,7 +95,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         static public bool HaveItem(int itemId)
         {
-            return true;
+            return false;
         }
 
         static public void RemoveItem(int itemId)

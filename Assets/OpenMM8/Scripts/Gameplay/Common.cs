@@ -164,6 +164,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         Nosferatu,
         Necromancer,
         Lich,
+        None
     }
 
     public enum CharacterType
