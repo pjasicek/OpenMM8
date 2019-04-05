@@ -5,8 +5,6 @@ using System.Text;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    
-
     public class EventAPI
     {
         static public void EnterHouse(int houseId)
@@ -29,6 +27,37 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             GameEvents.InvokeEvent_OnCharacterFinishedEvent(character);
         }
 
+        static public void AddAwardToParty(int awardId)
+        {
+            PartyCharacters().ForEach(
+                chr =>
+                {
+                    AddAward(chr, awardId);
+                });
+        }
+
+        static public Class GetClass(Character chr)
+        {
+            return chr.Data.Class;
+        }
+
+        static public void SetClass(Character chr, Class newClass)
+        {
+            chr.Data.Class = newClass;
+        }
+
+        // Check if specific member has the award
+        static public bool HasAward(Character chr, int awardId)
+        {
+            return false;
+        }
+
+        // Check if any member in party has the award
+        static public bool HasAward(int awardId)
+        {
+            return false;
+        }
+
         static public void AddAutonote(int autonoteId)
         {
 
@@ -37,6 +66,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         static public void RemoveAutonote(int autonoteId)
         {
 
+        }
+
+        static public void AddHistory(string historyType)
+        {
+            //TODO
         }
 
         static public List<Character> PartyCharacters()
@@ -69,12 +103,24 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         }
 
+        static public void AddItem(Character chr, int itemId)
+        {
+            // TODO: Handle if inventory is full ?
+            chr.Inventory.AddItem(itemId);
+        }
+
         static public void AddItem(int itemId)
+        {
+            // TODO: Handle if inventory is full ?
+            //GameMgr.Instance.PlayerParty.
+        }
+
+        static public void AddGold(int numGold)
         {
 
         }
 
-        static public void AddGold(int numGold)
+        static public void AddFood(int numFood)
         {
 
         }
@@ -84,9 +130,38 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             // TODO: Add the experience
         }
 
+        static public void AddExperienceToParty(int numExperience)
+        {
+            PartyCharacters().ForEach(
+                chr =>
+                {
+                    AddExperience(chr, numExperience);
+                });
+        }
+
         static public void AddTimer(Timer t)
         {
             TimeMgr.Instance.AddTimer(t);
+        }
+
+        static public bool IsCharacterInParty(int characterId)
+        {
+            return false;
+        }
+
+        static public void SetMapVar(string mapVar, int value)
+        {
+
+        }
+
+        static public int GetMapVar(string mapVar)
+        {
+            return 0;
+        }
+
+        static public void MoveNpc(int npcId, int newHouseId)
+        {
+
         }
     }
 }
