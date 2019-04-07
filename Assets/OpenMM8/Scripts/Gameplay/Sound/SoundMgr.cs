@@ -1,6 +1,8 @@
-﻿using Assets.OpenMM8.Scripts.Gameplay.Items;
+﻿using Assets.OpenMM8.Scripts.Gameplay.Data;
+using Assets.OpenMM8.Scripts.Gameplay.Items;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -46,6 +48,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private AudioClip m_Error;
 
         private Dictionary<string, AudioClip> m_SoundMap = new Dictionary<string, AudioClip>();
+        private Dictionary<int, AudioClip> m_SoundIdMap = new Dictionary<int, AudioClip>();
 
         //=================================== Unity Lifecycle ===================================
 
@@ -70,7 +73,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             GameEvents.OnInteractedWithItem += OnInteractedWithItem;
 
             GameEvents.OnTalkSceneStart += OnTalkSceneStart;
-            //Talkable.OnTalkEnd += OnTalkEnd;
+            GameEvents.OnTalkSceneEnd += OnTalkSceneEnd;
 
             GameEvents.OnQuestBitAdded += OnQuestBitAdded;
 
@@ -123,11 +126,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             m_PlayerParty = GameMgr.Instance.PlayerParty;
 
-            AudioClip[] sounds = Resources.LoadAll<AudioClip>("Sounds");
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+            /*AudioClip[] sounds = Resources.LoadAll<AudioClip>("Sounds");
             foreach (AudioClip sound in sounds)
             {
                 m_SoundMap[sound.name] = sound;
-            }
+            }*/
+
+            sw.Stop();
+            UnityEngine.Debug.LogError("Sound load elapsed: " + sw.ElapsedMilliseconds + " ms");
 
             return true;
         }
@@ -139,7 +147,76 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
 
         //=================================== Methods ===================================
+        
+        // TODO: Handle sound caching or something, this way most sounds get lazy loaded
+        //       but the never get unloaded once they are loaded
+        // TODO: Maybe use existing SoundData database to store and cache sounds
 
+        public static void PlaySoundById(int soundId, AudioSource audioSource = null)
+        {
+            if (audioSource == null)
+            {
+                audioSource = Instance.m_AudioSource;
+            }
+
+            SoundData soundData = DbMgr.Instance.SoundDb.Get(soundId);
+            if (soundData == null)
+            {
+                Debug.LogError("No sound data for ID: " + soundId);
+                return;
+            }
+
+            string soundName = soundData.SoundName;
+            PlaySoundByName(soundName, audioSource);
+
+            
+        }
+
+        public static void PlaySoundByName(string soundName, AudioSource audioSource = null)
+        {
+            if (audioSource == null)
+            {
+                audioSource = Instance.m_AudioSource;
+            }
+
+            AudioClip sound = null;
+            if (!Instance.m_SoundMap.ContainsKey(soundName))
+            {
+                // Try to load it
+                sound = Resources.Load<AudioClip>("Sounds/" + soundName);
+                if (sound == null)
+                {
+                    Debug.LogError("Failed to load sound: " + soundName);
+                    return;
+                }
+
+                Instance.m_SoundMap.Add(soundName, sound);
+            }
+            else
+            {
+                sound = Instance.m_SoundMap[soundName];
+            }
+
+            audioSource.PlayOneShot(sound);
+        }
+
+        public static void PlayRandomSound(List<int> soundIds)
+        {
+            PlayRandomSound(soundIds, Instance.m_AudioSource);
+        }
+
+        public static void PlayRandomSound(List<int> soundIds, AudioSource audioSource)
+        {
+            if (soundIds.Count == 0)
+            {
+                return;
+            }
+
+            int soundId = soundIds[UnityEngine.Random.Range(0, soundIds.Count)];
+
+            PlaySoundById(soundId);
+        }
+    
         public static AudioClip PlayRandomSound(List<AudioClip> sounds)
         {
             return PlayRandomSound(sounds, Instance.m_AudioSource);
@@ -225,7 +302,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnGoldChanged(int oldGold, int newGold, int delta)
         {
-            m_AudioSource.PlayOneShot(m_GoldChanged, 1.5f);
+            //m_AudioSource.PlayOneShot(m_GoldChanged, 1.5f);
+
+            PlaySoundById(GameMgr.Instance.PlayerParty.ActiveCharacter.CharacterVoiceData.LearnSpell[0]);
         }
 
         public void OnFoodChanged(int oldFood, int newFood, int delta)
@@ -236,6 +315,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public void OnPickedUpLoot(Loot loot)
         {
             m_AudioSource.PlayOneShot(m_GoldChanged, 1.5f);
+
+            //PlaySoundById(GameMgr.Instance.PlayerParty.ActiveCharacter.CharacterVoiceData.LearnSpell[0]);
         }
 
         public void OnCharConditionChanged(Character chr, Condition newCondition)
@@ -248,22 +329,22 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             switch (interactResult)
             {
                 case ItemInteractResult.AlreadyLearned:
-                    PlayRandomSound(chr.Sounds.CantLearnSpell);
+                    PlayRandomSound(chr.CharacterVoiceData.CantLearn);
                     break;
 
                 case ItemInteractResult.Equipped:
                     break;
 
                 case ItemInteractResult.CannotEquip:
-                    PlayRandomSound(chr.Sounds.CantEquipItem);
+                    PlayRandomSound(chr.CharacterVoiceData.CantEquip);
                     break;
 
                 case ItemInteractResult.Learned:
-                    PlayRandomSound(chr.Sounds.LearnedNewSpell);
+                    PlayRandomSound(chr.CharacterVoiceData.LearnSpell);
                     break;
 
                 case ItemInteractResult.CannotLearn:
-                    PlayRandomSound(chr.Sounds.CantLearnSpell);
+                    PlayRandomSound(chr.CharacterVoiceData.CantLearn);
                     break;
 
                 case ItemInteractResult.Consumed:
@@ -279,7 +360,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case ItemInteractResult.Invalid:
-                    m_AudioSource.PlayOneShot(m_SoundMap["Error"]);
+                    PlaySoundByName("Error");
                     break;
             }
         }
@@ -374,9 +455,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 PlayRandomSound(talkerChr.Sounds.Greeting, talkerChr.Party.PlayerAudioSource);
             }*/
+
+            if (!talkScene.IsBuilding)
+            {
+                PlayRandomSound(talkerChr.CharacterVoiceData.Hello);
+            }
         }
 
-        private void OnTalkEnd(TalkScene talkScene)
+        private void OnTalkSceneEnd(Character talkerChr, TalkScene talkScene)
         {
             /*if (talkedToObj.IsBuilding)
             {

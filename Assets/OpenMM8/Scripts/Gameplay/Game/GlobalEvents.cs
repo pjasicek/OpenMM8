@@ -22,6 +22,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public delegate void TalkWithConcreteNpc(NpcTalkProperties talkProp);
     public delegate void NpcLeavingLocation(NpcTalkProperties talkProp);
     public delegate void TalkSceneStart(Character talkerChr, TalkScene talkScene);
+    public delegate void TalkSceneEnd(Character talkerChr, TalkScene talkScene);
     public delegate void PauseGame();
     public delegate void UnpauseGame();
     public delegate void GamePausedAction();
@@ -75,6 +76,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public static event TalkWithConcreteNpc OnTalkWithConcreteNpc;
         public static event NpcLeavingLocation OnNpcLeavingLocation;
         static public event TalkSceneStart OnTalkSceneStart;
+        static public event TalkSceneEnd OnTalkSceneEnd;
         static public event PauseGame OnPauseGame;
         static public event PauseGame OnUnpauseGame;
         static public event InitComplete OnInitComplete;
@@ -197,6 +199,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         static public void InvokeEvent_OnTalkSceneStart(Character talkerChr, TalkScene talkScene)
         {
             OnTalkSceneStart?.Invoke(talkerChr, talkScene);
+        }
+
+        static public void InvokeEvent_OnTalkSceneEnd(Character talkerChr, TalkScene talkScene)
+        {
+            OnTalkSceneEnd?.Invoke(talkerChr, talkScene);
         }
 
         static public void InvokeEvent_OnPauseGame()

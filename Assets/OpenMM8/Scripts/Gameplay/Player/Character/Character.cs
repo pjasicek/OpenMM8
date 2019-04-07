@@ -14,6 +14,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
     public class Character
     {
+        // ID corresponding to CHARACTER_DATA table ID. MM8 characters are 1-28
         public int CharacterId;
 
         //public int CharacterAvatarId;
@@ -76,6 +77,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             CharacterVoiceData = DbMgr.Instance.CharacterVoiceDb.Get(CharacterData.DefaultVoice);
 
             CharacterId = CharacterData.Id;
+            Race = CharacterData.Race;
 
             Inventory.Owner = this;
         }

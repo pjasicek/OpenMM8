@@ -81,6 +81,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 TalkScene talkScene = new TalkScene();
 
                 talkScene.Location = bd.BuildingName;
+                talkScene.IsBuilding = true;
 
                 // This will need to be checked upon level load to prevent
                 // loading all videos unnecessarily

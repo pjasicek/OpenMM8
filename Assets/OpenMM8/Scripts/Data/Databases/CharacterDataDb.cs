@@ -32,6 +32,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
         public string RHd;
         public string RHu;
         public string FacePicturesPrefix;
+        public string NPCPicture; // This is I think for adventurer's inn avatar display
     }
 
     public class CharacterDataDb : DataDb<CharacterData>
@@ -64,6 +65,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             data.RHd = columns[17].ToLower();
             data.RHu = columns[18].ToLower();
             data.FacePicturesPrefix = columns[19];
+            data.NPCPicture = columns[22];
             data.Race = (CharacterRace)int.Parse(columns[23]);
 
             return data;

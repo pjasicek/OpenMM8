@@ -23,9 +23,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
     public class SoundData : DbData
     {
         // int Id = internal sound ID, referenced from other databases
-        public string SoundName; // ${SoundName}.wav
+        public string SoundName; // Sounds/${SoundName}.wav
         public SoundLoadType SoundLoadType;
         public bool Is3D;
+
+        // Unity
+        // AudioClip Sound = null;
     }
 
     public class SoundDb : DataDb<SoundData>
