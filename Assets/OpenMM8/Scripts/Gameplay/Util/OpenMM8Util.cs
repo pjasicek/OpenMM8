@@ -60,5 +60,15 @@ namespace Assets.OpenMM8.Scripts
                 return component;
             }
         }
+
+        static public void AppendResourcesToMap<TValue>(Dictionary<string, TValue> map, string path, bool keyToLower = true) 
+            where TValue : UnityEngine.Object
+        {
+            TValue[] resources = Resources.LoadAll<TValue>(path);
+            foreach (TValue res in resources)
+            {
+                map.Add(res.name.ToLower(), res);
+            }
+        }
     }
 }

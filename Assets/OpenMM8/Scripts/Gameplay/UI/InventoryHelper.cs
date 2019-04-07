@@ -9,67 +9,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 {
     public class InventoryHelper
     {
-        static public bool PlaceItemOnDoll(BaseItem item, Character chr)
-        {
-            switch (item.Data.EquipType)
-            {
-                case EquipType.Wand:
-                case EquipType.WeaponOneHanded:
-                    break;
-
-                case EquipType.WeaponTwoHanded:
-                    break;
-
-                case EquipType.WeaponDualWield:
-                    break;
-
-                // Bow / Crossbox
-                case EquipType.Missile:
-                    break;
-
-                case EquipType.Shield:
-                    break;
-
-                case EquipType.Armor:
-                    break;
-
-                case EquipType.Helmet:
-                    if (chr.IsMinotaur())
-                    {
-                        return false;
-                    }
-                    break;
-
-                case EquipType.Boots:
-                    if (chr.IsMinotaur())
-                    {
-                        return false;
-                    }
-                    break;
-
-                case EquipType.Belt:
-                    break;
-
-                case EquipType.Cloak:
-                    break;
-
-                // Magnifying glass - Amulet, Gauntlets, 6 Rings
-                case EquipType.Ring:
-                    break;
-
-                case EquipType.Amulet:
-                    break;
-
-                case EquipType.Gauntlets:
-                    break;
-
-                default:
-                    break;
-            }
-
-            return false;
-        }
-
         // Returned position is relative to its parent - right hand's "fingers"
         static public Vector2 GetRightHandItemPos(BaseItem item, Character chr)
         {

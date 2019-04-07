@@ -22,11 +22,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         
         public Dictionary<Condition, Sprite> ConditionToSpriteMap = new Dictionary<Condition, Sprite>();
 
-        public static CharacterSprites Load(CharacterType type)
+        public static CharacterSprites Load(int characterId)
         {
             CharacterSprites characterSprites = new CharacterSprites();
 
-            string path = "Player/PlayerCharacters/Sprites/PC_" + ((int)type).ToString();
+            string path = "Player/PlayerCharacters/Sprites/PC_" + ((int)characterId).ToString();
             Sprite[] sprites = Resources.LoadAll<Sprite>(path);
 
             path = "Player/PlayerCharacters/Sprites/PC_Common";
@@ -64,7 +64,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             // Sprite indexes are -1 - picture sprites start from 1, index from 0
 
-            Debug.Log("Loaded: " + type.ToString());
+            Debug.Log("Loaded: " + characterId);
             characterSprites.TakeDamage.Add(sprites[36]);
             characterSprites.TakeDamage.Add(sprites[37]);
             characterSprites.TakeDamage.Add(sprites[38]);

@@ -10,9 +10,9 @@ using Assets.OpenMM8.Scripts.Data;
 
 namespace Assets.OpenMM8.Scripts.Gameplay.Data
 {
-    public class ClassSkillsDb : DataDb<ClassSkillsData, Class>
+    public class ClassSkillsDb : DataDb<ClassSkillsData, CharacterClass>
     {
-        private Dictionary<int, Class> ColumnToClassMap = new Dictionary<int, Class>();
+        private Dictionary<int, CharacterClass> ColumnToClassMap = new Dictionary<int, CharacterClass>();
 
         override public ClassSkillsData ProcessCsvDataRow(int row, string[] columns)
         {
@@ -21,7 +21,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                 int colIdx = 0;
                 foreach (string column in columns)
                 {
-                    Class classType = Class.None;
+                    CharacterClass classType = CharacterClass.None;
                     if (Enum.TryParse(column, out classType))
                     {
                         ClassSkillsData data = new ClassSkillsData();
@@ -33,7 +33,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                     }
                     else
                     {
-                        ColumnToClassMap.Add(colIdx, Class.None);
+                        ColumnToClassMap.Add(colIdx, CharacterClass.None);
                     }
 
                     colIdx++;
@@ -56,8 +56,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                         continue;
                     }
 
-                    Class classType = ColumnToClassMap[colIdx];
-                    if (classType != Class.None)
+                    CharacterClass classType = ColumnToClassMap[colIdx];
+                    if (classType != CharacterClass.None)
                     {
                         ClassSkillsData data = Data[classType];
                         switch (column)

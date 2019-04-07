@@ -25,7 +25,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void Reset()
         {
-            chr.UI.PlayerCharacter.sprite = chr.UI.Sprites.ConditionToSpriteMap[chr.Data.Condition];
+            chr.UI.PlayerCharacter.sprite = chr.UI.Sprites.ConditionToSpriteMap[chr.Condition];
             ResetTimer();
         }
 
@@ -44,18 +44,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnFixedUpdate(float secDiff)
         {
-            if (chr.UI.PlayerCharacter.sprite != chr.UI.Sprites.ConditionToSpriteMap[chr.Data.Condition])
+            if (chr.UI.PlayerCharacter.sprite != chr.UI.Sprites.ConditionToSpriteMap[chr.Condition])
             {
                 m_TimeInOtherAvatar += secDiff;
                 if (m_TimeInOtherAvatar > m_AvatarDuration)
                 {
-                    chr.UI.PlayerCharacter.sprite = chr.UI.Sprites.ConditionToSpriteMap[chr.Data.Condition];
+                    chr.UI.PlayerCharacter.sprite = chr.UI.Sprites.ConditionToSpriteMap[chr.Condition];
                     m_TimeUntilIdleAvatar = UnityEngine.Random.Range(m_MinIdleAvatar, m_MaxIdleAvatar);
                     m_TimeInOtherAvatar = 0.0f;
                     m_AvatarDuration = m_IdleAvatarDuration;
                 }
             }
-            else if (chr.Data.Condition == Condition.Good)
+            else if (chr.Condition == Condition.Good)
             {
                 m_TimeUntilIdleAvatar -= secDiff;
                 if (m_TimeUntilIdleAvatar < 0.0f)

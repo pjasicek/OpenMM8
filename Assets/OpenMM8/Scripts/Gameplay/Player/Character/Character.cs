@@ -1,4 +1,5 @@
-﻿using Assets.OpenMM8.Scripts.Gameplay.Items;
+﻿using Assets.OpenMM8.Scripts.Gameplay.Data;
+using Assets.OpenMM8.Scripts.Gameplay.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,34 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
     public class Character
     {
-        public CharacterData Data;
-        public CharacterUI UI;
-        public PlayerParty Party;
-        public CharacterSounds Sounds;
-        public CharFaceUpdater CharFaceUpdater;
+        public int CharacterId;
+
+        //public int CharacterAvatarId;
+        //public int PartyIndex;
+
+        // Data from DB
+        public CharacterData CharacterData;
+        public DollTypeData DollTypeData;
+        public CharacterVoiceData CharacterVoiceData;
+
+        // Gameplay Data
+        public string Name;
+        public CharacterRace Race;
+        public CharacterClass Class;
+        public int Experience;
+        public int SkillPoints;
+        public int CurrHitPoints;
+        public int CurrSpellPoints;
+        public Condition Condition;
+
+        public string QuickSpellName = "";
+
+        public CharacterStats DefaultStats = new CharacterStats();
+        public CharacterStats BonusStats = new CharacterStats();
+        public Dictionary<SkillType, int> Skills = new Dictionary<SkillType, int>();
+        public Dictionary<SkillType, int> SkillBonuses = new Dictionary<SkillType, int>();
+        public List<Award> Awards = new List<Award>();
+        public List<Spell> Spells = new List<Spell>();
 
         public Inventory Inventory = new Inventory();
 
@@ -36,9 +60,23 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
-        public Character(CharacterData charData)
+        // UI Data
+        public CharacterUI UI;
+        public PlayerParty Party;
+        public CharacterSounds Sounds;
+        public CharFaceUpdater CharFaceUpdater;
+
+
+
+        public Character(int characterId)
         {
-            Data = charData;
+            Debug.Log("charid: " + characterId);
+            CharacterData = DbMgr.Instance.CharacterDataDb.Get(characterId);
+            DollTypeData = DbMgr.Instance.DollTypeDb.Get(CharacterData.DollId);
+            CharacterVoiceData = DbMgr.Instance.CharacterVoiceDb.Get(CharacterData.DefaultVoice);
+
+            CharacterId = CharacterData.Id;
+
             Inventory.Owner = this;
         }
 
@@ -46,12 +84,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public float GetHealthPercentage()
         {
-            return ((float)Data.CurrHitPoints / (float)GetMaxHealth()) * 100.0f;
+            return ((float)CurrHitPoints / (float)GetMaxHealth()) * 100.0f;
         }
 
         public int GetMaxHealth()
         {
-            return Data.DefaultStats.MaxHitPoints + Data.BonusStats.MaxHitPoints;
+            return DefaultStats.MaxHitPoints + BonusStats.MaxHitPoints;
         }
 
         public int GetPartyIndex()
@@ -61,85 +99,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public bool IsFemale()
         {
-            CharacterType chrType = Data.CharacterType;
-
-            if (chrType == CharacterType.ClericFemale_1 ||
-                chrType == CharacterType.ClericFemale_2 ||
-                chrType == CharacterType.DarkElfFemale_1 ||
-                chrType == CharacterType.DarkElfFemale_2 ||
-                chrType == CharacterType.KnightFemale_1 ||
-                chrType == CharacterType.KnightFemale_2 ||
-                chrType == CharacterType.LichFemale_1 ||
-                chrType == CharacterType.NecromancerFemale_1 ||
-                chrType == CharacterType.NecromancerFemale_2 ||
-                chrType == CharacterType.VampireFemale_1 ||
-                chrType == CharacterType.VampireFemale_2)
-            {
-                return true;
-            }
-
-            return false;
+            return CharacterData.DefaultSex == 1;
         }
 
         public bool IsMale()
         {
-            CharacterType chrType = Data.CharacterType;
-
-            if (chrType == CharacterType.Cleric_1 ||
-                chrType == CharacterType.Cleric_2||
-                chrType == CharacterType.DarkElf_1 ||
-                chrType == CharacterType.DarkElf_2 ||
-                chrType == CharacterType.Knight_1 ||
-                chrType == CharacterType.Knight_2 ||
-                chrType == CharacterType.Lich_1 ||
-                chrType == CharacterType.Necromancer_1 ||
-                chrType == CharacterType.Necromancer_2 ||
-                chrType == CharacterType.Vampire_1 ||
-                chrType == CharacterType.Vampire_2)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public bool IsTroll()
-        {
-            CharacterType chrType = Data.CharacterType;
-
-            if (chrType == CharacterType.Troll_1 ||
-                chrType == CharacterType.Troll_2)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public bool IsMinotaur()
-        {
-            CharacterType chrType = Data.CharacterType;
-
-            if (chrType == CharacterType.Minotaur_1 ||
-                chrType == CharacterType.Minotaur_2)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public bool IsDragon()
-        {
-            CharacterType chrType = Data.CharacterType;
-
-            if (chrType == CharacterType.Dragon_1 ||
-                chrType == CharacterType.Dragon_2)
-            {
-                return true;
-            }
-
-            return false;
+            return CharacterData.DefaultSex == 0;
         }
 
         // ====================================================================
@@ -223,18 +188,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void AddCurrHitPoints(int numHitPoints)
         {
-            int maxHP = Data.DefaultStats.MaxHitPoints + Data.BonusStats.MaxHitPoints;
-            Data.CurrHitPoints = Mathf.Min(Data.CurrHitPoints + numHitPoints, maxHP);
+            int maxHP = DefaultStats.MaxHitPoints + BonusStats.MaxHitPoints;
+            CurrHitPoints = Mathf.Min(CurrHitPoints + numHitPoints, maxHP);
 
-            GameEvents.InvokeEvent_OnCharHealthChanged(this, maxHP, Data.CurrHitPoints, numHitPoints);
+            GameEvents.InvokeEvent_OnCharHealthChanged(this, maxHP, CurrHitPoints, numHitPoints);
         }
 
         public void AddCurrSpellPoints(int numSpellPoints)
         {
-            int maxMP = Data.DefaultStats.MaxSpellPoints + Data.BonusStats.MaxSpellPoints;
-            Data.CurrSpellPoints = Mathf.Min(Data.CurrSpellPoints + numSpellPoints, maxMP);
+            int maxMP = DefaultStats.MaxSpellPoints + BonusStats.MaxSpellPoints;
+            CurrSpellPoints = Mathf.Min(CurrSpellPoints + numSpellPoints, maxMP);
     
-            GameEvents.InvokeEvent_OnCharManaChanged(this, maxMP, Data.CurrSpellPoints);
+            GameEvents.InvokeEvent_OnCharManaChanged(this, maxMP, CurrSpellPoints);
         }
 
         public void AddLevel()
@@ -273,26 +238,37 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 return ItemInteractResult.Invalid;
             }
 
-            // Filter races
-            if (IsMinotaur())
+            if (itemType == EquipType.Boots && !DollTypeData.CanEquipBoots)
             {
-                if (itemType == EquipType.Boots ||
-                    itemType == EquipType.Helmet)
-                {
-                    return ItemInteractResult.Invalid;
-                }
+                return ItemInteractResult.Invalid;
             }
-            if (IsDragon())
+            else if (itemType == EquipType.Armor && !DollTypeData.CanEquipArmor)
             {
-                if (itemType == EquipType.Amulet ||
-                    itemType == EquipType.Ring)
-                {
-                    return ItemInteractResult.Equipped;
-                }
-                else
-                {
-                    return ItemInteractResult.Invalid;
-                }
+                return ItemInteractResult.Invalid;
+            }
+            else if (itemType == EquipType.Helmet && !DollTypeData.CanEquipHelm)
+            {
+                return ItemInteractResult.Invalid;
+            }
+            else if (itemType == EquipType.Belt && !DollTypeData.CanEquipBelt)
+            {
+                return ItemInteractResult.Invalid;
+            }
+            else if (itemType == EquipType.Cloak && !DollTypeData.CanEquipCloak)
+            {
+                return ItemInteractResult.Invalid;
+            }
+            else if (itemType == EquipType.WeaponDualWield && !DollTypeData.CanEquipWeapon)
+            {
+                return ItemInteractResult.Invalid;
+            }
+            else if (itemType == EquipType.WeaponOneHanded && !DollTypeData.CanEquipWeapon)
+            {
+                return ItemInteractResult.Invalid;
+            }
+            else if (itemType == EquipType.WeaponTwoHanded && !DollTypeData.CanEquipWeapon)
+            {
+                return ItemInteractResult.Invalid;
             }
 
             // Filter Item x Skill

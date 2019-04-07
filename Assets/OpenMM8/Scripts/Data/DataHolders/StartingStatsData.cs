@@ -9,7 +9,7 @@ namespace Assets.OpenMM8.Scripts.Data
     public class StartingStatsData : DbData<CharacterRace>
     {
         // int Id = Race
-        public Dictionary<CharAttribute, int> MinStats = new Dictionary<CharAttribute, int>();
+        public Dictionary<CharAttribute, int> DefaultStats = new Dictionary<CharAttribute, int>();
         public Dictionary<CharAttribute, int> MaxStats = new Dictionary<CharAttribute, int>();
         public Dictionary<CharAttribute, float> Gain = new Dictionary<CharAttribute, float>();
     }

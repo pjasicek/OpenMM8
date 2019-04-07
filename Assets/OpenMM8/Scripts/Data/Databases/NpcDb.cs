@@ -47,15 +47,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             npcData.Rec = int.Parse(columns[14]);
             switch (columns[15].ToLower())
             {
-                case "d": npcData.PreferredClass = Class.Dragon; break;
-                case "n": npcData.PreferredClass = Class.Necromancer; break;
-                case "c": npcData.PreferredClass = Class.Cleric; break;
-                case "m": npcData.PreferredClass = Class.Minotaur; break;
-                case "t": npcData.PreferredClass = Class.Troll; break;
-                case "k": npcData.PreferredClass = Class.Knight; break;
+                case "d": npcData.PreferredClass = CharacterClass.Dragon; break;
+                case "n": npcData.PreferredClass = CharacterClass.Necromancer; break;
+                case "c": npcData.PreferredClass = CharacterClass.Cleric; break;
+                case "m": npcData.PreferredClass = CharacterClass.Minotaur; break;
+                case "t": npcData.PreferredClass = CharacterClass.Troll; break;
+                case "k": npcData.PreferredClass = CharacterClass.Knight; break;
                 //case "x": npcData.PreferredClass = Class.Male; break;
                 //case "o": npcData.PreferredClass = Class.Female; break;
-                default: npcData.PreferredClass = Class.None; break;
+                default: npcData.PreferredClass = CharacterClass.None; break;
             }
             npcData.BonusAbility = columns[16];
 

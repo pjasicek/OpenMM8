@@ -17,8 +17,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private AudioClip m_BackgroundMusic;
         private PlayerParty m_PlayerParty;
 
-        private Dictionary<CharacterType, CharacterSounds> CharacterSoundsMap =
-            new Dictionary<CharacterType, CharacterSounds>();
+        private Dictionary<int, CharacterSounds> CharacterSoundsMap =
+            new Dictionary<int, CharacterSounds>();
 
         [Header("Sounds - Attack")]
         private List<AudioClip> m_SwordAttacks = new List<AudioClip>();
@@ -158,17 +158,17 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return sound;
         }
 
-        public CharacterSounds GetCharacterSounds(CharacterType type)
+        public CharacterSounds GetCharacterSounds(int characterId)
         {
             // Caching
-            if (CharacterSoundsMap.ContainsKey(type) && CharacterSoundsMap[type] != null)
+            if (CharacterSoundsMap.ContainsKey(characterId) && CharacterSoundsMap[characterId] != null)
             {
-                return CharacterSoundsMap[type];
+                return CharacterSoundsMap[characterId];
             }
             else
             {
-                CharacterSoundsMap[type] = CharacterSounds.Load(type);
-                return CharacterSoundsMap[type];
+                CharacterSoundsMap[characterId] = CharacterSounds.Load(characterId);
+                return CharacterSoundsMap[characterId];
             }
         }
 
@@ -202,7 +202,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private void OnCharacterJoinedParty(Character chr, PlayerParty party)
         {
-            chr.Sounds = GetCharacterSounds(chr.Data.CharacterType);
+            chr.Sounds = GetCharacterSounds(chr.CharacterId);
         }
 
         private void OnCharacterLeftParty(Character chr, PlayerParty party)
@@ -306,7 +306,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         if (isVictimInMeleeRange)
                         {
                             MonsterData npcData = result.Victim.GetComponent<BaseNpc>().NpcData;
-                            bool isNpcStrong = npcData.Level > chr.Data.DefaultStats.Level;
+                            bool isNpcStrong = npcData.Level > chr.DefaultStats.Level;
                             if (isNpcStrong)
                             {
                                 PlayRandomSound(chr.Sounds.KilledStrongMonster, chr.Party.PlayerAudioSource);

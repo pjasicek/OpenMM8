@@ -50,16 +50,17 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public List<AudioClip> Indignant = new List<AudioClip>();
         public List<AudioClip> Yell = new List<AudioClip>();
 
-        public static CharacterSounds Load(CharacterType type)
+        public static CharacterSounds Load(int characterId)
         {
             CharacterSounds characterSounds = new CharacterSounds();
 
-            string path = "Player/PlayerCharacters/Sounds/" + type.ToString();
+            // TODO: Not necessary, delte and use sound tables
+            /*string path = "Player/PlayerCharacters/Sounds/" + type.ToString();
             UnityEngine.Object[] sounds = Resources.LoadAll(path);
             foreach (AudioClip sound in sounds)
             {
                 string soundTypeStr = sound.name.Substring(4, 2);
-                if ((type == CharacterType.Lich_1) || (type == CharacterType.LichFemale_1))
+                if ((characterId == 27) || (type == CharacterType.LichFemale_1))
                 {
                     soundTypeStr = sound.name.Substring(3, 2);
                     switch (soundTypeStr)
@@ -263,7 +264,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         default: Debug.Log("Unknown sound: " + sound.name); break;
                     }
                 }
-            }
+            }*/
 
             return characterSounds;
         }

@@ -148,7 +148,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         Drunk
     }
 
-    public enum Class
+    public enum CharacterClass
     {
         Cleric,
         Priest,

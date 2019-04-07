@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Assets.OpenMM8.Scripts.Data
 {
-    public class ClassSkillsData : DbData<Class>
+    public class ClassSkillsData : DbData<CharacterClass>
     {
         // int Id = Class
         public Dictionary<SkillType, SkillMastery> SkillTypeToSkillMasteryMap 

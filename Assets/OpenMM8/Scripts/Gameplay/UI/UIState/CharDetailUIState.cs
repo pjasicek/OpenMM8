@@ -81,6 +81,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 }
                 m_UI.CurrDollUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.DollUI;
                 m_UI.CurrDollUI.Holder.SetActive(true);
+                m_UI.InventoryUI.InventoryUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.InventoryUI;
+                m_UI.StatsUI.StatsUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.StatsUI;
 
                 CharDetailUIStateArgs args = (CharDetailUIStateArgs)stateArgs;
 

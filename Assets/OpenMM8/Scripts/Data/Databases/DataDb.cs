@@ -51,6 +51,24 @@ namespace Assets.OpenMM8.Scripts
 
             return default(T);
         }
+
+        // https://stackoverflow.com/questions/667802/what-is-the-algorithm-to-convert-an-excel-column-letter-into-its-number
+        protected int ColumnToNumber(string columnName)
+        {
+            if (string.IsNullOrEmpty(columnName)) throw new ArgumentNullException("columnName");
+
+            columnName = columnName.ToUpperInvariant();
+
+            int sum = 0;
+
+            for (int i = 0; i < columnName.Length; i++)
+            {
+                sum *= 26;
+                sum += (columnName[i] - 'A' + 1);
+            }
+
+            return sum;
+        }
     }
 
     public abstract class DataDb<TValue> : DataDb<TValue, int> where TValue : DbData<int> { }

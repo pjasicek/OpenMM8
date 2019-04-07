@@ -129,7 +129,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Sprite equipSprite = null;
             if (isWeapon)
             {
-                equipPos = new Vector2Int(heldItem.Data.EquipX, heldItem.Data.EquipY);
+                equipPos = new Vector2Int(heldItem.Data.EquipX + Owner.DollTypeData.MH_Offset.x / 2,
+                    heldItem.Data.EquipY + Owner.DollTypeData.MH_Offset.y / 2);
                 equipSprite = heldItem.Data.InvSprite;
 
                 Owner.UI.DollUI.RH_OpenImage.gameObject.SetActive(false);
@@ -139,7 +140,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             else if (heldItem.Data.EquipType == EquipType.Missile)
             {
                 // TODO: Fix, wrong calculation
-                equipPos = new Vector2Int(-1 * heldItem.Data.EquipX, heldItem.Data.EquipY);
+                equipPos = Owner.DollTypeData.BowOffset;
                 equipSprite = heldItem.Data.InvSprite;
             }
             else if (heldItem.Data.EquipType == EquipType.Amulet ||
@@ -153,7 +154,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             else
             {
                 List<string> preferredEqSpriteExts = new List<string>();
-                if (Owner.IsMale())
+                if (Owner.DollTypeData.Id == 0)
                 {
                     equipPos = DbMgr.Instance.ItemEquipPosDb.Get(heldItem.Data.Id).MaleItemPos;
 
@@ -168,7 +169,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         preferredEqSpriteExts.Add("v1a");
                     }
                 }
-                else if (Owner.IsFemale())
+                else if (Owner.DollTypeData.Id == 1)
                 {
                     equipPos = DbMgr.Instance.ItemEquipPosDb.Get(heldItem.Data.Id).FemaleItemPos;
 
@@ -183,7 +184,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         preferredEqSpriteExts.Add("v2a");
                     }
                 }
-                else if (Owner.IsMinotaur())
+                else if (Owner.DollTypeData.Id == 2)
                 {
                     equipPos = DbMgr.Instance.ItemEquipPosDb.Get(heldItem.Data.Id).MinotaurItemPos;
 
@@ -197,7 +198,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         preferredEqSpriteExts.Add("v3");
                     }
                 }
-                else if (Owner.IsTroll())
+                else if (Owner.DollTypeData.Id == 3)
                 {
                     equipPos = DbMgr.Instance.ItemEquipPosDb.Get(heldItem.Data.Id).TrollItemPos;
 
@@ -213,7 +214,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 }
                 else
                 {
-                    Logger.LogError("Unhandled race: " + Owner.Data.CharacterType);
+                    Logger.LogError("Unhandled doll type: " + Owner.DollTypeData.Id);
                 }
 
                 foreach (string prefferedExt in preferredEqSpriteExts)
@@ -229,7 +230,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 if (equipSprite == null)
                 {
                     // Fallback to inventory display sprite
-                    Logger.LogDebug("No equip for character: " + Owner.Data.Name + " for item: " + heldItem.Data.ImageName);
+                    Logger.LogDebug("No equip for character: " + Owner.Name + " for item: " + heldItem.Data.ImageName);
                     equipSprite = heldItem.Data.InvSprite;
                 }
             }

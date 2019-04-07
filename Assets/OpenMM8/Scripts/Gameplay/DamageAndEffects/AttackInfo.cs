@@ -12,7 +12,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int AttackMod = 0;
         public int SourceLevel = 0;
         public SpellElement DamageType = SpellElement.None;
-        public Class PreferredClass = Class.None;
+        public CharacterClass PreferredClass = CharacterClass.None;
         public string Missile = "";
     }
 }

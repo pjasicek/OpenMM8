@@ -10,7 +10,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public string SpellName = "";
         public SkillMastery SpellMastery = 0;
         public int SpellLevel = 0;
-        Class PreferredClass = Class.None;
+        CharacterClass PreferredClass = CharacterClass.None;
 
         public SpellInfo(string def)
         {

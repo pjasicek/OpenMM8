@@ -19,7 +19,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public Image RH_OpenImage;
         public Image RH_HoldImage;
         public GameObject RH_WeaponAnchorHolder;
-        public GameObject BowAnchorHolder;
         //public Image RH_HoldFingersImage;
         public Image BodyImage;
 

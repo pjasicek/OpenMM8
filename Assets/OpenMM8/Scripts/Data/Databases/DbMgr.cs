@@ -25,6 +25,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public ObjectDisplayDb ObjectDisplayDb = new ObjectDisplayDb();
         public SkillDescriptionDb SkillDescriptionDb = new SkillDescriptionDb();
         public ClassSkillsDb ClassSkillsDb = new ClassSkillsDb();
+        public StartingStatsDb StartingStatsDb = new StartingStatsDb();
+        public ClassHpSpDb ClassHpSpDb = new ClassHpSpDb();
+        public ClassStartingSkillsDb ClassStartingSkillsDb = new ClassStartingSkillsDb();
+        public DollTypeDb DollTypeDb = new DollTypeDb();
+        public CharacterDataDb CharacterDataDb = new CharacterDataDb();
+        public CharacterVoiceDb CharacterVoiceDb = new CharacterVoiceDb();
+        public SoundDb SoundDb = new SoundDb();
 
         private const string MM8_DATA_PATH = @"Data/";
 
@@ -55,6 +62,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             ObjectDisplayDb.Initialize(MM8_DATA_PATH + @"OBJLIST");
             SkillDescriptionDb.Initialize(MM8_DATA_PATH + @"SKILL_DESCRIPTION", 2);
             ClassSkillsDb.Initialize(MM8_DATA_PATH + @"CLASS_SKILLS");
+            StartingStatsDb.Initialize(MM8_DATA_PATH + @"RACE_STARTING_STATS", 2);
+            ClassHpSpDb.Initialize(MM8_DATA_PATH + @"CLASS_HP_SP", 2);
+            ClassStartingSkillsDb.Initialize(MM8_DATA_PATH + @"CLASS_STARTING_SKILLS");
+            DollTypeDb.Initialize(MM8_DATA_PATH + @"DOLL_TYPES");
+            CharacterDataDb.Initialize(MM8_DATA_PATH + "CHARACTER_DATA");
+            CharacterVoiceDb.Initialize(MM8_DATA_PATH + "CHARACTER_VOICES");
+            SoundDb.Initialize(MM8_DATA_PATH + "SOUNDS");
 
             stopwatch.Stop();
             UnityEngine.Debug.Log("elapsed ms: " + stopwatch.ElapsedMilliseconds);

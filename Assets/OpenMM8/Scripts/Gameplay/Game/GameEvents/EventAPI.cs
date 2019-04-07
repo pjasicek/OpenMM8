@@ -36,14 +36,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 });
         }
 
-        static public Class GetClass(Character chr)
+        static public CharacterClass GetClass(Character chr)
         {
-            return chr.Data.Class;
+            return chr.Class;
         }
 
-        static public void SetClass(Character chr, Class newClass)
+        static public void SetClass(Character chr, CharacterClass newClass)
         {
-            chr.Data.Class = newClass;
+            chr.Class = newClass;
         }
 
         // Check if specific member has the award

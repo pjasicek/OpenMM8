@@ -18,36 +18,58 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
         {
             if (row == 0)
             {
-                foreach (CharacterRace race in Enum.GetValues(typeof(CharacterRace)))
-                {
-                    if (race == CharacterRace.None)
-                    {
-                        continue;
-                    }
-
-                    Data.Add(race, new StartingStatsData());
-                }
-
-                ColumnToRaceMap[1] = CharacterRace.Human;
-                ColumnToRaceMap[2] = CharacterRace.Vampire;
-                ColumnToRaceMap[3] = CharacterRace.DarkElf;
-                ColumnToRaceMap[4] = CharacterRace.Minotaur;
-                ColumnToRaceMap[5] = CharacterRace.Troll;
-                ColumnToRaceMap[6] = CharacterRace.Dragon;
-                ColumnToRaceMap[7] = CharacterRace.Undead;
-                ColumnToRaceMap[8] = CharacterRace.Elf;
-                ColumnToRaceMap[9] = CharacterRace.Goblin;
-
                 return null;
             }
 
-            CharAttribute attr = CharAttribute.None;
-            if (Enum.TryParse(columns[0], out attr))
+            CharacterRace race = CharacterRace.None;
+            if (columns[0].StartsWith("Human")) race = CharacterRace.Human;
+            else if (columns[0].StartsWith("Vampire")) race = CharacterRace.Vampire;
+            else if (columns[0].StartsWith("Dark elf")) race = CharacterRace.DarkElf;
+            else if (columns[0].StartsWith("Minotaur")) race = CharacterRace.Minotaur;
+            else if (columns[0].StartsWith("Troll")) race = CharacterRace.Troll;
+            else if (columns[0].StartsWith("Dragon")) race = CharacterRace.Dragon;
+            else if (columns[0].StartsWith("Undead")) race = CharacterRace.Undead;
+            else if (columns[0].StartsWith("Elf")) race = CharacterRace.Elf;
+            else if (columns[0].StartsWith("Goblin")) race = CharacterRace.Goblin;
+
+            if (race == CharacterRace.None)
             {
-                // TODO
+                return null;
             }
 
-            return null;
+            StartingStatsData data = new StartingStatsData();
+            data.Id = race;
+
+            AddStartingStat(CharAttribute.Might, data, columns[1], columns[2]);
+            AddStartingStat(CharAttribute.Intellect, data, columns[3], columns[4]);
+            AddStartingStat(CharAttribute.Personality, data, columns[5], columns[6]);
+            AddStartingStat(CharAttribute.Endurance, data, columns[7], columns[8]);
+            AddStartingStat(CharAttribute.Accuracy, data, columns[9], columns[10]);
+            AddStartingStat(CharAttribute.Speed, data, columns[11], columns[12]);
+            AddStartingStat(CharAttribute.Luck, data, columns[13], columns[14]);
+
+            return data;
+        }
+
+        private void AddStartingStat(CharAttribute attr, StartingStatsData data, string attrStr, string gainStr)
+        {
+            string[] defMaxPair = attrStr.Split('/');
+            int def = int.Parse(defMaxPair[0]);
+            int max = int.Parse(defMaxPair[1]);
+
+            float gain = 1.0f;
+            if (gainStr == "1/2")
+            {
+                gain = 0.5f;
+            }
+            else if (gainStr == "2")
+            {
+                gain = 2.0f;
+            }
+
+            data.Gain[attr] = gain;
+            data.DefaultStats[attr] = def;
+            data.MaxStats[attr] = max;
         }
     }
 }

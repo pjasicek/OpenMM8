@@ -24,7 +24,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int Hostility;
         public int Speed;
         public int Rec;
-        public Class PreferredClass;
+        public CharacterClass PreferredClass;
         public string BonusAbility;
 
         public AttackInfo Attack1;

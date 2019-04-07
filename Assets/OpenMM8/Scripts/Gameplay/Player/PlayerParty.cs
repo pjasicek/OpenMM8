@@ -488,12 +488,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         AttackResult OnAttackReceived(AttackInfo hitInfo, GameObject source)
         {
             Character hitCharacter = null;
-            if (hitInfo.PreferredClass != Class.None)
+            if (hitInfo.PreferredClass != CharacterClass.None)
             {
                 List<Character> preferredCharacters = new List<Character>();
                 foreach (Character character in Characters)
                 {
-                    if (character.Data.Class == hitInfo.PreferredClass)
+                    if (character.Class == hitInfo.PreferredClass)
                     {
                         preferredCharacters.Add(character);
                     }
@@ -520,9 +520,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             AttackResult result = DamageCalculator.DamageFromNpcToPlayer(hitInfo,
-                hitCharacter.Data.DefaultStats.Resistances,
-                hitCharacter.Data.DefaultStats.ArmorClass,
-                hitCharacter.Data.DefaultStats.Attributes[CharAttribute.Luck]);
+                hitCharacter.DefaultStats.Resistances,
+                hitCharacter.DefaultStats.ArmorClass,
+                hitCharacter.DefaultStats.Attributes[CharAttribute.Luck]);
             result.Victim = this.gameObject;
             /*if (result.Type == AttackResultType.Miss)
             {
@@ -530,7 +530,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }*/
 
             hitCharacter.AddCurrHitPoints(-1 * result.DamageDealt);
-            if (hitCharacter.Data.CurrHitPoints <= 0)
+            if (hitCharacter.CurrHitPoints <= 0)
             {
                 result.Type = AttackResultType.Kill;
             }

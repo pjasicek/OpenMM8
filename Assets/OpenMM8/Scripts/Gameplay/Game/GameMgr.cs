@@ -81,10 +81,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             AddRandChar();
             AddRandChar();
             AddRandChar();*/
-            AddChar(CharacterType.Minotaur_1);
-            AddChar(CharacterType.Knight_2);
-            AddChar(CharacterType.VampireFemale_2);
-            AddChar(CharacterType.Knight_1);
+            AddChar(21);
+            AddChar(3);
+            AddChar(16);
+            AddChar(1);
             
             PlayerParty.Characters[0].Inventory.AddItem(513);
             /*PlayerParty.Characters[0].Inventory.AddItem(84);
@@ -311,35 +311,35 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
-        public void AddChar(CharacterType type)
+        public void AddChar(int characterId)
         {
-            CharacterData charData = new CharacterData();
-            charData.CharacterType = type;
-            charData.Name = "Tyrkys";
-            charData.Class = Class.Knight;
-            charData.Experience = 0;
-            charData.SkillPoints = 0;
-            charData.CurrHitPoints = 500;
-            charData.CurrSpellPoints = 50;
-            charData.Condition = Condition.Good;
-            charData.DefaultStats.Age = 30;
-            charData.DefaultStats.Level = 1;
-            charData.DefaultStats.MaxHitPoints = 500;
-            charData.DefaultStats.MaxSpellPoints = 50;
+            Character chr = new Character(characterId);
+
+            chr.Name = "Tyrkys";
+            chr.Class = CharacterClass.Knight;
+            chr.Experience = 0;
+            chr.SkillPoints = 0;
+            chr.CurrHitPoints = 500;
+            chr.CurrSpellPoints = 50;
+            chr.Condition = Condition.Good;
+            chr.DefaultStats.Age = 30;
+            chr.DefaultStats.Level = 1;
+            chr.DefaultStats.MaxHitPoints = 500;
+            chr.DefaultStats.MaxSpellPoints = 50;
 
             foreach (CharAttribute attr in Enum.GetValues(typeof(CharAttribute)))
             {
-                charData.DefaultStats.Attributes[attr] = 0;
-                charData.BonusStats.Attributes[attr] = 0;
+                chr.DefaultStats.Attributes[attr] = 0;
+                chr.BonusStats.Attributes[attr] = 0;
             }
 
             foreach (SpellElement resist in Enum.GetValues(typeof(SpellElement)))
             {
-                charData.DefaultStats.Resistances[resist] = 0;
-                charData.BonusStats.Resistances[resist] = 0;
+                chr.DefaultStats.Resistances[resist] = 0;
+                chr.BonusStats.Resistances[resist] = 0;
             }
 
-            Character chr = new Character(charData);
+            
 
             PlayerParty.AddCharacter(chr);
         }
@@ -348,33 +348,33 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             var chrType = (CharacterType)UnityEngine.Random.Range(1, (int)Enum.GetValues(typeof(CharacterType)).Cast<CharacterType>().Max());
 
-            CharacterData charData = new CharacterData();
-            charData.CharacterType = chrType;
-            charData.Name = "Tyrkys";
-            charData.Class = Class.Knight;
-            charData.Experience = 0;
-            charData.SkillPoints = 0;
-            charData.CurrHitPoints = 500;
-            charData.CurrSpellPoints = 50;
-            charData.Condition = Condition.Good;
-            charData.DefaultStats.Age = 30;
-            charData.DefaultStats.Level = 1;
-            charData.DefaultStats.MaxHitPoints = 500;
-            charData.DefaultStats.MaxSpellPoints = 50;
+            int characterId = UnityEngine.Random.Range(1, 28);
+
+            Character chr = new Character(characterId);
+
+            chr.Name = "Tyrkys";
+            chr.Class = CharacterClass.Knight;
+            chr.Experience = 0;
+            chr.SkillPoints = 0;
+            chr.CurrHitPoints = 500;
+            chr.CurrSpellPoints = 50;
+            chr.Condition = Condition.Good;
+            chr.DefaultStats.Age = 30;
+            chr.DefaultStats.Level = 1;
+            chr.DefaultStats.MaxHitPoints = 500;
+            chr.DefaultStats.MaxSpellPoints = 50;
 
             foreach (CharAttribute attr in Enum.GetValues(typeof(CharAttribute)))
             {
-                charData.DefaultStats.Attributes[attr] = 0;
-                charData.BonusStats.Attributes[attr] = 0;
+                chr.DefaultStats.Attributes[attr] = 0;
+                chr.DefaultStats.Attributes[attr] = 0;
             }
 
             foreach (SpellElement resist in Enum.GetValues(typeof(SpellElement)))
             {
-                charData.DefaultStats.Resistances[resist] = 0;
-                charData.BonusStats.Resistances[resist] = 0;
+                chr.DefaultStats.Resistances[resist] = 0;
+                chr.DefaultStats.Resistances[resist] = 0;
             }
-
-            Character chr = new Character(charData);
 
             PlayerParty.AddCharacter(chr);
         }

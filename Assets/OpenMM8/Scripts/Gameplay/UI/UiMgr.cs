@@ -57,8 +57,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             new Dictionary<int, Sprite>();
 
         // Character type (e.g. Knight_1) -> class holding facial sprites
-        private Dictionary<CharacterType, CharacterSprites> m_CharacterSpritesMap =
-            new Dictionary<CharacterType, CharacterSprites>();
+        private Dictionary<int, CharacterSprites> m_CharacterSpritesMap =
+            new Dictionary<int, CharacterSprites>();
 
         // Item name (e.g. item001) -> Sprite
         private Dictionary<string, Sprite> m_InventoryItemSpriteMap =
@@ -70,6 +70,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         // Object (item) name -> Sprite
         private Dictionary<string, Sprite> m_OutdoorItemSpriteMap =
+            new Dictionary<string, Sprite>();
+
+        // Sprite name -> Sprite
+        private Dictionary<string, Sprite> m_DollSpriteMap =
             new Dictionary<string, Sprite>();
 
         [Header("Sprites")]
@@ -391,6 +395,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     Debug.LogError("Item: " + itemData.Name + " does not have outoor display data");
                 }
             }
+
+            // Dolls
+            OpenMM8Util.AppendResourcesToMap(m_DollSpriteMap, "Sprites/DOLLS");
 
             return true;
         }
@@ -806,17 +813,17 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_PartyTextLockTime = 2.0f;
         }
 
-        private CharacterSprites GetCharacterSprites(CharacterType type)
+        private CharacterSprites GetCharacterSprites(int characterId)
         {
             // Caching
-            if (m_CharacterSpritesMap.ContainsKey(type) && m_CharacterSpritesMap[type] != null)
+            if (m_CharacterSpritesMap.ContainsKey(characterId) && m_CharacterSpritesMap[characterId] != null)
             {
-                return m_CharacterSpritesMap[type];
+                return m_CharacterSpritesMap[characterId];
             }
             else
             {
-                m_CharacterSpritesMap[type] = CharacterSprites.Load(type);
-                return m_CharacterSpritesMap[type];
+                m_CharacterSpritesMap[characterId] = CharacterSprites.Load(characterId);
+                return m_CharacterSpritesMap[characterId];
             }
         }
 
@@ -890,7 +897,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             GameObject pc = (GameObject)Instantiate(Resources.Load("Prefabs/UI/PC"), m_PartyCanvasObj.transform);
             pc.transform.localPosition = new Vector3(Constants.PC_WidthDelta, 0.0f, 0.0f) * chr.GetPartyIndex();
             //pc.transform.position += new Vector3(Constants.PC_WidthDelta, 0.0f, 0.0f) * chr.Data.PartyIndex;
-            pc.name = "PC_" + chr.Data.Name;
+            pc.name = "PC_" + chr.Name;
 
             chrUI.Holder = pc;
             chrUI.PlayerCharacter = pc.transform.Find("PC_Avatar").GetComponent<Image>();
@@ -904,11 +911,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             chr.UI = chrUI;
 
             chr.CharFaceUpdater = new CharFaceUpdater(chr);
-            chr.UI.Sprites = GetCharacterSprites(chr.Data.CharacterType);
+            chr.UI.Sprites = GetCharacterSprites(chr.CharacterId);
 
             // Doll for char detail UI (Inventory/Stats/Awards/Skills UI, Adventurer's Inn, Character creation page)
-            string dollPrefabName = "DOLL_PC_" + ((int)chr.Data.CharacterType).ToString();
+            //string dollPrefabName = "DOLL_PC_" + ((int)chr.CharacterId).ToString();
+            string dollPrefabName = "GenericDoll";
             chr.UI.DollUI = new DollUI();
+
             chr.UI.DollUI.Holder = (GameObject)Instantiate(Resources.Load("Prefabs/UI/Dolls/" + dollPrefabName), m_CharDetailUI.CanvasHolder.transform);
             chr.UI.DollUI.Holder.transform.SetSiblingIndex(0);
             chr.UI.DollUI.BackgroundImage = OpenMM8Util.GetComponentAtScenePath<Image>("Background", chr.UI.DollUI.Holder);
@@ -918,17 +927,75 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             chr.UI.DollUI.LH_HoldImage = OpenMM8Util.GetComponentAtScenePath<Image>("LeftHand_Hold", chr.UI.DollUI.Holder);
             chr.UI.DollUI.RH_OpenImage = OpenMM8Util.GetComponentAtScenePath<Image>("RightHand_Open", chr.UI.DollUI.Holder);
             chr.UI.DollUI.RH_HoldImage = OpenMM8Util.GetComponentAtScenePath<Image>("RightHand_Hold", chr.UI.DollUI.Holder);
-            chr.UI.DollUI.BowAnchorHolder = OpenMM8Util.GetGameObjAtScenePath("BowHoldAnchor", chr.UI.DollUI.Holder);
             chr.UI.DollUI.RH_WeaponAnchorHolder = OpenMM8Util.GetGameObjAtScenePath("RightHand_WeaponHoldAnchor", chr.UI.DollUI.Holder);
             //chr.UI.DollUI.RH_HoldFingersImage = OpenMM8Util.GetComponentAtScenePath<Image>("RightHand_HoldFingers", chr.UI.DollUI.Holder);
             chr.UI.DollUI.Cloak = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("CloakSlot", chr.UI.DollUI.Holder);
-            chr.UI.DollUI.Bow = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("BowHoldAnchor/BowSlot", chr.UI.DollUI.Holder);
+            chr.UI.DollUI.Bow = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("BowSlot", chr.UI.DollUI.Holder);
             chr.UI.DollUI.Armor = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("ArmorSlot", chr.UI.DollUI.Holder);
             chr.UI.DollUI.Boots = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("BootsSlot", chr.UI.DollUI.Holder);
             chr.UI.DollUI.Helmet = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("HelmetSlot", chr.UI.DollUI.Holder);
             chr.UI.DollUI.Belt = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("BeltSlot", chr.UI.DollUI.Holder);
             chr.UI.DollUI.RH_Weapon = 
                 OpenMM8Util.GetComponentAtScenePath<InventoryItem>("RightHand_WeaponHoldAnchor/RightHand_WeaponSlot", chr.UI.DollUI.Holder);
+
+            // Background
+            chr.UI.DollUI.BackgroundImage.sprite = m_DollSpriteMap[chr.CharacterData.Background];
+            chr.UI.DollUI.BackgroundImage.SetNativeSize();
+            // Body
+            chr.UI.DollUI.BodyImage.sprite = m_DollSpriteMap[chr.CharacterData.Body];
+            chr.UI.DollUI.BodyImage.SetNativeSize();
+            chr.UI.DollUI.BodyImage.rectTransform.anchoredPosition = chr.CharacterData.DollBodyPos;
+            // LHo (Left Hand Open)
+            if (chr.CharacterData.LHo != "none")
+            {
+                chr.UI.DollUI.LH_OpenImage.sprite = m_DollSpriteMap[chr.CharacterData.LHo];
+                chr.UI.DollUI.LH_OpenImage.SetNativeSize();
+                chr.UI.DollUI.LH_OpenImage.rectTransform.anchoredPosition = chr.DollTypeData.LH_FingersPos;
+            }
+            // LHd (Left Hand Closed)
+            if (chr.CharacterData.LHd != "none")
+            {
+                chr.UI.DollUI.LH_ClosedImage.sprite = m_DollSpriteMap[chr.CharacterData.LHd];
+                chr.UI.DollUI.LH_ClosedImage.SetNativeSize();
+                chr.UI.DollUI.LH_ClosedImage.rectTransform.anchoredPosition = chr.DollTypeData.LH_ClosedPos;
+            }
+            // LHu (Left Hand Hold)
+            if (chr.CharacterData.LHu != "none")
+            {
+                chr.UI.DollUI.LH_HoldImage.sprite = m_DollSpriteMap[chr.CharacterData.LHu];
+                chr.UI.DollUI.LH_HoldImage.SetNativeSize();
+                chr.UI.DollUI.LH_HoldImage.rectTransform.anchoredPosition = chr.DollTypeData.LH_OpenPos;
+            }
+            // RHd (Right Hand Open)
+            if (chr.CharacterData.RHd != "none")
+            {
+                chr.UI.DollUI.RH_OpenImage.sprite = m_DollSpriteMap[chr.CharacterData.RHd];
+                chr.UI.DollUI.RH_OpenImage.SetNativeSize();
+                chr.UI.DollUI.RH_OpenImage.rectTransform.anchoredPosition = chr.DollTypeData.RH_OpenPos;
+            }
+            // RHu (Right Hand Closed)
+            if (chr.CharacterData.RHu != "none")
+            {
+                chr.UI.DollUI.RH_HoldImage.sprite = m_DollSpriteMap[chr.CharacterData.RHu];
+                chr.UI.DollUI.RH_HoldImage.SetNativeSize();
+                chr.UI.DollUI.RH_HoldImage.rectTransform.anchoredPosition = chr.DollTypeData.RH_ClosedPos;
+            }
+            
+            // Right hand fingers
+            if (chr.CharacterData.RHb != "none")
+            {
+                // Right hand fingers + weapon holder
+                Image weaponAnchorImage = chr.UI.DollUI.RH_WeaponAnchorHolder.GetComponent<Image>();
+                weaponAnchorImage.sprite = m_DollSpriteMap[chr.CharacterData.RHb];
+                weaponAnchorImage.SetNativeSize();
+                chr.UI.DollUI.RH_WeaponAnchorHolder.GetComponent<RectTransform>().anchoredPosition =
+                    chr.DollTypeData.RH_FingersPos;
+
+                Image holdFingersImage = OpenMM8Util.GetComponentAtScenePath<Image>("RightHand_HoldFingers", chr.UI.DollUI.RH_WeaponAnchorHolder);
+                holdFingersImage.sprite = m_DollSpriteMap[chr.CharacterData.RHb];
+                holdFingersImage.SetNativeSize();
+                holdFingersImage.rectTransform.anchoredPosition.Set(0.0f, 0.0f);
+            }
 
             chr.UI.DollUI.AccessoryBackgroundHolder = OpenMM8Util.GetGameObjAtScenePath("AccessoryBackground", chr.UI.DollUI.Holder);
             chr.UI.DollUI.Ring_1 = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("RingSlot_1", chr.UI.DollUI.AccessoryBackgroundHolder);
@@ -1032,18 +1099,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             switch (result.Type)
             {
                 case AttackResultType.Hit:
-                    hitText = chr.Data.Name + " hits " + result.VictimName + 
+                    hitText = chr.Name + " hits " + result.VictimName + 
                         " for " + result.DamageDealt + " damage";
                     break;
 
                 case AttackResultType.Kill:
-                    hitText = chr.Data.Name + " inflicts " + result.DamageDealt + 
+                    hitText = chr.Name + " inflicts " + result.DamageDealt + 
                         " points killing " + result.VictimName;
                     chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.UI.Sprites.Smile), 0.75f);
                     break;
 
                 case AttackResultType.Miss:
-                    hitText = chr.Data.Name + " missed attack on " + result.VictimName;
+                    hitText = chr.Name + " missed attack on " + result.VictimName;
                     chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.UI.Sprites.FailAction), 0.75f);
                     break;
 

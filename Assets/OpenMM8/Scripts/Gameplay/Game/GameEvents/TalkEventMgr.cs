@@ -693,11 +693,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     EventAPI.PartyCharacters().ForEach(
                         chr =>
                         {
-                            if (EventAPI.GetClass(chr) == Class.DarkElf)
+                            if (EventAPI.GetClass(chr) == CharacterClass.DarkElf)
                             {
                                 EventAPI.AddExperience(chr, 35000);
                                 EventAPI.AddAward(chr, 19);
-                                chr.Data.Class = Class.Patriarch;
+                                chr.Class = CharacterClass.Patriarch;
                             }
                             else
                             {
