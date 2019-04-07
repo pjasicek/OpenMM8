@@ -111,7 +111,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 {
                     m_UI.CurrDollUI.Holder.SetActive(false);
                 }
+                if (m_UI.InventoryUI.InventoryUI != null && m_UI.InventoryUI.InventoryUI.Holder != null)
+                {
+                    m_UI.InventoryUI.InventoryUI.Holder.SetActive(false);
+                }
+                if (m_UI.StatsUI.StatsUI != null && m_UI.StatsUI.StatsUI.Holder != null)
+                {
+                    m_UI.StatsUI.StatsUI.Holder.SetActive(false);
+                }
+
                 m_UI.CurrDollUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.DollUI;
+                m_UI.InventoryUI.InventoryUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.InventoryUI;
+                m_UI.StatsUI.StatsUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.StatsUI;
                 m_UI.CurrDollUI.Holder.SetActive(true);
 
                 DisplayDetailState(chr);
