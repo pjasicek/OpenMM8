@@ -5,6 +5,12 @@ using System.Text;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
+    public enum EnchantType
+    {
+        Standard,
+        Special
+    }
+
     public class ItemEnchant
     {
 

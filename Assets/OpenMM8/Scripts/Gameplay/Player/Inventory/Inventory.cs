@@ -48,33 +48,33 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             bool isWeapon = false;
             InventoryItem placedInvItem = null;
-            switch (heldItem.Data.EquipType)
+            switch (heldItem.Data.ItemType)
             {
-                case EquipType.Armor:
+                case ItemType.Armor:
                     placedInvItem = Owner.UI.DollUI.Armor;
                     break;
-                case EquipType.Missile:
+                case ItemType.Missile:
                     placedInvItem = Owner.UI.DollUI.Bow;
                     break;
-                case EquipType.Helmet:
+                case ItemType.Helmet:
                     placedInvItem = Owner.UI.DollUI.Helmet;
                     break;
-                case EquipType.Belt:
+                case ItemType.Belt:
                     placedInvItem = Owner.UI.DollUI.Belt;
                     break;
-                case EquipType.Cloak:
+                case ItemType.Cloak:
                     placedInvItem = Owner.UI.DollUI.Cloak;
                     break;
-                case EquipType.Boots:
+                case ItemType.Boots:
                     placedInvItem = Owner.UI.DollUI.Boots;
                     break;
-                case EquipType.Amulet:
+                case ItemType.Amulet:
                     placedInvItem = Owner.UI.DollUI.Necklace;
                     break;
-                case EquipType.Gauntlets:
+                case ItemType.Gauntlets:
                     placedInvItem = Owner.UI.DollUI.Gauntlets;
                     break;
-                case EquipType.Ring:
+                case ItemType.Ring:
                     if (Owner.UI.DollUI.Ring_1.Item == null)
                     {
                         placedInvItem = Owner.UI.DollUI.Ring_1;
@@ -104,10 +104,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         placedInvItem = Owner.UI.DollUI.Ring_1;
                     }
                     break;
-                case EquipType.Wand:
-                case EquipType.WeaponDualWield:
-                case EquipType.WeaponOneHanded:
-                case EquipType.WeaponTwoHanded:
+                case ItemType.Wand:
+                case ItemType.WeaponDualWield:
+                case ItemType.WeaponOneHanded:
+                case ItemType.WeaponTwoHanded:
                     placedInvItem = Owner.UI.DollUI.RH_Weapon;
                     isWeapon = true;
                     break;
@@ -137,15 +137,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 Owner.UI.DollUI.RH_HoldImage.gameObject.SetActive(true);
                 Owner.UI.DollUI.RH_WeaponAnchorHolder.gameObject.SetActive(true);
             }
-            else if (heldItem.Data.EquipType == EquipType.Missile)
+            else if (heldItem.Data.ItemType == ItemType.Missile)
             {
                 // TODO: Fix, wrong calculation
                 equipPos = Owner.DollTypeData.BowOffset;
                 equipSprite = heldItem.Data.InvSprite;
             }
-            else if (heldItem.Data.EquipType == EquipType.Amulet ||
-                     heldItem.Data.EquipType == EquipType.Gauntlets ||
-                     heldItem.Data.EquipType == EquipType.Ring)
+            else if (heldItem.Data.ItemType == ItemType.Amulet ||
+                     heldItem.Data.ItemType == ItemType.Gauntlets ||
+                     heldItem.Data.ItemType == ItemType.Ring)
             {
                 equipPos = new Vector2(placedInvItem.Image.rectTransform.anchoredPosition.x,
                     placedInvItem.Image.rectTransform.anchoredPosition.y);
@@ -188,8 +188,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 {
                     equipPos = DbMgr.Instance.ItemEquipPosDb.Get(heldItem.Data.Id).MinotaurItemPos;
 
-                    if (heldItem.Data.EquipType == EquipType.Cloak ||
-                        heldItem.Data.EquipType == EquipType.Belt)
+                    if (heldItem.Data.ItemType == ItemType.Cloak ||
+                        heldItem.Data.ItemType == ItemType.Belt)
                     {
                         preferredEqSpriteExts.Add("v1");
                     }
@@ -202,8 +202,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 {
                     equipPos = DbMgr.Instance.ItemEquipPosDb.Get(heldItem.Data.Id).TrollItemPos;
 
-                    if (heldItem.Data.EquipType == EquipType.Cloak ||
-                        heldItem.Data.EquipType == EquipType.Belt)
+                    if (heldItem.Data.ItemType == ItemType.Cloak ||
+                        heldItem.Data.ItemType == ItemType.Belt)
                     {
                         preferredEqSpriteExts.Add("v1");
                     }

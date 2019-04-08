@@ -322,20 +322,20 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             chr.CurrHitPoints = 500;
             chr.CurrSpellPoints = 50;
             chr.Condition = Condition.Good;
-            chr.DefaultStats.Age = 30;
-            chr.DefaultStats.Level = 1;
-            chr.DefaultStats.MaxHitPoints = 500;
-            chr.DefaultStats.MaxSpellPoints = 50;
+            chr.Stats.Age = 30;
+            chr.Stats.Level = 1;
+            chr.Stats.MaxHitPoints = 500;
+            chr.Stats.MaxSpellPoints = 50;
 
             foreach (CharAttribute attr in Enum.GetValues(typeof(CharAttribute)))
             {
-                chr.DefaultStats.Attributes[attr] = 0;
+                chr.Stats.Attributes[attr] = 0;
                 chr.BonusStats.Attributes[attr] = 0;
             }
 
             foreach (SpellElement resist in Enum.GetValues(typeof(SpellElement)))
             {
-                chr.DefaultStats.Resistances[resist] = 0;
+                chr.Stats.Resistances[resist] = 0;
                 chr.BonusStats.Resistances[resist] = 0;
             }
 
@@ -359,21 +359,21 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             chr.CurrHitPoints = 500;
             chr.CurrSpellPoints = 50;
             chr.Condition = Condition.Good;
-            chr.DefaultStats.Age = 30;
-            chr.DefaultStats.Level = 1;
-            chr.DefaultStats.MaxHitPoints = 500;
-            chr.DefaultStats.MaxSpellPoints = 50;
+            chr.Stats.Age = 30;
+            chr.Stats.Level = 1;
+            chr.Stats.MaxHitPoints = 500;
+            chr.Stats.MaxSpellPoints = 50;
 
             foreach (CharAttribute attr in Enum.GetValues(typeof(CharAttribute)))
             {
-                chr.DefaultStats.Attributes[attr] = 0;
-                chr.DefaultStats.Attributes[attr] = 0;
+                chr.Stats.Attributes[attr] = 0;
+                chr.Stats.Attributes[attr] = 0;
             }
 
             foreach (SpellElement resist in Enum.GetValues(typeof(SpellElement)))
             {
-                chr.DefaultStats.Resistances[resist] = 0;
-                chr.DefaultStats.Resistances[resist] = 0;
+                chr.Stats.Resistances[resist] = 0;
+                chr.Stats.Resistances[resist] = 0;
             }
 
             PlayerParty.AddCharacter(chr);

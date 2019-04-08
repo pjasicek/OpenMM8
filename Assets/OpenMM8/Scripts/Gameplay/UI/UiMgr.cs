@@ -433,7 +433,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             m_PartyTextLockTime -= Time.deltaTime;
 
-            // Item inspect
+            // ---------------------------------------------------------
+            // Inspect item
+            // ---------------------------------------------------------
             if (Input.GetButton("InspectObject") && m_HoveredItem != null)
             {
                 // Show item info
@@ -443,7 +445,60 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                 m_InspectItemUI.ItemName.text = item.Data.Name;
 
-                m_InspectItemUI.ItemSpecific.text = "Item Specific, TBD...\nNewLine";
+                string specificText = "";
+                if (m_HoveredItem.Data.ItemType == ItemType.Armor)
+                {
+
+                }
+
+                m_InspectItemUI.ItemSpecific.text = "Type: " + item.Data.NotIdentifiedName;
+                switch (item.Data.ItemType)
+                {
+                    case ItemType.WeaponOneHanded:
+                    case ItemType.WeaponDualWield:
+                    case ItemType.WeaponTwoHanded:
+                        m_InspectItemUI.ItemSpecific.text +=
+                                "\nAttack: " + item.Data.Mod2 + "    Damage: " + item.Data.Mod1;
+                        break;
+
+                    case ItemType.Missile:
+                        m_InspectItemUI.ItemSpecific.text += 
+                            "\nShoot: " + item.Data.Mod2 + "    Damage: " + item.Data.Mod1;
+                        break;
+
+                    case ItemType.Armor:
+                    case ItemType.Helmet:
+                    case ItemType.Cloak:
+                    case ItemType.Shield:
+                    case ItemType.Gauntlets:
+                    case ItemType.Boots:
+                        m_InspectItemUI.ItemSpecific.text +=
+                            "\nArmor: " + (int.Parse(item.Data.Mod1) + int.Parse(item.Data.Mod2));
+                        break;
+
+                    case ItemType.Bottle:
+                    case ItemType.Reagent:
+                        m_InspectItemUI.ItemSpecific.text += "\nPower: " + item.Data.Mod1;
+                        break;
+
+                    case ItemType.Belt:
+                    case ItemType.Ring:
+                    case ItemType.Amulet:
+                    case ItemType.Misc:
+                    case ItemType.Ore:
+                    case ItemType.Gem:
+                    case ItemType.MessageScroll:
+                    case ItemType.SpellScroll:
+                    case ItemType.SpellBook:
+                    case ItemType.Gold:
+                    case ItemType.NotAvailable:
+                        break;
+
+                    default:
+                        m_InspectItemUI.ItemSpecific.text += "\nUnhandled item type: " + item.Data.ItemType;
+                        break;
+                }
+
                 float specHeight = GetTextHeight(m_InspectItemUI.ItemSpecific);
                 m_InspectItemUI.ItemSpecific.rectTransform.sizeDelta = new Vector2(
                         m_InspectItemUI.ItemSpecific.rectTransform.rect.width,
@@ -560,6 +615,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 m_InspectItemUI.Holder.GetComponent<Canvas>().enabled = false;
             }
 
+            // ---------------------------------------------------------
+            // Inspecting Stat / Skill / Reading a letter
+            // ---------------------------------------------------------
             if (Input.GetButton("InspectObject") && m_HoveredInspectableUiText != null)
             {
                 // Header + Text
@@ -1353,8 +1411,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             else
             {
                 // HACK: We try to "replace" rings
-                if (clickedItem.Item.Data.EquipType == EquipType.Ring &&
-                    m_HeldItem.Item.Data.EquipType == EquipType.Ring)
+                if (clickedItem.Item.Data.ItemType == ItemType.Ring &&
+                    m_HeldItem.Item.Data.ItemType == ItemType.Ring)
                 {
                     BaseItem tmpClickedItem = clickedItem.Item;
 

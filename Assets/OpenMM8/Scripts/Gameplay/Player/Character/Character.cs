@@ -37,14 +37,21 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public string QuickSpellName = "";
 
-        public CharacterStats DefaultStats = new CharacterStats();
+        public CharacterStats Stats = new CharacterStats();
         public CharacterStats BonusStats = new CharacterStats();
         public Dictionary<SkillType, int> Skills = new Dictionary<SkillType, int>();
         public Dictionary<SkillType, int> SkillBonuses = new Dictionary<SkillType, int>();
         public List<Award> Awards = new List<Award>();
         public List<Spell> Spells = new List<Spell>();
 
+        public int AttackBonus;
+        public RangeInt AttackDamage;
+        public int ShootBonus;
+        public RangeInt ShootDamage;
+
         public Inventory Inventory = new Inventory();
+
+        public List<BaseItem> EquippedItems = new List<BaseItem>();
 
         private float m_TimeUntilRecovery = 0.0f;
         public float TimeUntilRecovery
@@ -67,11 +74,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public CharacterSounds Sounds;
         public CharFaceUpdater CharFaceUpdater;
 
-
-
         public Character(int characterId)
         {
-            Debug.Log("charid: " + characterId);
             CharacterData = DbMgr.Instance.CharacterDataDb.Get(characterId);
             DollTypeData = DbMgr.Instance.DollTypeDb.Get(CharacterData.DollId);
             CharacterVoiceData = DbMgr.Instance.CharacterVoiceDb.Get(CharacterData.DefaultVoice);
@@ -91,7 +95,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public int GetMaxHealth()
         {
-            return DefaultStats.MaxHitPoints + BonusStats.MaxHitPoints;
+            return Stats.MaxHitPoints + BonusStats.MaxHitPoints;
         }
 
         public int GetPartyIndex()
@@ -190,7 +194,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void AddCurrHitPoints(int numHitPoints)
         {
-            int maxHP = DefaultStats.MaxHitPoints + BonusStats.MaxHitPoints;
+            int maxHP = Stats.MaxHitPoints + BonusStats.MaxHitPoints;
             CurrHitPoints = Mathf.Min(CurrHitPoints + numHitPoints, maxHP);
 
             GameEvents.InvokeEvent_OnCharHealthChanged(this, maxHP, CurrHitPoints, numHitPoints);
@@ -198,7 +202,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void AddCurrSpellPoints(int numSpellPoints)
         {
-            int maxMP = DefaultStats.MaxSpellPoints + BonusStats.MaxSpellPoints;
+            int maxMP = Stats.MaxSpellPoints + BonusStats.MaxSpellPoints;
             CurrSpellPoints = Mathf.Min(CurrSpellPoints + numSpellPoints, maxMP);
     
             GameEvents.InvokeEvent_OnCharManaChanged(this, maxMP, CurrSpellPoints);
@@ -226,7 +230,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public ItemInteractResult CanEquipItem(BaseItem item)
         {
-            EquipType itemType = item.Data.EquipType;
+            ItemType itemType = item.Data.ItemType;
             SkillGroup skillGroup = item.Data.SkillGroup;
 
             if (!item.IsEquippable())
@@ -235,40 +239,40 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             // For now I do not support shields
-            if (itemType == EquipType.Shield)
+            if (itemType == ItemType.Shield)
             {
                 return ItemInteractResult.Invalid;
             }
 
-            if (itemType == EquipType.Boots && !DollTypeData.CanEquipBoots)
+            if (itemType == ItemType.Boots && !DollTypeData.CanEquipBoots)
             {
                 return ItemInteractResult.Invalid;
             }
-            else if (itemType == EquipType.Armor && !DollTypeData.CanEquipArmor)
+            else if (itemType == ItemType.Armor && !DollTypeData.CanEquipArmor)
             {
                 return ItemInteractResult.Invalid;
             }
-            else if (itemType == EquipType.Helmet && !DollTypeData.CanEquipHelm)
+            else if (itemType == ItemType.Helmet && !DollTypeData.CanEquipHelm)
             {
                 return ItemInteractResult.Invalid;
             }
-            else if (itemType == EquipType.Belt && !DollTypeData.CanEquipBelt)
+            else if (itemType == ItemType.Belt && !DollTypeData.CanEquipBelt)
             {
                 return ItemInteractResult.Invalid;
             }
-            else if (itemType == EquipType.Cloak && !DollTypeData.CanEquipCloak)
+            else if (itemType == ItemType.Cloak && !DollTypeData.CanEquipCloak)
             {
                 return ItemInteractResult.Invalid;
             }
-            else if (itemType == EquipType.WeaponDualWield && !DollTypeData.CanEquipWeapon)
+            else if (itemType == ItemType.WeaponDualWield && !DollTypeData.CanEquipWeapon)
             {
                 return ItemInteractResult.Invalid;
             }
-            else if (itemType == EquipType.WeaponOneHanded && !DollTypeData.CanEquipWeapon)
+            else if (itemType == ItemType.WeaponOneHanded && !DollTypeData.CanEquipWeapon)
             {
                 return ItemInteractResult.Invalid;
             }
-            else if (itemType == EquipType.WeaponTwoHanded && !DollTypeData.CanEquipWeapon)
+            else if (itemType == ItemType.WeaponTwoHanded && !DollTypeData.CanEquipWeapon)
             {
                 return ItemInteractResult.Invalid;
             }
@@ -356,6 +360,102 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             GameEvents.InvokeEvent_OnInteractedWithItem(this, item, interactResult);
 
             return interactResult;
+        }
+
+        public void RecalculateStats()
+        {
+            // This method is stateless - it takes into consideration all factors in one shanpshot
+
+            List<BaseItem> equippedArmorItems = new List<BaseItem>();
+            // Armor = everything besides weapon(s)
+            equippedArmorItems.Add(UI.DollUI.Armor.Item);
+            equippedArmorItems.Add(UI.DollUI.Helmet.Item);
+            equippedArmorItems.Add(UI.DollUI.Belt.Item);
+            equippedArmorItems.Add(UI.DollUI.Boots.Item);
+            equippedArmorItems.Add(UI.DollUI.Cloak.Item);
+            equippedArmorItems.Add(UI.DollUI.Gauntlets.Item);
+            equippedArmorItems.Add(UI.DollUI.Necklace.Item);
+            equippedArmorItems.Add(UI.DollUI.Ring_1.Item);
+            equippedArmorItems.Add(UI.DollUI.Ring_2.Item);
+            equippedArmorItems.Add(UI.DollUI.Ring_3.Item);
+            equippedArmorItems.Add(UI.DollUI.Ring_4.Item);
+            equippedArmorItems.Add(UI.DollUI.Ring_5.Item);
+            equippedArmorItems.Add(UI.DollUI.Ring_6.Item);
+            //TODO: equippedArmor.Add(UI.DollUI.Shield.Item);
+
+            // Only take into consideration equipped items
+            equippedArmorItems.RemoveAll(item => item == null);
+
+            BaseItem mainHandWeapon = UI.DollUI.RH_Weapon.Item;
+            BaseItem offHandWeapon = UI.DollUI.LF_Weapon.Item;
+
+            // Base armor class = character base + armor base
+            Stats.ArmorClass = 0;
+
+            BonusStats = new CharacterStats();
+            foreach (BaseItem armorItem in equippedArmorItems)
+            {
+                switch (armorItem.Data.ItemType)
+                {
+                    case ItemType.Armor:
+                    case ItemType.Helmet:
+                    case ItemType.Cloak:
+                    case ItemType.Shield:
+                    case ItemType.Gauntlets:
+                    case ItemType.Boots:
+                        int armorClass = int.Parse(armorItem.Data.Mod1) + int.Parse(armorItem.Data.Mod2);
+                        Stats.ArmorClass += armorClass;
+                        break;
+                }
+
+                // TODO: Add enchant bonuses
+                /*if (armorItem.Enchant != null)
+                {
+
+                }*/
+            }
+
+
+
+            // After all stat modifiers are applied
+
+            // TODO: Do this generically, this is PoC
+            int attrEffect = 0;
+            int totalMight = Stats.Attributes[CharAttribute.Might] + BonusStats.Attributes[CharAttribute.Might];
+            if (totalMight >= 500)
+            {
+                attrEffect = 30;
+            }
+            else if (totalMight >= 400)
+            {
+                attrEffect = 25;
+            }
+            else
+            {
+                // .....
+            }
+
+            AttackDamage.start = attrEffect;
+            AttackDamage.length = 0;
+            if (mainHandWeapon != null)
+            {
+                int baseDmg = int.Parse(mainHandWeapon.Data.Mod2);
+                string[] diceCountAndSides = mainHandWeapon.Data.Mod1.Split('d');
+                int minVariableDmg = int.Parse(diceCountAndSides[0]);
+                int maxVariableDmg = int.Parse(diceCountAndSides[1]) * minVariableDmg;
+
+                AttackDamage.start = attrEffect + minVariableDmg;
+                AttackDamage.length = attrEffect + maxVariableDmg;
+
+                if (AttackDamage.start <= 0)
+                {
+                    AttackDamage.start = 1;
+                }
+                if (AttackDamage.length <= 0)
+                {
+                    AttackDamage.length = 1;
+                }
+            }
         }
     }
 }

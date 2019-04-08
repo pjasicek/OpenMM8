@@ -31,31 +31,31 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             itemData.GoldValue = int.Parse(columns[3]);
             switch (columns[4])
             {
-                case "Weapon": itemData.EquipType = EquipType.WeaponOneHanded; break;
-                case "Weapon2": itemData.EquipType = EquipType.WeaponTwoHanded; break;
-                case "Weapon1or2": itemData.EquipType = EquipType.WeaponDualWield; break;
-                case "WeaponW": itemData.EquipType = EquipType.Wand; break;
-                case "Missile": itemData.EquipType = EquipType.Missile; break;
-                case "Armor": itemData.EquipType = EquipType.Armor; break;
-                case "Shield": itemData.EquipType = EquipType.Shield; break;
-                case "Helm": itemData.EquipType = EquipType.Helmet; break;
-                case "Belt": itemData.EquipType = EquipType.Belt; break;
-                case "Cloak": itemData.EquipType = EquipType.Cloak; break;
-                case "Gauntlets": itemData.EquipType = EquipType.Gauntlets; break;
-                case "Boots": itemData.EquipType = EquipType.Boots; break;
-                case "Ring": itemData.EquipType = EquipType.Ring; break;
-                case "Amulet": itemData.EquipType = EquipType.Amulet; break;
-                case "Gem": itemData.EquipType = EquipType.Gem; break;
-                case "Gold": itemData.EquipType = EquipType.Gold; break;
-                case "Reagent": itemData.EquipType = EquipType.Reagent; break;
-                case "Bottle": itemData.EquipType = EquipType.Bottle; break;
-                case "Sscroll": itemData.EquipType = EquipType.SpellScroll; break;
-                case "Book": itemData.EquipType = EquipType.SpellBook; break;
-                case "Misc": itemData.EquipType = EquipType.Misc; break;
-                case "Ore": itemData.EquipType = EquipType.Ore; break;
-                case "Mscroll": itemData.EquipType = EquipType.MessageScroll; break;
-                case "N / A": itemData.EquipType = EquipType.NotAvailable; break;
-                default: itemData.EquipType = EquipType.NotAvailable; break;
+                case "Weapon": itemData.ItemType = ItemType.WeaponOneHanded; break;
+                case "Weapon2": itemData.ItemType = ItemType.WeaponTwoHanded; break;
+                case "Weapon1or2": itemData.ItemType = ItemType.WeaponDualWield; break;
+                case "WeaponW": itemData.ItemType = ItemType.Wand; break;
+                case "Missile": itemData.ItemType = ItemType.Missile; break;
+                case "Armor": itemData.ItemType = ItemType.Armor; break;
+                case "Shield": itemData.ItemType = ItemType.Shield; break;
+                case "Helm": itemData.ItemType = ItemType.Helmet; break;
+                case "Belt": itemData.ItemType = ItemType.Belt; break;
+                case "Cloak": itemData.ItemType = ItemType.Cloak; break;
+                case "Gauntlets": itemData.ItemType = ItemType.Gauntlets; break;
+                case "Boots": itemData.ItemType = ItemType.Boots; break;
+                case "Ring": itemData.ItemType = ItemType.Ring; break;
+                case "Amulet": itemData.ItemType = ItemType.Amulet; break;
+                case "Gem": itemData.ItemType = ItemType.Gem; break;
+                case "Gold": itemData.ItemType = ItemType.Gold; break;
+                case "Reagent": itemData.ItemType = ItemType.Reagent; break;
+                case "Bottle": itemData.ItemType = ItemType.Bottle; break;
+                case "Sscroll": itemData.ItemType = ItemType.SpellScroll; break;
+                case "Book": itemData.ItemType = ItemType.SpellBook; break;
+                case "Misc": itemData.ItemType = ItemType.Misc; break;
+                case "Ore": itemData.ItemType = ItemType.Ore; break;
+                case "Mscroll": itemData.ItemType = ItemType.MessageScroll; break;
+                case "N / A": itemData.ItemType = ItemType.NotAvailable; break;
+                default: itemData.ItemType = ItemType.NotAvailable; break;
             }
             switch (columns[5])
             {

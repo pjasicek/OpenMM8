@@ -13,7 +13,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int MinGold = 0;
         public int MaxGold = 0;
         public int ItemChance = 0;
-        public EquipType ItemType = EquipType.NotAvailable;
+        public ItemType ItemType = ItemType.NotAvailable;
         public LootItemLevel ItemLevel = LootItemLevel.None;
         public int CertainItemId = 0;
 

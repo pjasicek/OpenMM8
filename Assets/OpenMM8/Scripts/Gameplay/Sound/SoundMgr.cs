@@ -387,7 +387,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         if (isVictimInMeleeRange)
                         {
                             MonsterData npcData = result.Victim.GetComponent<BaseNpc>().NpcData;
-                            bool isNpcStrong = npcData.Level > chr.DefaultStats.Level;
+                            bool isNpcStrong = npcData.Level > chr.Stats.Level;
                             if (isNpcStrong)
                             {
                                 PlayRandomSound(chr.Sounds.KilledStrongMonster, chr.Party.PlayerAudioSource);

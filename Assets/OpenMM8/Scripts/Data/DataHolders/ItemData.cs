@@ -11,7 +11,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public string ImageName;
         public string Name;
         public int GoldValue;
-        public EquipType EquipType;
+        public ItemType ItemType;
         public SkillGroup SkillGroup;
         public string Mod1;
         public string Mod2;

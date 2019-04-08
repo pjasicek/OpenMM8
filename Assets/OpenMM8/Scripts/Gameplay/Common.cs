@@ -216,7 +216,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         None
     }
 
-    public enum EquipType
+    public enum ItemType
     {
         WeaponOneHanded,
         WeaponTwoHanded,
@@ -241,7 +241,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         Misc,
         Ore,
         MessageScroll,
-        NotAvailable
+        NotAvailable,
+        None
     }
 
     public enum EquipSlot

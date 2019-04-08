@@ -9,36 +9,36 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Items
     {
         public static BaseItem CreateItem(ItemData itemData)
         {
-            switch (itemData.EquipType)
+            switch (itemData.ItemType)
             {
-                case EquipType.WeaponOneHanded:
-                case EquipType.WeaponTwoHanded:
-                case EquipType.WeaponDualWield:
-                case EquipType.Wand:
-                case EquipType.Missile:
+                case ItemType.WeaponOneHanded:
+                case ItemType.WeaponTwoHanded:
+                case ItemType.WeaponDualWield:
+                case ItemType.Wand:
+                case ItemType.Missile:
                     return new WeaponItem(itemData);
 
-                case EquipType.Armor:
-                case EquipType.Shield:
-                case EquipType.Helmet:
-                case EquipType.Belt:
-                case EquipType.Cloak:
-                case EquipType.Gauntlets:
-                case EquipType.Boots:
-                case EquipType.Ring:
-                case EquipType.Amulet:
+                case ItemType.Armor:
+                case ItemType.Shield:
+                case ItemType.Helmet:
+                case ItemType.Belt:
+                case ItemType.Cloak:
+                case ItemType.Gauntlets:
+                case ItemType.Boots:
+                case ItemType.Ring:
+                case ItemType.Amulet:
                     return new ArmorItem(itemData);
 
-                case EquipType.Reagent:
-                case EquipType.Bottle:
-                case EquipType.SpellScroll:
+                case ItemType.Reagent:
+                case ItemType.Bottle:
+                case ItemType.SpellScroll:
                     return new ConsumableItem(itemData);
 
 
-                case EquipType.SpellBook:
+                case ItemType.SpellBook:
                     return new LearnableItem(itemData);
 
-                case EquipType.MessageScroll:
+                case ItemType.MessageScroll:
                     return new ReadableItem(itemData);
 
                 default:

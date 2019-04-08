@@ -39,41 +39,41 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Items
 
         public bool IsEquippable()
         {
-            return Data.EquipType == EquipType.WeaponOneHanded ||
-                Data.EquipType == EquipType.WeaponTwoHanded ||
-                Data.EquipType == EquipType.WeaponDualWield ||
-                Data.EquipType == EquipType.Wand ||
-                Data.EquipType == EquipType.Missile ||
-                Data.EquipType == EquipType.Armor ||
-                Data.EquipType == EquipType.Shield ||
-                Data.EquipType == EquipType.Helmet ||
-                Data.EquipType == EquipType.Belt ||
-                Data.EquipType == EquipType.Cloak ||
-                Data.EquipType == EquipType.Gauntlets ||
-                Data.EquipType == EquipType.Boots ||
-                Data.EquipType == EquipType.Ring ||
-                Data.EquipType == EquipType.Amulet;
+            return Data.ItemType == ItemType.WeaponOneHanded ||
+                Data.ItemType == ItemType.WeaponTwoHanded ||
+                Data.ItemType == ItemType.WeaponDualWield ||
+                Data.ItemType == ItemType.Wand ||
+                Data.ItemType == ItemType.Missile ||
+                Data.ItemType == ItemType.Armor ||
+                Data.ItemType == ItemType.Shield ||
+                Data.ItemType == ItemType.Helmet ||
+                Data.ItemType == ItemType.Belt ||
+                Data.ItemType == ItemType.Cloak ||
+                Data.ItemType == ItemType.Gauntlets ||
+                Data.ItemType == ItemType.Boots ||
+                Data.ItemType == ItemType.Ring ||
+                Data.ItemType == ItemType.Amulet;
         }
 
         public bool IsConsumable()
         {
-            return Data.EquipType == EquipType.Reagent ||
-                Data.EquipType == EquipType.Bottle; /* && Data.Id != EMPTY_BOTTLE */
+            return Data.ItemType == ItemType.Reagent ||
+                Data.ItemType == ItemType.Bottle; /* && Data.Id != EMPTY_BOTTLE */
         }
 
         public bool IsLearnable()
         {
-            return Data.EquipType == EquipType.SpellBook;
+            return Data.ItemType == ItemType.SpellBook;
         }
 
         public bool IsReadable()
         {
-            return Data.EquipType == EquipType.MessageScroll;
+            return Data.ItemType == ItemType.MessageScroll;
         }
 
         public bool IsCastable()
         {
-            return Data.EquipType == EquipType.SpellScroll;
+            return Data.ItemType == ItemType.SpellScroll;
         }
 
         public bool IsInteractibleWithDoll()
