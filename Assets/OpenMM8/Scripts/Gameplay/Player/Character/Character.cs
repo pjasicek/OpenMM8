@@ -1,4 +1,5 @@
-﻿using Assets.OpenMM8.Scripts.Gameplay.Data;
+﻿using Assets.OpenMM8.Scripts.Data;
+using Assets.OpenMM8.Scripts.Gameplay.Data;
 using Assets.OpenMM8.Scripts.Gameplay.Items;
 using System;
 using System.Collections.Generic;
@@ -39,8 +40,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public CharacterStats Stats = new CharacterStats();
         public CharacterStats BonusStats = new CharacterStats();
-        public Dictionary<SkillType, int> Skills = new Dictionary<SkillType, int>();
-        public Dictionary<SkillType, int> SkillBonuses = new Dictionary<SkillType, int>();
+
         public List<Award> Awards = new List<Award>();
         public List<Spell> Spells = new List<Spell>();
 
@@ -48,6 +48,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public RangeInt AttackDamage;
         public int ShootBonus;
         public RangeInt ShootDamage;
+
+        int AttackRecoveryTime;
+        int BeingHitRecoveryTime;
+
 
         public Inventory Inventory = new Inventory();
 
@@ -364,7 +368,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void RecalculateStats()
         {
-            // This method is stateless - it takes into consideration all factors in one shanpshot
+            // This method is stateless - it takes into consideration all factors (base stats, equipment, skills, buffs, etc)
+            //    and recalculates all stats
 
             List<BaseItem> equippedArmorItems = new List<BaseItem>();
             // Armor = everything besides weapon(s)
@@ -415,27 +420,19 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 }*/
             }
 
+            /*
+            foreach (SpellEffecct spellEffect in this.SpellEffects)
+            {
+                spellEffect.Apply(this);
+            }
+            */
 
 
             // After all stat modifiers are applied
-
-            // TODO: Do this generically, this is PoC
-            int attrEffect = 0;
             int totalMight = Stats.Attributes[CharAttribute.Might] + BonusStats.Attributes[CharAttribute.Might];
-            if (totalMight >= 500)
-            {
-                attrEffect = 30;
-            }
-            else if (totalMight >= 400)
-            {
-                attrEffect = 25;
-            }
-            else
-            {
-                // .....
-            }
+            int mightEffect = GameMechanics.GetAttributeEffect(totalMight);
 
-            AttackDamage.start = attrEffect;
+            AttackDamage.start = mightEffect;
             AttackDamage.length = 0;
             if (mainHandWeapon != null)
             {
@@ -444,8 +441,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 int minVariableDmg = int.Parse(diceCountAndSides[0]);
                 int maxVariableDmg = int.Parse(diceCountAndSides[1]) * minVariableDmg;
 
-                AttackDamage.start = attrEffect + minVariableDmg;
-                AttackDamage.length = attrEffect + maxVariableDmg;
+                AttackDamage.start = mightEffect + minVariableDmg;
+                AttackDamage.length = mightEffect + maxVariableDmg;
 
                 if (AttackDamage.start <= 0)
                 {
@@ -456,6 +453,61 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     AttackDamage.length = 1;
                 }
             }
+
+            ClassHpSpData classHpSpData = DbMgr.Instance.ClassHpSpDb.Get(Class);
+            int totalEndurance = Stats.Attributes[CharAttribute.Endurance] + BonusStats.Attributes[CharAttribute.Endurance];
+            int enduranceEffect = GameMechanics.GetAttributeEffect(totalEndurance);
+            int hpFromEndurance = enduranceEffect * classHpSpData.HitPointsFactor;
+            int hpFromLevel = classHpSpData.HitPointsBase + (Stats.Level + BonusStats.Level) * classHpSpData.HitPointsFactor;
+
+            // TODO: Bodybuilding + Item HP bonuses
+            Stats.MaxHitPoints = hpFromLevel + hpFromEndurance;
+
+            Stats.MaxSpellPoints = 0;
+            Stats.MaxSpellPoints += classHpSpData.SpellPointsBase + (Stats.Level + BonusStats.Level) * classHpSpData.SpellPointsFactor;
+            if (classHpSpData.IsSpellPointsFromIntellect)
+            {
+                int totalIntellect = Stats.Attributes[CharAttribute.Intellect] + BonusStats.Attributes[CharAttribute.Intellect];
+                int intellectEffect = GameMechanics.GetAttributeEffect(totalIntellect);
+                Stats.MaxSpellPoints += totalIntellect * classHpSpData.SpellPointsFactor;
+            }
+            if (classHpSpData.IsSpellPointsFromPersonality)
+            {
+                int totalPersonality = Stats.Attributes[CharAttribute.Personality] + BonusStats.Attributes[CharAttribute.Personality];
+                int personalityEffect = GameMechanics.GetAttributeEffect(totalPersonality);
+                Stats.MaxSpellPoints += totalPersonality * classHpSpData.SpellPointsFactor;
+            }
+
+            // TODO: + mana from items, + mana from meditation
+
+            int totalSpeed = Stats.Attributes[CharAttribute.Speed] + BonusStats.Attributes[CharAttribute.Speed];
+            int speedEffect = GameMechanics.GetAttributeEffect(totalSpeed);
+            Stats.ArmorClass += speedEffect;
+
+            // TODO: + armor class from items
+
+            BeingHitRecoveryTime = Math.Max(20 - enduranceEffect, 0);
+
+            // TODO: Calculate armor penalty
+            // TODO: "Swift" enchant
+            // int armorRecoveryPenalty = ...
+            AttackRecoveryTime = 100 - speedEffect; /* + armorRecoveryPenalty*/
+
+            // Recovery time cannot go lower than 30
+            // TODO: Bows and blasters are exception
+            if (AttackRecoveryTime < 30)
+            {
+                AttackRecoveryTime = 30;
+            }
+
+            int totalAccuracy = Stats.Attributes[CharAttribute.Accuracy] + BonusStats.Attributes[CharAttribute.Accuracy];
+            int accuracyEffect = GameMechanics.GetAttributeEffect(totalAccuracy);
+
+            AttackBonus = accuracyEffect;
+            ShootBonus = accuracyEffect;
+            // TODO: Add skill coefficients / bonuses
+
+            // TODO: Calculate/Add resist bonuses - buffs etc
         }
     }
 }

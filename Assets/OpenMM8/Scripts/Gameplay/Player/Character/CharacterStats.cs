@@ -16,5 +16,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public Dictionary<CharAttribute, int> Attributes = new Dictionary<CharAttribute, int>();
         public Dictionary<SpellElement, int> Resistances = new Dictionary<SpellElement, int>();
+        public Dictionary<SkillType, int> Skills = new Dictionary<SkillType, int>();
     }
 }

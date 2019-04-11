@@ -103,22 +103,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 GameEvents.OnActiveCharacterChanged -= OnActiveCharacterChanged;
 
                 UiMgr.Instance.m_CharDetailUI.CanvasHolder.enabled = false;
+
+                HideCurrCharUI();
             }
 
             private void OnActiveCharacterChanged(Character chr)
             {
-                if (m_UI.CurrDollUI != null && m_UI.CurrDollUI.Holder != null)
-                {
-                    m_UI.CurrDollUI.Holder.SetActive(false);
-                }
-                if (m_UI.InventoryUI.InventoryUI != null && m_UI.InventoryUI.InventoryUI.Holder != null)
-                {
-                    m_UI.InventoryUI.InventoryUI.Holder.SetActive(false);
-                }
-                if (m_UI.StatsUI.StatsUI != null && m_UI.StatsUI.StatsUI.Holder != null)
-                {
-                    m_UI.StatsUI.StatsUI.Holder.SetActive(false);
-                }
+                HideCurrCharUI();
 
                 m_UI.CurrDollUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.DollUI;
                 m_UI.InventoryUI.InventoryUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.InventoryUI;
@@ -166,6 +157,26 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         Debug.Log("Unknown state: " + m_State.ToString());
                         break;
                 }
+            }
+
+            private void HideCurrCharUI()
+            {
+                if (m_UI.CurrDollUI != null && m_UI.CurrDollUI.Holder != null)
+                {
+                    m_UI.CurrDollUI.Holder.SetActive(false);
+                }
+                if (m_UI.InventoryUI.InventoryUI != null && m_UI.InventoryUI.InventoryUI.Holder != null)
+                {
+                    m_UI.InventoryUI.InventoryUI.Holder.SetActive(false);
+                }
+                if (m_UI.StatsUI.StatsUI != null && m_UI.StatsUI.StatsUI.Holder != null)
+                {
+                    m_UI.StatsUI.StatsUI.Holder.SetActive(false);
+                }
+                /*if (m_UI.AwardsUI.AwardsUI != null && m_UI.AwardsUI.AwardsUI.Holder != null)
+                {
+                    m_UI.AwardsUI.AwardsUI.Holder.SetActive(false);
+                }*/
             }
 
             private void HideAllSubstates()

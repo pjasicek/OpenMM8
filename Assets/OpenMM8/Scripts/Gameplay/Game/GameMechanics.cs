@@ -33,7 +33,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             // Apply resistances
             int attackResistance = npcResistances[hitInfo.DamageType];
-            damageDealt *= GetResistanceReductionCoeff(attackResistance);
+            damageDealt *= GetResistanceReductionCoeff(hitInfo.DamageType, attackResistance, 0);
 
             result.DamageDealt = Mathf.RoundToInt(damageDealt);
 
@@ -63,47 +63,54 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             // Apply resistances
             int attackResistance = playerResistances[hitInfo.DamageType];
-            damageDealt *= GetResistanceReductionCoeff(attackResistance + playerLuck);
+            damageDealt *= GetResistanceReductionCoeff(hitInfo.DamageType, attackResistance, playerLuck);
 
             result.DamageDealt = Mathf.RoundToInt(damageDealt);
 
             return result;
         }
 
-        static public float GetResistanceReductionCoeff(int resistanceAmount)
+        /*
+         * When your character gets hit by magic, there is 1 - 30/(30 + Resistance + LuckEffect) chance of reducing damage on each 'dice drop'. Here's what happens:
+         *  Dice is dropped. If you are unlucky, you get full 100% damage.
+         *  If you are lucky, dice is dropped again. If you are unlucky this time, you get 1/2 (50%) damage.
+         *  If you are lucky, dice is dropped again. If you are unlucky this time, you get 1/4 (25%) damage.
+         *  If you are lucky, dice is dropped again. If you are unlucky this time, you get 1/8 (12.5%) damage.
+         *  If you are lucky, you get 1/16 (6.25%) damage.
+         */
+        static public float GetResistanceReductionCoeff(SpellElement element, int resistanceAmount, int luck)
         {
-            if (resistanceAmount >= 300)
-            {
-                return 0.2f;
-            }
-            else if (resistanceAmount >= 200)
-            {
-                return 0.26f;
-            }
-            else if (resistanceAmount >= 150)
-            {
-                return 0.31f;
-            }
-            else if (resistanceAmount >= 100)
-            {
-                return 0.39f;
-            }
-            else if (resistanceAmount >= 60)
-            {
-                return 0.5f;
-            }
-            else if (resistanceAmount >= 40)
-            {
-                return 0.6f;
-            }
-            else if (resistanceAmount >= 20)
-            {
-                return 0.75f;
-            }
-            else
+            // Only magic
+            if (element == SpellElement.None || element == SpellElement.Physical)
             {
                 return 1.0f;
             }
+
+            int luckEffect = GetAttributeEffect(luck);
+
+            float reductionChance = 1.0f - 30.0f / (30.0f + resistanceAmount + luckEffect);
+            if (reductionChance <= 0.0f)
+            {
+                return 1.0f;
+            }
+
+            float reductionCoeff = 1.0f;
+
+            // 5 dice rolls down to 1/16 chance
+            for (int i = 0; i < 5; i++)
+            {
+                float diceResult = UnityEngine.Random.Range(0.0f, 1.0f);
+                if (diceResult > reductionChance)
+                {
+                    // Dice roll failed;
+                    break;
+                }
+
+                // Dice roll successful - Halve the damage
+                reductionCoeff /= 2.0f;
+            }
+
+            return reductionCoeff;
         }
 
         static public int GetAttributeEffect(int attributeAmount)
@@ -226,15 +233,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
+        // e.g. how much total experience to reach level 5
         static public int GetTotalExperienceRequired(int level)
         {
-            return level * (level + 1) * 500;
+            return level * (level - 1) * 500;
         }
 
-        // e.g. how many xp is required from 10 to 11
-        static public int GetExperienceRequired(int toLevel)
+        // e.g. how many xp is required from 1 to 2
+        static public int GetExperienceToNextLevel(int currLevel)
         {
-            return toLevel * 1000;
+            return currLevel * 1000;
         }
     }
 }
