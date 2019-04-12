@@ -458,12 +458,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     case ItemType.WeaponDualWield:
                     case ItemType.WeaponTwoHanded:
                         m_InspectItemUI.ItemSpecific.text +=
-                                "\nAttack: " + item.Data.Mod2 + "    Damage: " + item.Data.Mod1;
+                                "\nAttack: +" + item.Data.Mod2 + "    Damage: " + item.Data.Mod1 + " + " + item.Data.Mod2;
                         break;
 
                     case ItemType.Missile:
                         m_InspectItemUI.ItemSpecific.text += 
-                            "\nShoot: " + item.Data.Mod2 + "    Damage: " + item.Data.Mod1;
+                            "\nShoot: +" + item.Data.Mod2 + "    Damage: " + item.Data.Mod1 + " + " + item.Data.Mod2;
                         break;
 
                     case ItemType.Armor:
@@ -473,7 +473,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     case ItemType.Gauntlets:
                     case ItemType.Boots:
                         m_InspectItemUI.ItemSpecific.text +=
-                            "\nArmor: " + (int.Parse(item.Data.Mod1) + int.Parse(item.Data.Mod2));
+                            "\nArmor: +" + (int.Parse(item.Data.Mod1) + int.Parse(item.Data.Mod2));
                         break;
 
                     case ItemType.Bottle:
@@ -1407,6 +1407,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 SetHeldItem(clickedItem.Item);
 
                 m_PlayerParty.ActiveCharacter.Inventory.RemoveItemFromDoll(clickedItem);
+
+                GameEvents.InvokeEvent_OnItemUnequipped(m_PlayerParty.ActiveCharacter, clickedItem.Item);
             }
             else
             {

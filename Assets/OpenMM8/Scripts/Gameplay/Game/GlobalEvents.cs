@@ -44,6 +44,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public delegate void ItemHold(/*Item item*/);
     public delegate void ItemHoldEnd();
     public delegate void ItemEquipped(Character chr, BaseItem equippedItem, BaseItem replacedItem);
+    public delegate void ItemUnequipped(Character chr, BaseItem unequippedItem);
     public delegate void InteractedWithItem(Character chr, BaseItem item, ItemInteractResult interactResult);
     public delegate void CharacterJoinedParty(Character chr, PlayerParty party);
     public delegate void CharacterLeftParty(Character chr, PlayerParty party);
@@ -94,6 +95,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         static public event ItemHold OnItemHold;
         static public event ItemHoldEnd OnItemHoldEnd;
         static public event ItemEquipped OnItemEquipped;
+        static public event ItemUnequipped onItemUnequipped;
         static public event InteractedWithItem OnInteractedWithItem;
         static public event CharacterJoinedParty OnCharacterJoinedParty;
         static public event CharacterLeftParty OnCharacterLeftParty;
@@ -274,6 +276,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         static public void InvokeEvent_OnItemEquipped(Character chr, BaseItem equippedItem, BaseItem replacedItem)
         {
             OnItemEquipped?.Invoke(chr, equippedItem, replacedItem);
+        }
+
+        static public void InvokeEvent_OnItemUnequipped(Character chr, BaseItem unequippedItem)
+        {
+            onItemUnequipped?.Invoke(chr, unequippedItem);
         }
 
         static public void InvokeEvent_OnInteractedWithItem(Character chr, BaseItem item, ItemInteractResult interactResult)

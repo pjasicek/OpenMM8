@@ -291,6 +291,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             inventoryItem.Image.enabled = false;
             inventoryItem.Item = null;
+
+            Owner.RecalculateStats();
         }
 
         public bool AddItem(int itemId)

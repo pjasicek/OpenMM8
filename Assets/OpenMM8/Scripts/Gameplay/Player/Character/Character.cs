@@ -36,18 +36,24 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int CurrSpellPoints;
         public Condition Condition;
 
-        public string QuickSpellName = "";
+        public string QuickSpellName = "None";
 
+        // Attributes when character has no buffs/equipment
         public CharacterStats Stats = new CharacterStats();
+
+        // Item bonuses, spell effects, temporary effects (fountain) etc.
         public CharacterStats BonusStats = new CharacterStats();
 
         public List<Award> Awards = new List<Award>();
         public List<Spell> Spells = new List<Spell>();
 
         public int AttackBonus;
-        public RangeInt AttackDamage;
+        public int MinAttackDamage;
+        public int MaxAttackDamage;
+
         public int ShootBonus;
-        public RangeInt ShootDamage;
+        public int MinShootDamage;
+        public int MaxShootDamage;
 
         int AttackRecoveryTime;
         int BeingHitRecoveryTime;
@@ -363,11 +369,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             GameEvents.InvokeEvent_OnInteractedWithItem(this, item, interactResult);
 
+            RecalculateStats();
+
             return interactResult;
         }
 
         public void RecalculateStats()
         {
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
             // This method is stateless - it takes into consideration all factors (base stats, equipment, skills, buffs, etc)
             //    and recalculates all stats
 
@@ -391,8 +402,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             // Only take into consideration equipped items
             equippedArmorItems.RemoveAll(item => item == null);
 
-            BaseItem mainHandWeapon = UI.DollUI.RH_Weapon.Item;
-            BaseItem offHandWeapon = UI.DollUI.LF_Weapon.Item;
+            BaseItem mainHandWeapon = UI.DollUI.RH_Weapon?.Item;
+            BaseItem offHandWeapon = UI.DollUI.LF_Weapon?.Item;
+            BaseItem bowWeapon = UI.DollUI.Bow.Item;
 
             // Base armor class = character base + armor base
             Stats.ArmorClass = 0;
@@ -430,10 +442,20 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             // After all stat modifiers are applied
             int totalMight = Stats.Attributes[CharAttribute.Might] + BonusStats.Attributes[CharAttribute.Might];
+            int totalIntellect = Stats.Attributes[CharAttribute.Intellect] + BonusStats.Attributes[CharAttribute.Intellect];
+            int totalEndurance = Stats.Attributes[CharAttribute.Endurance] + BonusStats.Attributes[CharAttribute.Endurance];
+            int totalPersonality = Stats.Attributes[CharAttribute.Personality] + BonusStats.Attributes[CharAttribute.Personality];
+            int totalSpeed = Stats.Attributes[CharAttribute.Speed] + BonusStats.Attributes[CharAttribute.Speed];
+            int totalAccuracy = Stats.Attributes[CharAttribute.Accuracy] + BonusStats.Attributes[CharAttribute.Accuracy];
+            int totalLuck = Stats.Attributes[CharAttribute.Luck] + BonusStats.Attributes[CharAttribute.Luck];
+
             int mightEffect = GameMechanics.GetAttributeEffect(totalMight);
 
-            AttackDamage.start = mightEffect;
-            AttackDamage.length = 0;
+            AttackBonus = 0;
+            MinAttackDamage = MaxAttackDamage = 0;
+            ShootBonus = 0;
+            MinShootDamage = MaxShootDamage = 0;
+
             if (mainHandWeapon != null)
             {
                 int baseDmg = int.Parse(mainHandWeapon.Data.Mod2);
@@ -441,21 +463,29 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 int minVariableDmg = int.Parse(diceCountAndSides[0]);
                 int maxVariableDmg = int.Parse(diceCountAndSides[1]) * minVariableDmg;
 
-                AttackDamage.start = mightEffect + minVariableDmg;
-                AttackDamage.length = mightEffect + maxVariableDmg;
+                MinAttackDamage += minVariableDmg + baseDmg;
+                MaxAttackDamage += maxVariableDmg + baseDmg;
 
-                if (AttackDamage.start <= 0)
-                {
-                    AttackDamage.start = 1;
-                }
-                if (AttackDamage.length <= 0)
-                {
-                    AttackDamage.length = 1;
-                }
+                AttackBonus += baseDmg;
+            }
+
+            MinAttackDamage += mightEffect;
+            MaxAttackDamage += mightEffect;
+
+            if (bowWeapon != null)
+            {
+                int baseDmg = int.Parse(bowWeapon.Data.Mod2);
+                string[] diceCountAndSides = bowWeapon.Data.Mod1.Split('d');
+                int minVariableDmg = int.Parse(diceCountAndSides[0]);
+                int maxVariableDmg = int.Parse(diceCountAndSides[1]) * minVariableDmg;
+
+                MinShootDamage += minVariableDmg + baseDmg;
+                MaxShootDamage += maxVariableDmg + baseDmg;
+
+                ShootBonus += baseDmg;
             }
 
             ClassHpSpData classHpSpData = DbMgr.Instance.ClassHpSpDb.Get(Class);
-            int totalEndurance = Stats.Attributes[CharAttribute.Endurance] + BonusStats.Attributes[CharAttribute.Endurance];
             int enduranceEffect = GameMechanics.GetAttributeEffect(totalEndurance);
             int hpFromEndurance = enduranceEffect * classHpSpData.HitPointsFactor;
             int hpFromLevel = classHpSpData.HitPointsBase + (Stats.Level + BonusStats.Level) * classHpSpData.HitPointsFactor;
@@ -467,20 +497,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Stats.MaxSpellPoints += classHpSpData.SpellPointsBase + (Stats.Level + BonusStats.Level) * classHpSpData.SpellPointsFactor;
             if (classHpSpData.IsSpellPointsFromIntellect)
             {
-                int totalIntellect = Stats.Attributes[CharAttribute.Intellect] + BonusStats.Attributes[CharAttribute.Intellect];
                 int intellectEffect = GameMechanics.GetAttributeEffect(totalIntellect);
                 Stats.MaxSpellPoints += totalIntellect * classHpSpData.SpellPointsFactor;
             }
+
             if (classHpSpData.IsSpellPointsFromPersonality)
             {
-                int totalPersonality = Stats.Attributes[CharAttribute.Personality] + BonusStats.Attributes[CharAttribute.Personality];
                 int personalityEffect = GameMechanics.GetAttributeEffect(totalPersonality);
                 Stats.MaxSpellPoints += totalPersonality * classHpSpData.SpellPointsFactor;
             }
 
             // TODO: + mana from items, + mana from meditation
 
-            int totalSpeed = Stats.Attributes[CharAttribute.Speed] + BonusStats.Attributes[CharAttribute.Speed];
             int speedEffect = GameMechanics.GetAttributeEffect(totalSpeed);
             Stats.ArmorClass += speedEffect;
 
@@ -500,14 +528,84 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 AttackRecoveryTime = 30;
             }
 
-            int totalAccuracy = Stats.Attributes[CharAttribute.Accuracy] + BonusStats.Attributes[CharAttribute.Accuracy];
             int accuracyEffect = GameMechanics.GetAttributeEffect(totalAccuracy);
 
-            AttackBonus = accuracyEffect;
-            ShootBonus = accuracyEffect;
+            AttackBonus += accuracyEffect;
+            ShootBonus += accuracyEffect;
             // TODO: Add skill coefficients / bonuses
 
             // TODO: Calculate/Add resist bonuses - buffs etc
+
+
+            // -------------------------------
+            // Clamping
+            // -------------------------------
+            AttackBonus = Math.Max(AttackBonus, 0);
+            ShootBonus = Math.Max(ShootBonus, 0);
+
+            MinAttackDamage = Math.Max(MinAttackDamage, 1);
+            MaxAttackDamage = Math.Max(MaxAttackDamage, 1);
+            MinShootDamage = Math.Max(MinShootDamage, 1);
+            MaxShootDamage = Math.Max(MaxShootDamage, 1);
+
+            // Maybe handle this elsewhere ?
+            StatsUI ui = UI.StatsUI;
+            ui.NameText.text = Name;
+            ui.SkillPointsText.text = SkillPoints.ToString();
+
+            ui.MightText.text = totalMight + " / " + Stats.Attributes[CharAttribute.Might];
+            ui.IntellectText.text = totalIntellect + " / " + Stats.Attributes[CharAttribute.Intellect];
+            ui.PersonalityText.text = totalPersonality + " / " + Stats.Attributes[CharAttribute.Personality];
+            ui.EnduranceText.text = totalEndurance + " / " + Stats.Attributes[CharAttribute.Endurance];
+            ui.AccuracyText.text = totalAccuracy + " / " + Stats.Attributes[CharAttribute.Accuracy];
+            ui.SpeedText.text = totalSpeed + " / " + Stats.Attributes[CharAttribute.Speed];
+            ui.LuckText.text = totalLuck + " / " + Stats.Attributes[CharAttribute.Luck];
+
+            ui.HitPointsText.text = CurrHitPoints + " / " + (Stats.MaxHitPoints + BonusStats.MaxHitPoints);
+            ui.SpellPointsText.text = CurrSpellPoints + " / " + (Stats.MaxSpellPoints + BonusStats.MaxSpellPoints);
+            ui.ArmorClassText.text = BonusStats.ArmorClass + Stats.ArmorClass + " / " + Stats.ArmorClass;
+
+            ui.ConditionText.text = Condition.ToString();
+            ui.QuickSpellText.text = QuickSpellName;
+
+            ui.AgeText.text = BonusStats.Age + Stats.Age + " / " + Stats.Age;
+            ui.LevelText.text = BonusStats.Level + Stats.Level + " / " + Stats.Level;
+            ui.ExperienceText.text = Experience.ToString();
+
+            string attackBonusStr = AttackBonus.ToString();
+            if (AttackBonus >= 0)
+            {
+                attackBonusStr = "+" + AttackBonus;
+            }
+            string attackDamageStr = MinAttackDamage + " - " + MaxAttackDamage;
+
+            string shootBonusStr = ShootBonus.ToString();
+            if (ShootBonus >= 0)
+            {
+                shootBonusStr = "+" + ShootBonus;
+            }
+            string shootDamageStr = MinShootDamage + " - " + MaxShootDamage;
+            if (UI.DollUI.Bow.Item == null)
+            {
+                shootDamageStr = "N/A";
+            }
+
+
+            ui.AttackText.text = attackBonusStr;
+            ui.AttackDamageText.text = attackDamageStr;
+            ui.ShootText.text = shootBonusStr;
+            ui.ShootDamageText.text = shootDamageStr;
+
+            Debug.Log("recalc time: " + sw.ElapsedMilliseconds);
+            sw.Stop();
+
         }
+
+        // Helper accessors
+        public int GetTotalMight()
+        {
+            return 0;
+        }
+        // ...
     }
 }

@@ -116,6 +116,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 m_UI.StatsUI.StatsUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.StatsUI;
                 m_UI.CurrDollUI.Holder.SetActive(true);
 
+                // TODO: Is it even necessary ?
+                chr.RecalculateStats();
                 DisplayDetailState(chr);
             }
 
@@ -202,6 +204,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 {
                     case CharDetailState.Stats:
                         m_UI.StatsUI.Holder.SetActive(true);
+                        UiMgr.Instance.m_PlayerParty.ActiveCharacter.RecalculateStats();
                         break;
 
                     case CharDetailState.Skills:

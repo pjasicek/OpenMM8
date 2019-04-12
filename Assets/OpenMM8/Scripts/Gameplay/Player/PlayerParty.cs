@@ -459,6 +459,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Characters.Add(character);
             
             GameEvents.InvokeEvent_OnCharacterJoinedParty(character, this);
+
+            character.RecalculateStats();
         }
 
         public void RemoveCharacter(Character character)
