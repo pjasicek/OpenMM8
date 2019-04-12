@@ -22,17 +22,17 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             foreach (CharAttribute attr in Enum.GetValues(typeof(CharAttribute)))
             {
-                Attributes[attr] = 0;
+                Attributes.Add(attr, 0);
             }
 
             foreach (SpellElement elem in Enum.GetValues(typeof(SpellElement)))
             {
-                Resistances[elem] = 0;
+                Resistances.Add(elem, 0);
             }
 
             foreach (SkillType skillType in Enum.GetValues(typeof(SkillType)))
             {
-                Skills[skillType] = 0;
+                Skills.Add(skillType, 0);
             }
         }
     }

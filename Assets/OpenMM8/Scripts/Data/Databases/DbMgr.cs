@@ -62,7 +62,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             ObjectDisplayDb.Initialize(MM8_DATA_PATH + @"OBJLIST");
             SkillDescriptionDb.Initialize(MM8_DATA_PATH + @"SKILL_DESCRIPTION", 2);
             ClassSkillsDb.Initialize(MM8_DATA_PATH + @"CLASS_SKILLS");
-            StartingStatsDb.Initialize(MM8_DATA_PATH + @"RACE_STARTING_STATS", 2);
+            StartingStatsDb.Initialize(MM8_DATA_PATH + @"RACE_STARTING_STATS");
             ClassHpSpDb.Initialize(MM8_DATA_PATH + @"CLASS_HP_SP", 2);
             ClassStartingSkillsDb.Initialize(MM8_DATA_PATH + @"CLASS_STARTING_SKILLS");
             DollTypeDb.Initialize(MM8_DATA_PATH + @"DOLL_TYPES");

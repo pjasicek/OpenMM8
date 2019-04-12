@@ -461,6 +461,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             GameEvents.InvokeEvent_OnCharacterJoinedParty(character, this);
 
             character.RecalculateStats();
+            character.CurrHitPoints = character.GetMaxHealth();
+            character.CurrSpellPoints = character.GetMaxSpellPoints();
         }
 
         public void RemoveCharacter(Character character)

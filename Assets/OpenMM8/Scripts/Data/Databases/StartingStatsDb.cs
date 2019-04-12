@@ -48,6 +48,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             AddStartingStat(CharAttribute.Speed, data, columns[11], columns[12]);
             AddStartingStat(CharAttribute.Luck, data, columns[13], columns[14]);
 
+            Debug.LogError("Added: " + data.Id);
+
             return data;
         }
 

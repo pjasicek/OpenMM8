@@ -92,6 +92,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             CharacterId = CharacterData.Id;
             Race = CharacterData.Race;
+            Class = (CharacterClass)CharacterData.DefaultClass;
 
             Inventory.Owner = this;
         }
@@ -103,9 +104,19 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return ((float)CurrHitPoints / (float)GetMaxHealth()) * 100.0f;
         }
 
+        public float GetManaPercentage()
+        {
+            return ((float)CurrSpellPoints / (float)GetMaxSpellPoints()) * 100.0f;
+        }
+
         public int GetMaxHealth()
         {
             return Stats.MaxHitPoints + BonusStats.MaxHitPoints;
+        }
+
+        public int GetMaxSpellPoints()
+        {
+            return Stats.MaxSpellPoints + BonusStats.MaxSpellPoints;
         }
 
         public int GetPartyIndex()
@@ -449,6 +460,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             int totalAccuracy = Stats.Attributes[CharAttribute.Accuracy] + BonusStats.Attributes[CharAttribute.Accuracy];
             int totalLuck = Stats.Attributes[CharAttribute.Luck] + BonusStats.Attributes[CharAttribute.Luck];
 
+            // TODO: Handle immunities (vampire = immune to mind, lich = immune to ?)
+            int totalFireResist = Stats.Resistances[SpellElement.Fire] + BonusStats.Resistances[SpellElement.Fire];
+            int totalAirResist = Stats.Resistances[SpellElement.Air] + BonusStats.Resistances[SpellElement.Air];
+            int totalWaterResist = Stats.Resistances[SpellElement.Water] + BonusStats.Resistances[SpellElement.Water];
+            int totalEarthResist = Stats.Resistances[SpellElement.Earth] + BonusStats.Resistances[SpellElement.Earth];
+            int totalMindResist = Stats.Resistances[SpellElement.Mind] + BonusStats.Resistances[SpellElement.Mind];
+            int totalBodyResist = Stats.Resistances[SpellElement.Body] + BonusStats.Resistances[SpellElement.Body];
+
             int mightEffect = GameMechanics.GetAttributeEffect(totalMight);
 
             AttackBonus = 0;
@@ -470,7 +489,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             MinAttackDamage += mightEffect;
-            MaxAttackDamage += mightEffect;
+            MaxAttackDamage += mightEffect + 2;
 
             if (bowWeapon != null)
             {
@@ -498,13 +517,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             if (classHpSpData.IsSpellPointsFromIntellect)
             {
                 int intellectEffect = GameMechanics.GetAttributeEffect(totalIntellect);
-                Stats.MaxSpellPoints += totalIntellect * classHpSpData.SpellPointsFactor;
+                Stats.MaxSpellPoints += intellectEffect * classHpSpData.SpellPointsFactor;
             }
 
             if (classHpSpData.IsSpellPointsFromPersonality)
             {
                 int personalityEffect = GameMechanics.GetAttributeEffect(totalPersonality);
-                Stats.MaxSpellPoints += totalPersonality * classHpSpData.SpellPointsFactor;
+                Stats.MaxSpellPoints += personalityEffect * classHpSpData.SpellPointsFactor;
             }
 
             // TODO: + mana from items, + mana from meditation
@@ -537,8 +556,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             // TODO: Calculate/Add resist bonuses - buffs etc
 
 
+            int totalHitPoints = GetMaxHealth();
+            int totalSpellPoints = GetMaxSpellPoints();
+
             // -------------------------------
-            // Clamping
+            // Clamping / Overrides - some stats cannot be below certain threshold
             // -------------------------------
             AttackBonus = Math.Max(AttackBonus, 0);
             ShootBonus = Math.Max(ShootBonus, 0);
@@ -548,29 +570,77 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             MinShootDamage = Math.Max(MinShootDamage, 1);
             MaxShootDamage = Math.Max(MaxShootDamage, 1);
 
+            CurrHitPoints = Math.Min(CurrHitPoints, totalHitPoints);
+            CurrSpellPoints = Math.Min(CurrSpellPoints, totalSpellPoints);
+
+            Stats.ArmorClass = Math.Max(Stats.ArmorClass, 0);
+            BonusStats.ArmorClass = Math.Max(BonusStats.ArmorClass, 0);
+            int totalArmorClass = Stats.ArmorClass + BonusStats.ArmorClass;
+
+            if (Race == CharacterRace.Vampire)
+            {
+                Stats.Resistances[SpellElement.Mind] = int.MaxValue;
+            }
+
             // Maybe handle this elsewhere ?
             StatsUI ui = UI.StatsUI;
             ui.NameText.text = Name;
             ui.SkillPointsText.text = SkillPoints.ToString();
 
-            ui.MightText.text = totalMight + " / " + Stats.Attributes[CharAttribute.Might];
-            ui.IntellectText.text = totalIntellect + " / " + Stats.Attributes[CharAttribute.Intellect];
-            ui.PersonalityText.text = totalPersonality + " / " + Stats.Attributes[CharAttribute.Personality];
-            ui.EnduranceText.text = totalEndurance + " / " + Stats.Attributes[CharAttribute.Endurance];
-            ui.AccuracyText.text = totalAccuracy + " / " + Stats.Attributes[CharAttribute.Accuracy];
-            ui.SpeedText.text = totalSpeed + " / " + Stats.Attributes[CharAttribute.Speed];
-            ui.LuckText.text = totalLuck + " / " + Stats.Attributes[CharAttribute.Luck];
+            ui.MightText.text = GenStatTextPair(totalMight, Stats.Attributes[CharAttribute.Might]);
+            ui.IntellectText.text = GenStatTextPair(totalIntellect, Stats.Attributes[CharAttribute.Intellect]);
+            ui.PersonalityText.text = GenStatTextPair(totalPersonality, Stats.Attributes[CharAttribute.Personality]);
+            ui.EnduranceText.text = GenStatTextPair(totalEndurance, Stats.Attributes[CharAttribute.Endurance]);
+            ui.AccuracyText.text = GenStatTextPair(totalAccuracy, Stats.Attributes[CharAttribute.Accuracy]);
+            ui.SpeedText.text = GenStatTextPair(totalSpeed, Stats.Attributes[CharAttribute.Speed]);
+            ui.LuckText.text = GenStatTextPair(totalLuck, Stats.Attributes[CharAttribute.Luck]);
 
-            ui.HitPointsText.text = CurrHitPoints + " / " + (Stats.MaxHitPoints + BonusStats.MaxHitPoints);
-            ui.SpellPointsText.text = CurrSpellPoints + " / " + (Stats.MaxSpellPoints + BonusStats.MaxSpellPoints);
-            ui.ArmorClassText.text = BonusStats.ArmorClass + Stats.ArmorClass + " / " + Stats.ArmorClass;
+            // hp/sp:
+            // < 20% = red
+            // < 100% = yellow
+            if (GetHealthPercentage() < 20.0f)
+            {
+                ui.HitPointsText.text = "<color=red>" + CurrHitPoints + "</color> / " + totalHitPoints;
+            }
+            else if (GetHealthPercentage() < 100.0f)
+            {
+                ui.HitPointsText.text = "<color=yellow>" + CurrHitPoints + "</color> / " + totalHitPoints;
+            }
+            else
+            {
+                ui.HitPointsText.text = CurrHitPoints + " / " + totalHitPoints;
+            }
+
+            if (GetManaPercentage() < 20.0f)
+            {
+                ui.SpellPointsText.text = "<color=red>" + CurrSpellPoints + "</color> / " + totalSpellPoints;
+            }
+            else if (GetManaPercentage() < 100.0f)
+            {
+                ui.SpellPointsText.text = "<color=yellow>" + CurrSpellPoints + "</color> / " + totalSpellPoints;
+            }
+            else
+            {
+                ui.SpellPointsText.text = CurrSpellPoints + " / " + totalSpellPoints;
+            }
+
+            ui.ArmorClassText.text = GenStatTextPair(totalArmorClass, Stats.ArmorClass);
 
             ui.ConditionText.text = Condition.ToString();
             ui.QuickSpellText.text = QuickSpellName;
 
-            ui.AgeText.text = BonusStats.Age + Stats.Age + " / " + Stats.Age;
-            ui.LevelText.text = BonusStats.Level + Stats.Level + " / " + Stats.Level;
-            ui.ExperienceText.text = Experience.ToString();
+            ui.AgeText.text = GenStatTextPair(BonusStats.Age + Stats.Age, Stats.Age);
+            ui.LevelText.text = GenStatTextPair(BonusStats.Level + Stats.Level, Stats.Level);
+
+            // Check if can reach next level
+            if (Experience > GameMechanics.GetTotalExperienceRequired(Stats.Level + 1))
+            {
+                ui.ExperienceText.text = "<color=green>" + Experience + "</color>";
+            }
+            else
+            {
+                ui.ExperienceText.text = Experience.ToString();
+            }
 
             string attackBonusStr = AttackBonus.ToString();
             if (AttackBonus >= 0)
@@ -596,9 +666,39 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             ui.ShootText.text = shootBonusStr;
             ui.ShootDamageText.text = shootDamageStr;
 
+
+
             Debug.Log("recalc time: " + sw.ElapsedMilliseconds);
             sw.Stop();
 
+        }
+
+        private string GenResistTextPair(int currValue, int baseValue)
+        {
+            if (baseValue == int.MaxValue)
+            {
+                return "Immune";
+            }
+            else
+            {
+                return GenStatTextPair(currValue, baseValue);
+            }
+        }
+
+        private string GenStatTextPair(int currValue, int baseValue)
+        {
+            if (currValue > baseValue)
+            {
+                return "<color=green>" + currValue + "</color> / " + baseValue;
+            }
+            else if (currValue < baseValue)
+            {
+                return "<color=red>" + currValue + "</color> / " + baseValue;
+            }
+            else
+            {
+                return currValue + " / " + baseValue; 
+            }
         }
 
         // Helper accessors

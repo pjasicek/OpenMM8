@@ -150,22 +150,22 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
     public enum CharacterClass
     {
-        Cleric,
-        Priest,
-        DarkElf,
-        Patriarch,
-        Dragon,
-        GreatWyrm,
-        Knight,
-        Champion,
-        Minotaur,
-        MinotaurLord,
-        Troll,
-        WarTroll,
-        Vampire,
-        Nosferatu,
-        Necromancer,
-        Lich,
+        Cleric = 4,
+        Priest = 5,
+        DarkElf = 8,
+        Patriarch = 9,
+        Dragon = 10,
+        GreatWyrm = 11,
+        Knight = 16,
+        Champion = 19,
+        Minotaur = 20,
+        MinotaurLord = 21,
+        Troll = 38,
+        WarTroll = 39,
+        Vampire = 40,
+        Nosferatu = 41,
+        Necromancer = 44,
+        Lich = 45,
         None
     }
 

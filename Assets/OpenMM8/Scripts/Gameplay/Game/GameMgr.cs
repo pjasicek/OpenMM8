@@ -6,6 +6,7 @@ using UnityEngine;
 
 using Assets.OpenMM8.Scripts.Gameplay.Data;
 using UnityEngine.UI;
+using Assets.OpenMM8.Scripts.Data;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
@@ -315,68 +316,28 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             Character chr = new Character(characterId);
 
-            chr.Name = "Tyrkys";
-            chr.Class = CharacterClass.Knight;
-            chr.Experience = 0;
-            chr.SkillPoints = 0;
-            chr.CurrHitPoints = 500;
-            chr.CurrSpellPoints = 50;
-            chr.Condition = Condition.Good;
-            chr.Stats.Age = 30;
-            chr.Stats.Level = 1;
-            chr.Stats.MaxHitPoints = 500;
-            chr.Stats.MaxSpellPoints = 50;
 
+            StartingStatsData startingStats = DbMgr.Instance.StartingStatsDb.Get(chr.Race);
+
+            chr.Name = "Tyrkys_" + characterId;
+            chr.Stats.Level = 1;
+            chr.Stats.Age = 20;
             foreach (CharAttribute attr in Enum.GetValues(typeof(CharAttribute)))
             {
-                chr.Stats.Attributes[attr] = 0;
-                chr.BonusStats.Attributes[attr] = 0;
+                if (attr == CharAttribute.None)
+                {
+                    continue;
+                }
+                chr.Stats.Attributes[attr] = startingStats.DefaultStats[attr];
             }
-
-            foreach (SpellElement resist in Enum.GetValues(typeof(SpellElement)))
-            {
-                chr.Stats.Resistances[resist] = 0;
-                chr.BonusStats.Resistances[resist] = 0;
-            }
-
-            
 
             PlayerParty.AddCharacter(chr);
         }
 
         public void AddRandChar()
         {
-            var chrType = (CharacterType)UnityEngine.Random.Range(1, (int)Enum.GetValues(typeof(CharacterType)).Cast<CharacterType>().Max());
-
             int characterId = UnityEngine.Random.Range(1, 28);
-
-            Character chr = new Character(characterId);
-
-            chr.Name = "Tyrkys";
-            chr.Class = CharacterClass.Knight;
-            chr.Experience = 0;
-            chr.SkillPoints = 0;
-            chr.CurrHitPoints = 500;
-            chr.CurrSpellPoints = 50;
-            chr.Condition = Condition.Good;
-            chr.Stats.Age = 30;
-            chr.Stats.Level = 1;
-            chr.Stats.MaxHitPoints = 500;
-            chr.Stats.MaxSpellPoints = 50;
-
-            foreach (CharAttribute attr in Enum.GetValues(typeof(CharAttribute)))
-            {
-                chr.Stats.Attributes[attr] = 0;
-                chr.Stats.Attributes[attr] = 0;
-            }
-
-            foreach (SpellElement resist in Enum.GetValues(typeof(SpellElement)))
-            {
-                chr.Stats.Resistances[resist] = 0;
-                chr.Stats.Resistances[resist] = 0;
-            }
-
-            PlayerParty.AddCharacter(chr);
+            AddChar(characterId);
         }
 
         public void PressEscape()
