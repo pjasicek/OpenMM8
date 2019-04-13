@@ -260,7 +260,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         Ring
     }
 
-    public enum SkillGroup
+    public enum ItemSkillGroup
     {
         Sword,
         Dagger,

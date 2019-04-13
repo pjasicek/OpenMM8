@@ -8,6 +8,8 @@ using Assets.OpenMM8.Scripts.Gameplay.Data;
 using UnityEngine.UI;
 using Assets.OpenMM8.Scripts.Data;
 
+using IngameDebugConsole;
+
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
     
@@ -159,6 +161,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 UiMgr.Instance.HandleButtonDown("NextPlayer");
             }
+            if (Input.GetButtonDown("Console"))
+            {
+                UiMgr.Instance.HandleButtonDown("Console");
+            }
             /*if (Input.GetButtonDown("Queust"))
             {
                 UiMgr.Instance.HandleButtonDown("Queust");
@@ -230,6 +236,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             m_InspectedObj = inspectedObj;
+
+            // TODO: Ingame command console
+            /*if (Input.GetKeyDown(KeyCode.Semicolon))
+            {
+                
+            }*/
 
             if (Input.GetKeyDown(KeyCode.F2))
             {
@@ -312,12 +324,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
+        // This adds initial character with initial attributes and skills to party
+        // Fails if party is full
+        // TODO: Make a dedicated class for these party-invitation actions
         public void AddChar(int characterId)
         {
             Character chr = new Character(characterId);
 
 
             StartingStatsData startingStats = DbMgr.Instance.StartingStatsDb.Get(chr.Race);
+            ClassStartingSkillsData startingSkills = DbMgr.Instance.ClassStartingSkillsDb.Get(chr.Class);
 
             chr.Name = "Tyrkys_" + characterId;
             chr.Stats.Level = 1;
@@ -329,6 +345,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     continue;
                 }
                 chr.Stats.Attributes[attr] = startingStats.DefaultStats[attr];
+            }
+
+            foreach (var skillAvailPair in startingSkills.SkillAvailabilityMap)
+            {
+                if (skillAvailPair.Value == StartingSkillAvailability.HasByDefault)
+                {
+                    chr.Stats.Skills[skillAvailPair.Key] = 1;
+                    Debug.Log(chr.Name + " learned: " + skillAvailPair.Key);
+                }
             }
 
             PlayerParty.AddCharacter(chr);

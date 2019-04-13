@@ -28,7 +28,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                         data.Id = classType;
                         Data.Add(classType, data);
 
-                        Debug.Log("Added: " + classType);
                         ColumnToClassMap.Add(colIdx, classType);
                     }
                     else

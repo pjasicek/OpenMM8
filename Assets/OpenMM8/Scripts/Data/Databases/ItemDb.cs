@@ -59,20 +59,20 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             }
             switch (columns[5])
             {
-                case "Sword": itemData.SkillGroup = SkillGroup.Sword; break;
-                case "Dagger": itemData.SkillGroup = SkillGroup.Dagger; break;
-                case "Axe": itemData.SkillGroup = SkillGroup.Axe; break;
-                case "Spear": itemData.SkillGroup = SkillGroup.Spear; break;
-                case "Bow": itemData.SkillGroup = SkillGroup.Bow; break;
-                case "Mace": itemData.SkillGroup = SkillGroup.Mace; break;
-                case "Club": itemData.SkillGroup = SkillGroup.Club; break;
-                case "Staff": itemData.SkillGroup = SkillGroup.Staff; break;
-                case "Leather": itemData.SkillGroup = SkillGroup.Leather; break;
-                case "Chain": itemData.SkillGroup = SkillGroup.Chain; break;
-                case "Plate": itemData.SkillGroup = SkillGroup.Plate; break;
-                case "Shield": itemData.SkillGroup = SkillGroup.Shield; break;
-                case "Misc": itemData.SkillGroup = SkillGroup.Misc; break;
-                default: itemData.SkillGroup = SkillGroup.Misc; break;
+                case "Sword": itemData.SkillGroup = ItemSkillGroup.Sword; break;
+                case "Dagger": itemData.SkillGroup = ItemSkillGroup.Dagger; break;
+                case "Axe": itemData.SkillGroup = ItemSkillGroup.Axe; break;
+                case "Spear": itemData.SkillGroup = ItemSkillGroup.Spear; break;
+                case "Bow": itemData.SkillGroup = ItemSkillGroup.Bow; break;
+                case "Mace": itemData.SkillGroup = ItemSkillGroup.Mace; break;
+                case "Club": itemData.SkillGroup = ItemSkillGroup.Club; break;
+                case "Staff": itemData.SkillGroup = ItemSkillGroup.Staff; break;
+                case "Leather": itemData.SkillGroup = ItemSkillGroup.Leather; break;
+                case "Chain": itemData.SkillGroup = ItemSkillGroup.Chain; break;
+                case "Plate": itemData.SkillGroup = ItemSkillGroup.Plate; break;
+                case "Shield": itemData.SkillGroup = ItemSkillGroup.Shield; break;
+                case "Misc": itemData.SkillGroup = ItemSkillGroup.Misc; break;
+                default: itemData.SkillGroup = ItemSkillGroup.Misc; break;
             }
             itemData.Mod1 = columns[6];
             itemData.Mod2 = columns[7];

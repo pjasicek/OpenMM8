@@ -21,6 +21,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                 int columnIndex = 0;
                 foreach (string column in columns)
                 {
+                    // The first row has SkillType names
+                    // They have to have the same name as SkillType enum items
                     SkillType skillType = SkillType.None;
                     if (Enum.TryParse(column, out skillType))
                     {
@@ -28,6 +30,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                     }
                     else
                     {
+                        // Column 0 is not used
+                        if (columnIndex != 0)
+                        {
+                            Debug.LogError("Failed to parse skill: " + column);
+                        }
                         ColumnToSkillMap.Add(columnIndex, SkillType.None);
                     }
 

@@ -244,5 +244,42 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             return currLevel * 1000;
         }
+
+        static public SkillGroupType GetSkillGroup(SkillType skillType)
+        {
+            switch (skillType)
+            {
+                case SkillType.Staff:
+                case SkillType.Sword:
+                case SkillType.Dagger:
+                case SkillType.Axe:
+                case SkillType.Spear:
+                case SkillType.Bow:
+                case SkillType.Blaster:
+                    return SkillGroupType.Weapon;
+
+                case SkillType.LeatherArmor:
+                case SkillType.ChainArmor:
+                case SkillType.PlateArmor:
+                case SkillType.Shield:
+                    return SkillGroupType.Armor;
+
+                case SkillType.FireMagic:
+                case SkillType.WaterMagic:
+                case SkillType.AirMagic:
+                case SkillType.EarthMagic:
+                case SkillType.MindMagic:
+                case SkillType.BodyMagic:
+                case SkillType.DragonAbility:
+                case SkillType.DarkElfAbility:
+                case SkillType.VampireAbility:
+                case SkillType.DarkMagic:
+                case SkillType.LightMagic:
+                    return SkillGroupType.Magic;
+
+                default:
+                    return SkillGroupType.Misc;
+            }
+        }
     }
 }

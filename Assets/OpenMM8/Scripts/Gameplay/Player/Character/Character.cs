@@ -12,7 +12,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 {
     // public delegate SpellResult SpellReceived(SpellInfo hitInfo, GameObject source);
     
-
     public class Character
     {
         // ID corresponding to CHARACTER_DATA table ID. MM8 characters are 1-28
@@ -95,6 +94,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Class = (CharacterClass)CharacterData.DefaultClass;
 
             Inventory.Owner = this;
+
+            // Testing
+            SkillPoints = 15;
         }
 
         // ============================ PUBLIC API ============================ 
@@ -252,7 +254,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public ItemInteractResult CanEquipItem(BaseItem item)
         {
             ItemType itemType = item.Data.ItemType;
-            SkillGroup skillGroup = item.Data.SkillGroup;
+            ItemSkillGroup skillGroup = item.Data.SkillGroup;
 
             if (!item.IsEquippable())
             {
@@ -488,8 +490,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 AttackBonus += baseDmg;
             }
 
-            MinAttackDamage += mightEffect;
-            MaxAttackDamage += mightEffect + 2;
+            MinAttackDamage += mightEffect + 1;
+            MaxAttackDamage += mightEffect + 3;
 
             if (bowWeapon != null)
             {
@@ -585,7 +587,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             // Maybe handle this elsewhere ?
             StatsUI ui = UI.StatsUI;
             ui.NameText.text = Name;
-            ui.SkillPointsText.text = SkillPoints.ToString();
+
+            string skillPointsStr = SkillPoints.ToString();
+            if (SkillPoints > 0)
+            {
+                skillPointsStr = "<color=#00ff00ff>" + SkillPoints + "</color>";
+            }
+            ui.SkillPointsText.text = "Skill Points: " + skillPointsStr;
 
             ui.MightText.text = GenStatTextPair(totalMight, Stats.Attributes[CharAttribute.Might]);
             ui.IntellectText.text = GenStatTextPair(totalIntellect, Stats.Attributes[CharAttribute.Intellect]);

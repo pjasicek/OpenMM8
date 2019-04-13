@@ -12,7 +12,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public string Name;
         public int GoldValue;
         public ItemType ItemType;
-        public SkillGroup SkillGroup;
+        public ItemSkillGroup SkillGroup;
         public string Mod1;
         public string Mod2;
         public string Material;

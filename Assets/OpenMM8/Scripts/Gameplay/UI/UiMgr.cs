@@ -38,6 +38,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         // State
         private UIState m_CurrUIState = null;
 
+        // TODO: UI states should be on stack 
+        private ConsoleUIState m_ConsoleUIState = null;
+
         [Header("UI")]
         private InspectNpcUI m_InspectNpcUI;
         private InspectItemUI m_InspectItemUI;
@@ -750,6 +753,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public bool HandleButtonDown(string button)
         {
+            // "HACK": Console takes precedence to all UI states
+            if (button == "Console" && m_ConsoleUIState == null)
+            {
+                m_ConsoleUIState = new ConsoleUIState();
+                m_ConsoleUIState.EnterState(null);
+                return true;
+            }
+            else if (m_ConsoleUIState != null)
+            {
+                return m_ConsoleUIState.OnActionPressed(button);
+            }
+
             if (m_CurrUIState != null)
             {
                 // States need to know how to handle actions
