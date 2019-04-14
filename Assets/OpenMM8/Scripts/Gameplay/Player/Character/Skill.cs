@@ -7,8 +7,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 {
     public class Skill
     {
-        SkillType Type;
-        SkillMastery Mastery;
-        int Level;
+        public SkillType Type;
+        public SkillMastery Mastery;
+        public int Level;
     }
 }

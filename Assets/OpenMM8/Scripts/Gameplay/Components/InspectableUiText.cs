@@ -10,7 +10,7 @@ using UnityEngine.UI;
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
     [RequireComponent(typeof(Text))]
-    abstract public class InspectableUiText : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
+    abstract public class InspectableUiText : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         public Character Owner;
 
@@ -25,11 +25,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public void OnPointerExit(PointerEventData eventData)
         {
             GameEvents.InvokeEvent_OnInspectableUiTextHoverEnd(this);
-        }
-
-        public void OnPointerDown(PointerEventData eventData)
-        {
-            
         }
     }
 }

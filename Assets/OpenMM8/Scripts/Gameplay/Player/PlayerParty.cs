@@ -463,6 +463,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             character.RecalculateStats();
             character.CurrHitPoints = character.GetMaxHealth();
             character.CurrSpellPoints = character.GetMaxSpellPoints();
+
+            character.UI.SkillsUI.RepositionSkillRows();
+            character.UI.SkillsUI.Repaint(character.SkillPoints);
         }
 
         public void RemoveCharacter(Character character)

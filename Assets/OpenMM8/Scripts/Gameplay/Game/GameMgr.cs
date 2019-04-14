@@ -347,16 +347,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 chr.Stats.Attributes[attr] = startingStats.DefaultStats[attr];
             }
 
+            PlayerParty.AddCharacter(chr);
+
             foreach (var skillAvailPair in startingSkills.SkillAvailabilityMap)
             {
                 if (skillAvailPair.Value == StartingSkillAvailability.HasByDefault)
                 {
-                    chr.Stats.Skills[skillAvailPair.Key] = 1;
+                    chr.LearnSkill(skillAvailPair.Key);
                     Debug.Log(chr.Name + " learned: " + skillAvailPair.Key);
                 }
             }
-
-            PlayerParty.AddCharacter(chr);
+            //chr.LearnSkill(SkillType.Staff);
+            //chr.LearnSkill(SkillType.Blaster);
         }
 
         public void AddRandChar()

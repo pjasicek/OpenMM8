@@ -10,8 +10,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     // Thanks to: https://grayface.github.io/mm/mechanics/
     static public class GameMechanics
     {
-        static public AttackResult DamageFromPlayerToNpc(AttackInfo hitInfo, 
-            Dictionary<SpellElement, int> npcResistances, 
+        static public AttackResult DamageFromPlayerToNpc(AttackInfo hitInfo,
+            Dictionary<SpellElement, int> npcResistances,
             int npcArmorClass)
         {
             AttackResult result = new AttackResult();
@@ -40,9 +40,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return result;
         }
 
-        static public AttackResult DamageFromNpcToPlayer(AttackInfo hitInfo, 
-            Dictionary<SpellElement, int> playerResistances, 
-            int playerArmorClass, 
+        static public AttackResult DamageFromNpcToPlayer(AttackInfo hitInfo,
+            Dictionary<SpellElement, int> playerResistances,
+            int playerArmorClass,
             int playerLuck)
         {
             AttackResult result = new AttackResult();
@@ -245,7 +245,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return currLevel * 1000;
         }
 
-        static public SkillGroupType GetSkillGroup(SkillType skillType)
+        /*static public SkillGroupType GetSkillGroup(SkillType skillType)
         {
             switch (skillType)
             {
@@ -280,6 +280,26 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 default:
                     return SkillGroupType.Misc;
             }
+        }*/
+
+        // e.g. currentClass == Knight ? return Champion
+        //      currentClass == Necromancer ? return Lich
+        // When currentClass is already the final promotion, CharacterClass.None is returned
+        static public CharacterClass GetNextClassPromotion(CharacterClass currentClass)
+        {
+            switch (currentClass)
+            {
+                case CharacterClass.Cleric: return CharacterClass.Priest;
+                case CharacterClass.DarkElf: return CharacterClass.Patriarch;
+                case CharacterClass.Dragon: return CharacterClass.GreatWyrm;
+                case CharacterClass.Knight: return CharacterClass.Champion;
+                case CharacterClass.Minotaur: return CharacterClass.MinotaurLord;
+                case CharacterClass.Troll: return CharacterClass.WarTroll;
+                case CharacterClass.Vampire: return CharacterClass.Nosferatu;
+                case CharacterClass.Necromancer: return CharacterClass.Lich;
+            }
+
+            return CharacterClass.None;
         }
     }
 }

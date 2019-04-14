@@ -135,7 +135,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }*/
 
             sw.Stop();
-            UnityEngine.Debug.LogError("Sound load elapsed: " + sw.ElapsedMilliseconds + " ms");
+            //UnityEngine.Debug.LogError("Sound load elapsed: " + sw.ElapsedMilliseconds + " ms");
 
             return true;
         }

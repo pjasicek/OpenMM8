@@ -7,8 +7,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 {
     public class CharacterStats
     {
-        public int MaxHitPoints;
-        public int MaxSpellPoints;
+        public int HitPoints;
+        public int SpellPoints;
         public int ArmorClass;
 
         public int Age;
@@ -16,7 +16,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public Dictionary<CharAttribute, int> Attributes = new Dictionary<CharAttribute, int>();
         public Dictionary<SpellElement, int> Resistances = new Dictionary<SpellElement, int>();
-        public Dictionary<SkillType, int> Skills = new Dictionary<SkillType, int>();
+        public Dictionary<SkillType, int> SkillLevels = new Dictionary<SkillType, int>();
 
         public CharacterStats()
         {
@@ -32,7 +32,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             foreach (SkillType skillType in Enum.GetValues(typeof(SkillType)))
             {
-                Skills.Add(skillType, 0);
+                SkillLevels.Add(skillType, 0);
             }
         }
     }

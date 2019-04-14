@@ -83,6 +83,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 m_UI.CurrDollUI.Holder.SetActive(true);
                 m_UI.InventoryUI.InventoryUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.InventoryUI;
                 m_UI.StatsUI.StatsUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.StatsUI;
+                m_UI.SkillsUI.SkillsUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.SkillsUI;
 
                 CharDetailUIStateArgs args = (CharDetailUIStateArgs)stateArgs;
 
@@ -114,6 +115,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 m_UI.CurrDollUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.DollUI;
                 m_UI.InventoryUI.InventoryUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.InventoryUI;
                 m_UI.StatsUI.StatsUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.StatsUI;
+                m_UI.SkillsUI.SkillsUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.SkillsUI;
                 m_UI.CurrDollUI.Holder.SetActive(true);
 
                 // TODO: Is it even necessary ?
@@ -150,6 +152,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         break;
 
                     case CharDetailState.Skills:
+                        if (m_UI.SkillsUI.SkillsUI != null)
+                        {
+                            m_UI.SkillsUI.SkillsUI.Holder.SetActive(false);
+                        }
+                        m_UI.SkillsUI.SkillsUI = chr.UI.SkillsUI;
+                        m_UI.SkillsUI.SkillsUI.Holder.SetActive(true);
                         break;
 
                     case CharDetailState.Awards:
@@ -174,6 +182,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 if (m_UI.StatsUI.StatsUI != null && m_UI.StatsUI.StatsUI.Holder != null)
                 {
                     m_UI.StatsUI.StatsUI.Holder.SetActive(false);
+                }
+                if (m_UI.SkillsUI.SkillsUI != null && m_UI.SkillsUI.SkillsUI.Holder != null)
+                {
+                    m_UI.SkillsUI.SkillsUI.Holder.SetActive(false);
                 }
                 /*if (m_UI.AwardsUI.AwardsUI != null && m_UI.AwardsUI.AwardsUI.Holder != null)
                 {

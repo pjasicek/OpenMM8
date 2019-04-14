@@ -72,6 +72,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public class CharSkillsUI
     {
         public GameObject Holder;
+        public SkillsUI SkillsUI;
 
         static public CharSkillsUI Load(GameObject origin)
         {

@@ -34,6 +34,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int CurrHitPoints;
         public int CurrSpellPoints;
         public Condition Condition;
+        public Dictionary<SkillType, Skill> Skills = new Dictionary<SkillType, Skill>();
 
         public string QuickSpellName = "None";
 
@@ -113,12 +114,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public int GetMaxHealth()
         {
-            return Stats.MaxHitPoints + BonusStats.MaxHitPoints;
+            return Stats.HitPoints + BonusStats.HitPoints;
         }
 
         public int GetMaxSpellPoints()
         {
-            return Stats.MaxSpellPoints + BonusStats.MaxSpellPoints;
+            return Stats.SpellPoints + BonusStats.SpellPoints;
         }
 
         public int GetPartyIndex()
@@ -217,7 +218,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void AddCurrHitPoints(int numHitPoints)
         {
-            int maxHP = Stats.MaxHitPoints + BonusStats.MaxHitPoints;
+            int maxHP = Stats.HitPoints + BonusStats.HitPoints;
             CurrHitPoints = Mathf.Min(CurrHitPoints + numHitPoints, maxHP);
 
             GameEvents.InvokeEvent_OnCharHealthChanged(this, maxHP, CurrHitPoints, numHitPoints);
@@ -225,7 +226,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void AddCurrSpellPoints(int numSpellPoints)
         {
-            int maxMP = Stats.MaxSpellPoints + BonusStats.MaxSpellPoints;
+            int maxMP = Stats.SpellPoints + BonusStats.SpellPoints;
             CurrSpellPoints = Mathf.Min(CurrSpellPoints + numSpellPoints, maxMP);
     
             GameEvents.InvokeEvent_OnCharManaChanged(this, maxMP, CurrSpellPoints);
@@ -387,6 +388,97 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return interactResult;
         }
 
+        public bool HasSkill(SkillType skillType)
+        {
+            return Skills.ContainsKey(skillType) && 
+                Skills[skillType].Mastery != SkillMastery.None;
+        }
+
+        public SkillMastery GetSkillMastery(SkillType skillType)
+        {
+            if (!HasSkill(skillType))
+            {
+                return SkillMastery.None;
+            }
+
+            return Skills[skillType].Mastery;
+        }
+
+        public void AddSKill(SkillType skillType, SkillMastery skillMastery, int skillLevel)
+        {
+            if (HasSkill(skillType))
+            {
+                Debug.LogWarning(Name + " already knows skill: " + skillType);
+                return;
+            }
+
+            Skill newSkill = new Skill();
+            newSkill.Mastery = skillMastery;
+            newSkill.Type = skillType;
+            newSkill.Level = skillLevel;
+
+            Skills.Add(skillType, newSkill);
+
+            UI.SkillsUI.AddSkillRow(newSkill);
+            UI.SkillsUI.Refresh();
+        }
+
+        public void SetSkillMastery(SkillType skillType, SkillMastery skillMastery)
+        {
+            if (!HasSkill(skillType))
+            {
+                Debug.LogWarning(Name + " does not have skill: " + skillType);
+                return;
+            }
+
+            // TODO: Check for Level x Mastery validity ?
+            Skills[skillType].Mastery = skillMastery;
+
+            UI.SkillsUI.Refresh();
+        }
+
+        public void LearnSkill(SkillType skillType)
+        {
+            if (HasSkill(skillType))
+            {
+                Debug.LogWarning(Name + " already knows skill: " + skillType);
+                return;
+            }
+
+            Skill newSkill = new Skill();
+            newSkill.Mastery = SkillMastery.Normal;
+            newSkill.Type = skillType;
+            newSkill.Level = 1;
+
+            Skills.Add(skillType, newSkill);
+
+            UI.SkillsUI.AddSkillRow(newSkill);
+            UI.SkillsUI.Refresh();
+        }
+
+        public void OnSkillClicked(SkillType skillType)
+        {
+            if (!HasSkill(skillType))
+            {
+                Debug.LogError(Name + ": skill clicked but it isne learned ? " + skillType);
+                return;
+            }
+
+            Skill skill = Skills[skillType];
+            if (SkillPoints > skill.Level)
+            {
+                SkillPoints -= skill.Level + 1;
+                skill.Level++;
+
+                UI.SkillsUI.Refresh();
+                RecalculateStats();
+
+                // TODO: Separate ?
+                CharFaceUpdater.SetAvatar(UiMgr.RandomSprite(UI.Sprites.Smile), 0.75f);
+                SoundMgr.PlaySoundByName("Quest");
+            }
+        }
+
         public void RecalculateStats()
         {
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
@@ -512,20 +604,20 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             int hpFromLevel = classHpSpData.HitPointsBase + (Stats.Level + BonusStats.Level) * classHpSpData.HitPointsFactor;
 
             // TODO: Bodybuilding + Item HP bonuses
-            Stats.MaxHitPoints = hpFromLevel + hpFromEndurance;
+            Stats.HitPoints = hpFromLevel + hpFromEndurance;
 
-            Stats.MaxSpellPoints = 0;
-            Stats.MaxSpellPoints += classHpSpData.SpellPointsBase + (Stats.Level + BonusStats.Level) * classHpSpData.SpellPointsFactor;
+            Stats.SpellPoints = 0;
+            Stats.SpellPoints += classHpSpData.SpellPointsBase + (Stats.Level + BonusStats.Level) * classHpSpData.SpellPointsFactor;
             if (classHpSpData.IsSpellPointsFromIntellect)
             {
                 int intellectEffect = GameMechanics.GetAttributeEffect(totalIntellect);
-                Stats.MaxSpellPoints += intellectEffect * classHpSpData.SpellPointsFactor;
+                Stats.SpellPoints += intellectEffect * classHpSpData.SpellPointsFactor;
             }
 
             if (classHpSpData.IsSpellPointsFromPersonality)
             {
                 int personalityEffect = GameMechanics.GetAttributeEffect(totalPersonality);
-                Stats.MaxSpellPoints += personalityEffect * classHpSpData.SpellPointsFactor;
+                Stats.SpellPoints += personalityEffect * classHpSpData.SpellPointsFactor;
             }
 
             // TODO: + mana from items, + mana from meditation
