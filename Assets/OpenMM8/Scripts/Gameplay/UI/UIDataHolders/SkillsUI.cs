@@ -106,6 +106,7 @@ public class SkillsUI
         skillUIRow.LevelText = OpenMM8Util.GetComponentAtScenePath<Text>("SkillLevel", skillUIRow.Holder);
 
         skillUIRow.Holder.GetComponent<InspectableUiSkill>().SkillType = skillType;
+        skillUIRow.Holder.GetComponent<InspectableUiSkill>().Owner = Owner;
 
         skillUIRow.SkillName = skillDescData.Name;
         skillUIRow.SkillText.text = skillDescData.Name;
