@@ -1080,6 +1080,26 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             chr.UI.DollUI.Gauntlets = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("GauntletSlot", chr.UI.DollUI.AccessoryBackgroundHolder);
             chr.UI.DollUI.Necklace = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("NecklaceSlot", chr.UI.DollUI.AccessoryBackgroundHolder);
 
+            // Fill inventory slots
+            chr.EquipSlots.Add(chr.UI.DollUI.Armor);
+            chr.EquipSlots.Add(chr.UI.DollUI.Boots);
+            chr.EquipSlots.Add(chr.UI.DollUI.Cloak);
+            chr.EquipSlots.Add(chr.UI.DollUI.Belt);
+            chr.EquipSlots.Add(chr.UI.DollUI.Helmet);
+            chr.EquipSlots.Add(chr.UI.DollUI.Bow);
+            chr.EquipSlots.Add(chr.UI.DollUI.RH_Weapon);
+            //chr.EquipSlots.Add(chr.UI.DollUI.LH_Weapon);
+            //chr.EquipSlots.Add(chr.UI.DollUI.Shield);
+
+            chr.EquipSlots.Add(chr.UI.DollUI.Ring_1);
+            chr.EquipSlots.Add(chr.UI.DollUI.Ring_2);
+            chr.EquipSlots.Add(chr.UI.DollUI.Ring_3);
+            chr.EquipSlots.Add(chr.UI.DollUI.Ring_4);
+            chr.EquipSlots.Add(chr.UI.DollUI.Ring_5);
+            chr.EquipSlots.Add(chr.UI.DollUI.Ring_6);
+            chr.EquipSlots.Add(chr.UI.DollUI.Gauntlets);
+            chr.EquipSlots.Add(chr.UI.DollUI.Necklace);
+
             chr.UI.DollUI.Holder.SetActive(false);
 
             OpenMM8Util.GetComponentAtScenePath<Button>("MagnifyGlass", chr.UI.DollUI.Holder).onClick.AddListener(

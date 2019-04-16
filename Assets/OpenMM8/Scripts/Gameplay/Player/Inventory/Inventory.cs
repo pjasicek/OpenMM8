@@ -302,21 +302,17 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Vector2Int itemPos;
             if (!CanPlaceItem(itemData, out itemPos))
             {
-                Debug.Log("Inventory full");
                 return false;
             }
 
             BaseItem item = ItemFactory.CreateItem(itemData);
             item.InvCellPosition = itemPos;
-            Debug.Log("ItemPos: " + itemPos.ToString());
             GetCells(itemPos.x, itemPos.y, itemData.InvSize.x, itemData.InvSize.y)
                 .ForEach(cell => cell.Item = item);
 
             InventoryItems.Add(item);
 
             Owner.UI.InventoryUI.AddItem(item);
-
-            Debug.Log("Item (" + itemId + ") added");
 
             return true;
         }
@@ -386,7 +382,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             Owner.UI.InventoryUI.AddItem(item);
 
-            Debug.Log("Item (" + itemData.Id + ") added");
+            //Debug.Log("Item (" + itemData.Id + ") added");
 
             return true;
         }
@@ -530,7 +526,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 for (int y = startY; y < startY + height; y++)
                 {
-                    Debug.Log("Cleared cell: [" + x + "," + y + "]");
                     InventoryCell cell = GetCell(x, y);
                     cell.Clear();
                 }

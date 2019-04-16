@@ -169,6 +169,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         None
     }
 
+    // NOTUSED
     public enum CharacterType
     {
         None = -1,
@@ -200,6 +201,69 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         Dragon_2,
         Lich_1,
         LichFemale_1,
+    }
+
+    public enum ItemEnchantAttrBonus
+    {
+        // Attribute bonuses
+        Might,
+        Intellect,
+        Personality,
+        Endurance,
+        Accuracy,
+        Speed,
+        Luck,
+        HitPoints,
+        SpellPoints,
+        ArmorClass,
+        FireResistance,
+        AirResistance,
+        WaterResistance,
+        EarthResistance,
+        MindResistance,
+        BodyResistance,
+        Age,
+        Level,
+        // Skill bonuses
+        Staff,
+        Sword,
+        Dagger,
+        Axe,
+        Spear,
+        Bow,
+        Mace,
+        Blaster,
+        Shield,
+        LeatherArmor,
+        ChainArmor,
+        PlateArmor,
+        FireMagic,
+        AirMagic,
+        WaterMagic,
+        EarthMagic,
+        SpiritMagic,
+        MindMagic,
+        BodyMagic,
+        LightMagic,
+        DarkMagic,
+        DarkElfAbility,
+        DragonAbility,
+        VampireAbility,
+        Merchant,
+        RepairItem,
+        IdentifyItem,
+        IdentifyMonster,
+        Meditation,
+        Alchemy,
+        Perception,
+        Regeneration,
+        DisarmTraps,
+        Bodybuilding,
+        Armsmaster,
+        Learning,
+        Dodging,
+        Unarmed,
+        Stealing,
     }
 
     public enum CharacterRace

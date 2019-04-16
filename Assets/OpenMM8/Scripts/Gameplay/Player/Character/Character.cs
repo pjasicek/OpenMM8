@@ -60,8 +60,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
 
         public Inventory Inventory = new Inventory();
-
-        public List<BaseItem> EquippedItems = new List<BaseItem>();
+        public List<InventoryItem> EquipSlots = new List<InventoryItem>();
 
         private float m_TimeUntilRecovery = 0.0f;
         public float TimeUntilRecovery
@@ -802,10 +801,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         }
 
         // Helper accessors
-        public int GetTotalMight()
+        public int GetBaseMight()
         {
             return 0;
         }
-        // ...
+        
+        public int GetActualMight()
+        {
+            return 0;
+        }
     }
 }
