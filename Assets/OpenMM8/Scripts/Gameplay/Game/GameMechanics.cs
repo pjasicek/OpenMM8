@@ -301,5 +301,157 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             return CharacterClass.None;
         }
+
+        static public float GetAttributeAgingMultiplier(int age, CharAttribute attribute)
+        {
+            switch (attribute)
+            {
+                case CharAttribute.Might:
+                    if (age >= 150)
+                    {
+                        return 0.1f;
+                    }
+                    else if (age >= 100)
+                    {
+                        return 0.4f;
+                    }
+                    else if (age >= 50)
+                    {
+                        return 0.75f;
+                    }
+                    else
+                    {
+                        return 1.0f;
+                    }
+
+                case CharAttribute.Intellect:
+                    if (age >= 150)
+                    {
+                        return 0.1f;
+                    }
+                    else if (age >= 100)
+                    {
+                        return 1.0f;
+                    }
+                    else if (age >= 50)
+                    {
+                        return 1.5f;
+                    }
+                    else
+                    {
+                        return 1.0f;
+                    }
+
+                // This was "Willpower" in MM7 - im not sure if a person between 50 and 100 years should
+                // have better personality ?
+                case CharAttribute.Personality:
+                    if (age >= 150)
+                    {
+                        return 0.1f;
+                    }
+                    else if (age >= 100)
+                    {
+                        return 1.0f;
+                    }
+                    else if (age >= 50)
+                    {
+                        return 1.5f;
+                    }
+                    else
+                    {
+                        return 1.0f;
+                    }
+
+                case CharAttribute.Endurance:
+                    if (age >= 150)
+                    {
+                        return 0.1f;
+                    }
+                    else if (age >= 100)
+                    {
+                        return 0.4f;
+                    }
+                    else if (age >= 50)
+                    {
+                        return 0.75f;
+                    }
+                    else
+                    {
+                        return 1.0f;
+                    }
+
+                case CharAttribute.Accuracy:
+                    if (age >= 150)
+                    {
+                        return 0.1f;
+                    }
+                    else if (age >= 100)
+                    {
+                        return 0.4f;
+                    }
+                    else if (age >= 50)
+                    {
+                        return 1.0f;
+                    }
+                    else
+                    {
+                        return 1.0f;
+                    }
+
+                case CharAttribute.Speed:
+                    if (age >= 150)
+                    {
+                        return 0.1f;
+                    }
+                    else if (age >= 100)
+                    {
+                        return 0.4f;
+                    }
+                    else if (age >= 50)
+                    {
+                        return 1.0f;
+                    }
+                    else
+                    {
+                        return 1.0f;
+                    }
+
+                case CharAttribute.Luck:
+                    if (age >= 150)
+                    {
+                        return 1.0f;
+                    }
+                    else if (age >= 100)
+                    {
+                        return 1.0f;
+                    }
+                    else if (age >= 50)
+                    {
+                        return 1.0f;
+                    }
+                    else
+                    {
+                        return 1.0f;
+                    }
+            }
+
+            return 1.0f;
+        }
+
+        public static AttributeBonus CharAttributeToAttributeBonus(CharAttribute attribute)
+        {
+            switch (attribute)
+            {
+                case CharAttribute.Accuracy: return AttributeBonus.Accuracy;
+                case CharAttribute.Endurance: return AttributeBonus.Endurance;
+                case CharAttribute.Might: return AttributeBonus.Might;
+                case CharAttribute.Intellect: return AttributeBonus.Intellect;
+                case CharAttribute.Personality: return AttributeBonus.Personality;
+                case CharAttribute.Luck: return AttributeBonus.Luck;
+                case CharAttribute.Speed: return AttributeBonus.Speed;
+            }
+
+            return AttributeBonus.None;
+        }
     }
 }

@@ -35,9 +35,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int Gold = 200;
         public int Food = 0;
 
+
+        public Dictionary<PartyEffectType, SpellEffect> PartyBuffMap = new Dictionary<PartyEffectType, SpellEffect>();
+
+
+        // ========================================================================================
+
         private void Awake()
         {
-
+            foreach (PartyEffectType effect in Enum.GetValues(typeof(PartyEffectType)))
+            {
+                PartyBuffMap.Add(effect, new SpellEffect());
+            }
         }
 
         private void Start()

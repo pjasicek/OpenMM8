@@ -17,6 +17,62 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int Month;
         public int Year;
         public DayOfWeek DayOfWeek;
+
+        public TimeInfo() { }
+
+        public TimeInfo(TimeInfo other)
+        {
+            Minute = other.Minute;
+            Hour = other.Hour;
+            Day = other.Day;
+            Month = other.Month;
+            Year = other.Year;
+            DayOfWeek = other.DayOfWeek;
+        }
+
+        // Epoch = YEAR 0 00:00:00
+        public TimeInfo(int minutesSinceEpoch)
+        {
+            int dayOfWeek = ((minutesSinceEpoch / TimeMgr.DAY_IN_MINUTES) % 7) + 1;
+            if (dayOfWeek == 7)
+            {
+                dayOfWeek = 0;
+            }
+
+            int elapsedYears = minutesSinceEpoch / TimeMgr.YEAR_IN_MINUTES;
+            minutesSinceEpoch = minutesSinceEpoch % TimeMgr.YEAR_IN_MINUTES;
+
+            int elapsedMonths = minutesSinceEpoch / TimeMgr.MONTH_IN_MINUTES;
+            minutesSinceEpoch = minutesSinceEpoch % TimeMgr.MONTH_IN_MINUTES;
+
+            int elapsedDays = minutesSinceEpoch / TimeMgr.DAY_IN_MINUTES;
+            minutesSinceEpoch = minutesSinceEpoch % TimeMgr.DAY_IN_MINUTES;
+
+            int elapsedHours = minutesSinceEpoch / TimeMgr.HOUR_IN_MINUTES;
+            minutesSinceEpoch = minutesSinceEpoch % TimeMgr.HOUR_IN_MINUTES;
+
+            int elapsedMinutes = minutesSinceEpoch;
+
+            Year = elapsedYears;
+            Month = elapsedMonths + 1;
+            Day = elapsedDays + 1;
+            Hour = elapsedHours;
+            Minute = elapsedMinutes;
+            DayOfWeek = (DayOfWeek)dayOfWeek;
+        }
+
+        public int TotalMinutes()
+        {
+            return Year * TimeMgr.YEAR_IN_MINUTES + Month * TimeMgr.MONTH_IN_MINUTES +
+                Day * TimeMgr.DAY_IN_MINUTES + Hour * TimeMgr.HOUR_IN_MINUTES + Minute;
+        }
+
+        static public TimeInfo FromCurrentTime(int additionalMinutes)
+        {
+            TimeInfo currTime = TimeMgr.Instance.GetCurrentTime();
+
+            return new TimeInfo(currTime.TotalMinutes() + additionalMinutes);
+        }
     }
 
     public class Timer

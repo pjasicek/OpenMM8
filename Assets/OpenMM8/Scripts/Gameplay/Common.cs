@@ -203,7 +203,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         LichFemale_1,
     }
 
-    public enum ItemEnchantAttrBonus
+    // This contains every attribute - CharAttribute, SkillType, SpellElement
+    // Mapping from this to actual attribute needs to be done manually
+    public enum AttributeBonus
     {
         // Attribute bonuses
         Might,
@@ -224,6 +226,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         BodyResistance,
         Age,
         Level,
+        RecoveryTime,
         // Skill bonuses
         Staff,
         Sword,
@@ -264,7 +267,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         Dodging,
         Unarmed,
         Stealing,
+
+        None
     }
+
+    public enum SpellEffectType
+    {
+        None
+    }
+
+
 
     public enum CharacterRace
     {

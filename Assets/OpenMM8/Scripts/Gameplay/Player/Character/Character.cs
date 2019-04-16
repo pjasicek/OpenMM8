@@ -34,15 +34,24 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int CurrHitPoints;
         public int CurrSpellPoints;
         public Condition Condition;
-        public Dictionary<SkillType, Skill> Skills = new Dictionary<SkillType, Skill>();
-
+        
         public string QuickSpellName = "None";
 
-        // Attributes when character has no buffs/equipment
-        public CharacterStats Stats = new CharacterStats();
+        // Buffs
+        public Dictionary<PlayerEffectType, SpellEffect> PlayerBuffMap = new Dictionary<PlayerEffectType, SpellEffect>();
 
-        // Item bonuses, spell effects, temporary effects (fountain) etc.
-        public CharacterStats BonusStats = new CharacterStats();
+        //=============== Base Stats ==================//
+        public int BirthYear;
+        public int AgeModifier; // Special aging - e.g. Divine Intervention spell casts
+
+        public int Level;
+
+        public Dictionary<CharAttribute, int> BaseAttributes = new Dictionary<CharAttribute, int>();
+        public Dictionary<SpellElement, int> BaseResistances = new Dictionary<SpellElement, int>();
+
+        public Dictionary<SkillType, Skill> Skills = new Dictionary<SkillType, Skill>();
+
+        //=============================================//
 
         public List<Award> Awards = new List<Award>();
         public List<Spell> Spells = new List<Spell>();
@@ -95,6 +104,21 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             Inventory.Owner = this;
 
+            foreach (CharAttribute attr in Enum.GetValues(typeof(CharAttribute)))
+            {
+                BaseAttributes.Add(attr, 0);
+            }
+
+            foreach (SpellElement elem in Enum.GetValues(typeof(SpellElement)))
+            {
+                BaseResistances.Add(elem, 0);
+            }
+
+            foreach (PlayerEffectType effect in Enum.GetValues(typeof(PlayerEffectType)))
+            {
+                PlayerBuffMap.Add(effect, new SpellEffect());
+            }
+
             // Testing
             SkillPoints = 15;
         }
@@ -109,16 +133,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public float GetManaPercentage()
         {
             return ((float)CurrSpellPoints / (float)GetMaxSpellPoints()) * 100.0f;
-        }
-
-        public int GetMaxHealth()
-        {
-            return Stats.HitPoints + BonusStats.HitPoints;
-        }
-
-        public int GetMaxSpellPoints()
-        {
-            return Stats.SpellPoints + BonusStats.SpellPoints;
         }
 
         public int GetPartyIndex()
@@ -800,15 +814,266 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
+        //======================================================================
+
+        public int GetBaseAge()
+        {
+            return TimeMgr.Instance.GetCurrentTime().Year - BirthYear;
+        }
+
+        public int GetBaseResistance(SpellElement resistType)
+        {
+            int racialBonus = 0;
+            switch (resistType)
+            {
+                case SpellElement.Air:
+                    if (Race == CharacterRace.Goblin)
+                    {
+                        racialBonus = 5;
+                    }
+                    break;
+
+                case SpellElement.Fire:
+                    if (Race == CharacterRace.Goblin)
+                    {
+                        racialBonus = 5;
+                    }
+                    else if (Race == CharacterRace.Troll)
+                    {
+                        racialBonus = 10;
+                    }
+                    break;
+
+                case SpellElement.Water:
+                    // Dwarf, but I have no dwarfs
+                    break;
+
+                case SpellElement.Earth:
+                    // Dwarf, but I have no dwarfs
+                    break;
+
+                case SpellElement.Body:
+                    if (Race == CharacterRace.Human)
+                    {
+                        racialBonus = 5;
+                    }
+                    break;
+
+                case SpellElement.Mind:
+                    if (Race == CharacterRace.Elf)
+                    {
+                        racialBonus = 10;
+                    }
+                    break;
+
+                case SpellElement.Spirit:
+                    if (Race == CharacterRace.Human)
+                    {
+                        racialBonus = 5;
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+
+            // + Get from items
+            int itemBonus = 0;
+
+            return racialBonus + itemBonus;
+        }
+
+        public int GetBaseAttribute(CharAttribute attribute)
+        {
+            int baseAttribute = BaseAttributes[attribute];
+
+            // + Get from items
+            int itemBonus = 0;
+
+            return baseAttribute + itemBonus;
+        }
+
+        public int GetActualLevel()
+        {
+            // + level from items / buffs - e.g. well in MM6 Kriegspire added 30 or 50 levels
+            return Level;
+        }
+
+        public int GetActualAge()
+        {
+            // Also get age mod from items etc.
+
+            return GetBaseAge() + AgeModifier;
+        }
+
+        public int GetActualResistance(SpellElement resistType)
+        {
+            int baseAmount = GetBaseResistance(resistType);
+            int resistFromSkills = 0; // TODO
+            int resistFromMagic = 0; // TODO
+
+            return baseAmount + resistFromSkills + resistFromMagic;
+        }
+
+        public int GetActualSkillLevel(SkillType skillType)
+        {
+            if (!HasSkill(skillType))
+            {
+                return 0;
+            }
+
+            int baseAmount = Skills[skillType].Level;
+            int itemBonus = 0;  // TODO
+
+            return baseAmount + itemBonus;
+        }
+
+        public int GetActualAttribute(CharAttribute attribute)
+        {
+            if (attribute == CharAttribute.None)
+            {
+                Debug.LogError("Invalid attribute - none");
+                return 0;
+            }
+
+            int actualAge = GetActualAge();
+            float agingMultiplier = GameMechanics.GetAttributeAgingMultiplier(actualAge, attribute);
+
+            /*float conditionMultiplier = GameMechanics.GetAttributeConditionMultiplier(..)*/
+            float conditionMultiplier = 1.0f;
+
+            // TODO
+            int baseValue = BaseAttributes[attribute];
+            int magicBonus = 0;
+            int itemBonus = 0;
+
+            return (int)(baseValue * agingMultiplier * conditionMultiplier) + magicBonus + itemBonus;
+        }
+
         // Helper accessors
+        public int GetMaxHealth()
+        {
+            ClassHpSpData classHpSpData = DbMgr.Instance.ClassHpSpDb.Get(Class);
+
+            int hpBase = classHpSpData.HitPointsBase;
+            int hpFromLevel = GetActualLevel() * classHpSpData.HitPointsFactor;
+            int hpFromEndurance = GameMechanics.GetAttributeEffect(GetActualEndurance()) * classHpSpData.HitPointsFactor;
+            int hpFromItems = 0; // TODO
+            int hpFromSkills = 0; // TODO - Bodybuilding
+
+            int maxHealth = hpBase + hpFromLevel + hpFromEndurance + hpFromItems + hpFromSkills;
+            if (maxHealth < 0)
+            {
+                maxHealth = 0;
+            }
+
+            return maxHealth;
+        }
+
+        public int GetMaxSpellPoints()
+        {
+            ClassHpSpData classHpSpData = DbMgr.Instance.ClassHpSpDb.Get(Class);
+
+            // Classes like knights dont have any spell points no matter what
+            if (!classHpSpData.IsSpellPointsFromIntellect && !classHpSpData.IsSpellPointsFromPersonality)
+            {
+                return 0;
+            }
+
+            int mpBase = classHpSpData.SpellPointsBase;
+            int mpFromLevel = GetActualLevel() * classHpSpData.SpellPointsFactor;
+            int mpFromIntellect = 0;
+            int mpFromPersonality = 0;
+             
+            if (classHpSpData.IsSpellPointsFromIntellect)
+            {
+                mpFromIntellect += GameMechanics.GetAttributeEffect(GetActualIntellect()) * classHpSpData.SpellPointsFactor;
+            }
+
+            if (classHpSpData.IsSpellPointsFromPersonality)
+            {
+                mpFromPersonality += GameMechanics.GetAttributeEffect(GetActualPersonality()) * classHpSpData.SpellPointsFactor;
+            }
+
+            int mpFromItems = 0; // TODO
+            int mpFromSkills = 0; // TODO
+
+            int maxMana = mpBase + mpFromLevel + mpFromIntellect + mpFromPersonality + mpFromItems + mpFromSkills;
+            if (maxMana < 0)
+            {
+                maxMana = 0;
+            }
+
+            return maxMana;
+        }
+
         public int GetBaseMight()
         {
-            return 0;
+            return GetBaseAttribute(CharAttribute.Might);
         }
-        
+
+        public int GetBaseAccuracy()
+        {
+            return GetBaseAttribute(CharAttribute.Accuracy);
+        }
+
+        public int GetBaseEndurance()
+        {
+            return GetBaseAttribute(CharAttribute.Endurance);
+        }
+
+        public int GetBaseIntellect()
+        {
+            return GetBaseAttribute(CharAttribute.Intellect);
+        }
+
+        public int GetBaseLuck()
+        {
+            return GetBaseAttribute(CharAttribute.Luck);
+        }
+        public int GetBasePersonality()
+        {
+            return GetBaseAttribute(CharAttribute.Personality);
+        }
+
+        public int GetBaseSpeed()
+        {
+            return GetBaseAttribute(CharAttribute.Speed);
+        }
+
         public int GetActualMight()
         {
-            return 0;
+            return GetActualAttribute(CharAttribute.Might);
+        }
+
+        public int GetActualAccuracy()
+        {
+            return GetActualAttribute(CharAttribute.Accuracy);
+        }
+
+        public int GetActualEndurance()
+        {
+            return GetActualAttribute(CharAttribute.Endurance);
+        }
+
+        public int GetActualIntellect()
+        {
+            return GetActualAttribute(CharAttribute.Intellect);
+        }
+
+        public int GetActualPersonality()
+        {
+            return GetActualAttribute(CharAttribute.Personality);
+        }
+
+        public int GetActualSpeed()
+        {
+            return GetActualAttribute(CharAttribute.Speed);
+        }
+
+        public int GetActualLuck()
+        {
+            return GetActualAttribute(CharAttribute.Luck);
         }
     }
 }
