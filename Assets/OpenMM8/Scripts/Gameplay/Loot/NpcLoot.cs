@@ -11,6 +11,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public class Loot
     {
         public int GoldAmount = 0;
-        public BaseItem Item = null;
+        public Item Item = null;
     }
 }

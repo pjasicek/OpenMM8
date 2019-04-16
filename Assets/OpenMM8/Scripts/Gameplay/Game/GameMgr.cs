@@ -336,15 +336,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             ClassStartingSkillsData startingSkills = DbMgr.Instance.ClassStartingSkillsDb.Get(chr.Class);
 
             chr.Name = "Tyrkys_" + characterId;
-            chr.Stats.Level = 1;
-            chr.Stats.Age = 20;
+            chr.Level = 1;
+            chr.BirthYear = 1152; // Current is 1172
             foreach (CharAttribute attr in Enum.GetValues(typeof(CharAttribute)))
             {
                 if (attr == CharAttribute.None)
                 {
                     continue;
                 }
-                chr.Stats.Attributes[attr] = startingStats.DefaultStats[attr];
+                chr.BaseAttributes[attr] = startingStats.DefaultStats[attr];
             }
 
             PlayerParty.AddCharacter(chr);

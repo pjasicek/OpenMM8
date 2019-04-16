@@ -8,8 +8,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 {
     public delegate void DollClicked(DollClickHandler sender);
     public delegate void CharacterAvatarClicked(Character chr);
-    public delegate void OutdoorItemInspectStart(BaseItem item);
-    public delegate void OutdoorItemInspectEnd(BaseItem item);
+    public delegate void OutdoorItemInspectStart(Item item);
+    public delegate void OutdoorItemInspectEnd(Item item);
     public delegate void NpcInspectStartDlg(Character inspector, BaseNpc npc, MonsterData npcData);
     public delegate void NpcInspecEndDlg(Character inspector, BaseNpc npc, MonsterData npcData);
     public delegate void InventoryCellClicked(int x, int y);
@@ -43,9 +43,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public delegate void ItemEquip(/*Item item, EquipResult equipResult*/);
     public delegate void ItemHold(/*Item item*/);
     public delegate void ItemHoldEnd();
-    public delegate void ItemEquipped(Character chr, BaseItem equippedItem, BaseItem replacedItem);
-    public delegate void ItemUnequipped(Character chr, BaseItem unequippedItem);
-    public delegate void InteractedWithItem(Character chr, BaseItem item, ItemInteractResult interactResult);
+    public delegate void ItemEquipped(Character chr, Item equippedItem, Item replacedItem);
+    public delegate void ItemUnequipped(Character chr, Item unequippedItem);
+    public delegate void InteractedWithItem(Character chr, Item item, ItemInteractResult interactResult);
     public delegate void CharacterJoinedParty(Character chr, PlayerParty party);
     public delegate void CharacterLeftParty(Character chr, PlayerParty party);
     public delegate void HoverObject(HoverInfo hoverInfo);
@@ -133,12 +133,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             OnCharacterAvatarClicked?.Invoke(chr);
         }
 
-        static public void InvokeEvent_OnOutdoorItemInspectStart(BaseItem item)
+        static public void InvokeEvent_OnOutdoorItemInspectStart(Item item)
         {
             OnOutdoorItemInspectStart?.Invoke(item);
         }
 
-        static public void InvokeEvent_OnOutdoorItemInspectEnd(BaseItem item)
+        static public void InvokeEvent_OnOutdoorItemInspectEnd(Item item)
         {
             OnOutdoorItemInspectEnd?.Invoke(item);
         }
@@ -273,17 +273,17 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             OnItemInspect?.Invoke(inspectorChr, itemData);
         }
 
-        static public void InvokeEvent_OnItemEquipped(Character chr, BaseItem equippedItem, BaseItem replacedItem)
+        static public void InvokeEvent_OnItemEquipped(Character chr, Item equippedItem, Item replacedItem)
         {
             OnItemEquipped?.Invoke(chr, equippedItem, replacedItem);
         }
 
-        static public void InvokeEvent_OnItemUnequipped(Character chr, BaseItem unequippedItem)
+        static public void InvokeEvent_OnItemUnequipped(Character chr, Item unequippedItem)
         {
             onItemUnequipped?.Invoke(chr, unequippedItem);
         }
 
-        static public void InvokeEvent_OnInteractedWithItem(Character chr, BaseItem item, ItemInteractResult interactResult)
+        static public void InvokeEvent_OnInteractedWithItem(Character chr, Item item, ItemInteractResult interactResult)
         {
             OnInteractedWithItem?.Invoke(chr, item, interactResult);
         }

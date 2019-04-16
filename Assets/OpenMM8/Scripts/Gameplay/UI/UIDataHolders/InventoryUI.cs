@@ -12,13 +12,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     {
         public const int INVENTORY_CELL_SIZE = 32;
 
+
+        public Character Owner;
         public GameObject Holder;
 
         private List<InventoryItem> Items = new List<InventoryItem>();
 
         private Vector3 m_TopLeftOffset = new Vector3(0, 0, 0);
 
-        static public InventoryUI Create()
+        static public InventoryUI Create(Character owner)
         {
             GameObject parent = OpenMM8Util.GetGameObjAtScenePath("/PartyCanvas/CharDetailCanvas/Inventory");
             if (parent == null)
@@ -27,6 +29,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             InventoryUI ui = new InventoryUI();
+            ui.Owner = owner;
             ui.Holder = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/UI/Inventory/CharInventory"), 
                 parent.transform);
 
@@ -38,7 +41,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return ui;
         }
 
-        public void AddItem(BaseItem item)
+        public void AddItem(Item item)
         {
             Vector2 offset = new Vector2(
                 item.InvCellPosition.x * INVENTORY_CELL_SIZE,
@@ -70,7 +73,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Items.Add(inventoryItem);
         }
 
-        public void RemoveItem(BaseItem item)
+        public void RemoveItem(Item item)
         {
             var uiInventoryItem = Items.Find(invItem => invItem.Item.Equals(item));
             if (uiInventoryItem != null)

@@ -146,7 +146,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         Loot = new Loot();
         if (NpcData.Treasure.CertainItemId != 0)
         {
-            Loot.Item = ItemFactory.CreateItem(DbMgr.Instance.ItemDb.Get(NpcData.Treasure.CertainItemId));
+            Loot.Item = new Item(DbMgr.Instance.ItemDb.Get(NpcData.Treasure.CertainItemId));
         }
         else
         {

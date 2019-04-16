@@ -10,7 +10,7 @@ using Assets.OpenMM8.Scripts.Gameplay.Items;
 // InventoryItem = "2D" item in inventory or on character's doll
 public class InspectableItem : Inspectable
 {
-    public BaseItem Item;
+    public Item Item;
 
     // Use this for initialization
     void Start()

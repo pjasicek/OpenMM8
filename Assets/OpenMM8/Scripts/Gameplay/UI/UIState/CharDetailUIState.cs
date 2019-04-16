@@ -118,8 +118,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 m_UI.SkillsUI.SkillsUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.SkillsUI;
                 m_UI.CurrDollUI.Holder.SetActive(true);
 
-                // TODO: Is it even necessary ?
-                chr.RecalculateStats();
                 DisplayDetailState(chr);
             }
 
@@ -134,6 +132,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 switch (m_State)
                 {
                     case CharDetailState.Stats:
+                        chr.UI.StatsUI.Refresh();
+
                         if (m_UI.StatsUI.StatsUI != null)
                         {
                             m_UI.StatsUI.StatsUI.Holder.SetActive(false);
@@ -216,7 +216,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 {
                     case CharDetailState.Stats:
                         m_UI.StatsUI.Holder.SetActive(true);
-                        UiMgr.Instance.m_PlayerParty.ActiveCharacter.RecalculateStats();
                         break;
 
                     case CharDetailState.Skills:
@@ -259,17 +258,17 @@ namespace Assets.OpenMM8.Scripts.Gameplay
              * 
              */
 
-            BaseItem GetItemAtSlot(int row, int col)
+            Item GetItemAtSlot(int row, int col)
             {
                 return null;
             }
 
-            List<BaseItem> GetItemsAtSlots(int row, int col, Vector2Int span)
+            List<Item> GetItemsAtSlots(int row, int col, Vector2Int span)
             {
                 return null;
             }
 
-            bool CanPlaceItem(BaseItem item, int row, int col)
+            bool CanPlaceItem(Item item, int row, int col)
             {
                 return true;
             }

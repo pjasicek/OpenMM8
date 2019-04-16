@@ -6,35 +6,48 @@ using UnityEngine;
 
 namespace Assets.OpenMM8.Scripts.Gameplay.Items
 {
-    public class BaseItem
+    public class Item
     {
         public ItemData Data;
-        public Vector2Int InvCellPosition;
-
-        public bool CanBeEnchanted = false;
         public ItemEnchant Enchant = null;
+
         public bool IsIdentified = true;
         public bool IsBroken = false;
 
 
-        public BaseItem(ItemData itemData)
+        // Unity UI
+        public Vector2Int InvCellPosition;
+
+        public Item(ItemData itemData)
         {
             Data = itemData;
         }
 
-        virtual public ItemInteractResult InteractWithDoll(Character player)
-        {
-            return ItemInteractResult.Invalid;
-        }
-
-        virtual public string GetItemDescription()
-        {
-            return "Placeholder";
-        }
-
         virtual public int GetValue()
         {
-            return -1;
+            if (IsBroken)
+            {
+                return 1;
+            }
+
+            int baseValue = Data.GoldValue;
+            if (Enchant != null)
+            {
+                if (Enchant.EnchantPriceMultType == EnchantPriceMultType.Add)
+                {
+                    baseValue += Enchant.PriceModAmount;
+                }
+                else if (Enchant.EnchantPriceMultType == EnchantPriceMultType.Multiply)
+                {
+                    baseValue *= Enchant.PriceModAmount;
+                }
+                else
+                {
+                    Debug.LogError("Unknown EnchantPriceMultType: " + Enchant.EnchantPriceMultType);
+                }
+            }
+
+            return baseValue;
         }
 
         public bool IsEquippable()
@@ -79,6 +92,61 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Items
         public bool IsInteractibleWithDoll()
         {
             return IsEquippable() || IsConsumable() || IsCastable() || IsReadable() || IsLearnable();
+        }
+
+        public bool IsEnchantable()
+        {
+            return false;
+        }
+
+        public void SetIdentified(bool identified)
+        {
+            if (!identified && IsAlwaysIdentified())
+            {
+                return;
+            }
+
+            IsIdentified = identified;
+        }
+
+        public void SetBroken(bool broken)
+        {
+            if (broken && !CanBeBroken())
+            {
+                return;
+            }
+
+            IsBroken = broken;
+        }
+
+        public int GetStatBonusAmount(StatBonusType statBonusType)
+        {
+            if (!HasStatBonus(statBonusType))
+            {
+                return 0;
+            }
+
+            return Enchant.StatBonusMap[statBonusType];
+        }
+
+        public bool HasStatBonus(StatBonusType statBonusType)
+        {
+            if (Enchant == null || Enchant.EnchantType == EnchantType.None)
+            {
+                return false;
+            }
+
+            return Enchant.StatBonusMap.ContainsKey(statBonusType);
+        }
+
+        private bool IsAlwaysIdentified()
+        {
+            return true;
+        }
+
+        private bool CanBeBroken()
+        {
+            return true;
         }
     }
 }

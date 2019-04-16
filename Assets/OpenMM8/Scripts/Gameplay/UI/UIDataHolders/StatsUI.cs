@@ -3,9 +3,12 @@ using System.Collections;
 using UnityEngine.UI;
 using Assets.OpenMM8.Scripts;
 using System;
+using Assets.OpenMM8.Scripts.Gameplay;
 
 public class StatsUI
 {
+    public Character Owner;
+
     public GameObject Holder;
     public Canvas Canvas;
 
@@ -37,7 +40,129 @@ public class StatsUI
     public Text MindResistText;
     public Text BodyResistText;
 
-    static public StatsUI Create()
+    public void Refresh()
+    {
+        NameText.text = Owner.Name;
+
+        string skillPointsStr = Owner.SkillPoints.ToString();
+        if (Owner.SkillPoints > 0)
+        {
+            skillPointsStr = "<color=#00ff00ff>" + Owner.SkillPoints + "</color>";
+        }
+        SkillPointsText.text = "Skill Points: " + skillPointsStr;
+
+        MightText.text = GenStatTextPair(Owner.GetActualMight(), Owner.GetBaseMight());
+        IntellectText.text = GenStatTextPair(Owner.GetActualIntellect(), Owner.GetBaseIntellect());
+        PersonalityText.text = GenStatTextPair(Owner.GetActualPersonality(), Owner.GetBasePersonality());
+        EnduranceText.text = GenStatTextPair(Owner.GetActualEndurance(), Owner.GetBaseEndurance());
+        AccuracyText.text = GenStatTextPair(Owner.GetActualAccuracy(), Owner.GetBaseAccuracy());
+        SpeedText.text = GenStatTextPair(Owner.GetActualSpeed(), Owner.GetBaseSpeed());
+        LuckText.text = GenStatTextPair(Owner.GetActualLuck(), Owner.GetBaseLuck());
+
+        // hp/sp:
+        // < 20% = red
+        // < 100% = yellow
+        Debug.LogError("Curr: " + Owner.CurrHitPoints);
+        if (Owner.GetHealthPercentage() < 25.0f)
+        {
+            HitPointsText.text = "<color=red>" + Owner.CurrHitPoints + "</color> / " + Owner.GetMaxHitPoints();
+        }
+        else if (Owner.GetHealthPercentage() < 100.0f)
+        {
+            HitPointsText.text = "<color=yellow>" + Owner.CurrHitPoints + "</color> / " + Owner.GetMaxHitPoints();
+        }
+        else
+        {
+            HitPointsText.text = Owner.CurrHitPoints + " / " + Owner.GetMaxHitPoints();
+        }
+
+        if (Owner.GetManaPercentage() < 25.0f)
+        {
+            SpellPointsText.text = "<color=red>" + Owner.CurrSpellPoints + "</color> / " + Owner.GetMaxSpellPoints();
+        }
+        else if (Owner.GetManaPercentage() < 100.0f)
+        {
+            SpellPointsText.text = "<color=yellow>" + Owner.CurrSpellPoints + "</color> / " + Owner.GetMaxSpellPoints();
+        }
+        else
+        {
+            SpellPointsText.text = Owner.CurrSpellPoints + " / " + Owner.GetMaxSpellPoints();
+        }
+
+        ArmorClassText.text = GenStatTextPair(Owner.GetActualArmorClass(), Owner.GetBaseArmorClass());
+
+        ConditionText.text = Owner.Condition.ToString(); // TODO
+        QuickSpellText.text = Owner.QuickSpellName;
+
+        AgeText.text = GenStatTextPair(Owner.GetActualAge(), Owner.GetBaseAge());
+        LevelText.text = GenStatTextPair(Owner.GetActualLevel(), Owner.Level);
+
+        // Check if can reach next level
+        if (Owner.CanTrainToNextLevel())
+        {
+            ExperienceText.text = "<color=green>" + Owner.Experience + "</color>";
+        }
+        else
+        {
+            ExperienceText.text = Owner.Experience.ToString();
+        }
+
+        int meleeAttack = Owner.GetMeleeAttack();
+        string attackBonusStr = meleeAttack.ToString();
+        if (meleeAttack >= 0)
+        {
+            attackBonusStr = "+" + meleeAttack;
+        }
+        string attackDamageStr = Owner.GetMeleeDamageMin() + " - " + Owner.GetMeleeDamageMax();
+
+        int shootAttack = Owner.GetRangedAttack();
+        string shootBonusStr = shootAttack.ToString();
+        if (shootAttack >= 0)
+        {
+            shootBonusStr = "+" + shootAttack;
+        }
+        string shootDamageStr = Owner.GetRangedDamageMin() + " - " + Owner.GetRangedDamageMax();
+        if (Owner.UI.DollUI.Bow.Item == null)
+        {
+            shootDamageStr = "N/A";
+        }
+
+
+        AttackText.text = attackBonusStr;
+        AttackDamageText.text = attackDamageStr;
+        ShootText.text = shootBonusStr;
+        ShootDamageText.text = shootDamageStr;
+    }
+
+    private string GenResistTextPair(int actualAmount, int baseAmount)
+    {
+        if (baseAmount == int.MaxValue)
+        {
+            return "Immune";
+        }
+        else
+        {
+            return GenStatTextPair(actualAmount, baseAmount);
+        }
+    }
+
+    private string GenStatTextPair(int actualAmount, int baseAmount)
+    {
+        if (actualAmount > baseAmount)
+        {
+            return "<color=green>" + actualAmount + "</color> / " + baseAmount;
+        }
+        else if (actualAmount < baseAmount)
+        {
+            return "<color=red>" + actualAmount + "</color> / " + baseAmount;
+        }
+        else
+        {
+            return actualAmount + " / " + baseAmount;
+        }
+    }
+
+    static public StatsUI Create(Character owner)
     {
         GameObject parent = OpenMM8Util.GetGameObjAtScenePath("/PartyCanvas/CharDetailCanvas/Stats");
         if (parent == null)
@@ -46,6 +171,7 @@ public class StatsUI
         }
 
         StatsUI ui = new StatsUI();
+        ui.Owner = owner;
         ui.Holder = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/UI/CharacterStats/CharStats"),
             parent.transform);
 

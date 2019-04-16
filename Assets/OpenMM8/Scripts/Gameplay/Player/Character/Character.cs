@@ -127,7 +127,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public float GetHealthPercentage()
         {
-            return ((float)CurrHitPoints / (float)GetMaxHealth()) * 100.0f;
+            return ((float)CurrHitPoints / (float)GetMaxHitPoints()) * 100.0f;
         }
 
         public float GetManaPercentage()
@@ -231,15 +231,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void AddCurrHitPoints(int numHitPoints)
         {
-            int maxHP = Stats.HitPoints + BonusStats.HitPoints;
-            CurrHitPoints = Mathf.Min(CurrHitPoints + numHitPoints, maxHP);
+            int maxHP = GetMaxHitPoints();
+            CurrHitPoints = Math.Min(CurrHitPoints + numHitPoints, maxHP);
 
             GameEvents.InvokeEvent_OnCharHealthChanged(this, maxHP, CurrHitPoints, numHitPoints);
         }
 
         public void AddCurrSpellPoints(int numSpellPoints)
         {
-            int maxMP = Stats.SpellPoints + BonusStats.SpellPoints;
+            int maxMP = GetMaxSpellPoints();
             CurrSpellPoints = Mathf.Min(CurrSpellPoints + numSpellPoints, maxMP);
     
             GameEvents.InvokeEvent_OnCharManaChanged(this, maxMP, CurrSpellPoints);
@@ -265,7 +265,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         }
 
-        public ItemInteractResult CanEquipItem(BaseItem item)
+        public ItemInteractResult CanEquipItem(Item item)
         {
             ItemType itemType = item.Data.ItemType;
             ItemSkillGroup skillGroup = item.Data.SkillGroup;
@@ -364,13 +364,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return ItemInteractResult.Equipped;
         }
 
-        public ItemInteractResult InteractWithItem(BaseItem item)
+        public ItemInteractResult InteractWithItem(Item item)
         {
             ItemInteractResult interactResult = ItemInteractResult.Invalid;
             if (item.IsEquippable())
             {
                 // Try to equip the item. If success, we may have replaced the item by the old item on doll
-                BaseItem replacedItem = null;
+                Item replacedItem = null;
                 interactResult = Inventory.TryEquipItem(item, out replacedItem);
                 if (interactResult == ItemInteractResult.Equipped)
                 {
@@ -396,7 +396,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             GameEvents.InvokeEvent_OnInteractedWithItem(this, item, interactResult);
 
-            RecalculateStats();
+            UI.StatsUI.Refresh();
 
             return interactResult;
         }
@@ -484,7 +484,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 skill.Level++;
 
                 UI.SkillsUI.Refresh();
-                RecalculateStats();
 
                 // TODO: Separate ?
                 CharFaceUpdater.SetAvatar(UiMgr.RandomSprite(UI.Sprites.Smile), 0.75f);
@@ -492,333 +491,27 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
-        public void RecalculateStats()
-        {
-            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-            sw.Start();
-
-            // This method is stateless - it takes into consideration all factors (base stats, equipment, skills, buffs, etc)
-            //    and recalculates all stats
-
-            List<BaseItem> equippedArmorItems = new List<BaseItem>();
-            // Armor = everything besides weapon(s)
-            equippedArmorItems.Add(UI.DollUI.Armor.Item);
-            equippedArmorItems.Add(UI.DollUI.Helmet.Item);
-            equippedArmorItems.Add(UI.DollUI.Belt.Item);
-            equippedArmorItems.Add(UI.DollUI.Boots.Item);
-            equippedArmorItems.Add(UI.DollUI.Cloak.Item);
-            equippedArmorItems.Add(UI.DollUI.Gauntlets.Item);
-            equippedArmorItems.Add(UI.DollUI.Necklace.Item);
-            equippedArmorItems.Add(UI.DollUI.Ring_1.Item);
-            equippedArmorItems.Add(UI.DollUI.Ring_2.Item);
-            equippedArmorItems.Add(UI.DollUI.Ring_3.Item);
-            equippedArmorItems.Add(UI.DollUI.Ring_4.Item);
-            equippedArmorItems.Add(UI.DollUI.Ring_5.Item);
-            equippedArmorItems.Add(UI.DollUI.Ring_6.Item);
-            //TODO: equippedArmor.Add(UI.DollUI.Shield.Item);
-
-            // Only take into consideration equipped items
-            equippedArmorItems.RemoveAll(item => item == null);
-
-            BaseItem mainHandWeapon = UI.DollUI.RH_Weapon?.Item;
-            BaseItem offHandWeapon = UI.DollUI.LF_Weapon?.Item;
-            BaseItem bowWeapon = UI.DollUI.Bow.Item;
-
-            // Base armor class = character base + armor base
-            Stats.ArmorClass = 0;
-
-            BonusStats = new CharacterStats();
-            foreach (BaseItem armorItem in equippedArmorItems)
-            {
-                switch (armorItem.Data.ItemType)
-                {
-                    case ItemType.Armor:
-                    case ItemType.Helmet:
-                    case ItemType.Cloak:
-                    case ItemType.Shield:
-                    case ItemType.Gauntlets:
-                    case ItemType.Boots:
-                        int armorClass = int.Parse(armorItem.Data.Mod1) + int.Parse(armorItem.Data.Mod2);
-                        Stats.ArmorClass += armorClass;
-                        break;
-                }
-
-                // TODO: Add enchant bonuses
-                /*if (armorItem.Enchant != null)
-                {
-
-                }*/
-            }
-
-            /*
-            foreach (SpellEffecct spellEffect in this.SpellEffects)
-            {
-                spellEffect.Apply(this);
-            }
-            */
-
-
-            // After all stat modifiers are applied
-            int totalMight = Stats.Attributes[CharAttribute.Might] + BonusStats.Attributes[CharAttribute.Might];
-            int totalIntellect = Stats.Attributes[CharAttribute.Intellect] + BonusStats.Attributes[CharAttribute.Intellect];
-            int totalEndurance = Stats.Attributes[CharAttribute.Endurance] + BonusStats.Attributes[CharAttribute.Endurance];
-            int totalPersonality = Stats.Attributes[CharAttribute.Personality] + BonusStats.Attributes[CharAttribute.Personality];
-            int totalSpeed = Stats.Attributes[CharAttribute.Speed] + BonusStats.Attributes[CharAttribute.Speed];
-            int totalAccuracy = Stats.Attributes[CharAttribute.Accuracy] + BonusStats.Attributes[CharAttribute.Accuracy];
-            int totalLuck = Stats.Attributes[CharAttribute.Luck] + BonusStats.Attributes[CharAttribute.Luck];
-
-            // TODO: Handle immunities (vampire = immune to mind, lich = immune to ?)
-            int totalFireResist = Stats.Resistances[SpellElement.Fire] + BonusStats.Resistances[SpellElement.Fire];
-            int totalAirResist = Stats.Resistances[SpellElement.Air] + BonusStats.Resistances[SpellElement.Air];
-            int totalWaterResist = Stats.Resistances[SpellElement.Water] + BonusStats.Resistances[SpellElement.Water];
-            int totalEarthResist = Stats.Resistances[SpellElement.Earth] + BonusStats.Resistances[SpellElement.Earth];
-            int totalMindResist = Stats.Resistances[SpellElement.Mind] + BonusStats.Resistances[SpellElement.Mind];
-            int totalBodyResist = Stats.Resistances[SpellElement.Body] + BonusStats.Resistances[SpellElement.Body];
-
-            int mightEffect = GameMechanics.GetAttributeEffect(totalMight);
-
-            AttackBonus = 0;
-            MinAttackDamage = MaxAttackDamage = 0;
-            ShootBonus = 0;
-            MinShootDamage = MaxShootDamage = 0;
-
-            if (mainHandWeapon != null)
-            {
-                int baseDmg = int.Parse(mainHandWeapon.Data.Mod2);
-                string[] diceCountAndSides = mainHandWeapon.Data.Mod1.Split('d');
-                int minVariableDmg = int.Parse(diceCountAndSides[0]);
-                int maxVariableDmg = int.Parse(diceCountAndSides[1]) * minVariableDmg;
-
-                MinAttackDamage += minVariableDmg + baseDmg;
-                MaxAttackDamage += maxVariableDmg + baseDmg;
-
-                AttackBonus += baseDmg;
-            }
-
-            MinAttackDamage += mightEffect + 1;
-            MaxAttackDamage += mightEffect + 3;
-
-            if (bowWeapon != null)
-            {
-                int baseDmg = int.Parse(bowWeapon.Data.Mod2);
-                string[] diceCountAndSides = bowWeapon.Data.Mod1.Split('d');
-                int minVariableDmg = int.Parse(diceCountAndSides[0]);
-                int maxVariableDmg = int.Parse(diceCountAndSides[1]) * minVariableDmg;
-
-                MinShootDamage += minVariableDmg + baseDmg;
-                MaxShootDamage += maxVariableDmg + baseDmg;
-
-                ShootBonus += baseDmg;
-            }
-
-            ClassHpSpData classHpSpData = DbMgr.Instance.ClassHpSpDb.Get(Class);
-            int enduranceEffect = GameMechanics.GetAttributeEffect(totalEndurance);
-            int hpFromEndurance = enduranceEffect * classHpSpData.HitPointsFactor;
-            int hpFromLevel = classHpSpData.HitPointsBase + (Stats.Level + BonusStats.Level) * classHpSpData.HitPointsFactor;
-
-            // TODO: Bodybuilding + Item HP bonuses
-            Stats.HitPoints = hpFromLevel + hpFromEndurance;
-
-            Stats.SpellPoints = 0;
-            Stats.SpellPoints += classHpSpData.SpellPointsBase + (Stats.Level + BonusStats.Level) * classHpSpData.SpellPointsFactor;
-            if (classHpSpData.IsSpellPointsFromIntellect)
-            {
-                int intellectEffect = GameMechanics.GetAttributeEffect(totalIntellect);
-                Stats.SpellPoints += intellectEffect * classHpSpData.SpellPointsFactor;
-            }
-
-            if (classHpSpData.IsSpellPointsFromPersonality)
-            {
-                int personalityEffect = GameMechanics.GetAttributeEffect(totalPersonality);
-                Stats.SpellPoints += personalityEffect * classHpSpData.SpellPointsFactor;
-            }
-
-            // TODO: + mana from items, + mana from meditation
-
-            int speedEffect = GameMechanics.GetAttributeEffect(totalSpeed);
-            Stats.ArmorClass += speedEffect;
-
-            // TODO: + armor class from items
-
-            BeingHitRecoveryTime = Math.Max(20 - enduranceEffect, 0);
-
-            // TODO: Calculate armor penalty
-            // TODO: "Swift" enchant
-            // int armorRecoveryPenalty = ...
-            AttackRecoveryTime = 100 - speedEffect; /* + armorRecoveryPenalty*/
-
-            // Recovery time cannot go lower than 30
-            // TODO: Bows and blasters are exception
-            if (AttackRecoveryTime < 30)
-            {
-                AttackRecoveryTime = 30;
-            }
-
-            int accuracyEffect = GameMechanics.GetAttributeEffect(totalAccuracy);
-
-            AttackBonus += accuracyEffect;
-            ShootBonus += accuracyEffect;
-            // TODO: Add skill coefficients / bonuses
-
-            // TODO: Calculate/Add resist bonuses - buffs etc
-
-
-            int totalHitPoints = GetMaxHealth();
-            int totalSpellPoints = GetMaxSpellPoints();
-
-            // -------------------------------
-            // Clamping / Overrides - some stats cannot be below certain threshold
-            // -------------------------------
-            AttackBonus = Math.Max(AttackBonus, 0);
-            ShootBonus = Math.Max(ShootBonus, 0);
-
-            MinAttackDamage = Math.Max(MinAttackDamage, 1);
-            MaxAttackDamage = Math.Max(MaxAttackDamage, 1);
-            MinShootDamage = Math.Max(MinShootDamage, 1);
-            MaxShootDamage = Math.Max(MaxShootDamage, 1);
-
-            CurrHitPoints = Math.Min(CurrHitPoints, totalHitPoints);
-            CurrSpellPoints = Math.Min(CurrSpellPoints, totalSpellPoints);
-
-            Stats.ArmorClass = Math.Max(Stats.ArmorClass, 0);
-            BonusStats.ArmorClass = Math.Max(BonusStats.ArmorClass, 0);
-            int totalArmorClass = Stats.ArmorClass + BonusStats.ArmorClass;
-
-            if (Race == CharacterRace.Vampire)
-            {
-                Stats.Resistances[SpellElement.Mind] = int.MaxValue;
-            }
-
-            // Maybe handle this elsewhere ?
-            StatsUI ui = UI.StatsUI;
-            ui.NameText.text = Name;
-
-            string skillPointsStr = SkillPoints.ToString();
-            if (SkillPoints > 0)
-            {
-                skillPointsStr = "<color=#00ff00ff>" + SkillPoints + "</color>";
-            }
-            ui.SkillPointsText.text = "Skill Points: " + skillPointsStr;
-
-            ui.MightText.text = GenStatTextPair(totalMight, Stats.Attributes[CharAttribute.Might]);
-            ui.IntellectText.text = GenStatTextPair(totalIntellect, Stats.Attributes[CharAttribute.Intellect]);
-            ui.PersonalityText.text = GenStatTextPair(totalPersonality, Stats.Attributes[CharAttribute.Personality]);
-            ui.EnduranceText.text = GenStatTextPair(totalEndurance, Stats.Attributes[CharAttribute.Endurance]);
-            ui.AccuracyText.text = GenStatTextPair(totalAccuracy, Stats.Attributes[CharAttribute.Accuracy]);
-            ui.SpeedText.text = GenStatTextPair(totalSpeed, Stats.Attributes[CharAttribute.Speed]);
-            ui.LuckText.text = GenStatTextPair(totalLuck, Stats.Attributes[CharAttribute.Luck]);
-
-            // hp/sp:
-            // < 20% = red
-            // < 100% = yellow
-            if (GetHealthPercentage() < 20.0f)
-            {
-                ui.HitPointsText.text = "<color=red>" + CurrHitPoints + "</color> / " + totalHitPoints;
-            }
-            else if (GetHealthPercentage() < 100.0f)
-            {
-                ui.HitPointsText.text = "<color=yellow>" + CurrHitPoints + "</color> / " + totalHitPoints;
-            }
-            else
-            {
-                ui.HitPointsText.text = CurrHitPoints + " / " + totalHitPoints;
-            }
-
-            if (GetManaPercentage() < 20.0f)
-            {
-                ui.SpellPointsText.text = "<color=red>" + CurrSpellPoints + "</color> / " + totalSpellPoints;
-            }
-            else if (GetManaPercentage() < 100.0f)
-            {
-                ui.SpellPointsText.text = "<color=yellow>" + CurrSpellPoints + "</color> / " + totalSpellPoints;
-            }
-            else
-            {
-                ui.SpellPointsText.text = CurrSpellPoints + " / " + totalSpellPoints;
-            }
-
-            ui.ArmorClassText.text = GenStatTextPair(totalArmorClass, Stats.ArmorClass);
-
-            ui.ConditionText.text = Condition.ToString();
-            ui.QuickSpellText.text = QuickSpellName;
-
-            ui.AgeText.text = GenStatTextPair(BonusStats.Age + Stats.Age, Stats.Age);
-            ui.LevelText.text = GenStatTextPair(BonusStats.Level + Stats.Level, Stats.Level);
-
-            // Check if can reach next level
-            if (Experience > GameMechanics.GetTotalExperienceRequired(Stats.Level + 1))
-            {
-                ui.ExperienceText.text = "<color=green>" + Experience + "</color>";
-            }
-            else
-            {
-                ui.ExperienceText.text = Experience.ToString();
-            }
-
-            string attackBonusStr = AttackBonus.ToString();
-            if (AttackBonus >= 0)
-            {
-                attackBonusStr = "+" + AttackBonus;
-            }
-            string attackDamageStr = MinAttackDamage + " - " + MaxAttackDamage;
-
-            string shootBonusStr = ShootBonus.ToString();
-            if (ShootBonus >= 0)
-            {
-                shootBonusStr = "+" + ShootBonus;
-            }
-            string shootDamageStr = MinShootDamage + " - " + MaxShootDamage;
-            if (UI.DollUI.Bow.Item == null)
-            {
-                shootDamageStr = "N/A";
-            }
-
-
-            ui.AttackText.text = attackBonusStr;
-            ui.AttackDamageText.text = attackDamageStr;
-            ui.ShootText.text = shootBonusStr;
-            ui.ShootDamageText.text = shootDamageStr;
-
-
-
-            Debug.Log("recalc time: " + sw.ElapsedMilliseconds);
-            sw.Stop();
-
-        }
-
-        private string GenResistTextPair(int currValue, int baseValue)
-        {
-            if (baseValue == int.MaxValue)
-            {
-                return "Immune";
-            }
-            else
-            {
-                return GenStatTextPair(currValue, baseValue);
-            }
-        }
-
-        private string GenStatTextPair(int currValue, int baseValue)
-        {
-            if (currValue > baseValue)
-            {
-                return "<color=green>" + currValue + "</color> / " + baseValue;
-            }
-            else if (currValue < baseValue)
-            {
-                return "<color=red>" + currValue + "</color> / " + baseValue;
-            }
-            else
-            {
-                return currValue + " / " + baseValue; 
-            }
-        }
-
         //======================================================================
+
+        /*
+        * Base = Permanent + Items 
+        * Bonus = Magic + Skill bonuses
+        * Actual = Base + Bonus + other factors like age
+        * 
+        * BonusStatType = pretty much anything that can be applied to player to achieve some effect
+        * 
+        */
 
         public int GetBaseAge()
         {
             return TimeMgr.Instance.GetCurrentTime().Year - BirthYear;
+        }
+
+        public int GetActualAge()
+        {
+            // Also get age mod from items etc.
+
+            return GetBaseAge() + AgeModifier;
         }
 
         public int GetBaseResistance(SpellElement resistType)
@@ -878,7 +571,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             // + Get from items
-            int itemBonus = 0;
+            int itemBonus = GetItemsBonus(GameMechanics.ResistanceToAttributeBonus(resistType));
 
             return racialBonus + itemBonus;
         }
@@ -888,29 +581,70 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             int baseAttribute = BaseAttributes[attribute];
 
             // + Get from items
-            int itemBonus = 0;
+            int itemBonus = GetItemsBonus(GameMechanics.CharAttributeToStatBonus(attribute));
 
             return baseAttribute + itemBonus;
         }
 
+        public int GetItemsBonus(StatBonusType bonusType)
+        {
+            int bonusAmount = 0;
+            foreach (InventoryItem equipSlot in EquipSlots)
+            {
+                Item item = equipSlot.Item;
+                if (item == null)
+                {
+                    continue;
+                }
+
+                // Add native armor's armor class
+                if (bonusType == StatBonusType.ArmorClass)
+                {
+                    if (item.Data.ItemType == ItemType.Armor ||
+                        item.Data.ItemType == ItemType.Helmet ||
+                        item.Data.ItemType == ItemType.Cloak ||
+                        item.Data.ItemType == ItemType.Shield ||
+                        item.Data.ItemType == ItemType.Gauntlets ||
+                        item.Data.ItemType == ItemType.Boots)
+                    {
+                        bonusAmount += int.Parse(item.Data.Mod1) + int.Parse(item.Data.Mod2);
+                    }
+                }
+
+                // Add generic (enchant)
+                bonusAmount += item.GetStatBonusAmount(bonusType);
+            }
+
+            return bonusAmount;
+        }
+
+        public int GetMagicBonus(StatBonusType bonusType)
+        {
+            int bonusAmount = 0;
+
+
+            return bonusAmount;
+        }
+
+        public int GetSkillsBonus(StatBonusType bonusType)
+        {
+            int bonusAmount = 0;
+
+            return bonusAmount;
+        }
+
         public int GetActualLevel()
         {
-            // + level from items / buffs - e.g. well in MM6 Kriegspire added 30 or 50 levels
-            return Level;
+            int itemBonus = GetItemsBonus(StatBonusType.Level);
+            int magicBonus = GetMagicBonus(StatBonusType.Level);
+
+            return Level + itemBonus + magicBonus;
         }
-
-        public int GetActualAge()
-        {
-            // Also get age mod from items etc.
-
-            return GetBaseAge() + AgeModifier;
-        }
-
         public int GetActualResistance(SpellElement resistType)
         {
             int baseAmount = GetBaseResistance(resistType);
-            int resistFromSkills = 0; // TODO
-            int resistFromMagic = 0; // TODO
+            int resistFromSkills = GetSkillsBonus(GameMechanics.ResistanceToAttributeBonus(resistType));
+            int resistFromMagic = GetMagicBonus(GameMechanics.ResistanceToAttributeBonus(resistType));
 
             return baseAmount + resistFromSkills + resistFromMagic;
         }
@@ -923,7 +657,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             int baseAmount = Skills[skillType].Level;
-            int itemBonus = 0;  // TODO
+            int itemBonus = GetItemsBonus(GameMechanics.SkillToAttributeBonus(skillType));
 
             return baseAmount + itemBonus;
         }
@@ -942,24 +676,23 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             /*float conditionMultiplier = GameMechanics.GetAttributeConditionMultiplier(..)*/
             float conditionMultiplier = 1.0f;
 
-            // TODO
             int baseValue = BaseAttributes[attribute];
-            int magicBonus = 0;
-            int itemBonus = 0;
+            int magicBonus = GetMagicBonus(GameMechanics.CharAttributeToStatBonus(attribute));
+            int itemBonus = GetItemsBonus(GameMechanics.CharAttributeToStatBonus(attribute));
 
             return (int)(baseValue * agingMultiplier * conditionMultiplier) + magicBonus + itemBonus;
         }
 
         // Helper accessors
-        public int GetMaxHealth()
+        public int GetMaxHitPoints()
         {
             ClassHpSpData classHpSpData = DbMgr.Instance.ClassHpSpDb.Get(Class);
 
             int hpBase = classHpSpData.HitPointsBase;
             int hpFromLevel = GetActualLevel() * classHpSpData.HitPointsFactor;
             int hpFromEndurance = GameMechanics.GetAttributeEffect(GetActualEndurance()) * classHpSpData.HitPointsFactor;
-            int hpFromItems = 0; // TODO
-            int hpFromSkills = 0; // TODO - Bodybuilding
+            int hpFromItems = GetItemsBonus(StatBonusType.HitPoints);
+            int hpFromSkills = GetItemsBonus(StatBonusType.HitPoints);
 
             int maxHealth = hpBase + hpFromLevel + hpFromEndurance + hpFromItems + hpFromSkills;
             if (maxHealth < 0)
@@ -995,8 +728,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 mpFromPersonality += GameMechanics.GetAttributeEffect(GetActualPersonality()) * classHpSpData.SpellPointsFactor;
             }
 
-            int mpFromItems = 0; // TODO
-            int mpFromSkills = 0; // TODO
+            int mpFromItems = GetItemsBonus(StatBonusType.SpellPoints);
+            int mpFromSkills = GetItemsBonus(StatBonusType.SpellPoints);
 
             int maxMana = mpBase + mpFromLevel + mpFromIntellect + mpFromPersonality + mpFromItems + mpFromSkills;
             if (maxMana < 0)
@@ -1074,6 +807,95 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int GetActualLuck()
         {
             return GetActualAttribute(CharAttribute.Luck);
+        }
+
+        public int GetBaseArmorClass()
+        {
+            int accuracyBonus = GameMechanics.GetAttributeEffect(GetActualAccuracy());
+            int itemBonus = GetItemsBonus(StatBonusType.ArmorClass);
+            int skillBonus = GetSkillsBonus(StatBonusType.ArmorClass);
+
+            int result = accuracyBonus + itemBonus + skillBonus;
+            if (result < 0)
+            {
+                result = 0;
+            }
+
+            return result;
+        }
+
+        public int GetActualArmorClass()
+        {
+            int baseAC = GetBaseArmorClass();
+            int bonusAC = GetMagicBonus(StatBonusType.ArmorClass);
+
+            int result = baseAC + bonusAC;
+            if (result < 0)
+            {
+                result = 0;
+            }
+
+            return result;
+        }
+
+        public int GetMeleeAttack()
+        {
+            int accuracyBonus = GameMechanics.GetAttributeEffect(GetActualAccuracy());
+            int weaponBonus = 0;
+            // Main hand
+            Item mainhandItem = UI.DollUI.RH_Weapon.Item;
+            if (mainhandItem != null)
+            {
+                ItemType mainhandItemType = mainhandItem.Data.ItemType;
+                if (mainhandItemType == ItemType.WeaponOneHanded ||
+                    mainhandItemType == ItemType.WeaponTwoHanded)
+                {
+                    weaponBonus += int.Parse(mainhandItem.Data.Mod2);
+                }
+            }
+            // TODO: Also handle dual wield here
+
+            int skillsBonus = GetSkillsBonus(StatBonusType.MeleeAttack);
+            int magicalBonus = GetMagicBonus(StatBonusType.MeleeAttack);
+
+
+            return accuracyBonus + weaponBonus + skillsBonus + magicalBonus;
+        }
+
+        public int GetMeleeDamageMin()
+        {
+            int mightBonus = GameMechanics.GetAttributeEffect(GetActualMight());
+
+
+
+            return 0;
+        }
+
+        public int GetMeleeDamageMax()
+        {
+            return 0;
+        }
+
+        public int GetRangedAttack()
+        {
+            return 0;
+        }
+
+        public int GetRangedDamageMin()
+        {
+            return 0;
+        }
+
+        public int GetRangedDamageMax()
+        {
+            return 0;
+        }
+
+
+
+        public bool CanTrainToNextLevel()
+        {
+            return Experience > GameMechanics.GetTotalExperienceRequired(Level + 1);
         }
     }
 }

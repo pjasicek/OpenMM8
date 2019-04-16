@@ -118,9 +118,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     infoText += "<color=red>Grandmaster: " + descData.GrandMaster + "</color>";
                 }
 
-                if (owner.BonusStats.SkillLevels[SkillType] > 0)
+                int skillBonus = owner.GetItemsBonus(GameMechanics.SkillToAttributeBonus(SkillType));
+                if (skillBonus > 0)
                 {
-                    infoText += "\n\nBonus: " + Owner.BonusStats.SkillLevels[SkillType];
+                    infoText += "\n\nBonus: " + skillBonus;
                 }
 
                 return infoText;

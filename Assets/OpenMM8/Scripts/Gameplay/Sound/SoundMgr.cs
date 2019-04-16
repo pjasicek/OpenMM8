@@ -324,7 +324,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             
         }
 
-        public void OnInteractedWithItem(Character chr, BaseItem item, ItemInteractResult interactResult)
+        public void OnInteractedWithItem(Character chr, Item item, ItemInteractResult interactResult)
         {
             switch (interactResult)
             {
@@ -387,7 +387,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         if (isVictimInMeleeRange)
                         {
                             MonsterData npcData = result.Victim.GetComponent<BaseNpc>().NpcData;
-                            bool isNpcStrong = npcData.Level > chr.Stats.Level;
+                            bool isNpcStrong = npcData.Level > chr.Level;
                             if (isNpcStrong)
                             {
                                 PlayRandomSound(chr.Sounds.KilledStrongMonster, chr.Party.PlayerAudioSource);
@@ -404,7 +404,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnCharGotHit(Character chr, AttackInfo attackInfo, AttackResult attackResult)
         {
-            float damagePercentage = ((float)attackResult.DamageDealt / (float)chr.GetMaxHealth()) * 100.0f;
+            float damagePercentage = ((float)attackResult.DamageDealt / (float)chr.GetMaxHitPoints()) * 100.0f;
             if (attackInfo.DamageType == SpellElement.Physical)
             {
                 PlayRandomSound(m_CharGotHit_Leather, chr.Party.PlayerAudioSource);

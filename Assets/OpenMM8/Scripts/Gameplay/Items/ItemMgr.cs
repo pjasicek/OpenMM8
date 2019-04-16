@@ -9,12 +9,12 @@ using UnityEngine;
 
 public class ItemMgr
 {
-    static public BaseItem GetRandomItem()
+    static public Item GetRandomItem()
     {
         return null;
     }
 
-    static public void ThrowItem(Transform transform, Vector3 direction, BaseItem item)
+    static public void ThrowItem(Transform transform, Vector3 direction, Item item)
     {
         GameObject outdoorItem = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Objects/OutdoorItem"),
             transform.position + (transform.forward * 2.5f), transform.rotation);

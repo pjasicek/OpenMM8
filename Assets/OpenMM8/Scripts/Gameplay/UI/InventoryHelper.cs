@@ -10,7 +10,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public class InventoryHelper
     {
         // Returned position is relative to its parent - right hand's "fingers"
-        static public Vector2 GetRightHandItemPos(BaseItem item, Character chr)
+        static public Vector2 GetRightHandItemPos(Item item, Character chr)
         {
             Vector2 pos = new Vector2();
 

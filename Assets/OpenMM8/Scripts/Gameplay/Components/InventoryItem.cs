@@ -14,7 +14,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     [RequireComponent(typeof(Image))]
     public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
     {
-        public BaseItem Item = null;
+        public Item Item = null;
         public Image Image;
         public bool IsHeld = false;
         public bool isEquipped = false;

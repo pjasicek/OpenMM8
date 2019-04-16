@@ -6,7 +6,7 @@ using Assets.OpenMM8.Scripts.Gameplay.Items;
 
 public class InventoryCell
 {
-    public BaseItem Item;
+    public Item Item;
 
     public void Clear()
     {

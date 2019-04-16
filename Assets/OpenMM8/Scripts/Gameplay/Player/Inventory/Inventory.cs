@@ -19,7 +19,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public InventoryCell[] InventoryCells = new InventoryCell[INVENTORY_ROWS * INVENTORY_COLUMNS];
 
         // Items in inventory
-        public List<BaseItem> InventoryItems = new List<BaseItem>();
+        public List<Item> InventoryItems = new List<Item>();
 
         //=================================== Methods ===================================
 
@@ -31,7 +31,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
-        public ItemInteractResult TryEquipItem(BaseItem heldItem, out BaseItem replacedItem)
+        public ItemInteractResult TryEquipItem(Item heldItem, out Item replacedItem)
         {
             replacedItem = null;
 
@@ -139,7 +139,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
             else if (heldItem.Data.ItemType == ItemType.Missile)
             {
-                // TODO: Fix, wrong calculation
                 equipPos = Owner.DollTypeData.BowOffset;
                 equipSprite = heldItem.Data.InvSprite;
             }
@@ -256,7 +255,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return ItemInteractResult.Equipped;
         }
 
-        public bool AddItem(BaseItem item)
+        public bool AddItem(Item item)
         {
             ItemData itemData = DbMgr.Instance.ItemDb.Get(item.Data.Id);
 
@@ -292,7 +291,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             inventoryItem.Image.enabled = false;
             inventoryItem.Item = null;
 
-            Owner.RecalculateStats();
+            Owner.UI.StatsUI.Refresh();
         }
 
         public bool AddItem(int itemId)
@@ -305,7 +304,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 return false;
             }
 
-            BaseItem item = ItemFactory.CreateItem(itemData);
+            Item item = new Item(itemData);
             item.InvCellPosition = itemPos;
             GetCells(itemPos.x, itemPos.y, itemData.InvSize.x, itemData.InvSize.y)
                 .ForEach(cell => cell.Item = item);
@@ -317,7 +316,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return true;
         }
 
-        public bool CanReplaceItem(BaseItem oldItem, BaseItem newItem, out Vector2Int newPos)
+        public bool CanReplaceItem(Item oldItem, Item newItem, out Vector2Int newPos)
         {
             newPos = new Vector2Int();
 
@@ -348,7 +347,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return ret;
         }
 
-        public bool PlaceItem(BaseItem item, int x, int y, bool allowAnyPos = false)
+        public bool PlaceItem(Item item, int x, int y, bool allowAnyPos = false)
         {
             ItemData itemData = item.Data;
             if (!IsCellsFree(x, y, itemData.InvSize.x, itemData.InvSize.y))
@@ -387,7 +386,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return true;
         }
 
-        public bool RemoveItem(BaseItem item)
+        public bool RemoveItem(Item item)
         {
             if (!HasItem(item))
             {
@@ -413,7 +412,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return true;
         }
 
-        public bool HasItem(BaseItem item)
+        public bool HasItem(Item item)
         {
             return true;
         }

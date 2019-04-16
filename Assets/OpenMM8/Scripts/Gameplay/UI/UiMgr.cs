@@ -31,7 +31,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private float m_TimeSinceLastPartyText = 0.0f;
         private float m_PartyTextLockTime = 0.0f;
 
-        public BaseItem m_HoveredItem = null;
+        public Item m_HoveredItem = null;
         public InventoryItem m_HeldItem = null;
         public InspectableUiText m_HoveredInspectableUiText = null;
 
@@ -442,7 +442,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             if (Input.GetButton("InspectObject") && m_HoveredItem != null)
             {
                 // Show item info
-                BaseItem item = m_HoveredItem;
+                Item item = m_HoveredItem;
                 m_InspectItemUI.ItemImage.sprite = item.Data.InvSprite;
                 m_InspectItemUI.ItemImage.SetNativeSize();
 
@@ -930,7 +930,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             GameMgr.Instance.UnpauseGame();
         }
 
-        public void SetHeldItem(BaseItem item)
+        public void SetHeldItem(Item item)
         {
             if (m_HeldItem)
             {
@@ -1116,8 +1116,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             chr.UI.DollUI.RH_OpenImage.alphaHitTestMinimumThreshold = 0.4f;
             chr.UI.DollUI.RH_HoldImage.alphaHitTestMinimumThreshold = 0.4f;
 
-            chr.UI.InventoryUI = InventoryUI.Create();
-            chr.UI.StatsUI = StatsUI.Create();
+            chr.UI.InventoryUI = InventoryUI.Create(chr);
+            chr.UI.StatsUI = StatsUI.Create(chr);
             chr.UI.SkillsUI = SkillsUI.Create(chr);
 
             //chr.UI.StatsUI.Holder = 
@@ -1383,7 +1383,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 Vector2Int newPos;
                 if (m_PlayerParty.ActiveCharacter.Inventory.CanReplaceItem(inventoryItem.Item, m_HeldItem.Item, out newPos))
                 {
-                    BaseItem heldItem = m_HeldItem.Item;
+                    Item heldItem = m_HeldItem.Item;
                     GameObject.Destroy(m_HeldItem.gameObject);
 
                     SetHeldItem(inventoryItem.Item);
@@ -1405,13 +1405,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
-        private void OnOutdoorItemInspectStart(BaseItem item)
+        private void OnOutdoorItemInspectStart(Item item)
         {
             Debug.Log("Hovered over item: " + item.Data.Name);
             m_HoveredItem = item;
         }
 
-        private void OnOutdoorItemInspectEnd(BaseItem item)
+        private void OnOutdoorItemInspectEnd(Item item)
         {
             //Debug.Log("Unhovered over item: " + inventoryItem.Item.Data.Name);
             if (m_HoveredItem != null && m_HoveredItem == item)
@@ -1451,7 +1451,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 if (clickedItem.Item.Data.ItemType == ItemType.Ring &&
                     m_HeldItem.Item.Data.ItemType == ItemType.Ring)
                 {
-                    BaseItem tmpClickedItem = clickedItem.Item;
+                    Item tmpClickedItem = clickedItem.Item;
 
                     clickedItem.Image.sprite = m_HeldItem.Item.Data.InvSprite;
                     clickedItem.Image.SetNativeSize();
@@ -1513,7 +1513,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
-        private void OnItemEquipped(Character chr, BaseItem equippedItem, BaseItem replacedItem)
+        private void OnItemEquipped(Character chr, Item equippedItem, Item replacedItem)
         {
             GameObject.Destroy(m_HeldItem.gameObject);
             m_HeldItem = null;
@@ -1528,7 +1528,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private void OnInspectableUiTextHoverStart(InspectableUiText inspectableUiText)
         {
             m_HoveredInspectableUiText = inspectableUiText;
-            Debug.Log(inspectableUiText.GetHeader());
         }
 
         private void OnInspectableUiTextHoverEnd(InspectableUiText inspectableUiText)

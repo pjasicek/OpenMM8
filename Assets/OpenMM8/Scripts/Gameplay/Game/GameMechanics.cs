@@ -438,20 +438,43 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return 1.0f;
         }
 
-        public static AttributeBonus CharAttributeToAttributeBonus(CharAttribute attribute)
+        public static StatBonusType CharAttributeToStatBonus(CharAttribute attribute)
         {
             switch (attribute)
             {
-                case CharAttribute.Accuracy: return AttributeBonus.Accuracy;
-                case CharAttribute.Endurance: return AttributeBonus.Endurance;
-                case CharAttribute.Might: return AttributeBonus.Might;
-                case CharAttribute.Intellect: return AttributeBonus.Intellect;
-                case CharAttribute.Personality: return AttributeBonus.Personality;
-                case CharAttribute.Luck: return AttributeBonus.Luck;
-                case CharAttribute.Speed: return AttributeBonus.Speed;
+                case CharAttribute.Accuracy: return StatBonusType.Accuracy;
+                case CharAttribute.Endurance: return StatBonusType.Endurance;
+                case CharAttribute.Might: return StatBonusType.Might;
+                case CharAttribute.Intellect: return StatBonusType.Intellect;
+                case CharAttribute.Personality: return StatBonusType.Personality;
+                case CharAttribute.Luck: return StatBonusType.Luck;
+                case CharAttribute.Speed: return StatBonusType.Speed;
             }
 
-            return AttributeBonus.None;
+            return StatBonusType.None;
+        }
+
+        public static StatBonusType SkillToAttributeBonus(SkillType skillType)
+        {
+
+
+            return StatBonusType.None;
+        }
+
+        public static StatBonusType ResistanceToAttributeBonus(SpellElement resistance)
+        {
+            switch (resistance)
+            {
+                case SpellElement.Fire: return StatBonusType.FireResistance;
+                case SpellElement.Water: return StatBonusType.WaterResistance;
+                case SpellElement.Air: return StatBonusType.AirResistance;
+                case SpellElement.Earth: return StatBonusType.EarthResistance;
+                case SpellElement.Spirit: return StatBonusType.BodyResistance;
+                case SpellElement.Mind: return StatBonusType.MindResistance;
+                case SpellElement.Body: return StatBonusType.BodyResistance;
+            }
+
+            return StatBonusType.None;
         }
     }
 }

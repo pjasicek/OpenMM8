@@ -205,7 +205,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
     // This contains every attribute - CharAttribute, SkillType, SpellElement
     // Mapping from this to actual attribute needs to be done manually
-    public enum AttributeBonus
+    public enum StatBonusType
     {
         // Attribute bonuses
         Might,
@@ -267,6 +267,23 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         Dodging,
         Unarmed,
         Stealing,
+
+        // Other "Stats"
+        MeleeAttack,
+        MeleeDamageBonus,
+        RangedAttack,
+        RangedDamageBonus,
+
+        // Special bonuses - they do not need to have amount, they are rather 0 or 1
+        //   (0 if they are not present on the item, 1 if they are)
+        // They should not be stackable I think
+        OfFireMagic,
+        OfWaterMagic,
+        OfAirMagic,
+        OfEarthMagic,
+        OfSpiritMagic,
+        OfBodyMagic,
+        OfMindMagic,
 
         None
     }

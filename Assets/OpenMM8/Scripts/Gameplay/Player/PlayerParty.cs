@@ -469,9 +469,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             
             GameEvents.InvokeEvent_OnCharacterJoinedParty(character, this);
 
-            character.RecalculateStats();
-            character.CurrHitPoints = character.GetMaxHealth();
+            character.UI.StatsUI.Refresh();
+            character.CurrHitPoints = character.GetMaxHitPoints();
             character.CurrSpellPoints = character.GetMaxSpellPoints();
+
+            Debug.LogError("Max health: " + character.GetMaxHitPoints());
 
             character.UI.SkillsUI.RepositionSkillRows();
             character.UI.SkillsUI.Repaint(character.SkillPoints);
@@ -536,9 +538,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             AttackResult result = DamageCalculator.DamageFromNpcToPlayer(hitInfo,
-                hitCharacter.Stats.Resistances,
-                hitCharacter.Stats.ArmorClass,
-                hitCharacter.Stats.Attributes[CharAttribute.Luck]);
+                hitCharacter.BaseResistances, // TODO: not like this
+                hitCharacter.GetActualArmorClass(),
+                hitCharacter.GetActualLuck());
             result.Victim = this.gameObject;
             /*if (result.Type == AttackResultType.Miss)
             {
