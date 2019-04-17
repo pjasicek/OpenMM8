@@ -6,6 +6,7 @@ using System.IO;
 
 using Assets.OpenMM8.Scripts.Gameplay.Items;
 using Assets.OpenMM8.Scripts.Data;
+using UnityEngine;
 
 namespace Assets.OpenMM8.Scripts.Gameplay.Data
 {
@@ -87,6 +88,48 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             itemData.Notes = columns[16];
 
             return itemData;
+        }
+
+        private bool ProcessRandomItemGenerationRow(int row, string[] columns)
+        {
+            if (row < 4)
+            {
+                return true;
+            }
+            if (string.IsNullOrEmpty(columns[0]))
+            {
+                return true;
+            }
+            if (columns[1] == "null")
+            {
+                return true;
+            }
+
+            int id;
+            if (!int.TryParse(columns[0], out id))
+            {
+                return true;
+            }
+            ItemData data = Get(id);
+            if (data == null)
+            {
+                Debug.LogError("Missing itemdata for item: " + columns[1]);
+                return true;
+            }
+
+            data.ItemLevelDropChanceMap[ItemLevel.L1] = int.Parse(columns[2]);
+            data.ItemLevelDropChanceMap[ItemLevel.L2] = int.Parse(columns[3]);
+            data.ItemLevelDropChanceMap[ItemLevel.L3] = int.Parse(columns[4]);
+            data.ItemLevelDropChanceMap[ItemLevel.L4] = int.Parse(columns[5]);
+            data.ItemLevelDropChanceMap[ItemLevel.L5] = int.Parse(columns[6]);
+            data.ItemLevelDropChanceMap[ItemLevel.L6] = int.Parse(columns[7]);
+
+            return true;
+        }
+
+        protected override void PostLoad()
+        {
+            CsvDataLoader.LoadRows(DbMgr.MM8_DATA_PATH + @"ITEMS_RANDOM_GENERATION", ProcessRandomItemGenerationRow);
         }
     }
 }

@@ -33,8 +33,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public CharacterVoiceDb CharacterVoiceDb = new CharacterVoiceDb();
         public SoundDb SoundDb = new SoundDb();
         public ItemEnchantStandardDb ItemEnchantStandardDb = new ItemEnchantStandardDb();
+        public ItemEnchantSpecialDb ItemEnchantSpecialDb = new ItemEnchantSpecialDb();
 
-        private const string MM8_DATA_PATH = @"Data/";
+        public const string MM8_DATA_PATH = @"Data/";
 
         private void Awake()
         {
@@ -71,6 +72,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             CharacterVoiceDb.Initialize(MM8_DATA_PATH + "CHARACTER_VOICES");
             SoundDb.Initialize(MM8_DATA_PATH + "SOUNDS");
             ItemEnchantStandardDb.Initialize(MM8_DATA_PATH + "ITEM_ENCHANT_STANDARD");
+            ItemEnchantSpecialDb.Initialize(MM8_DATA_PATH + "ITEM_ENCHANT_SPECIAL");
 
             stopwatch.Stop();
             UnityEngine.Debug.Log("elapsed ms: " + stopwatch.ElapsedMilliseconds);

@@ -9,6 +9,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     {
         Standard,
         Special,
+        Other, // Artifact, Relic, Special weapon like Whistlebone's sword
         None
     }
 

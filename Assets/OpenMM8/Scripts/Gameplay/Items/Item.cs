@@ -53,6 +53,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Items
             }
 
             m_Mod = int.Parse(Data.Mod2);
+
+            if (IsSpecial() || IsArtifact() || IsRelic())
+            {
+                AddSpecialEnchant();
+            }
         }
 
         virtual public int GetValue()
@@ -193,6 +198,61 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Items
         private bool CanBeBroken()
         {
             return true;
+        }
+
+        public bool IsArtifact()
+        {
+            return Data.Material == "Artifact";
+        }
+
+        public bool IsRelic()
+        {
+            return Data.Material == "Relic";
+        }
+
+        public bool IsSpecial()
+        {
+            return Data.Material == "Special";
+        }
+
+        private void AddSpecialEnchant()
+        {
+            if (!IsArtifact() && !IsRelic() && !IsSpecial())
+            {
+                Debug.LogError("This item (" + Data.Name + ") is not artifact/relic/Special !");
+                return;
+            }
+
+            /*if (!Enum.IsDefined(typeof(ItemID), Data.Id))
+            {
+                Debug.LogError("Artifact/")
+            }*/
+
+            Enchant = new ItemEnchant()
+            {
+                EnchantType = EnchantType.Other
+            };
+
+            switch (Data.Id)
+            {
+                case 500:
+                    Enchant.StatBonusMap.Add(StatType.Accuracy, 40);
+                    // TODO: +10-20 light damage
+                    break;
+
+                case 501:
+                    Enchant.StatBonusMap.Add(StatType.Might, 40);
+                    // TODO: +10-20 dark damage
+                    break;
+
+                case 502:
+                    Enchant.StatBonusMap.Add(StatType.Armsmaster, 7);
+                    Enchant.StatBonusMap.Add(StatType.AirResistance, 30);
+                    break;
+
+                // TODO: Add the rest
+
+            }
         }
     }
 }

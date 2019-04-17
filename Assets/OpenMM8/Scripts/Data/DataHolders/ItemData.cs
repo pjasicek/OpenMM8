@@ -25,11 +25,22 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int EquipY;
         public string Notes;
 
+        // Specified in ITEM_RANDOM_GENERATION.txt
+        public Dictionary<ItemLevel, int> ItemLevelDropChanceMap = new Dictionary<ItemLevel, int>();
+
         // Unity specific but common for all items with this specific data
         // This is set up upon UiMgr initialization
         public Sprite InvSprite;
         public Sprite OutdoorSprite;
         public List<Sprite> EquipSprites = new List<Sprite>();
         public Vector2Int InvSize;
+
+        public ItemData()
+        {
+            foreach (ItemLevel enumVal in Enum.GetValues(typeof(ItemLevel)))
+            {
+                ItemLevelDropChanceMap.Add(enumVal, 0);
+            }
+        }
     }
 }

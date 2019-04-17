@@ -14,7 +14,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int MaxGold = 0;
         public int ItemChance = 0;
         public ItemType ItemType = ItemType.NotAvailable;
-        public LootItemLevel ItemLevel = LootItemLevel.None;
+        public ItemLevel ItemLevel = ItemLevel.None;
         public int CertainItemId = 0;
 
         public NpcLootPrototype(string treasureDef)
@@ -27,27 +27,27 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 // Loot item level
                 if (treasureDef.Contains("l1"))
                 {
-                    ItemLevel = LootItemLevel.L1;
+                    ItemLevel = ItemLevel.L1;
                 }
                 else if (treasureDef.Contains("l2"))
                 {
-                    ItemLevel = LootItemLevel.L2;
+                    ItemLevel = ItemLevel.L2;
                 }
                 else if (treasureDef.Contains("l3"))
                 {
-                    ItemLevel = LootItemLevel.L3;
+                    ItemLevel = ItemLevel.L3;
                 }
                 else if (treasureDef.Contains("l4"))
                 { 
-                    ItemLevel = LootItemLevel.L4;
+                    ItemLevel = ItemLevel.L4;
                 }
                 else if (treasureDef.Contains("l5"))
                 {
-                    ItemLevel = LootItemLevel.L5;
+                    ItemLevel = ItemLevel.L5;
                 }
                 else if (treasureDef.Contains("l6"))
                 {
-                    ItemLevel = LootItemLevel.L6;
+                    ItemLevel = ItemLevel.L6;
                 }
                 else
                 {

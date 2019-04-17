@@ -25,21 +25,22 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
     */
 
     // ITEM_ENCHANT_STANDARD
-    public class ItemEnchantStandardData : DbData
+    public class ItemEnchantStandardData : DbData<StatType>
     {
         public StatType BonusType;
+        public string StatDisplayNameText;
         public string OfName;
         public Dictionary<ItemType, int> ChanceToApplyMap = new Dictionary<ItemType, int>();
     }
 
-    public class ItemEnchantStandardDb : DataDb<ItemEnchantStandardData>
+    public class ItemEnchantStandardDb : DataDb<ItemEnchantStandardData, StatType>
     {
         // Just a helper
         private int m_Id = 0;
 
         override public ItemEnchantStandardData ProcessCsvDataRow(int row, string[] columns)
         {
-            if (row < 4)
+            if (row < 1)
             {
                 return null;
             }
@@ -51,7 +52,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
 
 
             ItemEnchantStandardData data = new ItemEnchantStandardData();
-            data.Id = m_Id++;
+            
 
             switch (columns[0])
             {
@@ -85,6 +86,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                     return null;
             }
 
+            data.Id = data.BonusType;
+
+            data.StatDisplayNameText = columns[0];
             data.OfName = columns[1];
             data.ChanceToApplyMap.Add(ItemType.Armor, int.Parse(columns[2]));
             data.ChanceToApplyMap.Add(ItemType.Shield, int.Parse(columns[3]));

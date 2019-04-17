@@ -80,9 +80,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             return null;
         }
 
-        protected override void Finalize()
+        protected override void PostLoad()
         {
-            base.Finalize();
+            base.PostLoad();
         }
     }
 }

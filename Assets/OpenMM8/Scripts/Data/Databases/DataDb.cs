@@ -9,10 +9,11 @@ namespace Assets.OpenMM8.Scripts
     {
         public Dictionary<KeyType, T> Data = new Dictionary<KeyType, T>();
 
+        // Row in LoadRows is indexed from 0, @headerRow starts from 1 like in excel
         public bool Initialize(string csvFile, int headerRow = 1, char csvDelim = '\t')
         {
-            bool ret = CsvDataLoader.LoadRows<T>(csvFile, _ProcessCsvDataRow, headerRow, csvDelim);
-            Finalize();
+            bool ret = CsvDataLoader.LoadRows(csvFile, _ProcessCsvDataRow, headerRow, csvDelim);
+            PostLoad();
             return ret;
         }
 
@@ -36,7 +37,7 @@ namespace Assets.OpenMM8.Scripts
 
         abstract public T ProcessCsvDataRow(int row, string[] columns);
 
-        protected virtual void Finalize() { }
+        protected virtual void PostLoad() { }
 
         public T Get(KeyType id)
         {

@@ -207,7 +207,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     // Mapping from this to actual attribute needs to be done manually
     public enum StatType
     {
-        // Attribute bonuses
+        // Attributes
         Might,
         Intellect,
         Personality,
@@ -227,7 +227,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         Age,
         Level,
         RecoveryTime,
-        // Skill bonuses
+
+        // Skills
         Staff,
         Sword,
         Dagger,
@@ -379,6 +380,84 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         Misc
     }
 
+    public enum SpecialEnchantType
+    {
+        None = 0,
+        OfProtection = 1,
+        OfGods,
+        OfCarnage,
+        OfCold,
+        OfFrost,
+        OfIce,
+        OfSparks,
+        OfLightning,
+        OfThunderbolts,
+        OfFire,
+        OfFlame,
+        OfInfernos,
+        OfPoison,
+        OfVenom,
+        OfAcid,
+        Vampiric,
+        OfRecovery,
+        OfImmunity,
+        OfSanity,
+        OfFreedom,
+        OfAntidotes,
+        OfAlarms,
+        OfMedusa,
+        OfForce,
+        OfPower,
+        OfAirMagic,
+        OfBodyMagic,
+        OfDarkMagic,
+        OfEarthMagic,
+        OfFireMagic,
+        OfLightMagic,
+        OfMindMagic,
+        OfSpiritMagic,
+        OfWaterMagic,
+        OfThievery,
+        OfShielding,
+        OfRegeneration,
+        OfMana,
+        OfOgreSlaying,
+        OfDragonSlaying,
+        OfDarkness,
+        OfDoom,
+        OfEarth,
+        OfLife,
+        Rogues,
+        OfTheDragon,
+        OfTheEclipse,
+        OfTheGolem,
+        OfTheMoon,
+        OfThePhoenix,
+        OfTheSky,
+        OfTheStars,
+        OfTheSun,
+        OfTheTroll,
+        OfTheUnicorn,
+        Warriors,
+        Wizards,
+        Antique,
+        Swift,
+        Monks,
+        Thieves,
+        OfIdentifying,
+        OfElementalSlaying,
+        OfUndeadSlaying,
+        OfDavid,
+        OfPlenty,
+        Assasins,
+        Barbarians,
+        OfTheStorm,
+        OfTheOcean,
+        OfWaterWalking,
+        OfFeatherFalling,
+        Max
+    }
+
     public enum ItemInteractResult
     {
         Equipped,
@@ -435,7 +514,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         None
     }
 
-    public enum LootItemLevel
+    public enum ItemLevel
     {
         L1,
         L2,

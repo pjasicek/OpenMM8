@@ -11,7 +11,7 @@ internal class MyDataRow : List<DataRowItem>, IDataRow
 
 public class CsvDataLoader
 {
-    static public bool LoadRows<T>(string csvPath, System.Func<int, string[], bool> rowProcessor, int headerRow = 1, char csvDelim = '\t')
+    static public bool LoadRows(string csvPath, System.Func<int, string[], bool> rowProcessor, int headerRow = 1, char csvDelim = '\t')
     {
         CsvFileDescription inputFileDescription = new CsvFileDescription
         {

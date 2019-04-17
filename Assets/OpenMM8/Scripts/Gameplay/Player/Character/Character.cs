@@ -562,12 +562,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return null;
         }
 
-        public bool HasItemAtSlot(EquipSlot equipSlot)
+        public bool WearsItemAtSlot(EquipSlot equipSlot)
         {
             return GetItemAtSlot(equipSlot) != null;
         }
 
-        public bool HasItemTypeEquipped(ItemType itemType)
+        public bool WearsItemType(ItemType itemType)
         {
             foreach (InventoryItem equipSlot in EquipSlots)
             {
@@ -584,7 +584,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public bool IsUnarmed()
         {
-            return !HasItemTypeEquipped(ItemType.WeaponTwoHanded) && !HasItemTypeEquipped(ItemType.WeaponOneHanded);
+            return !WearsItemType(ItemType.WeaponTwoHanded) && !WearsItemType(ItemType.WeaponOneHanded);
         }
 
         public bool WearsItemAtSlot(int itemId, EquipSlot equipSlot)
@@ -618,7 +618,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return false;
         }
 
-        public bool HasItemWithBonusStat(StatType statBonusType)
+        public bool WearsItemWithBonusStat(StatType statBonusType)
         {
             foreach (InventoryItem equipSlot in EquipSlots)
             {
