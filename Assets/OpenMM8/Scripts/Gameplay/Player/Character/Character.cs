@@ -589,26 +589,65 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int GetItemsBonus(StatBonusType bonusType)
         {
             int bonusAmount = 0;
+
+            // First non-trivial attribute calculations
+            switch (bonusType)
+            {
+                case StatBonusType.ArmorClass:
+                    foreach (InventoryItem equipSlot in EquipSlots)
+                    {
+                        Item item = equipSlot.Item;
+                        if (item == null)
+                        {
+                            continue;
+                        }
+
+                        // Add native armor's armor class
+                        if (bonusType == StatBonusType.ArmorClass)
+                        {
+                            if (item.Data.ItemType == ItemType.Armor ||
+                                item.Data.ItemType == ItemType.Helmet ||
+                                item.Data.ItemType == ItemType.Cloak ||
+                                item.Data.ItemType == ItemType.Shield ||
+                                item.Data.ItemType == ItemType.Gauntlets ||
+                                item.Data.ItemType == ItemType.Boots)
+                            {
+                                bonusAmount += int.Parse(item.Data.Mod1) + int.Parse(item.Data.Mod2);
+                            }
+                        }
+                    }
+                    break;
+
+                case StatBonusType.MeleeAttack:
+                    break;
+
+                case StatBonusType.MeleeDamageBonusMin:
+                    break;
+
+                case StatBonusType.MeleeDamageBonusMax:
+                    break;
+
+                case StatBonusType.RangedAttack:
+                    break;
+
+                case StatBonusType.RangedDamageBonusMin:
+                    break;
+
+                case StatBonusType.RangedDamageBonusMax:
+                    break;
+
+                default:
+                    break;
+            }
+
+
+            // Then trivial calculations - just extract stat bonus from item
             foreach (InventoryItem equipSlot in EquipSlots)
             {
                 Item item = equipSlot.Item;
                 if (item == null)
                 {
                     continue;
-                }
-
-                // Add native armor's armor class
-                if (bonusType == StatBonusType.ArmorClass)
-                {
-                    if (item.Data.ItemType == ItemType.Armor ||
-                        item.Data.ItemType == ItemType.Helmet ||
-                        item.Data.ItemType == ItemType.Cloak ||
-                        item.Data.ItemType == ItemType.Shield ||
-                        item.Data.ItemType == ItemType.Gauntlets ||
-                        item.Data.ItemType == ItemType.Boots)
-                    {
-                        bonusAmount += int.Parse(item.Data.Mod1) + int.Parse(item.Data.Mod2);
-                    }
                 }
 
                 // Add generic (enchant)

@@ -473,8 +473,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             character.CurrHitPoints = character.GetMaxHitPoints();
             character.CurrSpellPoints = character.GetMaxSpellPoints();
 
-            Debug.LogError("Max health: " + character.GetMaxHitPoints());
-
             character.UI.SkillsUI.RepositionSkillRows();
             character.UI.SkillsUI.Repaint(character.SkillPoints);
         }

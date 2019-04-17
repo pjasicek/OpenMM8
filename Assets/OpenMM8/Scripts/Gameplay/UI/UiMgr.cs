@@ -1354,7 +1354,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private void OnInventoryItemHoverStart(InventoryItem inventoryItem)
         {
-            Debug.Log("Hovered over item: " + inventoryItem.Item.Data.Name);
+            //Debug.Log("Hovered over item: " + inventoryItem.Item.Data.Name);
             m_HoveredItem = inventoryItem.Item;
         }
 
@@ -1407,7 +1407,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private void OnOutdoorItemInspectStart(Item item)
         {
-            Debug.Log("Hovered over item: " + item.Data.Name);
+            //Debug.Log("Hovered over item: " + item.Data.Name);
             m_HoveredItem = item;
         }
 

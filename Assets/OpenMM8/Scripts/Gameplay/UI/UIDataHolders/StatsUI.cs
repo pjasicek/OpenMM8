@@ -60,9 +60,8 @@ public class StatsUI
         LuckText.text = GenStatTextPair(Owner.GetActualLuck(), Owner.GetBaseLuck());
 
         // hp/sp:
-        // < 20% = red
+        // < 25% = red
         // < 100% = yellow
-        Debug.LogError("Curr: " + Owner.CurrHitPoints);
         if (Owner.GetHealthPercentage() < 25.0f)
         {
             HitPointsText.text = "<color=red>" + Owner.CurrHitPoints + "</color> / " + Owner.GetMaxHitPoints();

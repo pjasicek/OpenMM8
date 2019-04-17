@@ -270,9 +270,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         // Other "Stats"
         MeleeAttack,
-        MeleeDamageBonus,
+        MeleeDamageBonusMin,
+        MeleeDamageBonusMax,
         RangedAttack,
-        RangedDamageBonus,
+        RangedDamageBonusMin,
+        RangedDamageBonusMax,
 
         // Special bonuses - they do not need to have amount, they are rather 0 or 1
         //   (0 if they are not present on the item, 1 if they are)
