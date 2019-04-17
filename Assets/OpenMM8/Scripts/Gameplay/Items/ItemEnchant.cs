@@ -21,7 +21,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public class ItemEnchant
     {
         public EnchantType EnchantType = EnchantType.None;
-        public Dictionary<StatBonusType, int> StatBonusMap = new Dictionary<StatBonusType, int>();
+        public Dictionary<StatType, int> StatBonusMap = new Dictionary<StatType, int>();
         public string BonusDescText;
         public string OfTypeText;
         public EnchantPriceMultType EnchantPriceMultType = EnchantPriceMultType.Add;

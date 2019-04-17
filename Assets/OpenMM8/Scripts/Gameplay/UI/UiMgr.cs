@@ -458,7 +458,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 switch (item.Data.ItemType)
                 {
                     case ItemType.WeaponOneHanded:
-                    case ItemType.WeaponDualWield:
                     case ItemType.WeaponTwoHanded:
                         m_InspectItemUI.ItemSpecific.text +=
                                 "\nAttack: +" + item.Data.Mod2 + "    Damage: " + item.Data.Mod1 + " + " + item.Data.Mod2;

@@ -33,7 +33,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             {
                 case "Weapon": itemData.ItemType = ItemType.WeaponOneHanded; break;
                 case "Weapon2": itemData.ItemType = ItemType.WeaponTwoHanded; break;
-                case "Weapon1or2": itemData.ItemType = ItemType.WeaponDualWield; break;
+                case "Weapon1or2": itemData.ItemType = ItemType.WeaponOneHanded; break;
                 case "WeaponW": itemData.ItemType = ItemType.Wand; break;
                 case "Missile": itemData.ItemType = ItemType.Missile; break;
                 case "Armor": itemData.ItemType = ItemType.Armor; break;

@@ -11,12 +11,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     {
         // public SpellEffectType SpellEffectType;
         public SkillMastery SkillMastery;
-        public int SkillLevel;
+        public int Power;
         public TimeInfo ExpiryTime;
         public Character Caster;
         public int Flags;
 
-        bool Apply(SkillMastery skillMastery, int skillLevel, TimeInfo expiryTime, Character caster = null, int flags = 0)
+        bool Apply(SkillMastery skillMastery, int power, TimeInfo expiryTime, Character caster = null, int flags = 0)
         {
             if (expiryTime.TotalMinutes() <= TimeMgr.Instance.GetCurrentTime().TotalMinutes())
             {
@@ -25,7 +25,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             SkillMastery = skillMastery;
-            SkillLevel = skillLevel;
+            Power = power;
             ExpiryTime = expiryTime;
             Caster = caster;
             Flags = flags;
@@ -36,7 +36,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         void Reset()
         {
             SkillMastery = SkillMastery.None;
-            SkillLevel = 0;
+            Power = 0;
             ExpiryTime = null;
             Caster = null;
             Flags = 0;

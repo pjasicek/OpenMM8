@@ -438,43 +438,84 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return 1.0f;
         }
 
-        public static StatBonusType CharAttributeToStatBonus(CharAttribute attribute)
+        public static StatType CharAttributeToStatBonus(CharAttribute attribute)
         {
             switch (attribute)
             {
-                case CharAttribute.Accuracy: return StatBonusType.Accuracy;
-                case CharAttribute.Endurance: return StatBonusType.Endurance;
-                case CharAttribute.Might: return StatBonusType.Might;
-                case CharAttribute.Intellect: return StatBonusType.Intellect;
-                case CharAttribute.Personality: return StatBonusType.Personality;
-                case CharAttribute.Luck: return StatBonusType.Luck;
-                case CharAttribute.Speed: return StatBonusType.Speed;
+                case CharAttribute.Accuracy: return StatType.Accuracy;
+                case CharAttribute.Endurance: return StatType.Endurance;
+                case CharAttribute.Might: return StatType.Might;
+                case CharAttribute.Intellect: return StatType.Intellect;
+                case CharAttribute.Personality: return StatType.Personality;
+                case CharAttribute.Luck: return StatType.Luck;
+                case CharAttribute.Speed: return StatType.Speed;
             }
 
-            return StatBonusType.None;
+            return StatType.None;
         }
 
-        public static StatBonusType SkillToAttributeBonus(SkillType skillType)
+        public static StatType SkillToAttributeBonus(SkillType skillType)
         {
+            switch (skillType)
+            {
+                case SkillType.Staff: return StatType.Staff;
+                case SkillType.Sword: return StatType.Sword;
+                case SkillType.Dagger: return StatType.Dagger;
+                case SkillType.Axe: return StatType.Axe;
+                case SkillType.Spear: return StatType.Spear;
+                case SkillType.Bow: return StatType.Bow;
+                case SkillType.Mace: return StatType.Mace;
+                case SkillType.Blaster: return StatType.Blaster;
+                case SkillType.Shield: return StatType.Shield;
+                case SkillType.LeatherArmor: return StatType.LeatherArmor;
+                case SkillType.ChainArmor: return StatType.ChainArmor;
+                case SkillType.PlateArmor: return StatType.PlateArmor;
+                case SkillType.FireMagic: return StatType.FireMagic;
+                case SkillType.AirMagic: return StatType.AirMagic;
+                case SkillType.WaterMagic: return StatType.WaterMagic;
+                case SkillType.EarthMagic: return StatType.EarthMagic;
+                case SkillType.SpiritMagic: return StatType.SpiritMagic;
+                case SkillType.MindMagic: return StatType.MindMagic;
+                case SkillType.BodyMagic: return StatType.BodyMagic;
+                case SkillType.LightMagic: return StatType.LightMagic;
+                case SkillType.DarkMagic: return StatType.DarkMagic;
+                case SkillType.DarkElfAbility: return StatType.DarkElfAbility;
+                case SkillType.DragonAbility: return StatType.DragonAbility;
+                case SkillType.VampireAbility: return StatType.VampireAbility;
+                case SkillType.Merchant: return StatType.Merchant;
+                case SkillType.RepairItem: return StatType.RepairItem;
+                case SkillType.IdentifyItem: return StatType.IdentifyItem;
+                case SkillType.IdentifyMonster: return StatType.IdentifyMonster;
+                case SkillType.Meditation: return StatType.Meditation;
+                case SkillType.Alchemy: return StatType.Alchemy;
+                case SkillType.Perception: return StatType.Perception;
+                case SkillType.Regeneration: return StatType.Regeneration;
+                case SkillType.DisarmTraps: return StatType.DisarmTraps;
+                case SkillType.Bodybuilding: return StatType.Bodybuilding;
+                case SkillType.Armsmaster: return StatType.Armsmaster;
+                case SkillType.Learning: return StatType.Learning;
+                case SkillType.Dodging: return StatType.Dodging;
+                case SkillType.Unarmed: return StatType.Unarmed;
+                case SkillType.Stealing: return StatType.Stealing;
+            }
 
-
-            return StatBonusType.None;
+            return StatType.None;
         }
 
-        public static StatBonusType ResistanceToAttributeBonus(SpellElement resistance)
+        public static StatType ResistanceToAttributeBonus(SpellElement resistance)
         {
             switch (resistance)
             {
-                case SpellElement.Fire: return StatBonusType.FireResistance;
-                case SpellElement.Water: return StatBonusType.WaterResistance;
-                case SpellElement.Air: return StatBonusType.AirResistance;
-                case SpellElement.Earth: return StatBonusType.EarthResistance;
-                case SpellElement.Spirit: return StatBonusType.BodyResistance;
-                case SpellElement.Mind: return StatBonusType.MindResistance;
-                case SpellElement.Body: return StatBonusType.BodyResistance;
+                case SpellElement.Fire: return StatType.FireResistance;
+                case SpellElement.Water: return StatType.WaterResistance;
+                case SpellElement.Air: return StatType.AirResistance;
+                case SpellElement.Earth: return StatType.EarthResistance;
+                case SpellElement.Spirit: return StatType.BodyResistance;
+                case SpellElement.Mind: return StatType.MindResistance;
+                case SpellElement.Body: return StatType.BodyResistance;
             }
 
-            return StatBonusType.None;
+            return StatType.None;
         }
     }
 }

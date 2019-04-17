@@ -27,7 +27,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
     // ITEM_ENCHANT_STANDARD
     public class ItemEnchantStandardData : DbData
     {
-        public StatBonusType BonusType;
+        public StatType BonusType;
         public string OfName;
         public Dictionary<ItemType, int> ChanceToApplyMap = new Dictionary<ItemType, int>();
     }
@@ -55,30 +55,30 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
 
             switch (columns[0])
             {
-                case "Might": data.BonusType = StatBonusType.Might; break;
-                case "Intellect": data.BonusType = StatBonusType.Intellect; break;
-                case "Personality": data.BonusType = StatBonusType.Personality; break;
-                case "Endurance": data.BonusType = StatBonusType.Endurance; break;
-                case "Accuracy": data.BonusType = StatBonusType.Accuracy; break;
-                case "Speed": data.BonusType = StatBonusType.Speed; break;
-                case "Luck": data.BonusType = StatBonusType.Luck; break;
-                case "Hit Points": data.BonusType = StatBonusType.HitPoints; break;
-                case "Spell Points": data.BonusType = StatBonusType.SpellPoints; break;
-                case "Armor Class": data.BonusType = StatBonusType.ArmorClass; break;
-                case "Fire Resistance": data.BonusType = StatBonusType.FireResistance; break;
-                case "Air Resistance": data.BonusType = StatBonusType.AirResistance; break;
-                case "Water Resistance": data.BonusType = StatBonusType.WaterResistance; break;
-                case "Earth Resistance": data.BonusType = StatBonusType.EarthResistance; break;
-                case "Mind Resistance": data.BonusType = StatBonusType.MindResistance; break;
-                case "Body Resistance": data.BonusType = StatBonusType.BodyResistance; break;
-                case "Alchemy skill": data.BonusType = StatBonusType.Alchemy; break;
-                case "Stealing skill": data.BonusType = StatBonusType.Stealing; break;
-                case "Disarm skill": data.BonusType = StatBonusType.DisarmTraps; break;
-                case "ID Item skill": data.BonusType = StatBonusType.IdentifyItem; break;
-                case "ID Monster skill": data.BonusType = StatBonusType.IdentifyMonster; break;
-                case "Armsmaster skill": data.BonusType = StatBonusType.Armsmaster; break;
-                case "Dodge skill": data.BonusType = StatBonusType.Dodging; break;
-                case "Unarmed skill": data.BonusType = StatBonusType.Unarmed; break;
+                case "Might": data.BonusType = StatType.Might; break;
+                case "Intellect": data.BonusType = StatType.Intellect; break;
+                case "Personality": data.BonusType = StatType.Personality; break;
+                case "Endurance": data.BonusType = StatType.Endurance; break;
+                case "Accuracy": data.BonusType = StatType.Accuracy; break;
+                case "Speed": data.BonusType = StatType.Speed; break;
+                case "Luck": data.BonusType = StatType.Luck; break;
+                case "Hit Points": data.BonusType = StatType.HitPoints; break;
+                case "Spell Points": data.BonusType = StatType.SpellPoints; break;
+                case "Armor Class": data.BonusType = StatType.ArmorClass; break;
+                case "Fire Resistance": data.BonusType = StatType.FireResistance; break;
+                case "Air Resistance": data.BonusType = StatType.AirResistance; break;
+                case "Water Resistance": data.BonusType = StatType.WaterResistance; break;
+                case "Earth Resistance": data.BonusType = StatType.EarthResistance; break;
+                case "Mind Resistance": data.BonusType = StatType.MindResistance; break;
+                case "Body Resistance": data.BonusType = StatType.BodyResistance; break;
+                case "Alchemy skill": data.BonusType = StatType.Alchemy; break;
+                case "Stealing skill": data.BonusType = StatType.Stealing; break;
+                case "Disarm skill": data.BonusType = StatType.DisarmTraps; break;
+                case "ID Item skill": data.BonusType = StatType.IdentifyItem; break;
+                case "ID Monster skill": data.BonusType = StatType.IdentifyMonster; break;
+                case "Armsmaster skill": data.BonusType = StatType.Armsmaster; break;
+                case "Dodge skill": data.BonusType = StatType.Dodging; break;
+                case "Unarmed skill": data.BonusType = StatType.Unarmed; break;
 
                 default:
                     Debug.LogError("Unknown bonus stat: " + columns[0]);

@@ -205,7 +205,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
     // This contains every attribute - CharAttribute, SkillType, SpellElement
     // Mapping from this to actual attribute needs to be done manually
-    public enum StatBonusType
+    public enum StatType
     {
         // Attribute bonuses
         Might,
@@ -270,11 +270,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         // Other "Stats"
         MeleeAttack,
-        MeleeDamageBonusMin,
-        MeleeDamageBonusMax,
+        MeleeDamageBonus,
+        MeleeDamageMin,
+        MeleeDamageMax,
+
         RangedAttack,
-        RangedDamageBonusMin,
-        RangedDamageBonusMax,
+        RangedDamageBonus,
+        RangedDamageMin,
+        RangedDamageMax,
 
         // Special bonuses - they do not need to have amount, they are rather 0 or 1
         //   (0 if they are not present on the item, 1 if they are)
@@ -315,7 +318,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     {
         WeaponOneHanded,
         WeaponTwoHanded,
-        WeaponDualWield,
         Wand,
         Missile,
         Armor,
@@ -342,8 +344,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
     public enum EquipSlot
     {
-        LeftHand,
-        RightHand,
+        OffHand,  // Left hand
+        MainHand, // Right hand
         Bow,
         Armor,
         Helmet,
@@ -352,7 +354,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         Cloak,
         Gauntlets,
         Necklace,
-        Ring
+        Ring_1,
+        Ring_2,
+        Ring_3,
+        Ring_4,
+        Ring_5,
+        Ring_6,
     }
 
     public enum ItemSkillGroup

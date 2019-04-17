@@ -105,7 +105,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     }
                     break;
                 case ItemType.Wand:
-                case ItemType.WeaponDualWield:
                 case ItemType.WeaponOneHanded:
                 case ItemType.WeaponTwoHanded:
                     placedInvItem = Owner.UI.DollUI.RH_Weapon;

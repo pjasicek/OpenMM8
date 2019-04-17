@@ -301,10 +301,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 return ItemInteractResult.Invalid;
             }
-            else if (itemType == ItemType.WeaponDualWield && !DollTypeData.CanEquipWeapon)
-            {
-                return ItemInteractResult.Invalid;
-            }
             else if (itemType == ItemType.WeaponOneHanded && !DollTypeData.CanEquipWeapon)
             {
                 return ItemInteractResult.Invalid;
@@ -491,6 +487,155 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
+        public int GetHpScalingFactor()
+        {
+            ClassHpSpData classHpSpData = DbMgr.Instance.ClassHpSpDb.Get(Class);
+            if (classHpSpData != null)
+            {
+                return classHpSpData.HitPointsFactor;
+            }
+
+            return 0;
+        }
+
+        public int GetManaScalingFactor()
+        {
+            ClassHpSpData classHpSpData = DbMgr.Instance.ClassHpSpDb.Get(Class);
+            if (classHpSpData != null)
+            {
+                return classHpSpData.SpellPointsFactor;
+            }
+
+            return 0;
+        }
+
+        public int GetSkillLevelMultiplier(SkillType skillType, int normalMult, int expertMult, int masterMult, int grandmasterMult)
+        {
+            if (!HasSkill(skillType))
+            {
+                return 0;
+            }
+
+            SkillMastery skillMastery = GetSkillMastery(skillType);
+            switch (skillMastery)
+            {
+                case SkillMastery.Normal:
+                    return normalMult;
+
+                case SkillMastery.Expert:
+                    return expertMult;
+
+                case SkillMastery.Master:
+                    return masterMult;
+
+                case SkillMastery.Grandmaster:
+                    return grandmasterMult;
+            }
+
+            return 0;
+        }
+
+        //======================================================================
+
+        public Item GetItemAtSlot(EquipSlot equipSlot)
+        {
+            switch (equipSlot)
+            {
+                case EquipSlot.MainHand: return UI.DollUI.RH_Weapon.Item;
+                //case EquipSlot.OffHand: return UI.DollUI.LH_Weapon.Item;
+                case EquipSlot.Bow: return UI.DollUI.Bow.Item;
+                case EquipSlot.Armor: return UI.DollUI.Armor.Item;
+                case EquipSlot.Belt: return UI.DollUI.Belt.Item;
+                case EquipSlot.Cloak: return UI.DollUI.Cloak.Item;
+                case EquipSlot.Helmet: return UI.DollUI.Helmet.Item;
+                case EquipSlot.Boots: return UI.DollUI.Boots.Item;
+                case EquipSlot.Gauntlets: return UI.DollUI.Gauntlets.Item;
+                case EquipSlot.Necklace: return UI.DollUI.Necklace.Item;
+                case EquipSlot.Ring_1: return UI.DollUI.Ring_1.Item;
+                case EquipSlot.Ring_2: return UI.DollUI.Ring_2.Item;
+                case EquipSlot.Ring_3: return UI.DollUI.Ring_3.Item;
+                case EquipSlot.Ring_4: return UI.DollUI.Ring_4.Item;
+                case EquipSlot.Ring_5: return UI.DollUI.Ring_5.Item;
+                case EquipSlot.Ring_6: return UI.DollUI.Ring_6.Item;
+            }
+
+            return null;
+        }
+
+        public bool HasItemAtSlot(EquipSlot equipSlot)
+        {
+            return GetItemAtSlot(equipSlot) != null;
+        }
+
+        public bool HasItemTypeEquipped(ItemType itemType)
+        {
+            foreach (InventoryItem equipSlot in EquipSlots)
+            {
+                Item item = equipSlot.Item;
+                if (item != null && item.Data.ItemType == itemType)
+                {
+                    // If broken, what then ?
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool IsUnarmed()
+        {
+            return !HasItemTypeEquipped(ItemType.WeaponTwoHanded) && !HasItemTypeEquipped(ItemType.WeaponOneHanded);
+        }
+
+        public bool WearsItemAtSlot(int itemId, EquipSlot equipSlot)
+        {
+            Item item = GetItemAtSlot(equipSlot);
+            if (item != null && item.Data.Id == itemId)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool WearsItemAnywhere(int itemId)
+        {
+            foreach (InventoryItem equipSlot in EquipSlots)
+            {
+                Item item = equipSlot.Item;
+                if (item != null && item.Data.Id == itemId)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool WearsItemWithEnchant(int enchantId)
+        {
+            // TODO
+            return false;
+        }
+
+        public bool HasItemWithBonusStat(StatType statBonusType)
+        {
+            foreach (InventoryItem equipSlot in EquipSlots)
+            {
+                Item item = equipSlot.Item;
+                if (item != null && item.Enchant != null)
+                {
+                    if (item.Enchant.StatBonusMap.ContainsKey(statBonusType) &&
+                        item.Enchant.StatBonusMap[statBonusType] > 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         //======================================================================
 
         /*
@@ -586,14 +731,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return baseAttribute + itemBonus;
         }
 
-        public int GetItemsBonus(StatBonusType bonusType)
+        public int GetItemsBonus(StatType bonusType)
         {
             int bonusAmount = 0;
 
             // First non-trivial attribute calculations
             switch (bonusType)
             {
-                case StatBonusType.ArmorClass:
+                case StatType.ArmorClass:
                     foreach (InventoryItem equipSlot in EquipSlots)
                     {
                         Item item = equipSlot.Item;
@@ -603,7 +748,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         }
 
                         // Add native armor's armor class
-                        if (bonusType == StatBonusType.ArmorClass)
+                        if (bonusType == StatType.ArmorClass)
                         {
                             if (item.Data.ItemType == ItemType.Armor ||
                                 item.Data.ItemType == ItemType.Helmet ||
@@ -618,22 +763,114 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     }
                     break;
 
-                case StatBonusType.MeleeAttack:
+                case StatType.MeleeDamageBonus:
+                case StatType.MeleeAttack:
+                    Item mainhandItem = GetItemAtSlot(EquipSlot.MainHand);
+                    Item offhandItem = GetItemAtSlot(EquipSlot.OffHand);
+
+                    if (mainhandItem != null)
+                    {
+                        ItemType mainhandItemType = mainhandItem.Data.ItemType;
+                        if (mainhandItemType == ItemType.WeaponOneHanded ||
+                            mainhandItemType == ItemType.WeaponTwoHanded)
+                        {
+                            bonusAmount += mainhandItem.GetMod();
+                        }
+                    }
+
+                    // TODO: Handle offhand
+                    /*
+                    Item offhandItem = UI.DollUI.RH_Weapon.Item;
+                    if (offhandItem != null)
+                    {
+                        ItemType offhandItemType = offhandItem.Data.ItemType;
+                        if (offhandItemType == ItemType.WeaponOneHanded ||
+                            offhandItemType == ItemType.WeaponTwoHanded)
+                        {
+                            bonusAmount += int.Parse(mainhandItem.Data.Mod2);
+                        }
+                    }
+                    */
+
                     break;
 
-                case StatBonusType.MeleeDamageBonusMin:
+                case StatType.MeleeDamageMin:
+                    if (IsUnarmed())
+                    {
+                        bonusAmount += 1;
+                        break;
+                    }
+
+                    mainhandItem = GetItemAtSlot(EquipSlot.MainHand);
+                    offhandItem = GetItemAtSlot(EquipSlot.OffHand);
+                    if (mainhandItem != null)
+                    {
+                        bonusAmount += mainhandItem.GetMod();
+                        bonusAmount += mainhandItem.GetDiceRolls();
+                    }
+
+                    if (offhandItem != null)
+                    {
+                        if (offhandItem.Data.ItemType != ItemType.Shield)
+                        {
+                            bonusAmount += offhandItem.GetMod();
+                            bonusAmount += offhandItem.GetDiceRolls();
+                        }
+                    }
+
                     break;
 
-                case StatBonusType.MeleeDamageBonusMax:
+                case StatType.MeleeDamageMax:
+                    if (IsUnarmed())
+                    {
+                        bonusAmount += 3;
+                        break;
+                    }
+
+                    mainhandItem = GetItemAtSlot(EquipSlot.MainHand);
+                    offhandItem = GetItemAtSlot(EquipSlot.OffHand);
+                    if (mainhandItem != null)
+                    {
+                        bonusAmount += mainhandItem.GetMod();
+                        bonusAmount += mainhandItem.GetDiceRolls() * mainhandItem.GetDiceSides();
+                    }
+
+                    if (offhandItem != null)
+                    {
+                        if (offhandItem.Data.ItemType != ItemType.Shield)
+                        {
+                            bonusAmount += offhandItem.GetMod();
+                            bonusAmount += offhandItem.GetDiceRolls() * offhandItem.GetDiceSides();
+                        }
+                    }
+
                     break;
 
-                case StatBonusType.RangedAttack:
+                case StatType.RangedDamageBonus:
+                case StatType.RangedAttack:
+                    Item bow = GetItemAtSlot(EquipSlot.Bow);
+                    if (bow != null)
+                    {
+                        bonusAmount += bow.GetMod();
+                    }
                     break;
 
-                case StatBonusType.RangedDamageBonusMin:
+                case StatType.RangedDamageMin:
+                    bow = GetItemAtSlot(EquipSlot.Bow);
+                    if (bow != null)
+                    {
+                        bonusAmount += bow.GetMod();
+                        bonusAmount += bow.GetDiceRolls();
+                    }
                     break;
 
-                case StatBonusType.RangedDamageBonusMax:
+                case StatType.RangedDamageMax:
+                    bow = GetItemAtSlot(EquipSlot.Bow);
+                    if (bow != null)
+                    {
+                        bonusAmount += bow.GetMod();
+                        bonusAmount += bow.GetDiceRolls() * bow.GetDiceSides();
+                    }
                     break;
 
                 default:
@@ -657,25 +894,124 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return bonusAmount;
         }
 
-        public int GetMagicBonus(StatBonusType bonusType)
+        public int GetMagicBonus(StatType bonusType)
         {
             int bonusAmount = 0;
 
+            switch (bonusType)
+            {
+                case StatType.FireResistance:
+                    bonusAmount += Party.PartyBuffMap[PartyEffectType.ResistFire].Power;
+                    bonusAmount += PlayerBuffMap[PlayerEffectType.ResistFire].Power;
+                    break;
+
+                case StatType.AirResistance:
+                    bonusAmount += Party.PartyBuffMap[PartyEffectType.ResistAir].Power;
+                    bonusAmount += PlayerBuffMap[PlayerEffectType.ResistAir].Power;
+                    break;
+
+                case StatType.BodyResistance:
+                    bonusAmount += Party.PartyBuffMap[PartyEffectType.ResistBody].Power;
+                    bonusAmount += PlayerBuffMap[PlayerEffectType.ResistBody].Power;
+                    break;
+
+                case StatType.WaterResistance:
+                    bonusAmount += Party.PartyBuffMap[PartyEffectType.ResistWater].Power;
+                    bonusAmount += PlayerBuffMap[PlayerEffectType.ResistWater].Power;
+                    break;
+
+                case StatType.EarthResistance:
+                    bonusAmount += Party.PartyBuffMap[PartyEffectType.ResistEarth].Power;
+                    bonusAmount += PlayerBuffMap[PlayerEffectType.ResistEarth].Power;
+                    break;
+
+                case StatType.MindMagic:
+                    bonusAmount += Party.PartyBuffMap[PartyEffectType.ResistMind].Power;
+                    bonusAmount += PlayerBuffMap[PlayerEffectType.ResistMind].Power;
+                    break;
+
+                case StatType.MeleeAttack:
+                case StatType.RangedAttack:
+                    bonusAmount += PlayerBuffMap[PlayerEffectType.Bless].Power;
+                    break;
+
+                case StatType.MeleeDamageBonus:
+                    bonusAmount += Party.PartyBuffMap[PartyEffectType.Heroism].Power;
+                    bonusAmount += PlayerBuffMap[PlayerEffectType.Heroism].Power;
+                    break;
+
+                case StatType.Might:
+                    bonusAmount += Party.PartyBuffMap[PartyEffectType.DayOfTheGods].Power;
+                    bonusAmount += PlayerBuffMap[PlayerEffectType.Might].Power;
+                    break;
+
+                case StatType.Endurance:
+                    bonusAmount += Party.PartyBuffMap[PartyEffectType.DayOfTheGods].Power;
+                    bonusAmount += PlayerBuffMap[PlayerEffectType.Endurance].Power;
+                    break;
+
+                case StatType.Intellect:
+                    bonusAmount += Party.PartyBuffMap[PartyEffectType.DayOfTheGods].Power;
+                    bonusAmount += PlayerBuffMap[PlayerEffectType.Intelligence].Power;
+                    break;
+
+                case StatType.Personality:
+                    bonusAmount += Party.PartyBuffMap[PartyEffectType.DayOfTheGods].Power;
+                    bonusAmount += PlayerBuffMap[PlayerEffectType.Personality].Power;
+                    break;
+
+                case StatType.Speed:
+                    bonusAmount += Party.PartyBuffMap[PartyEffectType.DayOfTheGods].Power;
+                    bonusAmount += PlayerBuffMap[PlayerEffectType.Speed].Power;
+                    break;
+
+                case StatType.Accuracy:
+                    bonusAmount += Party.PartyBuffMap[PartyEffectType.DayOfTheGods].Power;
+                    bonusAmount += PlayerBuffMap[PlayerEffectType.Accuracy].Power;
+                    break;
+
+                case StatType.Luck:
+                    bonusAmount += Party.PartyBuffMap[PartyEffectType.DayOfTheGods].Power;
+                    bonusAmount += PlayerBuffMap[PlayerEffectType.Luck].Power;
+                    break;
+
+                case StatType.ArmorClass:
+                    bonusAmount += Party.PartyBuffMap[PartyEffectType.StoneSkin].Power;
+                    bonusAmount += PlayerBuffMap[PlayerEffectType.Stoneskin].Power;
+                    break;
+            }
 
             return bonusAmount;
         }
 
-        public int GetSkillsBonus(StatBonusType bonusType)
+        public int GetSkillsBonus(StatType bonusType)
         {
             int bonusAmount = 0;
+
+            switch (bonusType)
+            {
+                case StatType.HitPoints:
+                    int bodybuildingMult = GetSkillLevelMultiplier(SkillType.Bodybuilding, 1, 2, 3, 5);
+                    int bodybuildingEffect = GetActualSkillLevel(SkillType.Bodybuilding) * bodybuildingMult * GetHpScalingFactor();
+                    bonusAmount += bodybuildingEffect;
+                    break;
+
+                case StatType.SpellPoints:
+                    int meditationMult = GetSkillLevelMultiplier(SkillType.Meditation, 1, 2, 3, 5);
+                    int meditationEffect = GetActualSkillLevel(SkillType.Meditation) * meditationMult * GetManaScalingFactor();
+                    bonusAmount += meditationEffect;
+                    break;
+
+                // TODO: Rest...
+            }
 
             return bonusAmount;
         }
 
         public int GetActualLevel()
         {
-            int itemBonus = GetItemsBonus(StatBonusType.Level);
-            int magicBonus = GetMagicBonus(StatBonusType.Level);
+            int itemBonus = GetItemsBonus(StatType.Level);
+            int magicBonus = GetMagicBonus(StatType.Level);
 
             return Level + itemBonus + magicBonus;
         }
@@ -730,8 +1066,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             int hpBase = classHpSpData.HitPointsBase;
             int hpFromLevel = GetActualLevel() * classHpSpData.HitPointsFactor;
             int hpFromEndurance = GameMechanics.GetAttributeEffect(GetActualEndurance()) * classHpSpData.HitPointsFactor;
-            int hpFromItems = GetItemsBonus(StatBonusType.HitPoints);
-            int hpFromSkills = GetItemsBonus(StatBonusType.HitPoints);
+            int hpFromItems = GetItemsBonus(StatType.HitPoints);
+            int hpFromSkills = GetItemsBonus(StatType.HitPoints);
 
             int maxHealth = hpBase + hpFromLevel + hpFromEndurance + hpFromItems + hpFromSkills;
             if (maxHealth < 0)
@@ -767,8 +1103,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 mpFromPersonality += GameMechanics.GetAttributeEffect(GetActualPersonality()) * classHpSpData.SpellPointsFactor;
             }
 
-            int mpFromItems = GetItemsBonus(StatBonusType.SpellPoints);
-            int mpFromSkills = GetItemsBonus(StatBonusType.SpellPoints);
+            int mpFromItems = GetItemsBonus(StatType.SpellPoints);
+            int mpFromSkills = GetItemsBonus(StatType.SpellPoints);
 
             int maxMana = mpBase + mpFromLevel + mpFromIntellect + mpFromPersonality + mpFromItems + mpFromSkills;
             if (maxMana < 0)
@@ -851,8 +1187,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int GetBaseArmorClass()
         {
             int accuracyBonus = GameMechanics.GetAttributeEffect(GetActualAccuracy());
-            int itemBonus = GetItemsBonus(StatBonusType.ArmorClass);
-            int skillBonus = GetSkillsBonus(StatBonusType.ArmorClass);
+            int itemBonus = GetItemsBonus(StatType.ArmorClass);
+            int skillBonus = GetSkillsBonus(StatType.ArmorClass);
 
             int result = accuracyBonus + itemBonus + skillBonus;
             if (result < 0)
@@ -866,7 +1202,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int GetActualArmorClass()
         {
             int baseAC = GetBaseArmorClass();
-            int bonusAC = GetMagicBonus(StatBonusType.ArmorClass);
+            int bonusAC = GetMagicBonus(StatType.ArmorClass);
 
             int result = baseAC + bonusAC;
             if (result < 0)
@@ -880,23 +1216,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int GetMeleeAttack()
         {
             int accuracyBonus = GameMechanics.GetAttributeEffect(GetActualAccuracy());
-            int weaponBonus = 0;
-            // Main hand
-            Item mainhandItem = UI.DollUI.RH_Weapon.Item;
-            if (mainhandItem != null)
-            {
-                ItemType mainhandItemType = mainhandItem.Data.ItemType;
-                if (mainhandItemType == ItemType.WeaponOneHanded ||
-                    mainhandItemType == ItemType.WeaponTwoHanded)
-                {
-                    weaponBonus += int.Parse(mainhandItem.Data.Mod2);
-                }
-            }
-            // TODO: Also handle dual wield here
-
-            int skillsBonus = GetSkillsBonus(StatBonusType.MeleeAttack);
-            int magicalBonus = GetMagicBonus(StatBonusType.MeleeAttack);
-
+            int weaponBonus = GetItemsBonus(StatType.MeleeAttack);
+            int skillsBonus = GetSkillsBonus(StatType.MeleeAttack);
+            int magicalBonus = GetMagicBonus(StatType.MeleeAttack);
 
             return accuracyBonus + weaponBonus + skillsBonus + magicalBonus;
         }
@@ -904,30 +1226,80 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int GetMeleeDamageMin()
         {
             int mightBonus = GameMechanics.GetAttributeEffect(GetActualMight());
+            int weaponBonus = GetItemsBonus(StatType.MeleeDamageMin);
+            int skillsBonus = GetSkillsBonus(StatType.MeleeDamageBonus);
+            int magicalBonus = GetMagicBonus(StatType.MeleeDamageBonus);
 
+            int result = mightBonus + weaponBonus + skillsBonus + magicalBonus;
+            if (result < 1)
+            {
+                result = 1;
+            }
 
-
-            return 0;
+            return result;
         }
 
         public int GetMeleeDamageMax()
         {
-            return 0;
+            int mightBonus = GameMechanics.GetAttributeEffect(GetActualMight());
+            int weaponBonus = GetItemsBonus(StatType.MeleeDamageMax);
+            int skillsBonus = GetSkillsBonus(StatType.MeleeDamageBonus);
+            int magicalBonus = GetMagicBonus(StatType.MeleeDamageBonus);
+
+            int result = mightBonus + weaponBonus + skillsBonus + magicalBonus;
+            if (result < 1)
+            {
+                result = 1;
+            }
+
+            return result;
         }
 
         public int GetRangedAttack()
         {
-            return 0;
+            Item mainhandItem = UI.DollUI.RH_Weapon.Item;
+            bool isBlasterEquipped = mainhandItem != null && (mainhandItem.Data.Id == 64 || mainhandItem.Data.Id == 65);
+            if (isBlasterEquipped)
+            {
+                return GetMeleeAttack();
+            }
+
+            int accuracyBonus = GameMechanics.GetAttributeEffect(GetActualAccuracy());
+            int weaponBonus = GetItemsBonus(StatType.RangedAttack);
+            int skillsBonus = GetSkillsBonus(StatType.RangedAttack);
+            int magicalBonus = GetMagicBonus(StatType.RangedAttack);
+
+            return accuracyBonus + weaponBonus + skillsBonus + magicalBonus;
         }
 
         public int GetRangedDamageMin()
         {
-            return 0;
+            int weaponBonus = GetItemsBonus(StatType.RangedDamageMin);
+            int skillsBonus = GetSkillsBonus(StatType.RangedDamageBonus);
+            int magicalBonus = GetMagicBonus(StatType.RangedDamageBonus);
+
+            int result = weaponBonus + skillsBonus + magicalBonus;
+            if (result < 0)
+            {
+                result = 0;
+            }
+
+            return result;
         }
 
         public int GetRangedDamageMax()
         {
-            return 0;
+            int weaponBonus = GetItemsBonus(StatType.RangedDamageMax);
+            int skillsBonus = GetSkillsBonus(StatType.RangedDamageBonus);
+            int magicalBonus = GetMagicBonus(StatType.RangedDamageBonus);
+
+            int result = weaponBonus + skillsBonus + magicalBonus;
+            if (result < 0)
+            {
+                result = 0;
+            }
+
+            return result;
         }
 
 

@@ -8,6 +8,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Items
 {
     public class Item
     {
+        //=================================================
+
         public ItemData Data;
         public ItemEnchant Enchant = null;
 
@@ -18,9 +20,39 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Items
         // Unity UI
         public Vector2Int InvCellPosition;
 
+
+        //=================================================
+
+        private int m_DiceRolls = 0;
+        private int m_DiceSides = 0;
+        private int m_Mod = 0;
+
+
+        //=================================================
+
         public Item(ItemData itemData)
         {
             Data = itemData;
+
+            string[] tokens = Data.Mod1.Split('d');
+            if (tokens.Length == 2)
+            {
+                m_DiceRolls = int.Parse(tokens[0]);
+                m_DiceSides = int.Parse(tokens[1]);
+            }
+            else if (tokens.Length == 0 && char.ToLower(tokens[0][0]) == 's')
+            {
+                tokens[0].Remove(0, 1);
+                m_DiceRolls = int.Parse(tokens[0]);
+                m_DiceSides = 1;
+            }
+            else
+            {
+                m_DiceRolls = 0;
+                m_DiceSides = 0;
+            }
+
+            m_Mod = int.Parse(Data.Mod2);
         }
 
         virtual public int GetValue()
@@ -50,11 +82,25 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Items
             return baseValue;
         }
 
+        public int GetDiceRolls()
+        {
+            return m_DiceRolls;
+        }
+
+        public int GetDiceSides()
+        {
+            return m_DiceSides;
+        }
+
+        public int GetMod()
+        {
+            return m_Mod;
+        }
+
         public bool IsEquippable()
         {
             return Data.ItemType == ItemType.WeaponOneHanded ||
                 Data.ItemType == ItemType.WeaponTwoHanded ||
-                Data.ItemType == ItemType.WeaponDualWield ||
                 Data.ItemType == ItemType.Wand ||
                 Data.ItemType == ItemType.Missile ||
                 Data.ItemType == ItemType.Armor ||
@@ -119,7 +165,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Items
             IsBroken = broken;
         }
 
-        public int GetStatBonusAmount(StatBonusType statBonusType)
+        public int GetStatBonusAmount(StatType statBonusType)
         {
             if (!HasStatBonus(statBonusType))
             {
@@ -129,7 +175,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Items
             return Enchant.StatBonusMap[statBonusType];
         }
 
-        public bool HasStatBonus(StatBonusType statBonusType)
+        public bool HasStatBonus(StatType statBonusType)
         {
             if (Enchant == null || Enchant.EnchantType == EnchantType.None)
             {

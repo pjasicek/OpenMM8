@@ -29,7 +29,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public InventoryItem Helmet;
         public InventoryItem Belt;
         public InventoryItem RH_Weapon;
-        public InventoryItem LF_Weapon;
+        public InventoryItem LH_Weapon;
 
         public GameObject AccessoryBackgroundHolder;
         public InventoryItem Ring_1;
