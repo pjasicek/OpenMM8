@@ -92,7 +92,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
 
         private bool ProcessRandomItemGenerationRow(int row, string[] columns)
         {
-            if (row < 4)
+            if (row < 1)
             {
                 return true;
             }
@@ -117,12 +117,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                 return true;
             }
 
-            data.ItemLevelDropChanceMap[ItemLevel.L1] = int.Parse(columns[2]);
-            data.ItemLevelDropChanceMap[ItemLevel.L2] = int.Parse(columns[3]);
-            data.ItemLevelDropChanceMap[ItemLevel.L3] = int.Parse(columns[4]);
-            data.ItemLevelDropChanceMap[ItemLevel.L4] = int.Parse(columns[5]);
-            data.ItemLevelDropChanceMap[ItemLevel.L5] = int.Parse(columns[6]);
-            data.ItemLevelDropChanceMap[ItemLevel.L6] = int.Parse(columns[7]);
+            data.ItemLevelDropChanceMap[TreasureLevel.L1] = int.Parse(columns[2]);
+            data.ItemLevelDropChanceMap[TreasureLevel.L2] = int.Parse(columns[3]);
+            data.ItemLevelDropChanceMap[TreasureLevel.L3] = int.Parse(columns[4]);
+            data.ItemLevelDropChanceMap[TreasureLevel.L4] = int.Parse(columns[5]);
+            data.ItemLevelDropChanceMap[TreasureLevel.L5] = int.Parse(columns[6]);
+            data.ItemLevelDropChanceMap[TreasureLevel.L6] = int.Parse(columns[7]);
+
+            //Debug.Log("[" + id + ": " + data.Name + "]: L5: " + data.ItemLevelDropChanceMap[ItemLevel.L5]);
 
             return true;
         }
