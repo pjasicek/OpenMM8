@@ -208,22 +208,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
-        // Events
-        void UnequipItem(ItemData item)
-        {
-
-        }
-
-        void EquipItem(ItemData item)
-        {
-
-        }
-
-        bool CanEquipItem(ItemData item)
-        {
-            return true;
-        }
-
         public void OnItemPickedUp(ItemData item, bool fromPartyMember)
         {
 
@@ -243,26 +227,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             CurrSpellPoints = Mathf.Min(CurrSpellPoints + numSpellPoints, maxMP);
     
             GameEvents.InvokeEvent_OnCharManaChanged(this, maxMP, CurrSpellPoints);
-        }
-
-        public void AddLevel()
-        {
-
-        }
-
-        public void IncreaseSkillLevel(SkillType skillType, int amount = 1)
-        {
-
-        }
-
-        public void ModifyAttribute(CharAttribute attribute, int amount)
-        {
-
-        }
-
-        public void ModifyResistance(SpellElement element, int amount)
-        {
-
         }
 
         public ItemInteractResult CanEquipItem(Item item)
@@ -308,6 +272,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             else if (itemType == ItemType.WeaponTwoHanded && !DollTypeData.CanEquipWeapon)
             {
                 return ItemInteractResult.Invalid;
+            }
+
+            if (!item.IsEquippableByRace(Race))
+            {
+                return ItemInteractResult.CannotEquip;
+            }
+
+            if (!item.IsEquippableByClass(Class))
+            {
+                return ItemInteractResult.CannotEquip;
             }
 
             // Filter Item x Skill
