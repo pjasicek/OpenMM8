@@ -301,12 +301,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         OfAcid,	// (12) pois damage
         Vampiric,	// Heal 20% of damage done on attack
         OfRecovery,	// (-10) pts on recovery from being hit
-        OfImmunity,	// Immune to desease condition
-        OfSanity,	// immune to insanity condition
-        OfFreedom,	// immune to paralize condition
-        OfAntidotes,	// immune to poison condition
-        OfAlarms,	// immune to sleep condition
-        OfMedusa,	// immune to stone condition
+        //OfImmunity,	// Immune to desease condition
+        //OfSanity,	// immune to insanity condition
+        //OfFreedom,	// immune to paralize condition
+        //OfAntidotes,	// immune to poison condition
+        //OfAlarms,	// immune to sleep condition
+        //OfMedusa,	// immune to stone condition
         OfForce,	// Increase knockback effect (X10)
         //OfPower,	// (+5) char level
         OfAirMagic,	// 50% increase of spell effect and duration
@@ -320,25 +320,23 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         OfWaterMagic,	// 50% increase of spell effect and duration
         OfThievery,	// double chance to perform lockpick and steal skill
         OfShielding,	// (1/2)dmg from all missle attacks (not cumulative)
-        OfRegeneration,	// Regenerate 1hp/x while walking, etc
-        OfMana,	// Regenerate 1sp/x while walking, etc
         OfOgreSlaying,	// X 2 damage vs Ogres, Ogre Magi, Trolls, Troll Peasants, and Cyclops
         OfDragonSlaying,	// X 2 damage vs all dragons
         OfDarkness,	// (-20) pts on weapon speed, Vampiric
         //OfDoom,	// (+1) 7stats,hpts,spts,AC,4 resistances
         //OfEarth,	// End (+10), AC (+10), HP (+10)
-        OfLife,	// HP (+10), Regen hpts
+        //OfLife,	// HP (+10), Regen hpts
         //Rogues,	// Speed (+5), Acc (+5)
         OfTheDragon,	// (10-20) Fire damage, Might (+25)
-        OfTheEclipse,	// SP (+10), Regen spts
+        //OfTheEclipse,	// SP (+10), Regen spts
         //OfTheGolem,	// End (+15), AC (+5)
         //OfTheMoon,	// Luck (+10), Int (+10)
-        OfThePhoenix,	// Fire Res (+30), Regen hpts
+        //OfThePhoenix,	// Fire Res (+30), Regen hpts
         //OfTheSky,	// Int (+10), Spd (+10), SP (+10)
         //OfTheStars,	// End (+10), Acc (+10)
         //OfTheSun,	// Might(+10), Per (+10)
-        OfTheTroll,	// End (+15), Regen hpts
-        OfTheUnicorn,	// Luck (+15), Regen spts
+        //OfTheTroll,	// End (+15), Regen hpts
+        //OfTheUnicorn,	// Luck (+15), Regen spts
         //Warriors,	// Might (+5), End (+5)
         //Wizards,	// Intelect (+5), Per (+5)
         //Antique,	// Gold value increased
@@ -349,16 +347,37 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         OfElementalSlaying,	// x2 damage vs Fire, Earth, Water, and Air elementals
         OfUndeadSlaying,	// x2 damage on Liches, Vampires, Zombies, Skeletons, Ghosts, and Wights
         OfDavid,	// UNUSED x2 damage on all Titans
-        OfPlenty,	// Regenerate 1 hp/x and 1 sp/x while walking, etc.
-        Assasins,	// (5) pois damage and +2 Disarm skill
-        Barbarians,	// (6-8) cold damage and +5 AC
-        OfTheStorm,	// +20 Air Resistance and 1/2 damage from missile attacks
+        //OfPlenty,	// Regenerate 1 hp/x and 1 sp/x while walking, etc.
+        //Assasins,	// (5) pois damage and +2 Disarm skill
+        //Barbarians,	// (6-8) cold damage and +5 AC
+        //OfTheStorm,	// +20 Air Resistance and 1/2 damage from missile attacks
         //OfTheOcean,	// +10 Water Resistance and +2 Alchemy skill
         OfWaterWalking,	// Character with item takes no damage from drowning
         OfFeatherFalling,	// Character with item takes no damage from falling
 
-        HpRegen,
-        SpRegen,
+        // Shared among special item enchants / artefacts
+        HpRegeneration,
+        SpRegeneration,
+        HpDrain,  // HP is being drained from the wearer continously
+        SpDrain,// HP is being drained from the wearer continously
+
+        OfSlowTarget,
+
+        FearImmunity,
+        DiseaseImmunity,
+        InsanityImmunity,
+        ParalyzeImmunity,
+        PoisonImmunity,
+        SleepImmunity,
+        StoneImmunity, // Stoned (medusa etc)
+
+        // Artifacts/Relics
+        Elderaxe, // 6-12 cold damage
+        Volcano,
+        Guardian,
+        Foulfang,
+        Breaker,
+        Finality,
 
         None
     }

@@ -226,27 +226,27 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpecialEnchantType.OfImmunity:
-                    itemEnchant.StatBonusMap.Add(StatType.OfImmunity, 1);
+                    itemEnchant.StatBonusMap.Add(StatType.DiseaseImmunity, 1);
                     break;
 
                 case SpecialEnchantType.OfSanity:
-                    itemEnchant.StatBonusMap.Add(StatType.OfSanity, 1);
+                    itemEnchant.StatBonusMap.Add(StatType.InsanityImmunity, 1);
                     break;
 
                 case SpecialEnchantType.OfFreedom:
-                    itemEnchant.StatBonusMap.Add(StatType.OfFreedom, 1);
+                    itemEnchant.StatBonusMap.Add(StatType.ParalyzeImmunity, 1);
                     break;
 
                 case SpecialEnchantType.OfAntidotes:
-                    itemEnchant.StatBonusMap.Add(StatType.OfAntidotes, 1);
+                    itemEnchant.StatBonusMap.Add(StatType.PoisonImmunity, 1);
                     break;
 
                 case SpecialEnchantType.OfAlarms:
-                    itemEnchant.StatBonusMap.Add(StatType.OfAlarms, 1);
+                    itemEnchant.StatBonusMap.Add(StatType.SleepImmunity, 1);
                     break;
 
                 case SpecialEnchantType.OfMedusa:
-                    itemEnchant.StatBonusMap.Add(StatType.OfMedusa, 1);
+                    itemEnchant.StatBonusMap.Add(StatType.StoneImmunity, 1);
                     break;
 
                 case SpecialEnchantType.OfForce:
@@ -302,11 +302,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpecialEnchantType.OfRegeneration:
-                    itemEnchant.StatBonusMap.Add(StatType.OfRegeneration, 1);
+                    itemEnchant.StatBonusMap.Add(StatType.HpRegeneration, 1);
                     break;
 
                 case SpecialEnchantType.OfMana:
-                    itemEnchant.StatBonusMap.Add(StatType.OfMana, 1);
+                    itemEnchant.StatBonusMap.Add(StatType.SpRegeneration, 1);
                     break;
 
                 case SpecialEnchantType.OfOgreSlaying:
@@ -348,7 +348,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                 case SpecialEnchantType.OfLife:
                     itemEnchant.StatBonusMap.Add(StatType.HitPoints, 10);
-                    itemEnchant.StatBonusMap.Add(StatType.OfLife, 1); // TODO: Does item hp regen stack ?
+                    itemEnchant.StatBonusMap.Add(StatType.HpRegeneration, 1);
                     break;
 
                 case SpecialEnchantType.Rogues:
@@ -363,7 +363,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                 case SpecialEnchantType.OfTheEclipse:
                     itemEnchant.StatBonusMap.Add(StatType.SpellPoints, 10);
-                    itemEnchant.StatBonusMap.Add(StatType.OfTheEclipse, 1); // TODO: Does item hp/sp regen stack ?
+                    itemEnchant.StatBonusMap.Add(StatType.SpRegeneration, 1);
                     break;
 
                 case SpecialEnchantType.OfTheGolem:
@@ -378,7 +378,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                 case SpecialEnchantType.OfThePhoenix:
                     itemEnchant.StatBonusMap.Add(StatType.FireResistance, 30);
-                    itemEnchant.StatBonusMap.Add(StatType.OfThePhoenix, 1); // TODO: Does item hp regen stack ?
+                    itemEnchant.StatBonusMap.Add(StatType.HpRegeneration, 1);
                     break;
 
                 case SpecialEnchantType.OfTheSky:
@@ -399,12 +399,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                 case SpecialEnchantType.OfTheTroll:
                     itemEnchant.StatBonusMap.Add(StatType.Endurance, 15);
-                    itemEnchant.StatBonusMap.Add(StatType.OfTheTroll, 1); // TODO: Does item hp regen stack ?
+                    itemEnchant.StatBonusMap.Add(StatType.HpRegeneration, 1);
                     break;
 
                 case SpecialEnchantType.OfTheUnicorn:
                     itemEnchant.StatBonusMap.Add(StatType.Luck, 15);
-                    itemEnchant.StatBonusMap.Add(StatType.OfTheUnicorn, 1); // TODO: Does item sp regen stack ?
+                    itemEnchant.StatBonusMap.Add(StatType.SpRegeneration, 1);
                     break;
 
                 case SpecialEnchantType.Warriors:
@@ -452,17 +452,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpecialEnchantType.OfPlenty:
-                    itemEnchant.StatBonusMap.Add(StatType.OfPlenty, 1);
+                    itemEnchant.StatBonusMap.Add(StatType.HpRegeneration, 1);
+                    itemEnchant.StatBonusMap.Add(StatType.SpRegeneration, 1);
                     break;
 
                 case SpecialEnchantType.Assasins:
                     itemEnchant.StatBonusMap.Add(StatType.DisarmTraps, 2);
-                    itemEnchant.StatBonusMap.Add(StatType.Assasins, 1);
+                    itemEnchant.StatBonusMap.Add(StatType.OfPoison, 1);
                     break;
 
                 case SpecialEnchantType.Barbarians:
                     itemEnchant.StatBonusMap.Add(StatType.ArmorClass, 5);
-                    itemEnchant.StatBonusMap.Add(StatType.Barbarians, 1);
+                    itemEnchant.StatBonusMap.Add(StatType.OfFrost, 1);
                     break;
 
                 case SpecialEnchantType.OfTheStorm:

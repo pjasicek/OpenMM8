@@ -131,6 +131,13 @@ public class StatsUI
         AttackDamageText.text = attackDamageStr;
         ShootText.text = shootBonusStr;
         ShootDamageText.text = shootDamageStr;
+
+        FireResistText.text = GenResistTextPair(Owner.GetActualResistance(SpellElement.Fire), Owner.GetBaseResistance(SpellElement.Fire));
+        WaterResistText.text = GenResistTextPair(Owner.GetActualResistance(SpellElement.Water), Owner.GetBaseResistance(SpellElement.Water));
+        AirResistText.text = GenResistTextPair(Owner.GetActualResistance(SpellElement.Air), Owner.GetBaseResistance(SpellElement.Air));
+        EarthResistText.text = GenResistTextPair(Owner.GetActualResistance(SpellElement.Earth), Owner.GetBaseResistance(SpellElement.Earth));
+        BodyResistText.text = GenResistTextPair(Owner.GetActualResistance(SpellElement.Body), Owner.GetBaseResistance(SpellElement.Body));
+        MindResistText.text = GenResistTextPair(Owner.GetActualResistance(SpellElement.Mind), Owner.GetBaseResistance(SpellElement.Mind));
     }
 
     private string GenResistTextPair(int actualAmount, int baseAmount)
