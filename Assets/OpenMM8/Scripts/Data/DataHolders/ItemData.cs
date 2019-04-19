@@ -26,7 +26,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public string Notes;
 
         // Specified in ITEM_RANDOM_GENERATION.txt
-        public Dictionary<TreasureLevel, int> ItemLevelDropChanceMap = new Dictionary<TreasureLevel, int>();
+        public Dictionary<TreasureLevel, int> TreasureLevelDropChanceMap = new Dictionary<TreasureLevel, int>();
 
         // Unity specific but common for all items with this specific data
         // This is set up upon UiMgr initialization
@@ -39,7 +39,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             foreach (TreasureLevel enumVal in Enum.GetValues(typeof(TreasureLevel)))
             {
-                ItemLevelDropChanceMap.Add(enumVal, 0);
+                TreasureLevelDropChanceMap.Add(enumVal, 0);
             }
         }
     }

@@ -12,34 +12,242 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 {
     public class ItemGenerator : Singleton<ItemGenerator>
     {
-        private Dictionary<TreasureLevel, int> m_ItemLootSummChanceMap = new Dictionary<TreasureLevel, int>();
-        private Dictionary<ItemType, int> m_StandardEnchantSummChanceMap = new Dictionary<ItemType, int>();
-        private Dictionary<ItemType, int> m_SpecialEnchantSummChanceMap = new Dictionary<ItemType, int>();
+        private Dictionary<int, ItemData> m_ItemDb = null;
 
-        // ===============================================================
+        // Pre-calculation
 
-        // TotallyRandom
-        /*static public Item GenerateItem()
+        private Dictionary<TreasureLevel, int> m_TreasureLevelToSumOfItemChanceMap = new Dictionary<TreasureLevel, int>();
+
+        // Standard enchant type chances do not differ via TreasureLevel, only by Amount
+        private Dictionary<ItemType, int> m_StandardEnchantChanceSummMap = new Dictionary<ItemType, int>();
+
+        private Dictionary<TreasureLevel, Dictionary<ItemType, int>> m_SpecialEnchantChanceSummMap =
+            new Dictionary<TreasureLevel, Dictionary<ItemType, int>>();
+
+
+        /* ========================================================================================================= //
+
+        This item/enchant generation algorithm was taken from the original M&M games, this is how it works:
+
+        Based on a treasure level:
+        1) Get sum of all chances for given treasure level from ALL items in the game (ITEMS_RANDOM_GENERATION.txt)
+        2) Get a random number between 0 and total chance calculated in 1)
+        3) Loop through all items in the game, and add for each looped item its chance to a variable
+        4) If a variable is > random seed number from 2), pick this item
+
+        If item is generated with ItemSkillGroup criteria or ItemType criteria, do the same, but only for the items
+        which fulfil the requirements (have give ItemSkillGroup or ItemType)
+
+        Random enchants are chosen in the same way (same algorithm)
+        * Standard enchants can be applied to all TreasureLevels, TreasureLevels determine the stat amount
+        * Special enchants also have "RarityLevel" criteria - special enchants can be applied only on
+          given TreasureLevels, e.g. RarityLevel A can be applied only on L3 and L4, RarityLevel D can
+          be only applied on L5 and L6
+            
+        /* ========================================================================================================= */
+
+        // TotallyRandom - should ONLY be used for debugging
+        static public Item GenerateItem()
         {
-
+            ItemData genItemData = Instance.m_ItemDb[UnityEngine.Random.Range(0, Instance.m_ItemDb.Count)];
+            Item rndItem = new Item(genItemData);
+            
+            return rndItem;
         }
 
-        static public Item GenerateItem(int treasureLevel)
+        // Generate any item within treasure level
+        static public Item GenerateItem(TreasureLevel treasureLevel)
         {
+            int sumOfChances = Instance.m_TreasureLevelToSumOfItemChanceMap[treasureLevel];
+            int rndItemMarker = UnityEngine.Random.Range(0, sumOfChances);
 
+            Item newItem = null;
+            int currSumOfChances = 0;
+            foreach (ItemData itemData in Instance.m_ItemDb.Values)
+            {
+                currSumOfChances += itemData.TreasureLevelDropChanceMap[treasureLevel];
+                if (currSumOfChances > rndItemMarker)
+                {
+                    newItem = new Item(itemData);
+                    break;
+                }
+            }
+
+            if (newItem == null)
+            {
+                Debug.LogError("Failed to generate item from marker: " + rndItemMarker);
+                return new Item(Instance.m_ItemDb[0]);
+            }
+
+            /*Debug.Log("Total Sum: " + sumOfChances);
+            Debug.Log("Marker: " + rndItemMarker);
+            Debug.Log("Current Sum: " + currSumOfChances);*/
+            Debug.Log("Item: " + newItem.Data.Name);
+
+            bool enchanted = TryApplyEnchant(treasureLevel, newItem);
+
+            return newItem;
         }
 
-        static public Item GenerateItem(int treasureLevel, ItemSkillGroup skillGroup)
+        // Generate item which requires skill within SkillGroup - useful for e.g. mobs only dropping plate armor
+        static public Item GenerateItem(TreasureLevel treasureLevel, ItemSkillGroup skillGroup)
         {
+            int sumOfChances = 0;
+            foreach (ItemData itemData in Instance.m_ItemDb.Values)
+            {
+                if (itemData.SkillGroup == skillGroup)
+                {
+                    sumOfChances += itemData.TreasureLevelDropChanceMap[treasureLevel];
+                }
+            }
 
+            int rndItemMarker = UnityEngine.Random.Range(0, sumOfChances);
+
+            Item newItem = null;
+            int currSumOfChances = 0;
+            foreach (ItemData itemData in Instance.m_ItemDb.Values)
+            {
+                if (itemData.SkillGroup == skillGroup)
+                {
+                    currSumOfChances += itemData.TreasureLevelDropChanceMap[treasureLevel];
+                    if (currSumOfChances > rndItemMarker)
+                    {
+                        newItem = new Item(itemData);
+                        break;
+                    }
+                }
+            }
+
+            if (newItem == null)
+            {
+                Debug.LogError("Failed to generate item from marker: " + rndItemMarker);
+                return new Item(Instance.m_ItemDb[0]);
+            }
+
+            bool enchanted = TryApplyEnchant(treasureLevel, newItem);
+
+            return newItem;
         }
 
-        static public Item GenerateItem(int treasureLevel, EquipSlot equipSlot)
+        // Generate item which can be equipped at specified slot - e.g. mobs only dropping armor
+        static public Item GenerateItem(TreasureLevel treasureLevel, ItemType itemType)
         {
+            int sumOfChances = 0;
+            foreach (ItemData itemData in Instance.m_ItemDb.Values)
+            {
+                if (itemData.ItemType == itemType)
+                {
+                    sumOfChances += itemData.TreasureLevelDropChanceMap[treasureLevel];
+                }
+            }
 
-        }*/
+            int rndItemMarker = UnityEngine.Random.Range(0, sumOfChances);
 
-        public int GenStandardItemEnchantAmount(TreasureLevel treasureLevel)
+            Item newItem = null;
+            int currSumOfChances = 0;
+            foreach (ItemData itemData in Instance.m_ItemDb.Values)
+            {
+                if (itemData.ItemType == itemType)
+                {
+                    currSumOfChances += itemData.TreasureLevelDropChanceMap[treasureLevel];
+                    if (currSumOfChances > rndItemMarker)
+                    {
+                        newItem = new Item(itemData);
+                        break;
+                    }
+                }
+            }
+
+            if (newItem == null)
+            {
+                Debug.LogError("Failed to generate item from marker: " + rndItemMarker);
+                return new Item(Instance.m_ItemDb[0]);
+            }
+
+            bool enchanted = TryApplyEnchant(treasureLevel, newItem);
+
+            return newItem;
+        }
+
+        static public bool TryApplyEnchant(TreasureLevel treasureLevel, Item item)
+        {
+            if (item.Enchant != null)
+            {
+                // Already enchanted
+                return false;
+            }
+
+            if (item.IsEnchantable())
+            {
+                Debug.Log("Is enchantable: true");
+                bool isItemEnchanted = item.Enchant != null;
+
+                // First try standard
+                int standardEnchantChance = GetStandardEnchantChance(treasureLevel, item);
+                int rnd = UnityEngine.Random.Range(0, 100);
+                Debug.Log("StandardEnchantChance: " + standardEnchantChance + ", Random: " + rnd);
+                if (!isItemEnchanted && standardEnchantChance > rnd)
+                {
+                    Debug.Log("Will apply standard: " + item.Data.ItemType);
+                    int stdEnchChanceSum = Instance.m_StandardEnchantChanceSummMap[item.Data.ItemType];
+                    int rndStdEnchantMarker = UnityEngine.Random.Range(0, stdEnchChanceSum);
+                    int currSumOfChances = 0;
+                    foreach (ItemEnchantStandardData stdEnchData in DbMgr.Instance.ItemEnchantStandardDb.Data.Values)
+                    {
+                        Debug.Log("Stat: " + stdEnchData.BonusType);
+
+                        if (!stdEnchData.ChanceToApplyMap.ContainsKey(item.Data.ItemType))
+                        {
+                            continue;
+                        }
+
+                        currSumOfChances += stdEnchData.ChanceToApplyMap[item.Data.ItemType];
+                        Debug.Log(currSumOfChances + "/" + rndStdEnchantMarker + "(" + stdEnchChanceSum + ")");
+                        if (currSumOfChances > rndStdEnchantMarker)
+                        {
+                            StatType bonusStat = stdEnchData.BonusType;
+                            int enchantAmount = GenStandardItemEnchantAmount(treasureLevel);
+
+                            Instance.ApplyStandardEnchant(bonusStat, enchantAmount, treasureLevel, item);
+                            return true;
+                        }
+                    }
+                }
+
+                // Then try special enchant
+                int specialEnchantChance = GetSpecialEnchantChance(treasureLevel, item);
+                rnd = UnityEngine.Random.Range(0, 100);
+                if (!isItemEnchanted && specialEnchantChance > rnd)
+                {
+                    int specialEnchChanceSumm = Instance.m_SpecialEnchantChanceSummMap[treasureLevel][item.Data.ItemType];
+                    int rndSpecialEnchantMarker = UnityEngine.Random.Range(0, specialEnchChanceSumm);
+                    int currSumOfChances = 0;
+                    foreach (ItemEnchantSpecialData specialEnchData in DbMgr.Instance.ItemEnchantSpecialDb.Data.Values)
+                    {
+                        if (!IsTreasureLevelEligibleForRarityLevel(treasureLevel, specialEnchData.RarityLevel))
+                        {
+                            continue;
+                        }
+
+                        if (!specialEnchData.ChanceToApplyMap.ContainsKey(item.Data.ItemType))
+                        {
+                            continue;
+                        }
+
+                        currSumOfChances += specialEnchData.ChanceToApplyMap[item.Data.ItemType];
+                        if (currSumOfChances > rndSpecialEnchantMarker)
+                        {
+                            Instance.ApplySpecialEnchant(specialEnchData.Id, item);
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        static public int GenStandardItemEnchantAmount(TreasureLevel treasureLevel)
         {
             // Unity int range is max exclusive - that is why it looks like its max is 1 more than
             //    it should be
@@ -68,14 +276,55 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return 0;
         }
 
-        public bool IsItemLevelEligibleForSpecialEnchant(TreasureLevel treasureLevel, SpecialEnchantType specialEnchantType)
+        // Cannot be applied to weapons
+        static public int GetStandardEnchantChance(TreasureLevel treasureLevel, Item item)
         {
-            ItemEnchantSpecialData enchantData = DbMgr.Instance.ItemEnchantSpecialDb.Get(specialEnchantType);
-            if (enchantData == null)
+            switch (treasureLevel)
             {
-                return false;
+                case TreasureLevel.L1: return 0;
+                case TreasureLevel.L2: return 40;
+                case TreasureLevel.L3: return 40;
+                case TreasureLevel.L4: return 40;
+                case TreasureLevel.L5: return 40;
+                case TreasureLevel.L6: return 75;
             }
 
+            return 0;
+        }
+
+        // Cannot be applie
+        static public int GetSpecialEnchantChance(TreasureLevel treasureLevel, Item item)
+        {
+            if (item.IsWeapon())
+            {
+                switch (treasureLevel)
+                {
+                    case TreasureLevel.L1: return 0;
+                    case TreasureLevel.L2: return 0;
+                    case TreasureLevel.L3: return 10;
+                    case TreasureLevel.L4: return 20;
+                    case TreasureLevel.L5: return 30;
+                    case TreasureLevel.L6: return 50;
+                }
+            }
+            else
+            {
+                switch (treasureLevel)
+                {
+                    case TreasureLevel.L1: return 0;
+                    case TreasureLevel.L2: return 0;
+                    case TreasureLevel.L3: return 10;
+                    case TreasureLevel.L4: return 15;
+                    case TreasureLevel.L5: return 20;
+                    case TreasureLevel.L6: return 25;
+                }
+            }
+
+            return 0;
+        }
+
+        static public bool IsTreasureLevelEligibleForRarityLevel(TreasureLevel treasureLevel, string rarityLevel)
+        {
             switch (treasureLevel)
             {
                 case TreasureLevel.L1:
@@ -83,18 +332,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     return false;
 
                 case TreasureLevel.L3:
-                    return enchantData.RarityLevel == "A" || enchantData.RarityLevel == "B";
+                    return rarityLevel == "A" || rarityLevel == "B";
 
                 case TreasureLevel.L4:
-                    return enchantData.RarityLevel == "A" || enchantData.RarityLevel == "B" || 
-                        enchantData.RarityLevel == "C";
+                    return rarityLevel == "A" || rarityLevel == "B" ||
+                        rarityLevel == "C";
 
                 case TreasureLevel.L5:
-                    return enchantData.RarityLevel == "B" || enchantData.RarityLevel == "C" ||
-                        enchantData.RarityLevel == "D";
+                    return rarityLevel == "B" || rarityLevel == "C" ||
+                        rarityLevel == "D";
 
                 case TreasureLevel.L6:
-                    return enchantData.RarityLevel == "D";
+                    return rarityLevel == "D";
             }
 
             return false;
@@ -115,6 +364,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             ItemEnchant itemEnchant = new ItemEnchant();
+            itemEnchant.EnchantType = EnchantType.Standard;
             itemEnchant.OfTypeText = enchantData.OfName;
 
             int statAmount = GenStandardItemEnchantAmount(treasureLevel);
@@ -141,6 +391,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             ItemEnchant itemEnchant = new ItemEnchant();
+            itemEnchant.EnchantType = EnchantType.Special;
             itemEnchant.OfTypeText = enchantData.OfNameText;
             itemEnchant.BonusDescText = enchantData.BonusText;
             itemEnchant.EnchantPriceMultType = enchantData.EnchantPriceMultType;
@@ -496,7 +747,56 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         // This has to be called AFTER databases are initialized
         public void Init()
         {
+            m_ItemDb = DbMgr.Instance.ItemDb.Data;
 
+            ItemEnchantSpecialDb specialEnchantDb = DbMgr.Instance.ItemEnchantSpecialDb;
+
+            foreach (TreasureLevel treasureLevel in Enum.GetValues(typeof(TreasureLevel)))
+            {
+                m_TreasureLevelToSumOfItemChanceMap.Add(treasureLevel, 0);
+
+                m_SpecialEnchantChanceSummMap[treasureLevel] = new Dictionary<ItemType, int>();
+
+                foreach (ItemType itemType in Enum.GetValues(typeof(ItemType)))
+                {
+                    m_SpecialEnchantChanceSummMap[treasureLevel].Add(itemType, 0);
+                }
+            }
+
+            foreach (ItemType itemType in Enum.GetValues(typeof(ItemType)))
+            {
+                m_StandardEnchantChanceSummMap.Add(itemType, 0);
+            }
+
+            foreach (ItemData itemData in m_ItemDb.Values)
+            {
+                foreach (var treasureDropChancePair in itemData.TreasureLevelDropChanceMap)
+                {
+                    m_TreasureLevelToSumOfItemChanceMap[treasureDropChancePair.Key] += treasureDropChancePair.Value;
+                }
+            }
+
+            foreach (ItemEnchantStandardData stdEnchantData in DbMgr.Instance.ItemEnchantStandardDb.Data.Values)
+            {
+                foreach (var enchChancePair in stdEnchantData.ChanceToApplyMap)
+                {
+                    m_StandardEnchantChanceSummMap[enchChancePair.Key] += enchChancePair.Value;
+                }
+            }
+
+            foreach (ItemEnchantSpecialData specialEnchantData in DbMgr.Instance.ItemEnchantSpecialDb.Data.Values)
+            {
+                foreach (TreasureLevel treasureLevel in Enum.GetValues(typeof(TreasureLevel)))
+                {
+                    if (IsTreasureLevelEligibleForRarityLevel(treasureLevel, specialEnchantData.RarityLevel))
+                    {
+                        foreach (var enchChancePair in specialEnchantData.ChanceToApplyMap)
+                        {
+                            m_SpecialEnchantChanceSummMap[treasureLevel][enchChancePair.Key] += enchChancePair.Value;
+                        }
+                    }
+                }
+            }
         }
     }
 }

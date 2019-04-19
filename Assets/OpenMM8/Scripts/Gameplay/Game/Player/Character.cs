@@ -1041,7 +1041,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             int hpFromLevel = GetActualLevel() * classHpSpData.HitPointsFactor;
             int hpFromEndurance = GameMechanics.GetAttributeEffect(GetActualEndurance()) * classHpSpData.HitPointsFactor;
             int hpFromItems = GetItemsBonus(StatType.HitPoints);
-            int hpFromSkills = GetItemsBonus(StatType.HitPoints);
+            int hpFromSkills = GetSkillsBonus(StatType.HitPoints);
 
             int maxHealth = hpBase + hpFromLevel + hpFromEndurance + hpFromItems + hpFromSkills;
             if (maxHealth < 0)
@@ -1078,7 +1078,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             int mpFromItems = GetItemsBonus(StatType.SpellPoints);
-            int mpFromSkills = GetItemsBonus(StatType.SpellPoints);
+            int mpFromSkills = GetSkillsBonus(StatType.SpellPoints);
 
             int maxMana = mpBase + mpFromLevel + mpFromIntellect + mpFromPersonality + mpFromItems + mpFromSkills;
             if (maxMana < 0)

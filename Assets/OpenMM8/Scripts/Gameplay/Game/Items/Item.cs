@@ -89,6 +89,46 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Items
             return baseValue;
         }
 
+        public EquipSlot GetEquipSlot()
+        {
+            switch (Data.ItemType)
+            {
+                case ItemType.WeaponOneHanded:
+                case ItemType.WeaponTwoHanded:
+                case ItemType.Wand:
+                    return EquipSlot.MainHand;
+
+                case ItemType.Missile:
+                    return EquipSlot.Bow;
+
+                case ItemType.Shield:
+                    return EquipSlot.OffHand;
+
+                case ItemType.Helmet:
+                    return EquipSlot.Helmet;
+
+                case ItemType.Cloak:
+                    return EquipSlot.Cloak;
+
+                case ItemType.Gauntlets:
+                    return EquipSlot.Gauntlets;
+
+                case ItemType.Armor:
+                    return EquipSlot.Armor;
+
+                case ItemType.Ring:
+                    return EquipSlot.Ring_1;
+
+                case ItemType.Amulet:
+                    return EquipSlot.Necklace;
+
+                case ItemType.Belt:
+                    return EquipSlot.Belt;
+            }
+
+            return EquipSlot.None;
+        }
+
         public int GetDiceRolls()
         {
             return m_DiceRolls;
@@ -102,6 +142,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Items
         public int GetMod()
         {
             return m_Mod;
+        }
+
+        public bool IsWeapon()
+        {
+            return Data.ItemType == ItemType.WeaponOneHanded ||
+                Data.ItemType == ItemType.WeaponTwoHanded;
         }
 
         public bool IsEquippable()
@@ -149,7 +195,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Items
 
         public bool IsEnchantable()
         {
-            return false;
+            return Data.ItemType == ItemType.WeaponOneHanded ||
+                Data.ItemType == ItemType.WeaponTwoHanded ||
+                Data.ItemType == ItemType.Missile ||
+                Data.ItemType == ItemType.Armor ||
+                Data.ItemType == ItemType.Shield ||
+                Data.ItemType == ItemType.Helmet ||
+                Data.ItemType == ItemType.Belt ||
+                Data.ItemType == ItemType.Cloak ||
+                Data.ItemType == ItemType.Gauntlets ||
+                Data.ItemType == ItemType.Boots ||
+                Data.ItemType == ItemType.Ring ||
+                Data.ItemType == ItemType.Amulet;
         }
 
         public void SetIdentified(bool identified)
@@ -264,7 +321,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Items
 
             Enchant = new ItemEnchant()
             {
-                EnchantType = EnchantType.Other
+                EnchantType = EnchantType.Other,
+                BonusDescText = "",
+                OfTypeText = "",
+                EnchantPriceMultType = EnchantPriceMultType.Add,
+                PriceModAmount = 0
             };
 
             switch (Data.Id)

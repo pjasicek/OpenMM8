@@ -14,6 +14,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private void Start()
         {
             DbMgr.Instance.Init();
+            ItemGenerator.Instance.Init();
+
             TimeMgr.Instance.Init();
             GameMgr.Instance.Init();
             UiMgr.Instance.Init();

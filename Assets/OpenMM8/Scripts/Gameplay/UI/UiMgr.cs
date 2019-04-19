@@ -447,11 +447,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 m_InspectItemUI.ItemImage.SetNativeSize();
 
                 m_InspectItemUI.ItemName.text = item.Data.Name;
-
-                string specificText = "";
-                if (m_HoveredItem.Data.ItemType == ItemType.Armor)
+                if (item.Enchant != null && item.Enchant.OfTypeText != "")
                 {
-
+                    m_InspectItemUI.ItemName.text += " " + item.Enchant.OfTypeText;
                 }
 
                 m_InspectItemUI.ItemSpecific.text = "Type: " + item.Data.NotIdentifiedName;
@@ -501,6 +499,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         break;
                 }
 
+                if (item.Enchant != null && item.Enchant.BonusDescText != "")
+                {
+                    m_InspectItemUI.ItemSpecific.text += "\nSpecial: " + item.Enchant.BonusDescText;
+                }
+
                 float specHeight = GetTextHeight(m_InspectItemUI.ItemSpecific);
                 m_InspectItemUI.ItemSpecific.rectTransform.sizeDelta = new Vector2(
                         m_InspectItemUI.ItemSpecific.rectTransform.rect.width,
@@ -512,7 +515,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         m_InspectItemUI.Description.rectTransform.rect.width,
                         descHeight);
 
-                m_InspectItemUI.Value.text = "Value: " + item.Data.GoldValue.ToString();
+                m_InspectItemUI.Value.text = "Value: " + item.GetValue();
                 float valueHeight = GetTextHeight(m_InspectItemUI.Value);
 
                 // TODO: ...

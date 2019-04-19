@@ -168,8 +168,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             string soundName = soundData.SoundName;
             PlaySoundByName(soundName, audioSource);
-
-            
         }
 
         public static void PlaySoundByName(string soundName, AudioSource audioSource = null)

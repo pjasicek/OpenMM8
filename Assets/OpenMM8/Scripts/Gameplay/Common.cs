@@ -449,6 +449,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         Ring_4,
         Ring_5,
         Ring_6,
+        None
     }
 
     public enum ItemSkillGroup

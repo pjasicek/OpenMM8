@@ -86,6 +86,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                     return null;
             }
 
+            Debug.LogError("Added: " + data.BonusType);
+
             data.Id = data.BonusType;
 
             data.StatDisplayNameText = columns[0];

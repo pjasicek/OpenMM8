@@ -729,6 +729,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Food += amount;
         }
 
+        public Character GetActiveOrFirstCharacter()
+        {
+            if (ActiveCharacter != null && ActiveCharacter.IsRecovered())
+            {
+                return ActiveCharacter;
+            }
+
+            return Characters[0];
+        }
+
         public Character GetMostRecoveredCharacter()
         {
             if (ActiveCharacter != null && ActiveCharacter.IsRecovered())

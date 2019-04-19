@@ -117,12 +117,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                 return true;
             }
 
-            data.ItemLevelDropChanceMap[TreasureLevel.L1] = int.Parse(columns[2]);
-            data.ItemLevelDropChanceMap[TreasureLevel.L2] = int.Parse(columns[3]);
-            data.ItemLevelDropChanceMap[TreasureLevel.L3] = int.Parse(columns[4]);
-            data.ItemLevelDropChanceMap[TreasureLevel.L4] = int.Parse(columns[5]);
-            data.ItemLevelDropChanceMap[TreasureLevel.L5] = int.Parse(columns[6]);
-            data.ItemLevelDropChanceMap[TreasureLevel.L6] = int.Parse(columns[7]);
+            data.TreasureLevelDropChanceMap[TreasureLevel.L1] = int.Parse(columns[2]);
+            data.TreasureLevelDropChanceMap[TreasureLevel.L2] = int.Parse(columns[3]);
+            data.TreasureLevelDropChanceMap[TreasureLevel.L3] = int.Parse(columns[4]);
+            data.TreasureLevelDropChanceMap[TreasureLevel.L4] = int.Parse(columns[5]);
+            data.TreasureLevelDropChanceMap[TreasureLevel.L5] = int.Parse(columns[6]);
+            data.TreasureLevelDropChanceMap[TreasureLevel.L6] = int.Parse(columns[7]);
 
             //Debug.Log("[" + id + ": " + data.Name + "]: L5: " + data.ItemLevelDropChanceMap[ItemLevel.L5]);
 

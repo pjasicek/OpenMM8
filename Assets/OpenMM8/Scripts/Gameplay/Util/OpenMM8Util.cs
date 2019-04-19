@@ -70,5 +70,12 @@ namespace Assets.OpenMM8.Scripts
                 map.Add(res.name.ToLower(), res);
             }
         }
+
+        
+        static public K GetRandomKey<K, V>(Dictionary<K, V> dict)
+        {
+            int numElements = dict.Count;
+            return dict.Keys.ToList()[UnityEngine.Random.Range(0, numElements)];
+        }
     }
 }
