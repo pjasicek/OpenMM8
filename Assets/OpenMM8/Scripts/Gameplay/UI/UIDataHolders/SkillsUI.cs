@@ -220,7 +220,7 @@ public class SkillsUI
         foreach (SkillUIRow row in MagicSkillRows)
         {
             row.HolderRt.anchoredPosition = new Vector2(7.5f / scale, rowY);
-            rowY -= row.HolderRt.rect.height * scale;
+            rowY -= row.HolderRt.rect.height/* * scale*/;
         }
 
 
@@ -249,7 +249,7 @@ public class SkillsUI
         foreach (SkillUIRow row in MiscSkillRows)
         {
             row.HolderRt.anchoredPosition = new Vector2(7.5f / scale, rowY);
-            rowY -= row.HolderRt.rect.height * scale;
+            rowY -= row.HolderRt.rect.height/* * scale*/;
         }
     }
 
@@ -286,7 +286,7 @@ public class SkillsUI
         Repaint(Owner.SkillPoints);
 
         sw.Stop();
-        Debug.Log("Skill UI refresh: " + sw.ElapsedMilliseconds + " ms");
+        //Debug.Log("Skill UI refresh: " + sw.ElapsedMilliseconds + " ms");
     }
 
     static public SkillsUI Create(Character owner)

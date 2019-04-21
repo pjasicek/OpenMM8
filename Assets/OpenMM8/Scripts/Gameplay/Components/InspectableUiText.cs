@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    [RequireComponent(typeof(Text))]
+    //[RequireComponent(typeof(Text))]
     abstract public class InspectableUiText : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         public Character Owner;

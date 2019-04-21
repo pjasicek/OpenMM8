@@ -34,6 +34,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public SoundDb SoundDb = new SoundDb();
         public ItemEnchantStandardDb ItemEnchantStandardDb = new ItemEnchantStandardDb();
         public ItemEnchantSpecialDb ItemEnchantSpecialDb = new ItemEnchantSpecialDb();
+        public SpellDataDb SpellDataDb = new SpellDataDb();
 
         public const string MM8_DATA_PATH = @"Data/";
 
@@ -73,6 +74,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             SoundDb.Initialize(MM8_DATA_PATH + "SOUNDS");
             ItemEnchantStandardDb.Initialize(MM8_DATA_PATH + "ITEM_ENCHANT_STANDARD");
             ItemEnchantSpecialDb.Initialize(MM8_DATA_PATH + "ITEM_ENCHANT_SPECIAL");
+            SpellDataDb.Initialize(MM8_DATA_PATH + "SPELLS");
 
             stopwatch.Stop();
             UnityEngine.Debug.Log("elapsed ms: " + stopwatch.ElapsedMilliseconds);

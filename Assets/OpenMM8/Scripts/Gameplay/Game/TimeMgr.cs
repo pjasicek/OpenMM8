@@ -9,7 +9,7 @@ using Assets.OpenMM8.Scripts.Data;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    public class TimeInfo
+    public class GameTime
     {
         public int Minute;
         public int Hour;
@@ -18,9 +18,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int Year;
         public DayOfWeek DayOfWeek;
 
-        public TimeInfo() { }
+        public GameTime() { }
 
-        public TimeInfo(TimeInfo other)
+        public GameTime(GameTime other)
         {
             Minute = other.Minute;
             Hour = other.Hour;
@@ -31,7 +31,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         }
 
         // Epoch = YEAR 0 00:00:00
-        public TimeInfo(int minutesSinceEpoch)
+        public GameTime(int minutesSinceEpoch)
         {
             int dayOfWeek = ((minutesSinceEpoch / TimeMgr.DAY_IN_MINUTES) % 7) + 1;
             if (dayOfWeek == 7)
@@ -67,11 +67,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 Day * TimeMgr.DAY_IN_MINUTES + Hour * TimeMgr.HOUR_IN_MINUTES + Minute;
         }
 
-        static public TimeInfo FromCurrentTime(int additionalMinutes)
+        static public GameTime FromCurrentTime(int additionalMinutes)
         {
-            TimeInfo currTime = TimeMgr.Instance.GetCurrentTime();
+            GameTime currTime = TimeMgr.Instance.GetCurrentTime();
 
-            return new TimeInfo(currTime.TotalMinutes() + additionalMinutes);
+            return new GameTime(currTime.TotalMinutes() + additionalMinutes);
         }
     }
 
@@ -81,7 +81,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int Delay;
         public int IntervalInMinutes = 0;
         public int StartTime;
-        public Action<Timer, TimeInfo> OnTimer;
+        public Action<Timer, GameTime> OnTimer;
     }
 
     public class TimeMgr : Singleton<TimeMgr>
@@ -95,7 +95,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private const int REALTIME_SECOND_TO_INGAME_MINUTES = 2;
 
-        public TimeInfo CurrentTime = new TimeInfo();
+        public GameTime CurrentTime = new GameTime();
 
         private float m_MinutesSinceStart = 0;
         private const int m_StartMinutes = 9 * HOUR_IN_MINUTES;
@@ -145,7 +145,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             RecalcCurrentTime();
         }
 
-        public TimeInfo GetCurrentTime()
+        public GameTime GetCurrentTime()
         {
             return CurrentTime;
         }

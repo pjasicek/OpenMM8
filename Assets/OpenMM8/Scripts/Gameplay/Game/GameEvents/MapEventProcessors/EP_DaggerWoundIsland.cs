@@ -16,7 +16,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 Name = "S'ton Timer",
                 Delay = 10 * TimeMgr.HOUR_IN_MINUTES,
-                OnTimer = (Timer t, TimeInfo time) => { ProcessEvent(500); }
+                OnTimer = (Timer t, GameTime time) => { ProcessEvent(500); }
             };
             AddTimer(m_StonTimer);
         }

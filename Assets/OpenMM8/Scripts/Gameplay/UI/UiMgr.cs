@@ -52,6 +52,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private MapQuestNotesUI m_MapQuestNotesUI;
         private List<Image> m_EmptySlotBanners = new List<Image>();
         private CharDetailUI m_CharDetailUI;
+        private SpellbookUI m_SpellbookUI;
 
         [Header("UI - Map, Quest, Notes, History")]
         int placeholder;
@@ -402,6 +403,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             // Dolls
             OpenMM8Util.AppendResourcesToMap(m_DollSpriteMap, "Sprites/DOLLS");
 
+            m_SpellbookUI = SpellbookUI.Create();
+
             return true;
         }
 
@@ -651,6 +654,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 Vector2 inspectTopLeft = new Vector2(m_InspectUiTextUI.BackgroundTransfrom.anchoredPosition.x,
                     mousePixelPosUI.y - 30.0f);
 
+                // Check if it is below screen
+                if (inspectTopLeft.y - m_InspectUiTextUI.BackgroundTransfrom.rect.height < 20.0f)
+                {
+                    inspectTopLeft = new Vector2(m_InspectUiTextUI.BackgroundTransfrom.anchoredPosition.x,
+                        UI_HEIGHT - 30.0f);
+                }
+
                 m_InspectUiTextUI.BackgroundTransfrom.anchoredPosition = inspectTopLeft;
                 m_InspectUiTextUI.Holder.GetComponent<Canvas>().enabled = true;
             }
@@ -755,6 +765,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public bool HandleButtonDown(string button)
         {
+            Debug.Log("ButtonDown: " + button);
+
             // "HACK": Console takes precedence to all UI states
             if (button == "Console" && m_ConsoleUIState == null)
             {
@@ -803,6 +815,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         break;
 
                     case "Spellbook":
+                        // Active character HAS TO exist
+                        if (m_PlayerParty.ActiveCharacter == null)
+                        {
+                            break;
+                        }
+
+                        m_CurrUIState = new SpellbookUIState();
+                        m_CurrUIState.EnterState(m_PlayerParty.GetActiveCharacter());
                         break;
 
                     case "Stats":

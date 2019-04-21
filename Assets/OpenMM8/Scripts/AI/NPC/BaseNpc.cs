@@ -230,7 +230,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
                     (!hostilityChecker.m_IsHostileToPlayer) &&
                     (go.CompareTag("Enemy") || go.CompareTag("Guard") || go.CompareTag("Villager")))
                 {
-                    Debug.Log("Added: " + go.name);
+                    //Debug.Log("Added: " + go.name);
                     hostilityChecker.m_IsHostileToPlayer = true;
                     go.GetComponent<MinimapMarker>().Color = Color.red;
                     go.GetComponent<BaseNpc>().EnemiesInAgroRange.Clear();

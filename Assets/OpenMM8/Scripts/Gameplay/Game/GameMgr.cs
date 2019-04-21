@@ -165,6 +165,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 UiMgr.Instance.HandleButtonDown("Console");
             }
+            if (Input.GetButtonDown("Spellbook"))
+            {
+                UiMgr.Instance.HandleButtonDown("Spellbook");
+            }
             /*if (Input.GetButtonDown("Queust"))
             {
                 UiMgr.Instance.HandleButtonDown("Queust");
@@ -354,9 +358,31 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 if (skillAvailPair.Value == StartingSkillAvailability.HasByDefault)
                 {
                     chr.LearnSkill(skillAvailPair.Key);
-                    Debug.Log(chr.Name + " learned: " + skillAvailPair.Key);
+                    if (chr.Race == CharacterRace.Vampire)
+                    {
+                        chr.LearnSpell(SpellType.Vampire_Lifedrain);
+                    }
                 }
             }
+            chr.LearnSkill(SkillType.FireMagic);
+            chr.LearnSkill(SkillType.WaterMagic);
+            chr.LearnSkill(SkillType.AirMagic);
+            chr.LearnSkill(SkillType.EarthMagic);
+            chr.LearnSkill(SkillType.SpiritMagic);
+            chr.LearnSkill(SkillType.MindMagic);
+            chr.LearnSkill(SkillType.BodyMagic);
+            chr.LearnSkill(SkillType.DarkMagic);
+            chr.LearnSkill(SkillType.LightMagic);
+            chr.LearnSkill(SkillType.DarkElfAbility);
+            chr.LearnSkill(SkillType.VampireAbility);
+            chr.LearnSkill(SkillType.DragonAbility);
+
+            // Learn all spells
+            foreach (SpellType spell in Enum.GetValues(typeof(SpellType)))
+            {
+                chr.LearnSpell(spell);
+            }
+            
             //chr.LearnSkill(SkillType.Staff);
             //chr.LearnSkill(SkillType.Blaster);
         }
@@ -398,11 +424,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public void ChangeGameState(GameState newState)
         {
 
-        }
-
-        public static void Log(string msg)
-        {
-            Debug.Log(msg);
         }
 
         //==================================== Events ====================================

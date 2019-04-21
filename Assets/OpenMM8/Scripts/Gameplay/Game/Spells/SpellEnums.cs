@@ -1,6 +1,22 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
+public enum SpellSchool
+{
+    Fire,
+    Air,
+    Water,
+    Earth,
+    Spirit,
+    Mind,
+    Body,
+    Light,
+    Dark,
+    DarkElf,
+    Vampire,
+    Dragon
+}
+
 public enum SpellType
 {
     None = 0,
@@ -69,12 +85,12 @@ public enum SpellType
     Spirit_RaiseDead,
     Spirit_SharedLife,
     Spirit_Ressurection,
-    
+
     // Mind school
-    Mind_RemoveFear,
-    Mind_MindBlast,
-    Mind_ProtectionFromMind,
     Mind_Telepathy,
+    Mind_RemoveFear,
+    Mind_ProtectionFromMind,
+    Mind_MindBlast,
     Mind_Charm,
     Mind_CureParalysis,
     Mind_Berserk,
@@ -117,7 +133,7 @@ public enum SpellType
     Dark_Sharpmetal,
     Dark_ControlUndead,
     Dark_PainReflection,
-    Dark_Sacrifice,
+    Dark_DarkGrasp,
     Dark_DragonBreath,
     Dark_Armageddon,
     Dark_Souldrinker,

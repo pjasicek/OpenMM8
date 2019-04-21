@@ -12,11 +12,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         // public SpellEffectType SpellEffectType;
         public SkillMastery SkillMastery;
         public int Power;
-        public TimeInfo ExpiryTime;
+        public GameTime ExpiryTime;
         public Character Caster;
         public int Flags;
 
-        bool Apply(SkillMastery skillMastery, int power, TimeInfo expiryTime, Character caster = null, int flags = 0)
+        bool Apply(SkillMastery skillMastery, int power, GameTime expiryTime, Character caster = null, int flags = 0)
         {
             if (expiryTime.TotalMinutes() <= TimeMgr.Instance.GetCurrentTime().TotalMinutes())
             {

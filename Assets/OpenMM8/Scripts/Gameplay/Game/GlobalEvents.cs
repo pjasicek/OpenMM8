@@ -28,7 +28,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public delegate void GamePausedAction();
     public delegate void GameUnpausedAction();
     public delegate void InitComplete();
-    public delegate void MinuteElapsed(TimeInfo currTime);
+    public delegate void MinuteElapsed(GameTime currTime);
     public delegate void HealthChanged(Character chr, int maxHealth, int currHealth, int delta);
     public delegate void ManaChanged(Character chr, int maxMana, int currMana);
     public delegate void Recovered(Character chr);
@@ -223,7 +223,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             OnInitComplete?.Invoke();
         }
 
-        static public void InvokeEvent_OnMinuteElapsed(TimeInfo currTime)
+        static public void InvokeEvent_OnMinuteElapsed(GameTime currTime)
         {
             OnMinuteElapsed?.Invoke(currTime);
         }

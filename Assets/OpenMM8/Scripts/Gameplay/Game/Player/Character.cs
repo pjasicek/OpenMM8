@@ -34,7 +34,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int CurrHitPoints;
         public int CurrSpellPoints;
         public Condition Condition;
-        
+
+        public SpellSchool LastSpellbookPage = SpellSchool.Fire;
         public string QuickSpellName = "None";
 
         // Buffs
@@ -50,6 +51,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public Dictionary<SpellElement, int> BaseResistances = new Dictionary<SpellElement, int>();
 
         public Dictionary<SkillType, Skill> Skills = new Dictionary<SkillType, Skill>();
+        public List<SpellType> LearnedSpells = new List<SpellType>();
 
         //=============================================//
 
@@ -370,6 +372,24 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             return interactResult;
         }
+
+        public bool HasSpell(SpellType spell)
+        {
+            return LearnedSpells.Contains(spell);
+        }
+
+        public void LearnSpell(SpellType spell)
+        {
+            if (!HasSpell(spell))
+            {
+                LearnedSpells.Add(spell);
+            }
+        }
+
+        /*public bool CanLearnSpell(SpellType spell)
+        {
+            
+        }*/
 
         public bool HasSkill(SkillType skillType)
         {
