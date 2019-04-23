@@ -80,6 +80,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private Dictionary<string, Sprite> m_DollSpriteMap =
             new Dictionary<string, Sprite>();
 
+        // TODO: Just add all sprites to this dictionary...
+        public Dictionary<string, Sprite> m_SpriteMap = new Dictionary<string, Sprite>();
+
+
         [Header("Sprites")]
         private Sprite[] m_QuestEffectSprites;
 
@@ -402,6 +406,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             // Dolls
             OpenMM8Util.AppendResourcesToMap(m_DollSpriteMap, "Sprites/DOLLS");
+            OpenMM8Util.AppendResourcesToMap(m_SpriteMap, "Sprites/BUFF_ANIM_SPRITES");
 
             m_SpellbookUI = SpellbookUI.Create();
 

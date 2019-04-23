@@ -25,6 +25,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
         public string MasterDescription;
         public string GrandmasterDescription;
         public string Stats; // Flags ?
+        public int ManaCostNormal;
+        public int ManaCostExpert;
+        public int ManaCostMaster;
+        public int ManaCostGrandmaster;
+        public int RecoveryRateNormal;
+        public int RecoveryRateExpert;
+        public int RecoveryRateMaster;
+        public int RecoveryRateGrandmaster;
     }
 
     public class SpellDataDb : DataDb<SpellData, SpellType>
@@ -66,6 +74,17 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             data.MasterDescription = columns[8];
             data.GrandmasterDescription = columns[9];
             data.Stats = columns[10];
+
+            data.ManaCostNormal = int.Parse(columns[11]);
+            data.ManaCostExpert = int.Parse(columns[12]);
+            data.ManaCostMaster = int.Parse(columns[13]);
+            data.ManaCostGrandmaster = int.Parse(columns[14]);
+
+            data.RecoveryRateNormal = int.Parse(columns[15]);
+            data.RecoveryRateExpert = int.Parse(columns[16]);
+            data.RecoveryRateMaster = int.Parse(columns[17]);
+            data.RecoveryRateGrandmaster = int.Parse(columns[18]);
+
 
             return data;
         }
