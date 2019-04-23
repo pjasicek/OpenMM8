@@ -33,6 +33,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
         public int RecoveryRateExpert;
         public int RecoveryRateMaster;
         public int RecoveryRateGrandmaster;
+        public int EffectSoundId;
     }
 
     public class SpellDataDb : DataDb<SpellData, SpellType>
@@ -85,6 +86,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             data.RecoveryRateMaster = int.Parse(columns[17]);
             data.RecoveryRateGrandmaster = int.Parse(columns[18]);
 
+            data.EffectSoundId = int.Parse(columns[19]);
 
             return data;
         }

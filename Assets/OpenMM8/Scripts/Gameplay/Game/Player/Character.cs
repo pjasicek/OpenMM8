@@ -1598,11 +1598,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                     Party.PartyBuffMap[PartyEffectType.Heroism].Apply(skillMastery, amount, GameTime.FromCurrentTime(duration), this);
                     Party.Characters.ForEach(chr => SpellFxRenderer.SetPlayerBuffAnim("sp51", chr));
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Spirit_SpiritLash:
                     Debug.LogError("Spell not implemented: " + spellType);
-                    break;
+                    break; 
 
                 case SpellType.Spirit_RaiseDead:
                     Debug.LogError("Spell not implemented: " + spellType);
