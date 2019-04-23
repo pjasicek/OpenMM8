@@ -1302,5 +1302,633 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             return Experience > GameMechanics.GetTotalExperienceRequired(Level + 1);
         }
+
+        //=============================================================================================================
+
+        public void CastSpell(SpellType spellType)
+        {
+            int spellSchoolIdx = (int)(spellType - 1) / 11;
+            if (!Enum.IsDefined(typeof(SpellSchool), spellSchoolIdx))
+            {
+                Debug.LogError("Invalid dervied spell school for spell: " + spellType);
+                return;
+            }
+
+            SpellSchool spellSchool = (SpellSchool)spellSchoolIdx;
+            SkillType skillType = GameMechanics.SpellSchoolToSkillType(spellSchool);
+            if (skillType == SkillType.None)
+            {
+                Debug.LogError("Invalid skill type derived from SpellSchool: " + spellSchool);
+                return;
+            }
+
+            int skillLevel = GetActualSkillLevel(skillType);
+            SkillMastery skillMastery = GetSkillMastery(skillType);
+            if (skillMastery == SkillMastery.None)
+            {
+                Debug.LogError("No skill mastery for: " + skillType);
+                return;
+            }
+
+            SpellData spellData = DbMgr.Instance.SpellDataDb.Get(spellType);
+            if (spellData == null)
+            {
+                Debug.LogError("No spell data for: " + spellType);
+                return;
+            }
+
+            int requiredMana = int.MaxValue;
+            switch (skillMastery)
+            {
+                case SkillMastery.Normal:
+                    requiredMana = spellData.ManaCostNormal;
+                    break;
+                case SkillMastery.Expert:
+                    requiredMana = spellData.ManaCostExpert;
+                    break;
+                case SkillMastery.Master:
+                    requiredMana = spellData.ManaCostMaster;
+                    break;
+                case SkillMastery.Grandmaster:
+                    requiredMana = spellData.ManaCostGrandmaster;
+                    break;
+            }
+
+            if (requiredMana == int.MaxValue)
+            {
+                Debug.LogError("Invalid required mana for spell: " + spellType);
+                return;
+            }
+
+            if (CurrSpellPoints < requiredMana)
+            {
+                Debug.Log("Not enough mana: " + CurrSpellPoints + " (Required " + requiredMana + ")");
+                // Play some sounds / expression
+                return;
+            }
+
+            // Handle curse - chance to fail the spell
+
+            int duration = 0;
+            int amount = 0;
+
+            switch (spellType)
+            {
+                case SpellType.None:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Fire_TorchLight:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Fire_FireBolt:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Fire_ProtectionFromFire:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Fire_FireAura:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Fire_Haste:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Fire_Fireball:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Fire_FireSpike:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Fire_Immolation:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Fire_MeteorShower:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Fire_Inferno:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Fire_Incinerate:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Air_WizardEye:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Air_FeatherFall:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Air_ProtectionFromAir:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Air_Sparks:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Air_Jump:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Air_Shield:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Air_LightningBolt:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Air_Invisibility:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Air_Implosion:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Air_Fly:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Air_Startburst:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Water_Awaken:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Water_PoisonSpray:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Water_ProtectionFromWater:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Water_IceBolt:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Water_WaterWalk:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Water_RechargeItem:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Water_AcidBurst:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Water_EnchantItem:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Water_TownPortal:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Water_IceBlast:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Water_LloydsBeacon:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Earth_Stun:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Earth_Slow:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Earth_ProtectionFromEarth:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Earth_DeadlySwarm:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Earth_Stoneskin:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Earth_Blades:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Earth_StoneToFlesh:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Earth_RockBlast:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Earth_Telekinesis:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Earth_DeathBlossom:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Earth_MassDistortion:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Spirit_DetectLife:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Spirit_Bless:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Spirit_Fate:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Spirit_TurnUndead:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Spirit_RemoveCurse:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Spirit_Preservation:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Spirit_Heroism:
+                    amount = 5 + skillLevel;
+                    switch (skillMastery)
+                    {
+                        case SkillMastery.Normal:
+                        case SkillMastery.Expert:
+                            duration = 60 + (skillLevel * 5);
+                            break;
+
+                        case SkillMastery.Master:
+                            duration = 60 + (skillLevel * 15);
+                            break;
+
+                        case SkillMastery.Grandmaster:
+                            duration = 60 + (skillLevel * 60);
+                            break;
+                    }
+
+                    Party.PartyBuffMap[PartyEffectType.Heroism].Apply(skillMastery, amount, GameTime.FromCurrentTime(duration), this);
+                    Party.Characters.ForEach(chr => SpellFxRenderer.SetPlayerBuffAnim("sp51", chr));
+                    break;
+
+                case SpellType.Spirit_SpiritLash:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Spirit_RaiseDead:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Spirit_SharedLife:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Spirit_Ressurection:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Mind_Telepathy:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Mind_RemoveFear:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Mind_ProtectionFromMind:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Mind_MindBlast:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Mind_Charm:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Mind_CureParalysis:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Mind_Berserk:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Mind_MassFear:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Mind_CureInsanity:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Mind_PsychicShock:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Mind_Enslave:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Body_CureWeakness:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Body_FirstAid:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Body_ProtectionFromBody:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Body_Harm:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Body_Regeneration:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Body_CurePoison:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Body_Hammerhands:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Body_CureDisease:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Body_ProtectionFromMagic:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Body_FlyingFist:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Body_PowerCure:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Light_LightBold:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Light_DestroyUndead:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Light_DispelMagic:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Light_Paralyze:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Light_SummonElemental:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Light_DayOfTheGods:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Light_PrismaticLight:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Light_DayOfProtection:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Light_HourOfPower:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Light_Sunray:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Light_DivineIntervention:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dark_Reanimate:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dark_ToxicCloud:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dark_VampiricWeapon:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dark_ShrinkingRay:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dark_Sharpmetal:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dark_ControlUndead:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dark_PainReflection:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dark_DarkGrasp:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dark_DragonBreath:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dark_Armageddon:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dark_Souldrinker:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.DarkElf_Glamour:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.DarkElf_TravelersBoon:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.DarkElf_Blind:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.DarkElf_DarkfireBolt:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.DarkElf_UNUSED_5:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.DarkElf_UNUSED_6:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.DarkElf_UNUSED_7:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.DarkElf_UNUSED_8:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.DarkElf_UNUSED_9:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.DarkElf_UNUSED_10:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.DarkElf_UNUSED_11:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Vampire_Lifedrain:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Vampire_Levitate:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Vampire_Charm:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Vampire_Mistform:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Vampire_UNUSED_5:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Vampire_UNUSED_6:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Vampire_UNUSED_7:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Vampire_UNUSED_8:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Vampire_UNUSED_9:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Vampire_UNUSED_10:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Vampire_UNUSED_11:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dragon_Fear:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dragon_FlameBlast:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dragon_Flight:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dragon_WingBuffer:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dragon_UNUSED_5:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dragon_UNUSED_6:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dragon_UNUSED_7:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dragon_UNUSED_8:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dragon_UNUSED_9:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dragon_UNUSED_10:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                case SpellType.Dragon_UNUSED_11:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+                default:
+                    Debug.LogError("Spell not implemented: " + spellType);
+                    break;
+
+            }
+        }
     }
 }

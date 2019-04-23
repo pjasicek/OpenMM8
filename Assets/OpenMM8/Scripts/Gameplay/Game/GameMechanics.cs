@@ -517,5 +517,47 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             return StatType.None;
         }
+
+        public static SkillType SpellSchoolToSkillType(SpellSchool spellSchool)
+        {
+            switch (spellSchool)
+            {
+                case SpellSchool.Air: return SkillType.AirMagic;
+                case SpellSchool.Earth: return SkillType.EarthMagic;
+                case SpellSchool.Water: return SkillType.WaterMagic;
+                case SpellSchool.Fire: return SkillType.FireMagic;
+                case SpellSchool.Spirit: return SkillType.SpiritMagic;
+                case SpellSchool.Mind: return SkillType.MindMagic;
+                case SpellSchool.Body: return SkillType.BodyMagic;
+                case SpellSchool.Light: return SkillType.LightMagic;
+                case SpellSchool.Dark: return SkillType.DarkMagic;
+                case SpellSchool.Dragon: return SkillType.DragonAbility;
+                case SpellSchool.Vampire: return SkillType.VampireAbility;
+                case SpellSchool.DarkElf: return SkillType.DarkElfAbility;
+            }
+
+            return SkillType.None;
+        }
+
+        public static SpellSchool SkillTypeToSpellSchool(SkillType skillType)
+        {
+            switch (skillType)
+            {
+                case SkillType.AirMagic: return SpellSchool.Air;
+                case SkillType.EarthMagic: return SpellSchool.Earth;
+                case SkillType.WaterMagic: return SpellSchool.Water;
+                case SkillType.FireMagic: return SpellSchool.Fire;
+                case SkillType.SpiritMagic: return SpellSchool.Spirit;
+                case SkillType.MindMagic: return SpellSchool.Mind;
+                case SkillType.BodyMagic: return SpellSchool.Body;
+                case SkillType.LightMagic: return SpellSchool.Light;
+                case SkillType.DarkMagic: return SpellSchool.Dark;
+                case SkillType.DragonAbility: return SpellSchool.Dragon;
+                case SkillType.VampireAbility: return SpellSchool.Vampire;
+                case SkillType.DarkElfAbility: return SpellSchool.DarkElf;
+            }
+
+            return SpellSchool.None;
+        }
     }
 }

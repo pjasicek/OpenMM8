@@ -38,6 +38,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public Button CloseButton;
         public Dictionary<SpellSchool, SpellbookPageUI> SpellbookPages = new Dictionary<SpellSchool, SpellbookPageUI>();
 
+        public Character CurrentSpellbookOwner = null;
+
         public void DisplayForCharacter(Character chr)
         {
             // Hide everything
@@ -85,6 +87,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             DisplaySpellSchool(chr, chr.LastSpellbookPage);
 
             Canvas.enabled = true;
+            CurrentSpellbookOwner = chr;
         }
 
         public void DisplaySpellSchool(Character chr, SpellSchool spellSchool)
@@ -135,6 +138,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             Canvas.enabled = false;
+            CurrentSpellbookOwner = null;
         }
 
         public static SpellbookUI Create()
@@ -151,6 +155,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             foreach (SpellSchool spellSchool in Enum.GetValues(typeof(SpellSchool)))
             {
+                if (spellSchool == SpellSchool.None)
+                {
+                    continue;
+                }
+
                 SpellbookPageUI spellbookPage = new SpellbookPageUI();
                 ui.SpellbookPages.Add(spellSchool, spellbookPage);
                 spellbookPage.SpellSchool = spellSchool;

@@ -14,7 +14,8 @@ public enum SpellSchool
     Dark,
     DarkElf,
     Vampire,
-    Dragon
+    Dragon,
+    None = 10000
 }
 
 public enum SpellType

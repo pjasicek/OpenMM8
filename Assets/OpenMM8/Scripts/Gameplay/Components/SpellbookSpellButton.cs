@@ -40,13 +40,13 @@ public class SpellbookSpellButton : MonoBehaviour, IPointerEnterHandler, IPointe
 
         if (IsClicked)
         {
+            Character caster = Parent.SpellbookUI.CurrentSpellbookOwner;
+
             // This actually closes the spellbook... should figure out a better way
             GameMgr.Instance.PressEscape();
 
-            // Should cast the SpellType spell now
-            GameMgr.Instance.PlayerParty.Characters.ForEach(chr =>
-            SpellFxRenderer.SetPlayerBuffAnim("zapp", chr));
-            //SpellFxRenderer.SetPlayerBuffAnim("sp51", GameMgr.Instance.PlayerParty.Characters[0]);
+
+            caster.CastSpell(SpellType);
         }
 
         IsClicked = true;

@@ -16,7 +16,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public Character Caster;
         public int Flags;
 
-        bool Apply(SkillMastery skillMastery, int power, GameTime expiryTime, Character caster = null, int flags = 0)
+        public bool Apply(SkillMastery skillMastery, int power, GameTime expiryTime, Character caster = null, int flags = 0)
         {
             if (expiryTime.TotalMinutes() <= TimeMgr.Instance.GetCurrentTime().TotalMinutes())
             {
@@ -33,7 +33,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return true;
         }
 
-        void Reset()
+        public void Reset()
         {
             SkillMastery = SkillMastery.None;
             Power = 0;
@@ -42,7 +42,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Flags = 0;
         }
 
-        bool IsActive()
+        public bool IsActive()
         {
             if (ExpiryTime == null)
             {
@@ -52,7 +52,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return ExpiryTime.TotalMinutes() > TimeMgr.Instance.GetCurrentTime().TotalMinutes();
         }
 
-        bool IsExpired()
+        public bool IsExpired()
         {
             if (ExpiryTime == null)
             {
