@@ -35,6 +35,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public InventoryItem m_HeldItem = null;
         public InspectableUiText m_HoveredInspectableUiText = null;
 
+        public Texture2D TargetCrosshairTexture;
+
         // State
         private UIState m_CurrUIState = null;
 
@@ -410,6 +412,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             m_SpellbookUI = SpellbookUI.Create();
 
+
+            // Spell target crosshair
+            TargetCrosshairTexture = Resources.Load<Texture2D>("Sprites/TARGET_CROSSHAIR_CURSOR");
+
             return true;
         }
 
@@ -784,6 +790,19 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 return m_ConsoleUIState.OnActionPressed(button);
             }
 
+            bool isPendingTargetedSpellCast = SpellMgr.PendingPlayerSpell != null;
+            if (isPendingTargetedSpellCast)
+            {
+                // When escape is pressed, cancel the targeted spell cast
+                if (button == "Escape")
+                {
+                    SpellMgr.ClearPlayerSpell();
+                }
+
+                // In all other cases, do not let UI to consume any further actions
+                return true;
+            }
+
             if (m_CurrUIState != null)
             {
                 // States need to know how to handle actions
@@ -1007,6 +1026,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             chrUI.ManaBar = pc.transform.Find("PC_ManaBar").GetComponent<Image>();
             chrUI.BlessBuff = pc.transform.Find("PC_BlessBuff").GetComponent<Image>();
             chrUI.FaceOverlayAnimation = pc.transform.Find("PC_AvatarAnim").GetComponent<SpriteAnimation>();
+            chrUI.PortraitOverlayButton = pc.transform.Find("PC_PortraitOverlay").GetComponent<Button>();
 
             chr.UI = chrUI;
 
@@ -1396,6 +1416,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private void OnInventoryItemClicked(InventoryItem inventoryItem)
         {
+            // For item enchanting / rechargin / whatever
+            if (SpellMgr.PendingPlayerSpell != null &&
+                SpellMgr.PendingPlayerSpell.Flags.HasFlag(CastSpellFlags.ItemEnchantment))
+            {
+                SpellMgr.OnCrosshairClickedOnInventoryItem(inventoryItem);
+                return;
+            }
+
             if (inventoryItem.isEquipped)
             {
                 HandleDollItemClicked(inventoryItem);

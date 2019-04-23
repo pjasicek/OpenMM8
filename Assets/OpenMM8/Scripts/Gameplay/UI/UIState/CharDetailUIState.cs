@@ -240,39 +240,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                 DisplayDetailState(UiMgr.Instance.m_PlayerParty.ActiveCharacter);
             }
-
-            // ====================================================================================
-            // Inventory methods
-            // ====================================================================================
-
-            /*
-             * Equip char's right hand item offset calculation:
-             * PosY = ItemOffsetY - ItemHeight
-             * PosX = ItemOffsetX
-             * Item is Middle+Center aligned in UI
-             */
-
-            /*
-             * Equip FEMALE char's armor offset calculation:
-             * 
-             * 
-             */
-
-            Item GetItemAtSlot(int row, int col)
-            {
-                return null;
-            }
-
-            List<Item> GetItemsAtSlots(int row, int col, Vector2Int span)
-            {
-                return null;
-            }
-
-            bool CanPlaceItem(Item item, int row, int col)
-            {
-                return true;
-            }
-
         }
     } // public partial class UiMgr
 } // namespace

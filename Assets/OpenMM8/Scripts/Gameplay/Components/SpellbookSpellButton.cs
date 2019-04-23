@@ -45,8 +45,10 @@ public class SpellbookSpellButton : MonoBehaviour, IPointerEnterHandler, IPointe
             // This actually closes the spellbook... should figure out a better way
             GameMgr.Instance.PressEscape();
 
+            PlayerSpell spell = PlayerSpell.CreateFromSpellbook(SpellType, caster);
+            SpellMgr.CastPlayerSpell(spell);
 
-            caster.CastSpell(SpellType);
+            //caster.CastSpell(SpellType);
         }
 
         IsClicked = true;

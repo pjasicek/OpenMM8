@@ -56,7 +56,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         //=============================================//
 
         public List<Award> Awards = new List<Award>();
-        public List<Spell> Spells = new List<Spell>();
 
         public int AttackBonus;
         public int MinAttackDamage;
@@ -1305,6 +1304,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         //=============================================================================================================
 
+        public void ExecuteSpellCast(PlayerSpell spell)
+        {
+            // TODO: Transfer CastSpell here
+            //Character target = spell.Target as Character;
+            //Debug.Log("Execute from: " + spell.Caster.Name + ", To: " + target.Name);
+        }
+
         public void CastSpell(SpellType spellType)
         {
             int spellSchoolIdx = (int)(spellType - 1) / 11;
@@ -1371,6 +1377,26 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             int duration = 0;
             int amount = 0;
+
+            int recoveryTime = 0; // In 10s of miliseconds
+            switch (skillMastery)
+            {
+                case SkillMastery.Normal:
+                    recoveryTime = spellData.RecoveryRateNormal;
+                    break;
+
+                case SkillMastery.Expert:
+                    recoveryTime = spellData.RecoveryRateExpert;
+                    break;
+
+                case SkillMastery.Master:
+                    recoveryTime = spellData.RecoveryRateMaster;
+                    break;
+
+                case SkillMastery.Grandmaster:
+                    recoveryTime = spellData.RecoveryRateGrandmaster;
+                    break;
+            }
 
             switch (spellType)
             {
@@ -1583,6 +1609,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     switch (skillMastery)
                     {
                         case SkillMastery.Normal:
+                            duration = 60 + (skillLevel * 5);
+                            break;
+
                         case SkillMastery.Expert:
                             duration = 60 + (skillLevel * 5);
                             break;
@@ -1599,6 +1628,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     Party.PartyBuffMap[PartyEffectType.Heroism].Apply(skillMastery, amount, GameTime.FromCurrentTime(duration), this);
                     Party.Characters.ForEach(chr => SpellFxRenderer.SetPlayerBuffAnim("sp51", chr));
                     SoundMgr.PlaySoundById(spellData.EffectSoundId);
+                    TimeUntilRecovery = recoveryTime / 100.0f;
                     break;
 
                 case SpellType.Spirit_SpiritLash:

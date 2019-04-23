@@ -27,6 +27,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public Image EmptySlot;
         public SpriteAnimation FaceOverlayAnimation;
 
+        public Button PortraitOverlayButton;
+
         static public Sprite HealthBarSprite_Green;
         static public Sprite HealthBarSprite_Yellow;
         static public Sprite HealthBarSprite_Red;
