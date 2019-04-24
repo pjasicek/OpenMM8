@@ -57,7 +57,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             if (ExpiryTime == null)
             {
                 return true;
-            }
+            }            
 
             return ExpiryTime.TotalMinutes() <= TimeMgr.Instance.GetCurrentTime().TotalMinutes();
         }

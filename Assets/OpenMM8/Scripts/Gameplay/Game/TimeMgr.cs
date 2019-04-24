@@ -63,8 +63,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public int TotalMinutes()
         {
-            return Year * TimeMgr.YEAR_IN_MINUTES + Month * TimeMgr.MONTH_IN_MINUTES +
-                Day * TimeMgr.DAY_IN_MINUTES + Hour * TimeMgr.HOUR_IN_MINUTES + Minute;
+            return Year * TimeMgr.YEAR_IN_MINUTES + (Month - 1) * TimeMgr.MONTH_IN_MINUTES +
+                (Day - 1) * TimeMgr.DAY_IN_MINUTES + Hour * TimeMgr.HOUR_IN_MINUTES + Minute;
         }
 
         static public GameTime FromCurrentTime(int additionalMinutes)

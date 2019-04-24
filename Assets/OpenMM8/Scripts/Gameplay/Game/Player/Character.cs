@@ -1323,6 +1323,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             Character targetCharacter = spell.Target as Character;
             InventoryItem targetInventoryItem = spell.Target as InventoryItem;
+            BaseNpc targetNpc = spell.Target as BaseNpc;
 
             int duration = 0;
             int power = 0;
@@ -1423,18 +1424,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         // TODO: Check if this character has Weak condition
                         wasAppliedAtleastOnce = true;
                         SpellFxRenderer.SetPlayerBuffAnim("sp05", chr);
-
-                        // In original game if it was applied atleast once it affected the entire party
-                        // But that does make 0 sense to me
-                        chr.PlayerBuffMap[PlayerEffectType.Haste].Apply(
-                            skillMastery,
-                            skillLevel,
-                            GameTime.FromCurrentTime(duration),
-                            spell.Caster);
                     });
 
                     if (wasAppliedAtleastOnce)
                     {
+                        // In original game if it was applied atleast once it affected the entire party
+                        // But that does make 0 sense to me
+                        Party.PartyBuffMap[PartyEffectType.Haste].Apply(
+                            skillMastery,
+                            skillLevel,
+                            GameTime.FromCurrentTime(duration),
+                            spell.Caster);
+
                         SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     }
 
@@ -1613,7 +1614,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                                 skillLevel,
                                 GameTime.FromCurrentTime(duration),
                                 spell.Caster);
-                            SpellFxRenderer.SetPlayerBuffAnim("sp46", chr);
+                            SpellFxRenderer.SetPlayerBuffAnim("spell46", chr);
                         });
                     }
                     else
@@ -1625,7 +1626,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                             skillLevel,
                             GameTime.FromCurrentTime(duration),
                             spell.Caster);
-                        SpellFxRenderer.SetPlayerBuffAnim("sp46", targetCharacter);
+                        SpellFxRenderer.SetPlayerBuffAnim("spell46", targetCharacter);
                     }
 
                     SoundMgr.PlaySoundById(spellData.EffectSoundId);
@@ -1633,7 +1634,40 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Spirit_Fate:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    switch (skillMastery)
+                    {
+                        case SkillMastery.Normal:
+                            power = skillLevel;
+                            break;
+                        case SkillMastery.Expert:
+                            power = skillLevel * 2;
+                            break;
+                        case SkillMastery.Master:
+                            power = skillLevel * 4;
+                            break;
+                        case SkillMastery.Grandmaster:
+                            power = skillLevel * 6;
+                            break;
+                    }
+                    duration = 5; // 5 minutes or until character / npc attacks
+
+                    Assert.IsTrue(targetNpc != null || targetCharacter != null);
+                    if (targetCharacter != null)
+                    {
+                        targetCharacter.PlayerBuffMap[PlayerEffectType.Bless].Apply(
+                                skillMastery,
+                                power,
+                                GameTime.FromCurrentTime(duration),
+                                spell.Caster);
+                        SpellFxRenderer.SetPlayerBuffAnim("spell47", targetCharacter);
+                    }
+                    else if (targetNpc != null)
+                    {
+                        // TODO...
+                    }
+
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
+
                     break;
 
                 case SpellType.Spirit_TurnUndead:
@@ -1645,7 +1679,44 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Spirit_Preservation:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    switch (skillMastery)
+                    {
+                        case SkillMastery.Normal:
+                        case SkillMastery.Expert:
+                        case SkillMastery.Master:
+                            duration = 60 + 5 * skillLevel;
+                            break;
+                        case SkillMastery.Grandmaster:
+                            duration = 60 + 15 * skillLevel;
+                            break;
+                    }
+
+                    castOnEntireParty = skillMastery >= SkillMastery.Master;
+                    if (castOnEntireParty)
+                    {
+                        Party.Characters.ForEach(chr =>
+                        {
+                            chr.PlayerBuffMap[PlayerEffectType.Preservation].Apply(
+                                skillMastery,
+                                skillLevel,
+                                GameTime.FromCurrentTime(duration),
+                                spell.Caster);
+                            SpellFxRenderer.SetPlayerBuffAnim("spell56", chr);
+                        });
+                    }
+                    else
+                    {
+                        Assert.IsTrue(targetCharacter != null);
+
+                        targetCharacter.PlayerBuffMap[PlayerEffectType.Preservation].Apply(
+                            skillMastery,
+                            skillLevel,
+                            GameTime.FromCurrentTime(duration),
+                            spell.Caster);
+                        SpellFxRenderer.SetPlayerBuffAnim("spell56", targetCharacter);
+                    }
+
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Spirit_Heroism:
@@ -1962,34 +2033,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     Debug.LogError("Spell not implemented: " + spellType);
                     break;
 
-                case SpellType.DarkElf_UNUSED_5:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.DarkElf_UNUSED_6:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.DarkElf_UNUSED_7:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.DarkElf_UNUSED_8:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.DarkElf_UNUSED_9:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.DarkElf_UNUSED_10:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.DarkElf_UNUSED_11:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
                 case SpellType.Vampire_Lifedrain:
                     Debug.LogError("Spell not implemented: " + spellType);
                     break;
@@ -2006,34 +2049,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     Debug.LogError("Spell not implemented: " + spellType);
                     break;
 
-                case SpellType.Vampire_UNUSED_5:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.Vampire_UNUSED_6:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.Vampire_UNUSED_7:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.Vampire_UNUSED_8:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.Vampire_UNUSED_9:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.Vampire_UNUSED_10:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.Vampire_UNUSED_11:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
                 case SpellType.Dragon_Fear:
                     Debug.LogError("Spell not implemented: " + spellType);
                     break;
@@ -2047,34 +2062,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Dragon_WingBuffer:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.Dragon_UNUSED_5:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.Dragon_UNUSED_6:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.Dragon_UNUSED_7:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.Dragon_UNUSED_8:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.Dragon_UNUSED_9:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.Dragon_UNUSED_10:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.Dragon_UNUSED_11:
                     Debug.LogError("Spell not implemented: " + spellType);
                     break;
 

@@ -38,6 +38,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public Dictionary<PartyEffectType, SpellEffect> PartyBuffMap = new Dictionary<PartyEffectType, SpellEffect>();
 
+        // UI
+        public PartyBuffUI PartyBuffUI;
 
         // ========================================================================================
 
@@ -57,6 +59,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             damageable.OnAttackReceieved += new AttackReceived(OnAttackReceived);
             damageable.OnSpellReceived += new SpellReceived(OnSpellReceived);
             PlayerAudioSource = transform.Find("FirstPersonCharacter").GetComponent<AudioSource>();
+
+            PartyBuffUI = PartyBuffUI.Create(this);
 
             //InvokeRepeating("StableUpdate", 0.0f, 0.05f);
         }
@@ -78,6 +82,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 return;
             }
+
+            PartyBuffUI.Refresh();
 
             foreach (Character character in Characters)
             {
