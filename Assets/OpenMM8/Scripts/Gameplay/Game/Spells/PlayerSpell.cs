@@ -12,6 +12,8 @@ public class PlayerSpell
     public SpellType SpellType;
     public SkillMastery SkillMastery = SkillMastery.None;
     public int SkillLevel;
+    public int RequiredMana;
+    public int RecoveryTime;
     public Character Caster;
     public object Target; // Could really be anything...
     public CastSpellFlags Flags;
@@ -42,11 +44,46 @@ public class PlayerSpell
             return null;
         }
 
+        SpellData spellData = DbMgr.Instance.SpellDataDb.Get(spellType);
+        if (spellData == null)
+        {
+            Debug.LogError("No spell data for: " + spellType);
+            return null;
+        }
+
+        int recoveryTime = int.MaxValue;
+        int requiredMana = int.MaxValue;
+        switch (skillMastery)
+        {
+            case SkillMastery.Normal:
+                requiredMana = spellData.ManaCostNormal;
+                recoveryTime = spellData.RecoveryRateNormal;
+                break;
+            case SkillMastery.Expert:
+                requiredMana = spellData.ManaCostExpert;
+                recoveryTime = spellData.RecoveryRateExpert;
+                break;
+            case SkillMastery.Master:
+                requiredMana = spellData.ManaCostMaster;
+                recoveryTime = spellData.RecoveryRateMaster;
+                break;
+            case SkillMastery.Grandmaster:
+                requiredMana = spellData.ManaCostGrandmaster;
+                recoveryTime = spellData.RecoveryRateGrandmaster;
+                break;
+
+            default:
+                Debug.LogError("Unknown skill mastery: " + skillMastery);
+                return null;
+        }
+
         PlayerSpell newSpell = new PlayerSpell();
         newSpell.SpellType = spellType;
         newSpell.Caster = caster;
         newSpell.SkillLevel = skillLevel;
         newSpell.SkillMastery = skillMastery;
+        newSpell.RequiredMana = requiredMana;
+        newSpell.RecoveryTime = recoveryTime;
 
         return newSpell;
     }

@@ -16,6 +16,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         // @SkillLevel
         // @SkillMastery
         // @Caster
+        // @RecoveryTime
+        // @RequiredMana (can be 0 - e.g. spells from wands / scrolls)
         //
         // @Flags are filled HERE
         // @Target is either determined right here (whole party) or through the target crosshair
@@ -108,6 +110,34 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 case SpellType.Body_CureDisease:
                     playerSpell.Flags |= CastSpellFlags.TargetCharacter;
                     break;
+
+                case SpellType.Spirit_Bless:
+                    if (playerSpell.SkillMastery < SkillMastery.Expert)
+                    {
+                        playerSpell.Flags |= CastSpellFlags.TargetCharacter;
+                    }
+                    break;
+
+                case SpellType.Spirit_Preservation:
+                    if (playerSpell.SkillMastery < SkillMastery.Master)
+                    {
+                        playerSpell.Flags |= CastSpellFlags.TargetCharacter;
+                    }
+                    break;
+
+                case SpellType.Dark_PainReflection:
+                    if (playerSpell.SkillMastery < SkillMastery.Master)
+                    {
+                        playerSpell.Flags |= CastSpellFlags.TargetCharacter;
+                    }
+                    break;
+
+                case SpellType.Body_Hammerhands:
+                    if (playerSpell.SkillMastery < SkillMastery.Grandmaster)
+                    {
+                        playerSpell.Flags |= CastSpellFlags.TargetCharacter;
+                    }
+                    break;
             }
 
 
@@ -153,7 +183,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             else
             {
                 // Cast the spell immidiately - party buffs / heals, AoE spells
-                playerSpell.Caster.ExecuteSpellCast(playerSpell);
+                playerSpell.Caster.CastSpell(playerSpell);
             }
         }
 
@@ -190,7 +220,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             PendingPlayerSpell.Target = clickedCharacter;
-            PendingPlayerSpell.Caster.ExecuteSpellCast(PendingPlayerSpell);
+            PendingPlayerSpell.Caster.CastSpell(PendingPlayerSpell);
 
             ClearPlayerSpell();
         }
@@ -204,7 +234,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             PendingPlayerSpell.Target = inventoryItem;
-            PendingPlayerSpell.Caster.ExecuteSpellCast(PendingPlayerSpell);
+            PendingPlayerSpell.Caster.CastSpell(PendingPlayerSpell);
 
             ClearPlayerSpell();
         }

@@ -914,7 +914,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
-        private void SetPartyInfoText(string text, bool forceRewrite = true)
+        public void SetPartyInfoText(string text, bool forceRewrite = true)
         {
             if (!forceRewrite)
             {

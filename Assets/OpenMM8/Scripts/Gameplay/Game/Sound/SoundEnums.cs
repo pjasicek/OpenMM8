@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 public enum SoundType
 {
-
+    SpellFail = 142,
 }

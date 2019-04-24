@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
@@ -1304,120 +1305,103 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         //=============================================================================================================
 
-        public void ExecuteSpellCast(PlayerSpell spell)
+        public void CastSpell(PlayerSpell spell)
         {
-            // TODO: Transfer CastSpell here
-            //Character target = spell.Target as Character;
-            //Debug.Log("Execute from: " + spell.Caster.Name + ", To: " + target.Name);
-        }
-
-        public void CastSpell(SpellType spellType)
-        {
-            int spellSchoolIdx = (int)(spellType - 1) / 11;
-            if (!Enum.IsDefined(typeof(SpellSchool), spellSchoolIdx))
+            if (CurrSpellPoints < spell.RequiredMana)
             {
-                Debug.LogError("Invalid dervied spell school for spell: " + spellType);
-                return;
-            }
-
-            SpellSchool spellSchool = (SpellSchool)spellSchoolIdx;
-            SkillType skillType = GameMechanics.SpellSchoolToSkillType(spellSchool);
-            if (skillType == SkillType.None)
-            {
-                Debug.LogError("Invalid skill type derived from SpellSchool: " + spellSchool);
-                return;
-            }
-
-            int skillLevel = GetActualSkillLevel(skillType);
-            SkillMastery skillMastery = GetSkillMastery(skillType);
-            if (skillMastery == SkillMastery.None)
-            {
-                Debug.LogError("No skill mastery for: " + skillType);
-                return;
-            }
-
-            SpellData spellData = DbMgr.Instance.SpellDataDb.Get(spellType);
-            if (spellData == null)
-            {
-                Debug.LogError("No spell data for: " + spellType);
-                return;
-            }
-
-            int requiredMana = int.MaxValue;
-            switch (skillMastery)
-            {
-                case SkillMastery.Normal:
-                    requiredMana = spellData.ManaCostNormal;
-                    break;
-                case SkillMastery.Expert:
-                    requiredMana = spellData.ManaCostExpert;
-                    break;
-                case SkillMastery.Master:
-                    requiredMana = spellData.ManaCostMaster;
-                    break;
-                case SkillMastery.Grandmaster:
-                    requiredMana = spellData.ManaCostGrandmaster;
-                    break;
-            }
-
-            if (requiredMana == int.MaxValue)
-            {
-                Debug.LogError("Invalid required mana for spell: " + spellType);
-                return;
-            }
-
-            if (CurrSpellPoints < requiredMana)
-            {
-                Debug.Log("Not enough mana: " + CurrSpellPoints + " (Required " + requiredMana + ")");
+                Debug.Log("Not enough mana: " + CurrSpellPoints + " (Required " + spell.RequiredMana + ")");
                 // Play some sounds / expression
                 return;
             }
 
             // Handle curse - chance to fail the spell
 
+            SpellType spellType = spell.SpellType;
+            SkillMastery skillMastery = spell.SkillMastery;
+            int skillLevel = spell.SkillLevel;
+            SpellData spellData = DbMgr.Instance.SpellDataDb.Get(spellType);
+
             int duration = 0;
-            int amount = 0;
-
-            int recoveryTime = 0; // In 10s of miliseconds
-            switch (skillMastery)
-            {
-                case SkillMastery.Normal:
-                    recoveryTime = spellData.RecoveryRateNormal;
-                    break;
-
-                case SkillMastery.Expert:
-                    recoveryTime = spellData.RecoveryRateExpert;
-                    break;
-
-                case SkillMastery.Master:
-                    recoveryTime = spellData.RecoveryRateMaster;
-                    break;
-
-                case SkillMastery.Grandmaster:
-                    recoveryTime = spellData.RecoveryRateGrandmaster;
-                    break;
-            }
+            int power = 0;
 
             switch (spellType)
             {
                 case SpellType.None:
                     Debug.LogError("Spell not implemented: " + spellType);
-                    break;
+                    return;
 
                 case SpellType.Fire_TorchLight:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    duration = skillLevel * 60;
+                    switch (skillMastery)
+                    {
+                        case SkillMastery.Normal:
+                            power = 2;
+                            break;
+                        case SkillMastery.Expert:
+                            power = 3;
+                            break;
+                        case SkillMastery.Master:
+                        case SkillMastery.Grandmaster:
+                            power = 4;
+                            break;
+                    }
+
+                    Party.PartyBuffMap[PartyEffectType.Torchlight].Apply(
+                        skillMastery, 
+                        power, 
+                        GameTime.FromCurrentTime(duration), 
+                        spell.Caster);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Fire_FireBolt:
                     Debug.LogError("Spell not implemented: " + spellType);
                     break;
 
-                case SpellType.Fire_ProtectionFromFire:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
                 case SpellType.Fire_FireAura:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    duration = 60 * skillLevel;
+                    SpecialEnchantType enchantType = SpecialEnchantType.None;
+                    switch (skillMastery)
+                    {
+                        case SkillMastery.Normal:
+                            enchantType = SpecialEnchantType.OfFire;
+                            break;
+                        case SkillMastery.Expert:
+                            enchantType = SpecialEnchantType.OfFlame;
+                            break;
+                        case SkillMastery.Master:
+                            enchantType = SpecialEnchantType.OfInfernos;
+                            break;
+                        case SkillMastery.Grandmaster:
+                            enchantType = SpecialEnchantType.OfInfernos;
+                            duration = 0; // Permanent
+                            break;
+                    }
+
+                    InventoryItem targetInventoryItem = spell.Target as InventoryItem;
+                    if (targetInventoryItem == null)
+                    {
+                        Debug.LogError("Expected to have target InventoryItem, instead have: " + spell.Target.GetType());
+                        return;
+                    }
+
+                    Item targetItem = targetInventoryItem.Item;
+                    bool canApplyFireAura = targetItem.Enchant == null &&
+                        (targetItem.Data.ItemType == ItemType.WeaponOneHanded ||
+                         targetItem.Data.ItemType == ItemType.WeaponTwoHanded ||
+                         targetItem.Data.ItemType == ItemType.Missile);
+                    if (canApplyFireAura)
+                    {
+                        // TODO: Effect should be permanent only with Grandmaster
+                        ItemGenerator.Instance.ApplySpecialEnchant(enchantType, targetItem);
+                        SoundMgr.PlaySoundById(spellData.EffectSoundId);
+                    }
+                    else
+                    {
+                        UiMgr.Instance.SetPartyInfoText("Spell failed");
+                        SoundMgr.PlaySoundById((int)SoundType.SpellFail);
+                    }
+
                     break;
 
                 case SpellType.Fire_Haste:
@@ -1453,10 +1437,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Air_FeatherFall:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.Air_ProtectionFromAir:
                     Debug.LogError("Spell not implemented: " + spellType);
                     break;
 
@@ -1500,10 +1480,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     Debug.LogError("Spell not implemented: " + spellType);
                     break;
 
-                case SpellType.Water_ProtectionFromWater:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
                 case SpellType.Water_IceBolt:
                     Debug.LogError("Spell not implemented: " + spellType);
                     break;
@@ -1541,10 +1517,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Earth_Slow:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.Earth_ProtectionFromEarth:
                     Debug.LogError("Spell not implemented: " + spellType);
                     break;
 
@@ -1605,7 +1577,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Spirit_Heroism:
-                    amount = 5 + skillLevel;
+                    power = 5 + skillLevel;
                     switch (skillMastery)
                     {
                         case SkillMastery.Normal:
@@ -1625,10 +1597,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                             break;
                     }
 
-                    Party.PartyBuffMap[PartyEffectType.Heroism].Apply(skillMastery, amount, GameTime.FromCurrentTime(duration), this);
+                    Party.PartyBuffMap[PartyEffectType.Heroism].Apply(skillMastery, power, GameTime.FromCurrentTime(duration), this);
                     Party.Characters.ForEach(chr => SpellFxRenderer.SetPlayerBuffAnim("sp51", chr));
                     SoundMgr.PlaySoundById(spellData.EffectSoundId);
-                    TimeUntilRecovery = recoveryTime / 100.0f;
+                    //TimeUntilRecovery = recoveryTime / 100.0f;
                     break;
 
                 case SpellType.Spirit_SpiritLash:
@@ -1652,10 +1624,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Mind_RemoveFear:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
-                case SpellType.Mind_ProtectionFromMind:
                     Debug.LogError("Spell not implemented: " + spellType);
                     break;
 
@@ -1699,16 +1667,100 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     Debug.LogError("Spell not implemented: " + spellType);
                     break;
 
-                case SpellType.Body_ProtectionFromBody:
-                    Debug.LogError("Spell not implemented: " + spellType);
-                    break;
-
                 case SpellType.Body_Harm:
                     Debug.LogError("Spell not implemented: " + spellType);
                     break;
 
                 case SpellType.Body_Regeneration:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    switch (skillMastery)
+                    {
+                        case SkillMastery.Normal:
+                            power = 1;
+                            break;
+                        case SkillMastery.Expert:
+                            power = 1;
+                            break;
+                        case SkillMastery.Master:
+                            power = 3;
+                            break;
+                        case SkillMastery.Grandmaster:
+                            power = 10;
+                            break;
+                    }
+                    duration = 60 * skillLevel;
+
+                    Character targetCharacter = spell.Target as Character;
+                    Assert.IsTrue(targetCharacter != null);
+
+                    targetCharacter.PlayerBuffMap[PlayerEffectType.Regeneration].Apply(
+                        skillMastery,
+                        power,
+                        GameTime.FromCurrentTime(duration),
+                        spell.Caster);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
+                    SpellFxRenderer.SetPlayerBuffAnim("sp71", targetCharacter);
+
+                    break;
+
+                case SpellType.Fire_ProtectionFromFire:
+                case SpellType.Air_ProtectionFromAir:
+                case SpellType.Water_ProtectionFromWater:
+                case SpellType.Earth_ProtectionFromEarth:
+                case SpellType.Mind_ProtectionFromMind:
+                case SpellType.Body_ProtectionFromBody:
+                    PartyEffectType partyEffectType = PartyEffectType.Torchlight;
+                    string buffAnim = "";
+                    switch (spell.SpellType)
+                    {
+                        case SpellType.Fire_ProtectionFromFire:
+                            partyEffectType = PartyEffectType.ResistFire;
+                            buffAnim = "spell03";
+                            break;
+                        case SpellType.Air_ProtectionFromAir:
+                            partyEffectType = PartyEffectType.ResistAir;
+                            buffAnim = "spell14";
+                            break;
+                        case SpellType.Water_ProtectionFromWater:
+                            partyEffectType = PartyEffectType.ResistWater;
+                            buffAnim = "sp25";
+                            break;
+                        case SpellType.Earth_ProtectionFromEarth:
+                            partyEffectType = PartyEffectType.ResistEarth;
+                            buffAnim = "spell36";
+                            break;
+                        case SpellType.Mind_ProtectionFromMind:
+                            partyEffectType = PartyEffectType.ResistMind;
+                            buffAnim = "sp58";
+                            break;
+                        case SpellType.Body_ProtectionFromBody:
+                            partyEffectType = PartyEffectType.ResistBody;
+                            buffAnim = "spell69";
+                            break;
+                    }
+
+                    switch (skillMastery)
+                    {
+                        case SkillMastery.Normal:
+                        case SkillMastery.Expert:
+                        case SkillMastery.Master:
+                        case SkillMastery.Grandmaster:
+                            power = (int)skillMastery * skillLevel;
+                            break;
+                    }
+                    duration = 60 * skillLevel;
+
+                    Party.PartyBuffMap[partyEffectType].Apply(
+                        skillMastery,
+                        power,
+                        GameTime.FromCurrentTime(duration),
+                        spell.Caster);
+
+                    Party.Characters.ForEach(chr =>
+                    {
+                        SpellFxRenderer.SetPlayerBuffAnim(buffAnim, chr);
+                    });
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
+
                     break;
 
                 case SpellType.Body_CurePoison:
