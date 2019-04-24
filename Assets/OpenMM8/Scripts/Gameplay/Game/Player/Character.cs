@@ -1321,6 +1321,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             int skillLevel = spell.SkillLevel;
             SpellData spellData = DbMgr.Instance.SpellDataDb.Get(spellType);
 
+            Character targetCharacter = spell.Target as Character;
+            InventoryItem targetInventoryItem = spell.Target as InventoryItem;
+
             int duration = 0;
             int power = 0;
 
@@ -1378,12 +1381,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                             break;
                     }
 
-                    InventoryItem targetInventoryItem = spell.Target as InventoryItem;
-                    if (targetInventoryItem == null)
-                    {
-                        Debug.LogError("Expected to have target InventoryItem, instead have: " + spell.Target.GetType());
-                        return;
-                    }
+                    Assert.IsTrue(targetInventoryItem != null);
 
                     Item targetItem = targetInventoryItem.Item;
                     bool canApplyFireAura = targetItem.Enchant == null &&
@@ -1405,7 +1403,41 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Fire_Haste:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    switch (skillMastery)
+                    {
+                        case SkillMastery.Normal:
+                        case SkillMastery.Expert:
+                            duration = 60 + (skillLevel * 1);
+                            break;
+                        case SkillMastery.Master:
+                            duration = 60 + (skillLevel * 3);
+                            break;
+                        case SkillMastery.Grandmaster:
+                            duration = 60 + (skillLevel * 4);
+                            break;
+                    }
+
+                    bool wasAppliedAtleastOnce = false;
+                    Party.Characters.ForEach(chr =>
+                    {
+                        // TODO: Check if this character has Weak condition
+                        wasAppliedAtleastOnce = true;
+                        SpellFxRenderer.SetPlayerBuffAnim("sp05", chr);
+
+                        // In original game if it was applied atleast once it affected the entire party
+                        // But that does make 0 sense to me
+                        chr.PlayerBuffMap[PlayerEffectType.Haste].Apply(
+                            skillMastery,
+                            skillLevel,
+                            GameTime.FromCurrentTime(duration),
+                            spell.Caster);
+                    });
+
+                    if (wasAppliedAtleastOnce)
+                    {
+                        SoundMgr.PlaySoundById(spellData.EffectSoundId);
+                    }
+
                     break;
 
                 case SpellType.Fire_Fireball:
@@ -1557,7 +1589,47 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Spirit_Bless:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    switch (skillMastery)
+                    {
+                        case SkillMastery.Normal:
+                        case SkillMastery.Expert:
+                            duration = 60 + 5 * skillLevel;
+                            break;
+                        case SkillMastery.Master:
+                            duration = 60 + 15 * skillLevel;
+                            break;
+                        case SkillMastery.Grandmaster:
+                            duration = 60 + 60 * skillLevel;
+                            break;
+                    }
+
+                    bool castOnEntireParty = skillMastery >= SkillMastery.Expert;
+                    if (castOnEntireParty)
+                    {
+                        Party.Characters.ForEach(chr =>
+                        {
+                            chr.PlayerBuffMap[PlayerEffectType.Bless].Apply(
+                                skillMastery,
+                                skillLevel,
+                                GameTime.FromCurrentTime(duration),
+                                spell.Caster);
+                            SpellFxRenderer.SetPlayerBuffAnim("sp46", chr);
+                        });
+                    }
+                    else
+                    {
+                        Assert.IsTrue(targetCharacter != null);
+
+                        targetCharacter.PlayerBuffMap[PlayerEffectType.Bless].Apply(
+                            skillMastery,
+                            skillLevel,
+                            GameTime.FromCurrentTime(duration),
+                            spell.Caster);
+                        SpellFxRenderer.SetPlayerBuffAnim("sp46", targetCharacter);
+                    }
+
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
+
                     break;
 
                 case SpellType.Spirit_Fate:
@@ -1689,7 +1761,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     }
                     duration = 60 * skillLevel;
 
-                    Character targetCharacter = spell.Target as Character;
                     Assert.IsTrue(targetCharacter != null);
 
                     targetCharacter.PlayerBuffMap[PlayerEffectType.Regeneration].Apply(
