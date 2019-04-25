@@ -46,7 +46,7 @@ public class SpellbookSpellButton : MonoBehaviour, IPointerEnterHandler, IPointe
             GameMgr.Instance.PressEscape();
 
             PlayerSpell spell = PlayerSpell.CreateFromSpellbook(SpellType, caster);
-            SpellMgr.CastPlayerSpell(spell);
+            SpellCastHelper.PushPlayerSpellCast(spell);
 
             //caster.CastSpell(SpellType);
         }

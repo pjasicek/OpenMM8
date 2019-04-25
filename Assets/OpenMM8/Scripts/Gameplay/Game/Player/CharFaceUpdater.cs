@@ -18,6 +18,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private float m_AvatarDuration = 0.0f;
 
+        // TODO: For the pseudo code, fix later
+        private float m_ExpressionTimeLength = 0;
+        private float m_ExpressionTimePassed = 0;
+
         public CharFaceUpdater(Character owner)
         {
             chr = owner;
@@ -44,6 +48,69 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnFixedUpdate(float secDiff)
         {
+            // This is pseudo code for now
+            Condition worstCondition = chr.GetWorstCondition();
+            if (worstCondition == Condition.Good || worstCondition == Condition.Zombie)
+            {
+                if (m_ExpressionTimePassed < m_ExpressionTimeLength)
+                {
+                    return;
+                }
+            }
+            else if (chr.CurrentExpression != CharacterExpression.DamageReceiveMinor &&
+                     chr.CurrentExpression != CharacterExpression.DamageReceiveModerate &&
+                     chr.CurrentExpression != CharacterExpression.DamageReceiveMajor ||
+                     m_ExpressionTimePassed >= m_ExpressionTimeLength)
+            {
+                m_ExpressionTimePassed = 0.0f;
+                m_ExpressionTimeLength = 0.0f;
+
+                switch (worstCondition)
+                {
+                    case Condition.Cursed:
+
+                        break;
+                    case Condition.Weak:
+                        break;
+                    case Condition.Sleep:
+                        break;
+                    case Condition.Fear:
+                        break;
+                    case Condition.Drunk:
+                        break;
+                    case Condition.Insane:
+                        break;
+                    case Condition.PoisonWeak:
+                        break;
+                    case Condition.DiseaseWeak:
+                        break;
+                    case Condition.PoisonMedium:
+                        break;
+                    case Condition.DiseaseMedium:
+                        break;
+                    case Condition.PoisonSevere:
+                        break;
+                    case Condition.DiseaseSevere:
+                        break;
+                    case Condition.Paralyzed:
+                        break;
+                    case Condition.Unconcious:
+                        break;
+                    case Condition.Dead:
+                        break;
+                    case Condition.Petrified:
+                        break;
+                    case Condition.Eradicated:
+                        break;
+                    case Condition.Zombie:
+                        break;
+                    case Condition.Good:
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             if (chr.UI.PlayerCharacter.sprite != chr.UI.Sprites.ConditionToSpriteMap[chr.Condition])
             {
                 m_TimeInOtherAvatar += secDiff;

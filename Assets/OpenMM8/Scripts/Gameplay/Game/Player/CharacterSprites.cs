@@ -96,14 +96,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             characterSprites.ConditionToSpriteMap[Condition.Good] = sprites[0];
             characterSprites.ConditionToSpriteMap[Condition.Weak] = sprites[1];
             characterSprites.ConditionToSpriteMap[Condition.Insane] = sprites[6];
-            characterSprites.ConditionToSpriteMap[Condition.Poisoned] = sprites[7];
-            characterSprites.ConditionToSpriteMap[Condition.Diseased] = sprites[8];
-            characterSprites.ConditionToSpriteMap[Condition.Unconsious] = sprites[10];
+            characterSprites.ConditionToSpriteMap[Condition.PoisonWeak] = sprites[7];
+            characterSprites.ConditionToSpriteMap[Condition.PoisonMedium] = sprites[7];
+            characterSprites.ConditionToSpriteMap[Condition.PoisonSevere] = sprites[7];
+            characterSprites.ConditionToSpriteMap[Condition.DiseaseWeak] = sprites[8];
+            characterSprites.ConditionToSpriteMap[Condition.DiseaseMedium] = sprites[8];
+            characterSprites.ConditionToSpriteMap[Condition.DiseaseSevere] = sprites[8];
+            characterSprites.ConditionToSpriteMap[Condition.Unconcious] = sprites[10];
             characterSprites.ConditionToSpriteMap[Condition.Dead] = commonSprites[0];
             characterSprites.ConditionToSpriteMap[Condition.Eradicated] = commonSprites[1];
-            characterSprites.ConditionToSpriteMap[Condition.Stoned] = sprites[11];
+            characterSprites.ConditionToSpriteMap[Condition.Petrified] = sprites[11];
             characterSprites.ConditionToSpriteMap[Condition.Paralyzed] = sprites[9];
-            characterSprites.ConditionToSpriteMap[Condition.Sleeping] = sprites[3];
+            characterSprites.ConditionToSpriteMap[Condition.Sleep] = sprites[3];
             characterSprites.ConditionToSpriteMap[Condition.Drunk] = sprites[5];
 
             return characterSprites;

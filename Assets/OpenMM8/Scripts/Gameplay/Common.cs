@@ -132,20 +132,132 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         None
     }
 
-    public enum Condition
+    public enum CharacterExpression
     {
+        None,
         Good,
+        Cursed,
         Weak,
+        Sleep,
+        Fear,
+        Drunk,
         Insane,
         Poisoned,
         Diseased,
-        Unconsious,
-        Dead,
-        Eradicated,
-        Stoned,
         Paralyzed,
-        Sleeping,
-        Drunk
+        Unconcious,
+        Petrified,
+        _13,
+        _14,
+        _15,
+        _16,
+        _17,
+        _18,
+        _19,
+        _20,
+        _21,
+        _22,
+        _23,
+        _24,
+        _25,
+        _26,
+        _27,
+        _28,
+        _29,
+        _30,
+        _31,
+        _32,
+        _33,
+        DamageReceiveMinor,
+        DamageReceiveModerate,
+        DamageReceiveMajor,
+        _37,
+        _38,
+        _39,
+
+        // ?
+
+        Scared = 46, // Falling 
+
+        // ?
+        _54,
+        _55,
+        _56,
+        _57,
+        Falling, // ??
+
+        // ??
+
+        Dead,
+        Eradicated
+    }
+
+    public enum CharacterSpeech
+    {
+        TrapDisarmed,
+        FailedDisarm,
+        DoorIsClosed,
+        ChooseMe,
+        BadItem,
+        GoodItem,
+        CantIdentify,
+        ItemRepaired,
+        CannotRepairItem,
+        EasyFight,
+        HardFight,
+        CantIdentifyMonster,
+        QuickSpell,
+        Hungry,
+        SoftInjured,
+        Injured,
+        SeverelyInjured,
+        Drunk,
+        Insane,
+        Poisoned,
+        Misc,
+        Fall,
+        CannotRestHere,
+        NeedMoreGold,
+        InventoryFull, // When holding item and clicking on character's avatar who has no room for the item
+        PotionMixed,
+        FailedPotionMixing,
+        NeedAKey,
+        LearnSpell,
+        CannotLearnSpell,
+        CannotEquipItem,
+        Hello,
+        Win,
+        Heh,
+        LastManStanding,
+        HardFightEnded,
+        EnteredDungeon,
+        Yes,
+        Thanks,
+        GoodFight,
+        Move
+    }
+
+    public enum Condition
+    {
+        Cursed = 0,
+        Weak,
+        Sleep,
+        Fear,
+        Drunk,
+        Insane,
+        PoisonWeak,
+        DiseaseWeak,
+        PoisonMedium,
+        DiseaseMedium,
+        PoisonSevere,
+        DiseaseSevere,
+        Paralyzed,
+        Unconcious,
+        Dead,
+        Petrified,
+        Eradicated,
+        Zombie,
+        Good
     }
 
     public enum CharacterClass

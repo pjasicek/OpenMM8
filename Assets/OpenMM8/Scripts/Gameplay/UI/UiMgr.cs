@@ -790,13 +790,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 return m_ConsoleUIState.OnActionPressed(button);
             }
 
-            bool isPendingTargetedSpellCast = SpellMgr.PendingPlayerSpell != null;
+            bool isPendingTargetedSpellCast = SpellCastHelper.PendingPlayerSpell != null;
             if (isPendingTargetedSpellCast)
             {
                 // When escape is pressed, cancel the targeted spell cast
                 if (button == "Escape")
                 {
-                    SpellMgr.ClearPlayerSpell();
+                    SpellCastHelper.ClearPlayerSpell();
                 }
 
                 // In all other cases, do not let UI to consume any further actions
@@ -1417,10 +1417,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private void OnInventoryItemClicked(InventoryItem inventoryItem)
         {
             // For item enchanting / rechargin / whatever
-            if (SpellMgr.PendingPlayerSpell != null &&
-                SpellMgr.PendingPlayerSpell.Flags.HasFlag(CastSpellFlags.ItemEnchantment))
+            if (SpellCastHelper.PendingPlayerSpell != null &&
+                SpellCastHelper.PendingPlayerSpell.Flags.HasFlag(CastSpellFlags.ItemEnchantment))
             {
-                SpellMgr.OnCrosshairClickedOnInventoryItem(inventoryItem);
+                SpellCastHelper.OnCrosshairClickedOnInventoryItem(inventoryItem);
                 return;
             }
 

@@ -302,7 +302,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             //m_AudioSource.PlayOneShot(m_GoldChanged, 1.5f);
 
-            PlaySoundById(GameMgr.Instance.PlayerParty.ActiveCharacter.CharacterVoiceData.LearnSpell[0]);
+            PlaySoundById(GameMgr.Instance.PlayerParty.ActiveCharacter.VoiceData.LearnSpell[0]);
         }
 
         public void OnFoodChanged(int oldFood, int newFood, int delta)
@@ -327,22 +327,22 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             switch (interactResult)
             {
                 case ItemInteractResult.AlreadyLearned:
-                    PlayRandomSound(chr.CharacterVoiceData.CantLearn);
+                    PlayRandomSound(chr.VoiceData.CantLearn);
                     break;
 
                 case ItemInteractResult.Equipped:
                     break;
 
                 case ItemInteractResult.CannotEquip:
-                    PlayRandomSound(chr.CharacterVoiceData.CantEquip);
+                    PlayRandomSound(chr.VoiceData.CantEquip);
                     break;
 
                 case ItemInteractResult.Learned:
-                    PlayRandomSound(chr.CharacterVoiceData.LearnSpell);
+                    PlayRandomSound(chr.VoiceData.LearnSpell);
                     break;
 
                 case ItemInteractResult.CannotLearn:
-                    PlayRandomSound(chr.CharacterVoiceData.CantLearn);
+                    PlayRandomSound(chr.VoiceData.CantLearn);
                     break;
 
                 case ItemInteractResult.Consumed:
@@ -456,7 +456,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             if (!talkScene.IsBuilding)
             {
-                PlayRandomSound(talkerChr.CharacterVoiceData.Hello);
+                PlayRandomSound(talkerChr.VoiceData.Hello);
             }
         }
 

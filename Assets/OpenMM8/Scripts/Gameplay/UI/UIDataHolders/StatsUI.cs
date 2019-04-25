@@ -99,7 +99,7 @@ public class StatsUI
         // Check if can reach next level
         if (Owner.CanTrainToNextLevel())
         {
-            ExperienceText.text = "<color=green>" + Owner.Experience + "</color>";
+            ExperienceText.text = "<color=#00ff00ff>" + Owner.Experience + "</color>";
         }
         else
         {
@@ -156,7 +156,7 @@ public class StatsUI
     {
         if (actualAmount > baseAmount)
         {
-            return "<color=green>" + actualAmount + "</color> / " + baseAmount;
+            return "<color=#00ff00ff>" + actualAmount + "</color> / " + baseAmount;
         }
         else if (actualAmount < baseAmount)
         {
