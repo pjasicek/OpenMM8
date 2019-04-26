@@ -31,6 +31,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 bool isExpressionAnimFinished = chr.CurrExpressionTimePassed >= chr.CurrExpressionTimeLength;
                 if (!isExpressionAnimFinished)
                 {
+                    RenderAvatar();
                     return;
                 }
 
@@ -137,6 +138,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 }
             }
 
+            RenderAvatar();
+        }
+
+        private void RenderAvatar()
+        {
             string spriteName = "";
             if (chr.CurrExpression == CharacterExpression.Dead || chr.CurrExpression == CharacterExpression.Eradicated)
             {
@@ -153,7 +159,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             else
             {
                 // Update the actual sprites here
-                expressionData = DbMgr.Instance.CharacterFaceExpressionDb.Get(chr.CurrExpression);
+                CharacterExpressionData expressionData = DbMgr.Instance.CharacterFaceExpressionDb.Get(chr.CurrExpression);
                 int totalFrames = expressionData.AnimSpriteIndexes.Length;
                 int currentFrame = 0;
                 if (totalFrames > 1 && chr.CurrExpressionTimeLength > 0.0f)

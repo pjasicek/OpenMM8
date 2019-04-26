@@ -311,11 +311,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case ItemInteractResult.CannotEquip:
-                    PlayRandomSound(chr.VoiceData.CantEquip);
+                    chr.PlayEventReaction(CharacterReaction.CannotEquipItem);
                     break;
 
                 case ItemInteractResult.Learned:
-                    PlayRandomSound(chr.VoiceData.LearnSpell);
+                    chr.PlayEventReaction(CharacterReaction.LearnOk);
                     break;
 
                 case ItemInteractResult.CannotLearn:
@@ -405,7 +405,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnNpcInspect(Character inspectorChr, MonsterData npcData)
         {
-
         }
 
         public void OnTalkSceneStart(Character talkerChr, TalkScene talkScene)

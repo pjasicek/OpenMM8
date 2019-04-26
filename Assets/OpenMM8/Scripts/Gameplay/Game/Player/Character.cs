@@ -1362,9 +1362,69 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         }
 
-        public void PlayCharacterExpression()
+        // This is general-purpose reaction to all game events
+        // It will try to play sound + facial avatar animation
+        public void PlayEventReaction(CharacterReaction characterReaction)
         {
+            CharacterReactionData reactionData = DbMgr.Instance.CharacterReactionDb.Get(characterReaction);
 
+            int numSpeechVariants = reactionData.SpeechVariants.Length;
+            if (numSpeechVariants > 0)
+            {
+                int rndSpeechIndex = UnityEngine.Random.Range(0, numSpeechVariants);
+                CharacterSpeech speechVariant = reactionData.SpeechVariants[rndSpeechIndex];
+                PlayCharacterSpeech(speechVariant);
+            }
+
+            int numExpressionVariants = reactionData.ExpressionVariants.Length;
+            if (numExpressionVariants > 0)
+            {
+                int rndExpressionIndex = UnityEngine.Random.Range(0, numExpressionVariants);
+                CharacterExpression expressionVariant = reactionData.ExpressionVariants[rndExpressionIndex];
+                PlayCharacterExpression(expressionVariant);
+            }
+        }
+
+        public void PlayCharacterExpression(CharacterExpression newExpression)
+        {
+            // Check if newExpression is applicable
+            if (CurrExpression == CharacterExpression.Dead ||
+                CurrExpression == CharacterExpression.Eradicated)
+            {
+                // Cannot really react when I am dead
+                return;
+            }
+            else if (CurrExpression == CharacterExpression.Petrified && 
+                     newExpression == CharacterExpression.Falling)
+            {
+                // Cannot yell that I am falling when I am petrified
+                return;
+            }
+            else
+            {
+                // I am not sleeping nor falling
+                if (CurrExpression != CharacterExpression.Sleep ||
+                    CurrExpression != CharacterExpression.Falling)
+                {
+                    // I have some bad condition but I am not poisoned
+                    // and also I am not animating receiving damage
+                    // ????????
+                    if (CurrExpression >= CharacterExpression.Cursed && 
+                        CurrExpression <= CharacterExpression.Unconcious &&
+                        CurrExpression != CharacterExpression.Poisoned &&
+                        !(newExpression == CharacterExpression.DamageReceiveMinor ||
+                          newExpression == CharacterExpression.DamageReceiveModerate ||
+                          newExpression == CharacterExpression.DamageReceiveMajor))
+                    {
+                        return;
+                    }
+                }
+            }
+
+            CharacterExpressionData expressionData = DbMgr.Instance.CharacterFaceExpressionDb.Get(newExpression);
+            CurrExpressionTimePassed = 0.0f;
+            CurrExpressionTimeLength = expressionData.AnimDurationSeconds;
+            CurrExpression = newExpression;
         }
 
         public void PlayCharacterSpeech(CharacterSpeech characterSpeech)
