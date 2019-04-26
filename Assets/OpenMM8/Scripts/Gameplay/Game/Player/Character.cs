@@ -1348,16 +1348,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 case CharacterSpeech.CannotRepairItem:
                     SoundMgr.PlayRandomSound(VoiceData.CantRepair);
                     break;
-                case CharacterSpeech.EasyFight:
+                case CharacterSpeech.IdentifiedWeakMonster:
                     SoundMgr.PlayRandomSound(VoiceData.EasyFight);
                     break;
-                case CharacterSpeech.HardFight:
+                case CharacterSpeech.IdentifiedStrongMonster:
                     SoundMgr.PlayRandomSound(VoiceData.HardFight);
                     break;
                 case CharacterSpeech.CantIdentifyMonster:
                     SoundMgr.PlayRandomSound(VoiceData.CantIdMonster);
                     break;
-                case CharacterSpeech.QuickSpell:
+                case CharacterSpeech.QuickSpellWasSet:
                     SoundMgr.PlayRandomSound(VoiceData.QuickSpell);
                     break;
                 case CharacterSpeech.Hungry:
@@ -1369,7 +1369,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 case CharacterSpeech.Injured:
                     SoundMgr.PlayRandomSound(VoiceData.Injured);
                     break;
-                case CharacterSpeech.SeverelyInjured:
+                case CharacterSpeech.FatallyInjured:
                     SoundMgr.PlayRandomSound(VoiceData.HardInjured);
                     break;
                 case CharacterSpeech.Drunk:
@@ -1381,10 +1381,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 case CharacterSpeech.Poisoned:
                     SoundMgr.PlayRandomSound(VoiceData.Poisoned);
                     break;
-                case CharacterSpeech.Misc:
+                case CharacterSpeech.Cursed:
                     SoundMgr.PlayRandomSound(VoiceData.Misc);
                     break;
-                case CharacterSpeech.Fall:
+                case CharacterSpeech.Fear:
                     SoundMgr.PlayRandomSound(VoiceData.Fall);
                     break;
                 case CharacterSpeech.CannotRestHere:
@@ -1405,7 +1405,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 case CharacterSpeech.NeedAKey:
                     SoundMgr.PlayRandomSound(VoiceData.NeedAKey);
                     break;
-                case CharacterSpeech.LearnSpell:
+                case CharacterSpeech.LearnedSpell:
                     SoundMgr.PlayRandomSound(VoiceData.LearnSpell);
                     break;
                 case CharacterSpeech.CannotLearnSpell:
@@ -1414,8 +1414,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 case CharacterSpeech.CannotEquipItem:
                     SoundMgr.PlayRandomSound(VoiceData.CantEquip);
                     break;
-                case CharacterSpeech.Hello:
-                    SoundMgr.PlayRandomSound(VoiceData.Hello);
+                case CharacterSpeech.GoodDay:
+                    SoundMgr.PlayRandomSound(VoiceData.GoodDay);
+                    break;
+                case CharacterSpeech.GoodEvening:
+                    SoundMgr.PlayRandomSound(VoiceData.GoodEvening);
                     break;
                 case CharacterSpeech.Win:
                     SoundMgr.PlayRandomSound(VoiceData.Win);
@@ -1438,8 +1441,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 case CharacterSpeech.Thanks:
                     SoundMgr.PlayRandomSound(VoiceData.Thanks);
                     break;
-                case CharacterSpeech.GoodFight:
-                    SoundMgr.PlayRandomSound(VoiceData.GoodFight);
+                case CharacterSpeech.SomeoneWasRude:
+                    SoundMgr.PlayRandomSound(VoiceData.SomeoneWasRude);
                     break;
                 case CharacterSpeech.Move:
                     SoundMgr.PlayRandomSound(VoiceData.Move);

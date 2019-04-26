@@ -47,7 +47,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
         public List<int> LearnSpell = new List<int>();
         public List<int> CantLearn = new List<int>();
         public List<int> CantEquip = new List<int>();
-        public List<int> Hello = new List<int>();
+        public List<int> GoodDay = new List<int>();
+        public List<int> GoodEvening = new List<int>(); // 21pm - 5am
         public List<int> Win = new List<int>();
         public List<int> Heh = new List<int>();
         public List<int> LastStanding = new List<int>();
@@ -55,7 +56,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
         public List<int> EnterDungeon = new List<int>();
         public List<int> Yes = new List<int>();
         public List<int> Thanks = new List<int>();
-        public List<int> GoodFight = new List<int>();
+        public List<int> SomeoneWasRude = new List<int>();
         public List<int> Move = new List<int>();
     }
 
@@ -134,12 +135,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             data.CantLearn.Add(int.Parse(columns[ColumnToNumber("BI")]));
             data.CantEquip.Add(int.Parse(columns[ColumnToNumber("BJ")]));
             data.CantEquip.Add(int.Parse(columns[ColumnToNumber("BK")]));
-            data.Hello.Add(int.Parse(columns[ColumnToNumber("BL")]));
-            data.Hello.Add(int.Parse(columns[ColumnToNumber("BM")]));
-            data.Hello.Add(int.Parse(columns[ColumnToNumber("BN")]));
-            data.Hello.Add(int.Parse(columns[ColumnToNumber("BO")]));
-            data.Hello.Add(int.Parse(columns[ColumnToNumber("BP")]));
-            data.Hello.Add(int.Parse(columns[ColumnToNumber("BQ")]));
+            data.GoodDay.Add(int.Parse(columns[ColumnToNumber("BL")]));
+            data.GoodDay.Add(int.Parse(columns[ColumnToNumber("BM")]));
+            data.GoodDay.Add(int.Parse(columns[ColumnToNumber("BN")]));
+            data.GoodDay.Add(int.Parse(columns[ColumnToNumber("BO")]));
+            data.GoodEvening.Add(int.Parse(columns[ColumnToNumber("BP")]));
+            data.GoodEvening.Add(int.Parse(columns[ColumnToNumber("BQ")]));
 
             data.Win.Add(int.Parse(columns[ColumnToNumber("BV")]));
             data.Win.Add(int.Parse(columns[ColumnToNumber("BW")]));
@@ -156,8 +157,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             data.Yes.Add(int.Parse(columns[ColumnToNumber("CG")]));
             data.Thanks.Add(int.Parse(columns[ColumnToNumber("CH")]));
             data.Thanks.Add(int.Parse(columns[ColumnToNumber("CI")]));
-            data.GoodFight.Add(int.Parse(columns[ColumnToNumber("CJ")]));
-            data.GoodFight.Add(int.Parse(columns[ColumnToNumber("CK")]));
+            data.SomeoneWasRude.Add(int.Parse(columns[ColumnToNumber("CJ")]));
+            data.SomeoneWasRude.Add(int.Parse(columns[ColumnToNumber("CK")]));
 
             data.Move.Add(int.Parse(columns[ColumnToNumber("CP")]));
             data.Move.Add(int.Parse(columns[ColumnToNumber("CQ")]));

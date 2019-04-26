@@ -49,7 +49,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public void OnFixedUpdate(float secDiff)
         {
             // This is pseudo code for now
-            Condition worstCondition = chr.GetWorstCondition();
+            /*Condition worstCondition = chr.GetWorstCondition();
             if (worstCondition == Condition.Good || worstCondition == Condition.Zombie)
             {
                 if (m_ExpressionTimePassed < m_ExpressionTimeLength)
@@ -109,7 +109,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     default:
                         break;
                 }
-            }
+            }*/
 
             if (chr.UI.PlayerCharacter.sprite != chr.UI.Sprites.ConditionToSpriteMap[chr.Condition])
             {

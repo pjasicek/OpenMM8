@@ -456,7 +456,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             if (!talkScene.IsBuilding)
             {
-                PlayRandomSound(talkerChr.VoiceData.Hello);
+                PlayRandomSound(talkerChr.VoiceData.GoodDay);
             }
         }
 
