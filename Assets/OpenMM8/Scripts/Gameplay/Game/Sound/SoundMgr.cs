@@ -19,9 +19,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private AudioClip m_BackgroundMusic;
         private PlayerParty m_PlayerParty;
 
-        private Dictionary<int, CharacterSounds> CharacterSoundsMap =
-            new Dictionary<int, CharacterSounds>();
-
         [Header("Sounds - Attack")]
         private List<AudioClip> m_SwordAttacks = new List<AudioClip>();
         private List<AudioClip> m_AxeAttacks = new List<AudioClip>();
@@ -60,7 +57,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             GameEvents.OnPauseGame += OnGamePaused;
             GameEvents.OnUnpauseGame += OnGameUnpaused;
 
-            GameEvents.OnCharacterJoinedParty += OnCharacterJoinedParty;
             GameEvents.OnCharacterLeftParty += OnCharacterLeftParty;
             GameEvents.OnGoldChanged += OnGoldChanged;
             GameEvents.OnFoodChanged += OnFoodChanged;
@@ -233,20 +229,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return sound;
         }
 
-        public CharacterSounds GetCharacterSounds(int characterId)
-        {
-            // Caching
-            if (CharacterSoundsMap.ContainsKey(characterId) && CharacterSoundsMap[characterId] != null)
-            {
-                return CharacterSoundsMap[characterId];
-            }
-            else
-            {
-                CharacterSoundsMap[characterId] = CharacterSounds.Load(characterId);
-                return CharacterSoundsMap[characterId];
-            }
-        }
-
         //=================================== Events ===================================
 
         private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
@@ -271,13 +253,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             if (prevHealthPerc > 20.0f && currHealthPerc < 20.0f)
             {
-                PlayRandomSound(chr.Sounds.BadlyWounded, chr.Party.PlayerAudioSource);
+                //PlayRandomSound(chr.Sounds.BadlyWounded, chr.Party.PlayerAudioSource);
             }
-        }
-
-        private void OnCharacterJoinedParty(Character chr, PlayerParty party)
-        {
-            chr.Sounds = GetCharacterSounds(chr.CharacterId);
         }
 
         private void OnCharacterLeftParty(Character chr, PlayerParty party)
@@ -388,11 +365,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                             bool isNpcStrong = npcData.Level > chr.Level;
                             if (isNpcStrong)
                             {
-                                PlayRandomSound(chr.Sounds.KilledStrongMonster, chr.Party.PlayerAudioSource);
+                                //PlayRandomSound(chr.Sounds.KilledStrongMonster, chr.Party.PlayerAudioSource);
                             }
                             else
                             {
-                                PlayRandomSound(chr.Sounds.KilledWeakMonster, chr.Party.PlayerAudioSource);
+                                //PlayRandomSound(chr.Sounds.KilledWeakMonster, chr.Party.PlayerAudioSource);
                             }
                         }
                     }

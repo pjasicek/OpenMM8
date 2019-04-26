@@ -15,7 +15,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public Dictionary<string, Sprite> AvatarSpriteMap = new Dictionary<string, Sprite>();
 
-        public CharacterSprites Sprites;
         public DollUI DollUI;
         public StatsUI StatsUI;
         public InventoryUI InventoryUI;

@@ -100,7 +100,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         // UI Data
         public CharacterUI UI;
         public PlayerParty Party;
-        public CharacterSounds Sounds;
         public CharFaceUpdater CharFaceUpdater;
 
         public Character(int characterId)

@@ -62,10 +62,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private Dictionary<int, Sprite> m_NpcAvatarsMap = 
             new Dictionary<int, Sprite>();
 
-        // Character type (e.g. Knight_1) -> class holding facial sprites
-        private Dictionary<int, CharacterSprites> m_CharacterSpritesMap =
-            new Dictionary<int, CharacterSprites>();
-
         // Item name (e.g. item001) -> Sprite
         private Dictionary<string, Sprite> m_InventoryItemSpriteMap =
             new Dictionary<string, Sprite>();
@@ -932,20 +928,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_PartyTextLockTime = 2.0f;
         }
 
-        private CharacterSprites GetCharacterSprites(int characterId)
-        {
-            // Caching
-            if (m_CharacterSpritesMap.ContainsKey(characterId) && m_CharacterSpritesMap[characterId] != null)
-            {
-                return m_CharacterSpritesMap[characterId];
-            }
-            else
-            {
-                m_CharacterSpritesMap[characterId] = CharacterSprites.Load(characterId);
-                return m_CharacterSpritesMap[characterId];
-            }
-        }
-
         public void ReturnToGame()
         {
             m_PartyBuffsAndButtonsCanvas.enabled = true;
@@ -1031,7 +1013,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             chr.UI = chrUI;
 
             chr.CharFaceUpdater = new CharFaceUpdater(chr);
-            chr.UI.Sprites = GetCharacterSprites(chr.CharacterId);
 
             // Doll for char detail UI (Inventory/Stats/Awards/Skills UI, Adventurer's Inn, Character creation page)
             //string dollPrefabName = "DOLL_PC_" + ((int)chr.CharacterId).ToString();
