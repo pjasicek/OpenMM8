@@ -1,0 +1,111 @@
+CharacterReaction	SoundVariants	FacialExpressionVariants	// Notes
+1	38	37,38,45	SmallMonsterKilled (Player.cpp:7085)
+2	37	47,53	BigMonsterKilled
+3	2	25	PlaceIsClosed
+4	1	47	OpenChestSuccess
+5	3	41,42	OpenChestFail
+6		33	AvoidDamage
+7	5	21,22,23,24,25	WeakItem
+8	6	47	GoodItem
+9	7	43,48	CannotIdentifyItem
+10	8	38	RepairedItem
+11	9	39	CannotRepairItem
+12	13	37,38	SetQuickSpell
+13	23	25	CannotRestHere
+14		37,38,45	SkillUp
+15	25	25	NoInventoryRoom
+16	26	38,47	PotionMixOk
+17	27	41,42	PotionMixFail
+18	28	25	LockedNeedAKey
+19		51	Unknown_19
+20	3	25	CannotLearnThat
+21	29	27	LearnOk
+22	32,33	37,38	GoodDay_1
+23	34	53	GoodEvening
+24	15	34,35,36	DamagedOww
+25		3	Weakened
+26	22	5	Feared
+27	2	8	Poisoned
+28	2	9	Diseased
+29	19	7	Insane
+30	21	2	Cursed
+31	18	6	Drunk
+32		11	Unconcious
+33	17		Dead
+34		12	Petrified
+35	17		Eradicated
+36		37	SmileGood
+37		49	ReadScroll
+38	24	25	NotEnoughGold
+39	31	25	CannotEquipItem
+40		41,42	ItemBrokenOrStolen
+41		39,48	GotManaDrained
+42		46	Aged
+43		39,48	FailedToEnchantItem
+44		41,42	ReceivedDamage
+45		39,48	Unknown_45
+46	41	21	EnterDungeon
+47	4	21	LeaveDungeonInCombat
+48	16	46	ModeratelyInjured
+49		4	CastedSpell
+50		39	ShotBow
+51		37,38	MonsterKilledGeneric
+52		48,49,5	MissedAttack
+53		44	Unknown_53
+54		48	Unknown_54
+55		37,38,45	Unknown_55
+56		41,42	Unknown_56
+57		47	Unknown_57
+58		39,48	Unknown_58
+59		39,48	Unknown_59
+60		37,38	FoundGold
+61		37,38	HiredNpc
+62		37,38	Unknown_62
+63		31	LookUp
+64		32	LookDown
+65	47	46	YellMove
+66	22	5	FallingScrem
+67		25	HaveMoreFoodThanYou
+68		37	Unknown_68
+69		52	Unknown_69
+70		45	Unknown_70
+71		27	TravelByCarriage
+72		37,38	TravelByBoat
+73		49	ShopIdentifiedItem
+74		48	ShopRepairedItem
+75		37,38,45	ShopBoughtItem
+76		48	ShopItemAlreadyRepairedOrIdentified
+77		37,38,45	ShopSoldItem
+78		47	ShopLearnedSkill
+79		48	ShopWrongActionOnItem
+80	44	39,48	ThatWasRude
+81		48,49	ShopStoredGoldInBank
+82		38	ShopHealedInTemple
+83		31	ShopDonatedInTemple
+84	32,33	37,38	GoodDay_2
+85		37,38	JoinedGuild_1
+86		37,38	JoinedGuild_2
+87		47	TrainedToNextLevel
+88		38	Unknown_88
+89		48	Unknown_89
+90			Unknown_90
+91		38	ReceivedTemporaryStatBonus
+92		47	ReceivedPermanentStatBonus
+93		38	QuestDone
+94			Unknown_94
+95			Unknown_95
+96		38	ReceivedAward
+97		38	Unknown_97
+98		5	Unknown_98
+99		37,38	BecameZombie
+100		44	Unknown_100
+101		48	Unknown_101
+102	4		PickMe
+103		58	WokeUp
+104	1	45	IdentifyWeakMonster
+105	11	47	IdentifyStrongMonster
+106	12	43,48	CannotIdentifyMonster
+107	39	48	LastManStanding
+108	14	48	Hungry
+109	17		FatallyInjured
+110			Unknown_110

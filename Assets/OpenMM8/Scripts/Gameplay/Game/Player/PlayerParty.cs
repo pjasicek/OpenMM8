@@ -38,6 +38,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public Dictionary<PartyEffectType, SpellEffect> PartyBuffMap = new Dictionary<PartyEffectType, SpellEffect>();
 
+        // Delayed speech sound
+        public Character DelayedSpeaker = null;
+        public CharacterSpeech DelayedAvatarAction;
+        public float TimUntilDelayedSpeech;
+
         // UI
         public PartyBuffUI PartyBuffUI;
 
