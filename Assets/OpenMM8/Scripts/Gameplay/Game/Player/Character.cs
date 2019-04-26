@@ -34,13 +34,22 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int SkillPoints;
         public int CurrHitPoints;
         public int CurrSpellPoints;
-        public Condition Condition;
+        public Condition Condition = Condition.Good;
 
         public SpellSchool LastSpellbookPage = SpellSchool.Fire;
         public string QuickSpellName = "None";
 
         // Buffs
         public Dictionary<PlayerEffectType, SpellEffect> PlayerBuffMap = new Dictionary<PlayerEffectType, SpellEffect>();
+
+        // Conditions
+        public Dictionary<Condition, GameTime> Conditions = new Dictionary<Condition, GameTime>();
+
+        // Expressions
+        public CharacterExpression CurrExpression = CharacterExpression.Good;
+        // WARNING: This is in seconds
+        public float CurrExpressionTimePassed = 0;
+        public float CurrExpressionTimeLength = 0;
 
         //=============== Base Stats ==================//
         public int BirthYear;
@@ -119,6 +128,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             foreach (PlayerEffectType effect in Enum.GetValues(typeof(PlayerEffectType)))
             {
                 PlayerBuffMap.Add(effect, new SpellEffect());
+            }
+
+            foreach (Condition condition in Enum.GetValues(typeof(Condition)))
+            {
+                Conditions.Add(condition, new GameTime(0));
             }
 
             // Testing
@@ -476,7 +490,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 UI.SkillsUI.Refresh();
 
                 // TODO: Separate ?
-                CharFaceUpdater.SetAvatar(UiMgr.RandomSprite(UI.Sprites.Smile), 0.75f);
+                //CharFaceUpdater.SetAvatar(UiMgr.RandomSprite(UI.Sprites.Smile), 0.75f);
                 SoundMgr.PlaySoundByName("Quest");
             }
         }
@@ -643,7 +657,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public int GetBaseAge()
         {
-            return TimeMgr.Instance.GetCurrentTime().Year - BirthYear;
+            return (int)(TimeMgr.START_YEAR + TimeMgr.Instance.GetCurrentTime().GetYears()) - BirthYear;
         }
 
         public int GetActualAge()
@@ -1303,9 +1317,46 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         //=============================================================================================================
 
-        
+
 
         //=============================================================================================================
+
+        //{16, 15, 14, 17, 13, 2, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 1, 0}};
+
+        private Condition[] m_ConditionImportancyTable =
+        {
+            Condition.Eradicated, // Most severe
+            Condition.Petrified,
+            Condition.Dead,
+            Condition.Zombie,
+            Condition.Unconcious,
+            Condition.Sleep,
+            Condition.Paralyzed,
+            Condition.DiseaseSevere,
+            Condition.PoisonSevere,
+            Condition.DiseaseMedium,
+            Condition.PoisonMedium,
+            Condition.DiseaseWeak,
+            Condition.PoisonWeak,
+            Condition.Insane,
+            Condition.Drunk,
+            Condition.Fear,
+            Condition.Weak,
+            Condition.Cursed, // Least severe
+        };
+
+        public Condition GetWorstCondition()
+        {
+            foreach (Condition testCond in m_ConditionImportancyTable)
+            {
+                if (Conditions[testCond].IsValid())
+                {
+                    return testCond;
+                }
+            }
+
+            return Condition.Good;
+        }
 
         public void SetCondition(Condition condition, bool isBlockable)
         {

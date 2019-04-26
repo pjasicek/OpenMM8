@@ -1011,7 +1011,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             // Set up UI
             int numPartyMembers = party.Characters.Count;
 
-            CharacterUI chrUI = new CharacterUI();
+            CharacterUI chrUI = CharacterUI.Create(chr);
             //float chrUiOffsetX = (Constants.PC_WidthDelta * m_PartyCanvasObj.transform.localScale.x) * chr.GetPartyIndex();
             GameObject pc = (GameObject)Instantiate(Resources.Load("Prefabs/UI/PC"), m_PartyCanvasObj.transform);
             pc.transform.localPosition = new Vector3(Constants.PC_WidthDelta, 0.0f, 0.0f) * chr.GetPartyIndex();
@@ -1019,7 +1019,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             pc.name = "PC_" + chr.Name;
 
             chrUI.Holder = pc;
-            chrUI.PlayerCharacter = pc.transform.Find("PC_Avatar").GetComponent<Image>();
+            chrUI.CharacterAvatarImage = pc.transform.Find("PC_Avatar").GetComponent<Image>();
             chrUI.SelectionRing = pc.transform.Find("PC_SelectRing").GetComponent<Image>();
             chrUI.AgroStatus = pc.transform.Find("PC_AgroStatus").GetComponent<Image>();
             chrUI.HealthBar = pc.transform.Find("PC_HealthBar").GetComponent<Image>();
@@ -1233,7 +1233,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnCharHitNpc(Character chr, AttackInfo attackInfo, AttackResult result)
         {
-            chr.CharFaceUpdater.ResetTimer();
+            //chr.CharFaceUpdater.ResetTimer();
 
             string hitText = "";
             switch (result.Type)
@@ -1246,12 +1246,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 case AttackResultType.Kill:
                     hitText = chr.Name + " inflicts " + result.DamageDealt + 
                         " points killing " + result.VictimName;
-                    chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.UI.Sprites.Smile), 0.75f);
+                    //chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.UI.Sprites.Smile), 0.75f);
                     break;
 
                 case AttackResultType.Miss:
                     hitText = chr.Name + " missed attack on " + result.VictimName;
-                    chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.UI.Sprites.FailAction), 0.75f);
+                    //chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.UI.Sprites.FailAction), 0.75f);
                     break;
 
                 default:
@@ -1266,13 +1266,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             if (attackResult.Type == AttackResultType.Hit)
             {
-                chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.UI.Sprites.TakeDamage), 0.5f);
+                //chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.UI.Sprites.TakeDamage), 0.5f);
             }
         }
 
         private void OnCharAttack(Character chr, AttackInfo attackInfo)
         {
-            chr.CharFaceUpdater.ResetTimer();
+            //chr.CharFaceUpdater.ResetTimer();
         }
 
         public void OnHoverObject(HoverInfo hoverInfo)
@@ -1388,7 +1388,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             SpriteAnimation FaceOverlayAnim = chr.UI.FaceOverlayAnimation;
             FaceOverlayAnim.AnimationSprites = m_QuestEffectSprites;
             FaceOverlayAnim.Play();
-            chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.UI.Sprites.Smile), 1.0f);
+            //chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.UI.Sprites.Smile), 1.0f);
         }
 
         private void OnCharacterFinishedEvent(Character chr)
@@ -1396,7 +1396,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             SpriteAnimation FaceOverlayAnim = chr.UI.FaceOverlayAnimation;
             FaceOverlayAnim.AnimationSprites = m_QuestEffectSprites;
             FaceOverlayAnim.Play();
-            chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.UI.Sprites.Smile), 1.0f);
+            //chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.UI.Sprites.Smile), 1.0f);
         }
 
         private void OnInventoryItemHoverStart(InventoryItem inventoryItem)

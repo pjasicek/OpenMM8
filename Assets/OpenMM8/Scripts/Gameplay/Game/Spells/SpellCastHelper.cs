@@ -294,7 +294,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     Party.PartyBuffMap[PartyEffectType.Torchlight].Apply(
                         skillMastery,
                         power,
-                        GameTime.FromCurrentTime(duration),
+                        GameTime.FromCurrentTime(60 * duration),
                         spell.Caster);
                     SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
@@ -374,7 +374,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         Party.PartyBuffMap[PartyEffectType.Haste].Apply(
                             skillMastery,
                             skillLevel,
-                            GameTime.FromCurrentTime(duration),
+                            GameTime.FromCurrentTime(60 * duration),
                             spell.Caster);
 
                         SoundMgr.PlaySoundById(spellData.EffectSoundId);
@@ -553,7 +553,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                             chr.PlayerBuffMap[PlayerEffectType.Bless].Apply(
                                 skillMastery,
                                 skillLevel,
-                                GameTime.FromCurrentTime(duration),
+                                GameTime.FromCurrentTime(60 * duration),
                                 spell.Caster);
                             SpellFxRenderer.SetPlayerBuffAnim("spell46", chr);
                         });
@@ -565,7 +565,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         targetCharacter.PlayerBuffMap[PlayerEffectType.Bless].Apply(
                             skillMastery,
                             skillLevel,
-                            GameTime.FromCurrentTime(duration),
+                            GameTime.FromCurrentTime(60 * duration),
                             spell.Caster);
                         SpellFxRenderer.SetPlayerBuffAnim("spell46", targetCharacter);
                     }
@@ -598,7 +598,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         targetCharacter.PlayerBuffMap[PlayerEffectType.Bless].Apply(
                                 skillMastery,
                                 power,
-                                GameTime.FromCurrentTime(duration),
+                                GameTime.FromCurrentTime(60 * duration),
                                 spell.Caster);
                         SpellFxRenderer.SetPlayerBuffAnim("spell47", targetCharacter);
                     }
@@ -640,7 +640,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                             chr.PlayerBuffMap[PlayerEffectType.Preservation].Apply(
                                 skillMastery,
                                 skillLevel,
-                                GameTime.FromCurrentTime(duration),
+                                GameTime.FromCurrentTime(60 * duration),
                                 spell.Caster);
                             SpellFxRenderer.SetPlayerBuffAnim("spell56", chr);
                         });
@@ -652,7 +652,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         targetCharacter.PlayerBuffMap[PlayerEffectType.Preservation].Apply(
                             skillMastery,
                             skillLevel,
-                            GameTime.FromCurrentTime(duration),
+                            GameTime.FromCurrentTime(60 * duration),
                             spell.Caster);
                         SpellFxRenderer.SetPlayerBuffAnim("spell56", targetCharacter);
                     }
@@ -681,7 +681,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                             break;
                     }
 
-                    Party.PartyBuffMap[PartyEffectType.Heroism].Apply(skillMastery, power, GameTime.FromCurrentTime(duration), spell.Caster);
+                    Party.PartyBuffMap[PartyEffectType.Heroism].Apply(skillMastery, power, GameTime.FromCurrentTime(60 * duration), spell.Caster);
                     Party.Characters.ForEach(chr => SpellFxRenderer.SetPlayerBuffAnim("sp51", chr));
                     SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     //TimeUntilRecovery = recoveryTime / 100.0f;
@@ -778,7 +778,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     targetCharacter.PlayerBuffMap[PlayerEffectType.Regeneration].Apply(
                         skillMastery,
                         power,
-                        GameTime.FromCurrentTime(duration),
+                        GameTime.FromCurrentTime(60 * duration),
                         spell.Caster);
                     SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     SpellFxRenderer.SetPlayerBuffAnim("sp71", targetCharacter);
@@ -835,7 +835,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     Party.PartyBuffMap[partyEffectType].Apply(
                         skillMastery,
                         power,
-                        GameTime.FromCurrentTime(duration),
+                        GameTime.FromCurrentTime(60 * duration),
                         spell.Caster);
 
                     Party.Characters.ForEach(chr =>

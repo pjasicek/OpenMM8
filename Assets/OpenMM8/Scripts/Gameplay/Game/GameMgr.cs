@@ -268,7 +268,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             if (Input.GetKeyDown(KeyCode.F4))
             {
-                TimeMgr.Instance.AddMinutes(TimeMgr.DAY_IN_MINUTES / 2);
+                TimeMgr.Instance.AddMinutes(12 * 60);
             }
 
             if (Input.GetKeyDown(KeyCode.F5))

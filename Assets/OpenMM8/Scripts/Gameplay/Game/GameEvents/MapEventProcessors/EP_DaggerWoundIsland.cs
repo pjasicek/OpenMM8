@@ -15,7 +15,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_StonTimer = new Timer()
             {
                 Name = "S'ton Timer",
-                Delay = 10 * TimeMgr.HOUR_IN_MINUTES,
+                // At 10 AM on the first day
+                DelayMinutes = new GameTime(0, 0, 10).GetMinutes() - TimeMgr.Instance.CurrentTime.GetMinutes(), 
                 OnTimer = (Timer t, GameTime time) => { ProcessEvent(500); }
             };
             AddTimer(m_StonTimer);

@@ -136,7 +136,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     // If only one talkable, then just display the one
                     OnTalkWithConcreteNpc(talkScene.TalkProperties[0]);
 
-                    talkerChr.CharFaceUpdater.SetAvatar(UiMgr.RandomSprite(talkerChr.UI.Sprites.Greet), 1.0f);
+                    //talkerChr.CharFaceUpdater.SetAvatar(UiMgr.RandomSprite(talkerChr.UI.Sprites.Greet), 1.0f);
                 }
                 else
                 {

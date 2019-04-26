@@ -10,7 +10,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 {
     public class CharacterUI
     {
+        public Character Owner;
         public GameObject Holder;
+
+        public Dictionary<string, Sprite> AvatarSpriteMap = new Dictionary<string, Sprite>();
 
         public CharacterSprites Sprites;
         public DollUI DollUI;
@@ -18,7 +21,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public InventoryUI InventoryUI;
         public SkillsUI SkillsUI;
 
-        public Image PlayerCharacter;
+        public Image CharacterAvatarImage;
         public Image HealthBar;
         public Image ManaBar;
         public Image AgroStatus;
@@ -91,6 +94,20 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public void SetSelected(bool isSelected)
         {
             SelectionRing.enabled = isSelected;
+        }
+
+        static public CharacterUI Create(Character owner)
+        {
+            // TODO: Move all initialization from UiMgr here
+
+            CharacterUI ui = new CharacterUI();
+            ui.Owner = owner;
+
+            OpenMM8Util.AppendResourcesToMap(ui.AvatarSpriteMap,
+                "Player/PlayerCharacters/Sprites/PC_" + ((int)owner.CharacterId).ToString());
+            OpenMM8Util.AppendResourcesToMap(ui.AvatarSpriteMap, "Player/PlayerCharacters/Sprites/PC_Common");
+
+            return ui;
         }
     }
 }

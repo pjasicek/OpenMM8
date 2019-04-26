@@ -35,6 +35,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public ItemEnchantStandardDb ItemEnchantStandardDb = new ItemEnchantStandardDb();
         public ItemEnchantSpecialDb ItemEnchantSpecialDb = new ItemEnchantSpecialDb();
         public SpellDataDb SpellDataDb = new SpellDataDb();
+        public CharacterFaceExpressionDb CharacterFaceExpressionDb = new CharacterFaceExpressionDb();
+        public CharacterReactionDb CharacterReactionDb = new CharacterReactionDb();
 
         public const string MM8_DATA_PATH = @"Data/";
 
@@ -75,6 +77,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             ItemEnchantStandardDb.Initialize(MM8_DATA_PATH + "ITEM_ENCHANT_STANDARD");
             ItemEnchantSpecialDb.Initialize(MM8_DATA_PATH + "ITEM_ENCHANT_SPECIAL");
             SpellDataDb.Initialize(MM8_DATA_PATH + "SPELLS");
+            CharacterFaceExpressionDb.Initialize(MM8_DATA_PATH + "CHARACTER_FACE_EXPRESSIONS");
+            CharacterReactionDb.Initialize(MM8_DATA_PATH + "CHARACTER_REACTIONS");
+
 
             stopwatch.Stop();
             UnityEngine.Debug.Log("elapsed ms: " + stopwatch.ElapsedMilliseconds);

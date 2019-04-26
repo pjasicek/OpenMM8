@@ -18,7 +18,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public bool Apply(SkillMastery skillMastery, int power, GameTime expiryTime, Character caster = null, int flags = 0)
         {
-            if (expiryTime.TotalMinutes() <= TimeMgr.Instance.GetCurrentTime().TotalMinutes())
+            if (expiryTime.GameSeconds <= TimeMgr.Instance.GetCurrentTime().GameSeconds)
             {
                 Debug.LogError("Attempted to cast already expired spell");
                 return false;
@@ -49,7 +49,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 return false;
             }
 
-            return ExpiryTime.TotalMinutes() > TimeMgr.Instance.GetCurrentTime().TotalMinutes();
+            //Debug.Log(ExpiryTime.GameSeconds - TimeMgr.Instance.CurrentTime.GameSeconds);
+
+            return ExpiryTime.GameSeconds > TimeMgr.Instance.GetCurrentTime().GameSeconds;
         }
 
         public bool IsExpired()
@@ -59,7 +61,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 return true;
             }            
 
-            return ExpiryTime.TotalMinutes() <= TimeMgr.Instance.GetCurrentTime().TotalMinutes();
+            return ExpiryTime.GameSeconds <= TimeMgr.Instance.GetCurrentTime().GameSeconds;
         }
     }
 }
