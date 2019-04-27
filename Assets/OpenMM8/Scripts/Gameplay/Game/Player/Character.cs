@@ -170,6 +170,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public void OnFixedUpdate(float secDiff)
         {
             CharFaceUpdater.OnFixedUpdate(secDiff);
+            UI.Refresh();
         }
 
         public void OnUpdate(float secDiff)
@@ -359,24 +360,43 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 interactResult = Inventory.TryEquipItem(item, out replacedItem);
                 if (interactResult == ItemInteractResult.Equipped)
                 {
-                    GameEvents.InvokeEvent_OnItemEquipped(this, item, replacedItem);
+                    Party.SetHeldItem(replacedItem);
+                    //GameEvents.InvokeEvent_OnItemEquipped(this, item, replacedItem);
+                }
+                else
+                {
+                    PlayEventReaction(CharacterReaction.CannotEquipItem);
                 }
             }
             else if (item.IsCastable())
             {
                 interactResult = ItemInteractResult.Casted;
+
+                Party.SetHeldItem(null);
             }
             else if (item.IsConsumable())
             {
                 interactResult = ItemInteractResult.Consumed;
+                SoundMgr.PlaySoundById(SoundType.Drink);
+                PlayEventReaction(CharacterReaction.SmileGood);
+
+                Party.SetHeldItem(null);
             }
             else if (item.IsLearnable())
             {
                 interactResult = ItemInteractResult.Learned;
+                PlayEventReaction(CharacterReaction.LearnOk);
+
+                Party.SetHeldItem(null);
             }
             else if (item.IsReadable())
             {
                 interactResult = ItemInteractResult.Read;
+                PlayEventReaction(CharacterReaction.ReadScroll);
+            }
+            else
+            {
+                SoundMgr.PlaySoundById(SoundType.Error);
             }
 
             GameEvents.InvokeEvent_OnInteractedWithItem(this, item, interactResult);
@@ -1357,9 +1377,202 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return Condition.Good;
         }
 
+        public bool IsWeak()
+        {
+            return Conditions[Condition.Weak].IsValid();
+        }
+
+        public bool IsDead()
+        {
+            return Conditions[Condition.Dead].IsValid();
+        }
+
+        public bool IsEradicated()
+        {
+            return Conditions[Condition.Eradicated].IsValid();
+        }
+
+        public bool IsZombie()
+        {
+            return Conditions[Condition.Zombie].IsValid();
+        }
+
+        public bool IsCursed()
+        {
+            return Conditions[Condition.Cursed].IsValid();
+        }
+
+        public bool IsPetrified()
+        {
+            return Conditions[Condition.Petrified].IsValid();
+        }
+
+        public bool IsUnconcious()
+        {
+            return Conditions[Condition.Unconcious].IsValid();
+        }
+
+        public bool IsAsleep()
+        {
+            return Conditions[Condition.Sleep].IsValid();
+        }
+
+        public bool IsParalyzed()
+        {
+            return Conditions[Condition.Paralyzed].IsValid();
+        }
+
+        public bool IsDrunk()
+        {
+            return Conditions[Condition.Drunk].IsValid();
+        }
+
+        public bool CanAct()
+        {
+            if (IsAsleep() ||
+                IsParalyzed() ||
+                IsUnconcious() ||
+                IsDead() ||
+                IsPetrified() ||
+                IsEradicated())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool CanBeAffectedByCondition(Condition condition, bool isBlockable)
+        {
+            if (!isBlockable)
+            {
+                return true;
+            }
+
+            return true;
+        }
+
         public void SetCondition(Condition condition, bool isBlockable)
         {
+            if (Conditions[condition].IsValid())
+            {
+                return;
+            }
 
+            if (!CanBeAffectedByCondition(condition, isBlockable))
+            {
+                return;
+            }
+
+            switch (condition)
+            {
+                case Condition.Cursed:
+                    PlayEventReaction(CharacterReaction.Cursed);
+                    break;
+                case Condition.Weak:
+                    PlayEventReaction(CharacterReaction.Weakened);
+                    break;
+                case Condition.Sleep:
+                    break;
+                case Condition.Fear:
+                    PlayEventReaction(CharacterReaction.Feared);
+                    break;
+                case Condition.Drunk:
+                    PlayEventReaction(CharacterReaction.Drunk);
+                    break;
+                case Condition.Insane:
+                    PlayEventReaction(CharacterReaction.Insane);
+                    break;
+
+                case Condition.PoisonWeak:
+                case Condition.PoisonMedium:
+                case Condition.PoisonSevere:
+                    PlayEventReaction(CharacterReaction.Poisoned);
+                    break;
+
+                case Condition.DiseaseWeak:
+                case Condition.DiseaseMedium:
+                case Condition.DiseaseSevere:
+                    PlayEventReaction(CharacterReaction.Diseased);
+                    break;
+
+                case Condition.Paralyzed:
+                    break;
+
+                case Condition.Unconcious:
+                    PlayEventReaction(CharacterReaction.Unconcious);
+                    if (CurrHitPoints > 0)
+                    {
+                        CurrHitPoints = 0;
+                    }
+                    break;
+
+                case Condition.Dead:
+                    PlayEventReaction(CharacterReaction.Dead);
+                    if (CurrHitPoints > 0)
+                    {
+                        CurrHitPoints = 0;
+                    }
+                    if (CurrSpellPoints > 0)
+                    {
+                        CurrSpellPoints = 0;
+                    }
+                    break;
+
+                case Condition.Petrified:
+                    PlayEventReaction(CharacterReaction.Petrified);
+                    break;
+
+                case Condition.Eradicated:
+                    PlayEventReaction(CharacterReaction.Eradicated);
+                    if (CurrHitPoints > 0)
+                    {
+                        CurrHitPoints = 0;
+                    }
+                    if (CurrSpellPoints > 0)
+                    {
+                        CurrSpellPoints = 0;
+                    }
+                    break;
+
+                case Condition.Zombie:
+                    // Cannot even happen in MM8
+                    Debug.LogError("Became zombie ?");
+                    break;
+            }
+
+            // Check how many people could act before setting this condition
+            int playersBefore = 0;
+            Party.Characters.ForEach(chr =>
+            {
+                if (chr.CanAct())
+                {
+                    playersBefore++;
+                }
+            });
+
+            // Set the condition for this player
+            Conditions[condition] = TimeMgr.Instance.CurrentTime;
+
+            // Check how many players can act after this player has this condition set
+            int playersNow = 0;
+            Character lastPlayer = null;
+            Party.Characters.ForEach(chr =>
+            {
+                if (chr.CanAct())
+                {
+                    playersNow++;
+                    lastPlayer = chr;
+                }
+            });
+
+            bool isLastManStanding = playersBefore == 2 && playersNow == 1;
+            if (isLastManStanding)
+            {
+                lastPlayer.PlayEventReaction(CharacterReaction.LastManStanding);
+            }
         }
 
         // This is general-purpose reaction to all game events

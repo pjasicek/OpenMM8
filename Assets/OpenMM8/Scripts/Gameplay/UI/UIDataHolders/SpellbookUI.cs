@@ -50,6 +50,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                 spellbookPage.PageButton.onClick.AddListener(delegate
                 {
+                    if (UnityEngine.Random.Range(0, 2) == 0) SoundMgr.PlaySoundById(SoundType.TurnPageUp);
+                    else SoundMgr.PlaySoundById(SoundType.TurnPageDown);
+
                     DisplaySpellSchool(chr, spellbookPage.SpellSchool);
                 });
             }
@@ -88,6 +91,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             Canvas.enabled = true;
             CurrentSpellbookOwner = chr;
+
+            SoundMgr.PlaySoundById(SoundType.OpenBook);
         }
 
         public void DisplaySpellSchool(Character chr, SpellSchool spellSchool)

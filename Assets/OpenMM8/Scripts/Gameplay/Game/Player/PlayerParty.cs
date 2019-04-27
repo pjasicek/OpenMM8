@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.OpenMM8.Scripts.Gameplay.Items;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -780,6 +781,28 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public Character GetFirstCharacter()
         {
             return Characters[0];
+        }
+
+        // Can return null if not holding anything
+        public Item GetHeldItem()
+        {
+            return UiMgr.Instance.m_HeldItem?.Item;
+        }
+
+        // @item can be null - this way it just clears the held item slot
+        public void SetHeldItem(Item item)
+        {
+            Item currHeldItem = GetHeldItem();
+            if (currHeldItem != null)
+            {
+                GameObject.Destroy(UiMgr.Instance.m_HeldItem.gameObject);
+                UiMgr.Instance.m_HeldItem = null;
+            }
+
+            if (item != null)
+            {
+                UiMgr.Instance.SetHeldItem(item);
+            }
         }
     }
 }

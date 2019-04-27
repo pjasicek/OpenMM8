@@ -98,8 +98,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             GameEvents.OnFoundGold += OnFoundGold;
             GameEvents.OnHoverObject += OnHoverObject;
 
-            GameEvents.OnCharHealthChanged += OnCharHealthChanged;
-            GameEvents.OnCharManaChanged += OnCharManaChanged;
             GameEvents.OnRecovered += OnCharRecovered;
             GameEvents.OnRecoveryTimeChanged += OnCharRecoveryTimeChanged;
             GameEvents.OnCharHitNpc += OnCharHitNpc;
@@ -1166,19 +1164,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             UpdateEmptySlotBanners(party);
         }
 
-        public void OnCharHealthChanged(Character chr, int maxHealth, int currHealth, int delta)
-        {
-            float healthPercent = ((float)currHealth / (float)maxHealth) * 100.0f;
-            chr.UI.SetHealth(healthPercent);
-
-            //Debug.Log(maxHealth + " " + currHealth);
-        }
-
-        public void OnCharManaChanged(Character chr, int maxMana, int currMana)
-        {
-
-        }
-
         public void OnFoundGold(int amount)
         {
             SetPartyInfoText("You found " + amount.ToString() + " gold !");
@@ -1369,6 +1354,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             SpriteAnimation FaceOverlayAnim = chr.UI.FaceOverlayAnimation;
             FaceOverlayAnim.AnimationSprites = m_QuestEffectSprites;
             FaceOverlayAnim.Play();
+            chr.PlayEventReaction(CharacterReaction.QuestDone);
             //chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.UI.Sprites.Smile), 1.0f);
         }
 
@@ -1523,6 +1509,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 return;
             }
 
+            currChar.InteractWithItem(m_HeldItem.Item);
+
+            /*
             // InteractWithItem invokes 2 events - interact result and item equipped if item was equipped
             ItemInteractResult interactResult = currChar.InteractWithItem(m_HeldItem.Item);
             if (interactResult == ItemInteractResult.Learned ||
@@ -1533,7 +1522,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 m_HeldItem = null;
 
                 // If item was equiipped it is handled in OnItemEquipped event
-            }
+            }*/
         }
 
         private void OnCharacterAvatarClicked(Character chr)

@@ -46,6 +46,29 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             GameObject.Destroy(InventoryUI.Holder);
         }
 
+        public void Refresh()
+        {
+            // TODO:
+            // HP
+            // Mana
+            // Bless buff
+
+            SetHealth(Owner.GetHealthPercentage());
+            SetMana(Owner.GetManaPercentage());
+
+            bool hasBuff = false;
+            foreach (SpellEffect playerBuff in Owner.PlayerBuffMap.Values)
+            {
+                if (playerBuff.IsActive())
+                {
+                    hasBuff = true;
+                    break;
+                }
+            }
+
+            BlessBuff.enabled = hasBuff;
+        }
+
         public void SetHealth(float percentage)
         {
             if (percentage > 50.0f)
