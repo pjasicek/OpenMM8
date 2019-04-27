@@ -18,14 +18,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
     public delegate void MapButtonPressed();
 
-    class GameMgr : MonoBehaviour //Singleton<GameMgr>
+    class GameCore : MonoBehaviour //Singleton<GameMgr>
     {
-        public static GameMgr Instance;
-
-        // Events
-        
-        /* static public event LevelUnloaded OnLevelUnloaded;
-         static public event LevelLoaded OnLevelLoaded;*/
+        public static GameCore Instance;
 
         // States
         [Header("Game states")]
@@ -35,12 +30,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         // Player
         [Header("Player")]
         public PlayerParty PlayerParty;
-
-        // Events
-        
-
-        /*public event GamePausedAction OnGamePaused;
-        public event GameUnpausedAction OnGameUnpaused;*/
+        public StatusTextBar StatusTextBar;
 
         [Header("Sounds")]
         public AudioClip BackgroundMusic;
@@ -53,9 +43,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         void Awake()
         {
-            // Events
-            GameEvents.OnTalkSceneStart += OnTalkStart;
-
             UnityEngine.Assertions.Assert.IsTrue(Instance == null);
             Instance = this;
 
@@ -71,45 +58,22 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             PlayerParty = GameObject.Find("Player").GetComponent<PlayerParty>();
             Debug.Assert(PlayerParty != null);
+            PlayerParty.Initialize();
 
-            //CharacterSprites.Load(CharacterType.Dragon_1);
+            StatusTextBar = new StatusTextBar();
+            StatusTextBar.TargetText = PlayerParty.PartyUI.StatusBarText;
 
             return true;
         }
 
         public bool PostInit()
         {
-            /*AddChar(CharacterType.KnightFemale_1);
-            AddRandChar();
-            AddRandChar();
-            AddRandChar();
-            AddRandChar();*/
             AddChar(21);
             AddChar(3);
             AddChar(16);
             AddChar(1);
             
             PlayerParty.Characters[0].Inventory.AddItem(513);
-            /*PlayerParty.Characters[0].Inventory.AddItem(84);
-            PlayerParty.Characters[0].Inventory.AddItem(85);
-            PlayerParty.Characters[0].Inventory.AddItem(86);
-            PlayerParty.Characters[0].Inventory.AddItem(87);
-            PlayerParty.Characters[0].Inventory.AddItem(88);
-            PlayerParty.Characters[0].Inventory.AddItem(89);
-            PlayerParty.Characters[0].Inventory.AddItem(90);
-            PlayerParty.Characters[0].Inventory.AddItem(91);
-            PlayerParty.Characters[0].Inventory.AddItem(92);
-            PlayerParty.Characters[0].Inventory.AddItem(93);
-            PlayerParty.Characters[0].Inventory.AddItem(94);
-            PlayerParty.Characters[0].Inventory.AddItem(95);
-            PlayerParty.Characters[0].Inventory.AddItem(96);
-            PlayerParty.Characters[0].Inventory.AddItem(97);
-            PlayerParty.Characters[0].Inventory.AddItem(98);
-            PlayerParty.Characters[0].Inventory.AddItem(514);*/
-            /*AddChar(CharacterType.VampireFemale_2);
-            AddChar(CharacterType.VampireFemale_2);
-            AddChar(CharacterType.VampireFemale_2);
-            AddChar(CharacterType.VampireFemale_2);*/
             PlayerParty.Characters[0].Inventory.AddItem(514);
             PlayerParty.Characters[0].Inventory.AddItem(117);
             PlayerParty.Characters[0].Inventory.AddItem(132);
@@ -142,8 +106,30 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         }
 
+
+        //=========================================================================================
+        // This will be THE MAIN game update loop
+        //=========================================================================================
         void Update()
         {
+            // 1) Display pointed status object string (not sure if necessary to do that here ?)
+
+            StatusTextBar.DoUpdate();
+
+            // 2) PROCESS INPUT - THIS HAS TO BE THE ONLY PLACE WHERE KEYBOARD INPUT IS PROCESSED
+            // ProcessInput();
+
+            // 3) Do event loop - not sure if it's applicable here ? I do not do async events, I process
+            //    everything directly when it happens
+
+            // 4) If arcomage is in progress - just update arcomage and continue
+
+            // Timers ? not here
+            
+            // 5) If playing, update periodic effects
+
+            // 6) 
+
             // IDEA: When game is paused then maybe UiMgr should check if it can consume the event first ?
             if (Input.GetButtonDown("Escape"))
             {
@@ -333,8 +319,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         // TODO: Make a dedicated class for these party-invitation actions
         public void AddChar(int characterId)
         {
-            Character chr = new Character(characterId);
-
+            Character chr = new Character(characterId, PlayerParty);
 
             StartingStatsData startingStats = DbMgr.Instance.StartingStatsDb.Get(chr.Race);
             ClassStartingSkillsData startingSkills = DbMgr.Instance.ClassStartingSkillsDb.Get(chr.Class);
@@ -426,11 +411,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         }
 
-        //==================================== Events ====================================
+        //=========================================================================================
+        // STATIC ACCESSORS
+        //=========================================================================================
 
-        public void OnTalkStart(Character talkerChr, TalkScene talkScene)
+        static public PlayerParty GetParty()
         {
-            PauseGame();
+            return Instance.PlayerParty;
+        }
+
+        static public void SetStatusBarText(string text, bool overrideExisting = true, float duration = 2.0f)
+        {
+            Instance.StatusTextBar.SetText(text, overrideExisting, duration);
         }
     }
 }

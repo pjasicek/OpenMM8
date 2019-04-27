@@ -61,7 +61,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 }
                 else if (action == "NextPlayer")
                 {
-                    UiMgr.Instance.m_PlayerParty.SelectNextCharacter();
+                    GameCore.GetParty().SelectNextCharacter();
                 }
 
                 return false;
@@ -69,21 +69,21 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             public override bool EnterState(object stateArgs)
             {
-                m_UI = UiMgr.Instance.m_CharDetailUI;
-                if (UiMgr.Instance.m_PlayerParty.ActiveCharacter == null)
+                m_UI = UiMgr.Instance.CharDetailUI;
+                if (GameCore.GetParty().ActiveCharacter == null)
                 {
-                    UiMgr.Instance.m_PlayerParty.SelectCharacter(0);
+                    GameCore.GetParty().SelectCharacter(0);
                 }
 
                 if (m_UI.CurrDollUI != null && m_UI.CurrDollUI.Holder != null)
                 {
                     m_UI.CurrDollUI.Holder.SetActive(false);
                 }
-                m_UI.CurrDollUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.DollUI;
+                m_UI.CurrDollUI = GameCore.GetParty().ActiveCharacter.UI.DollUI;
                 m_UI.CurrDollUI.Holder.SetActive(true);
-                m_UI.InventoryUI.InventoryUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.InventoryUI;
-                m_UI.StatsUI.StatsUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.StatsUI;
-                m_UI.SkillsUI.SkillsUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.SkillsUI;
+                m_UI.InventoryUI.InventoryUI = GameCore.GetParty().ActiveCharacter.UI.InventoryUI;
+                m_UI.StatsUI.StatsUI = GameCore.GetParty().ActiveCharacter.UI.StatsUI;
+                m_UI.SkillsUI.SkillsUI = GameCore.GetParty().ActiveCharacter.UI.SkillsUI;
 
                 CharDetailUIStateArgs args = (CharDetailUIStateArgs)stateArgs;
 
@@ -103,7 +103,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 // Unregister from registered events
                 GameEvents.OnActiveCharacterChanged -= OnActiveCharacterChanged;
 
-                UiMgr.Instance.m_CharDetailUI.CanvasHolder.enabled = false;
+                UiMgr.Instance.CharDetailUI.CanvasHolder.enabled = false;
 
                 HideCurrCharUI();
             }
@@ -112,10 +112,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 HideCurrCharUI();
 
-                m_UI.CurrDollUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.DollUI;
-                m_UI.InventoryUI.InventoryUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.InventoryUI;
-                m_UI.StatsUI.StatsUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.StatsUI;
-                m_UI.SkillsUI.SkillsUI = UiMgr.Instance.m_PlayerParty.ActiveCharacter.UI.SkillsUI;
+                m_UI.CurrDollUI = GameCore.GetParty().ActiveCharacter.UI.DollUI;
+                m_UI.InventoryUI.InventoryUI = GameCore.GetParty().ActiveCharacter.UI.InventoryUI;
+                m_UI.StatsUI.StatsUI = GameCore.GetParty().ActiveCharacter.UI.StatsUI;
+                m_UI.SkillsUI.SkillsUI = GameCore.GetParty().ActiveCharacter.UI.SkillsUI;
                 m_UI.CurrDollUI.Holder.SetActive(true);
 
                 DisplayDetailState(chr);
@@ -195,10 +195,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             private void HideAllSubstates()
             {
-                UiMgr.Instance.m_CharDetailUI.StatsUI.Holder.SetActive(false);
-                UiMgr.Instance.m_CharDetailUI.SkillsUI.Holder.SetActive(false);
-                UiMgr.Instance.m_CharDetailUI.InventoryUI.Holder.SetActive(false);
-                UiMgr.Instance.m_CharDetailUI.AwardsUI.Holder.SetActive(false);
+                UiMgr.Instance.CharDetailUI.StatsUI.Holder.SetActive(false);
+                UiMgr.Instance.CharDetailUI.SkillsUI.Holder.SetActive(false);
+                UiMgr.Instance.CharDetailUI.InventoryUI.Holder.SetActive(false);
+                UiMgr.Instance.CharDetailUI.AwardsUI.Holder.SetActive(false);
             }
 
             private void SwitchState(CharDetailState newState)
@@ -238,7 +238,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         break;
                 }
 
-                DisplayDetailState(UiMgr.Instance.m_PlayerParty.ActiveCharacter);
+                DisplayDetailState(GameCore.GetParty().ActiveCharacter);
             }
         }
     } // public partial class UiMgr

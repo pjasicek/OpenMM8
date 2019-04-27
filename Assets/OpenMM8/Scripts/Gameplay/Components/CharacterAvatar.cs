@@ -9,11 +9,11 @@ public class CharacterAvatar : MonoBehaviour, IPointerClickHandler
 {
     public void OnPointerClick(PointerEventData eventData)
     {
-        foreach (Character chr in GameMgr.Instance.PlayerParty.Characters)
+        foreach (Character chr in GameCore.Instance.PlayerParty.Characters)
         {
             if (chr.UI.Holder == this.transform.parent.gameObject)
             {
-                GameMgr.Instance.PlayerParty.SelectCharacter(chr.GetPartyIndex());
+                GameCore.Instance.PlayerParty.SelectCharacter(chr.GetPartyIndex());
                  
                 GameEvents.InvokeEvent_OnCharacterAvatarClicked(chr);
             }

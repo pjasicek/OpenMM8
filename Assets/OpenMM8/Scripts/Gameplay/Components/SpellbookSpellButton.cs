@@ -43,7 +43,7 @@ public class SpellbookSpellButton : MonoBehaviour, IPointerEnterHandler, IPointe
             Character caster = Parent.SpellbookUI.CurrentSpellbookOwner;
 
             // This actually closes the spellbook... should figure out a better way
-            GameMgr.Instance.PressEscape();
+            GameCore.Instance.PressEscape();
 
             PlayerSpell spell = PlayerSpell.CreateFromSpellbook(SpellType, caster);
             SpellCastHelper.PushPlayerSpellCast(spell);

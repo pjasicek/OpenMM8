@@ -161,7 +161,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 if (playerSpell.Flags.HasFlag(CastSpellFlags.TargetCharacter))
                 {
-                    GameMgr.Instance.PlayerParty.Characters.ForEach(chr =>
+                    GameCore.Instance.PlayerParty.Characters.ForEach(chr =>
                     {
                         chr.UI.PortraitOverlayButton.image.enabled = true;
                         chr.UI.PortraitOverlayButton.onClick.AddListener(delegate
@@ -183,7 +183,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
 
-                GameMgr.Instance.PauseGame();
+                GameCore.Instance.PauseGame();
                 PendingPlayerSpell = playerSpell;
             }
             else
@@ -204,7 +204,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     Cursor.lockState = CursorLockMode.Locked;
                     Cursor.visible = false;
 
-                    GameMgr.Instance.PlayerParty.Characters.ForEach(chr =>
+                    GameCore.Instance.PlayerParty.Characters.ForEach(chr =>
                     {
                         chr.UI.PortraitOverlayButton.image.enabled = false;
                         chr.UI.PortraitOverlayButton.onClick.RemoveAllListeners();
@@ -260,7 +260,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             SkillMastery skillMastery = spell.SkillMastery;
             int skillLevel = spell.SkillLevel;
             SpellData spellData = DbMgr.Instance.SpellDataDb.Get(spellType);
-            PlayerParty Party = GameMgr.Instance.PlayerParty;
+            PlayerParty Party = GameCore.Instance.PlayerParty;
 
             Character targetCharacter = spell.Target as Character;
             InventoryItem targetInventoryItem = spell.Target as InventoryItem;
@@ -338,7 +338,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     }
                     else
                     {
-                        UiMgr.Instance.SetPartyInfoText("Spell failed");
+                        //UiMgr.Instance.SetPartyInfoText("Spell failed");
                         SoundMgr.PlaySoundById((int)SoundType.SpellFail);
                     }
 

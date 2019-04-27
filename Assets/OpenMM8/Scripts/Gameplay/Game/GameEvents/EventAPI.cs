@@ -75,7 +75,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         static public List<Character> PartyCharacters()
         {
-            return GameMgr.Instance.PlayerParty.Characters;
+            return GameCore.Instance.PlayerParty.Characters;
         }
 
         static public void AddQuestBit(int questId)

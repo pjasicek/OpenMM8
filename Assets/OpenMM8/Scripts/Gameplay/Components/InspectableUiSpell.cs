@@ -30,7 +30,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             SpellData data = DbMgr.Instance.SpellDataDb.Get(m_SpellType);
 
-            Character currChar = GameMgr.Instance.PlayerParty.GetActiveCharacter();
+            Character currChar = GameCore.Instance.PlayerParty.GetActiveCharacter();
             int manaCost = data.ManaCostNormal;
             if (currChar != null)
             {

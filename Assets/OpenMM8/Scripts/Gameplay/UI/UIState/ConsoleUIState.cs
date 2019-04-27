@@ -27,7 +27,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     UiMgr.Instance.m_ConsoleUIState = null;
                     if (!m_WasGamePaused)
                     {
-                        GameMgr.Instance.UnpauseGame();
+                        GameCore.Instance.UnpauseGame();
                     }
 
                     return true;
@@ -47,11 +47,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 }
 
                 m_ConsoleManager.Show();
-                m_WasGamePaused = GameMgr.Instance.IsGamePaused();
+                m_WasGamePaused = GameCore.Instance.IsGamePaused();
 
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                GameMgr.Instance.PauseGame();
+                GameCore.Instance.PauseGame();
 
                 return true;
             }

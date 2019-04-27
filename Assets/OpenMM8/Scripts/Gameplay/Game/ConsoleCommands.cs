@@ -14,7 +14,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Game
         [ConsoleMethod("additem", "Adds item to active player's inventory")]
         public static void AddItem(int itemId)
         {
-            GameMgr.Instance.PlayerParty.ActiveCharacter?.Inventory.AddItem(itemId);
+            GameCore.Instance.PlayerParty.ActiveCharacter?.Inventory.AddItem(itemId);
         }
 
         [ConsoleMethod("genitem", "Generates random item to active player's inventory based on Treasure Level")]
@@ -27,7 +27,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Game
                 return;
             }
 
-            GameMgr.Instance.PlayerParty.GetActiveOrFirstCharacter().Inventory.AddItem(item);
+            GameCore.Instance.PlayerParty.GetActiveOrFirstCharacter().Inventory.AddItem(item);
         }
 
         [ConsoleMethod("genitemtype", "Generates random item to active player's inventory based on Treasure Level and ItemType")]
@@ -41,7 +41,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Game
                 return;
             }
 
-            GameMgr.Instance.PlayerParty.GetActiveOrFirstCharacter().Inventory.AddItem(item);
+            GameCore.Instance.PlayerParty.GetActiveOrFirstCharacter().Inventory.AddItem(item);
         }
 
         [ConsoleMethod("genitemskill", "Generates random item to active player's inventory based on Treasure Level and ItemSkillGroup")]
@@ -55,7 +55,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Game
                 return;
             }
 
-            GameMgr.Instance.PlayerParty.GetActiveOrFirstCharacter().Inventory.AddItem(item);
+            GameCore.Instance.PlayerParty.GetActiveOrFirstCharacter().Inventory.AddItem(item);
         }
     }
 }

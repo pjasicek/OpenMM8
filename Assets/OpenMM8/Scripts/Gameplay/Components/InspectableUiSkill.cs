@@ -28,7 +28,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         override public string GetInfoText()
         {
             // TODO: Better way ?
-            Character owner = GameMgr.Instance.PlayerParty.GetActiveCharacter();
+            Character owner = GameCore.Instance.PlayerParty.GetActiveCharacter();
             SkillDescriptionData descData = DbMgr.Instance.SkillDescriptionDb.Get(SkillType);
             if (owner != null && descData != null)
             {
@@ -134,7 +134,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             if (eventData.button == PointerEventData.InputButton.Left)
             {
-                Character owner = GameMgr.Instance.PlayerParty.GetActiveCharacter();
+                Character owner = GameCore.Instance.PlayerParty.GetActiveCharacter();
                 owner.OnSkillClicked(SkillType);
             }
         }

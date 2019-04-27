@@ -63,7 +63,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Update is called once per frame
         private void Update()
         {
-            if (GameMgr.Instance.IsGamePaused())
+            if (GameCore.Instance.IsGamePaused())
             {
                 return;
             }

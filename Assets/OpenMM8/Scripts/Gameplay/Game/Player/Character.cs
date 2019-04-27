@@ -102,8 +102,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public PlayerParty Party;
         public CharFaceUpdater CharFaceUpdater;
 
-        public Character(int characterId)
+        public Character(int characterId, PlayerParty playerParty)
         {
+            Party = playerParty;
+
             CharacterData = DbMgr.Instance.CharacterDataDb.Get(characterId);
             DollTypeData = DbMgr.Instance.DollTypeDb.Get(CharacterData.DollId);
             VoiceData = DbMgr.Instance.CharacterVoiceDb.Get(CharacterData.DefaultVoice);
@@ -136,6 +138,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             // Testing
             SkillPoints = 15;
+
+            //=====================================================================================
+            // CharacterUI
+            //=====================================================================================
+            UI = CharacterUI.Create(this);
         }
 
         // ============================ PUBLIC API ============================ 

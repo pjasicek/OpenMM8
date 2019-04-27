@@ -58,6 +58,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         // UI
         public PartyBuffUI PartyBuffUI;
+        public PartyUI PartyUI;
 
         // ========================================================================================
 
@@ -71,6 +72,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private void Start()
         {
+            
+        }
+
+        // Called from GameCore initialization
+        public void Initialize()
+        {
             HostilityChecker = GetComponent<HostilityChecker>();
 
             Damageable damageable = GetComponent<Damageable>();
@@ -78,9 +85,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             damageable.OnSpellReceived += new SpellReceived(OnSpellReceived);
             PlayerAudioSource = transform.Find("FirstPersonCharacter").GetComponent<AudioSource>();
 
+            //=====================================================================================
+            // PartyUI and PartyBuffUI
+            //=====================================================================================
             PartyBuffUI = PartyBuffUI.Create(this);
+            PartyUI = PartyUI.Create(this);
+        }
 
-            //InvokeRepeating("StableUpdate", 0.0f, 0.05f);
+        public void ResetParty()
+        {
+            // TODO
         }
 
         public void SelectNextCharacter()
@@ -419,6 +433,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             character.UI.SkillsUI.RepositionSkillRows();
             character.UI.SkillsUI.Repaint(character.SkillPoints);
+
+            PartyUI.UpdateLayout();
         }
 
         public void RemoveCharacter(Character character)
@@ -442,6 +458,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     ActiveCharacter = mostRecChr;
                 }*/
             }
+
+            PartyUI.UpdateLayout();
         }
 
         // Damageable events
@@ -769,7 +787,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             // TODO: Make some generic way to determine whether PlayerParty can act ...
-            if (GameMgr.Instance.IsGamePaused() || Time.timeScale == 0.0f)
+            if (GameCore.Instance.IsGamePaused() || Time.timeScale == 0.0f)
             {
                 return;
             }

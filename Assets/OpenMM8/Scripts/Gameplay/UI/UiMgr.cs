@@ -25,9 +25,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private Canvas m_HouseCanvas;
 
         // Private
-        private GameObject m_PartyCanvasObj;
+        public GameObject PartyCanvasHolder;
         private GameObject m_NpcInfoCanvasObj;
-        private PlayerParty m_PlayerParty;
         private float m_TimeSinceLastPartyText = 0.0f;
         private float m_PartyTextLockTime = 0.0f;
 
@@ -47,14 +46,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private InspectNpcUI m_InspectNpcUI;
         private InspectItemUI m_InspectItemUI;
         private InspectUiTextUI m_InspectUiTextUI;
-        private PartyUI m_PartyUI;
         private NpcTalkUI m_NpcTalkUI;
         private Minimap m_Minimap;
         private Image m_MinimapCloseButtonImage;
         private MapQuestNotesUI m_MapQuestNotesUI;
-        private List<Image> m_EmptySlotBanners = new List<Image>();
-        private CharDetailUI m_CharDetailUI;
-        private SpellbookUI m_SpellbookUI;
+        
+
+        public  CharDetailUI CharDetailUI;
+        public SpellbookUI SpellbookUI;
 
         [Header("UI - Map, Quest, Notes, History")]
         int placeholder;
@@ -74,12 +73,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private Dictionary<string, Sprite> m_OutdoorItemSpriteMap =
             new Dictionary<string, Sprite>();
 
-        // Sprite name -> Sprite
-        private Dictionary<string, Sprite> m_DollSpriteMap =
-            new Dictionary<string, Sprite>();
-
         // TODO: Just add all sprites to this dictionary...
-        public Dictionary<string, Sprite> m_SpriteMap = new Dictionary<string, Sprite>();
+        public Dictionary<string, Sprite> SpriteMap = new Dictionary<string, Sprite>();
 
 
         [Header("Sprites")]
@@ -89,13 +84,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private void Awake()
         {
-            GameEvents.OnPauseGame += OnPauseGame;
-
-            GameEvents.OnCharacterJoinedParty += OnCharacterJoinedParty;
-            GameEvents.OnCharacterLeftParty += OnCharacterLeftParty;
-            GameEvents.OnGoldChanged += OnGoldChanged;
-            GameEvents.OnFoodChanged += OnFoodChanged;
-            GameEvents.OnFoundGold += OnFoundGold;
+            /*GameEvents.OnCharacterJoinedParty += OnCharacterJoinedParty;
+            GameEvents.OnCharacterLeftParty += OnCharacterLeftParty;*/
             GameEvents.OnHoverObject += OnHoverObject;
 
             GameEvents.OnRecovered += OnCharRecovered;
@@ -137,27 +127,27 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         // Init sequence: DbMgr(1) -> GameMgr(1) -> UiMgr(1) -> GameMgr(2)
         public bool Init()
         {
-            m_PartyCanvasObj = GameObject.Find("PartyCanvas");
-            if (m_PartyCanvasObj != null)
+            PartyCanvasHolder = GameObject.Find("PartyCanvas");
+            if (PartyCanvasHolder != null)
             {
-                m_PartyCanvas = m_PartyCanvasObj.GetComponent<Canvas>();
-                m_PartyBuffsAndButtonsCanvas = m_PartyCanvasObj.transform.Find("BuffsAndButtonsCanvas").GetComponent<Canvas>();
-                m_Minimap = m_PartyCanvasObj.transform.Find("BuffsAndButtonsCanvas").Find("Minimap").GetComponent<Minimap>();
+                m_PartyCanvas = PartyCanvasHolder.GetComponent<Canvas>();
+                m_PartyBuffsAndButtonsCanvas = PartyCanvasHolder.transform.Find("BuffsAndButtonsCanvas").GetComponent<Canvas>();
+                m_Minimap = PartyCanvasHolder.transform.Find("BuffsAndButtonsCanvas").Find("Minimap").GetComponent<Minimap>();
             }
             else
             {
                 Debug.LogError("Could not find PartyCanvas gameobject !");
             }
 
-            m_MinimapCloseButtonImage = m_PartyCanvasObj.transform.Find("MinimapCloseButton").GetComponent<Image>();
+            m_MinimapCloseButtonImage = PartyCanvasHolder.transform.Find("MinimapCloseButton").GetComponent<Image>();
 
             m_MapQuestNotesUI = new MapQuestNotesUI();
-            GameObject mapQuestNotesObject = m_PartyCanvasObj.transform.Find("MapQuestNotesCanvas").gameObject;
+            GameObject mapQuestNotesObject = PartyCanvasHolder.transform.Find("MapQuestNotesCanvas").gameObject;
             m_MapQuestNotesUI.Canvas = mapQuestNotesObject.GetComponent<Canvas>();
             m_MapQuestNotesUI.MapNameText = mapQuestNotesObject.transform.Find("MapCanvas").transform.Find("MapNameText").GetComponent<Text>();
 
             m_NpcTalkUI = new NpcTalkUI();
-            GameObject npcTalkCanvasObject = m_PartyCanvasObj.transform.Find("NpcTalkCanvas").gameObject;
+            GameObject npcTalkCanvasObject = PartyCanvasHolder.transform.Find("NpcTalkCanvas").gameObject;
             m_NpcTalkUI.NpcTalkCanvas = npcTalkCanvasObject.GetComponent<Canvas>();
             m_NpcTalkUI.NpcTalkObj = npcTalkCanvasObject.transform.Find("NpcResponseBackground").gameObject;
             m_NpcTalkUI.NpcTalkBackgroundImg = npcTalkCanvasObject.transform.Find("NpcResponseBackground").GetComponent<Image>();
@@ -197,11 +187,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 avatarCtx.AvatarButton.onClick.AddListener(
                     delegate { TalkEventMgr.Instance.OnAvatarClicked(avatarCtx); });
             }
-
-            m_PartyUI = new PartyUI();
-            m_PartyUI.GoldText = m_PartyCanvasObj.transform.Find("GoldCountText").GetComponent<Text>();
-            m_PartyUI.FoodText = m_PartyCanvasObj.transform.Find("FoodCountText").GetComponent<Text>();
-            m_PartyUI.HoverInfoText = m_PartyCanvasObj.transform.Find("BaseBarImage").transform.Find("HoverInfoText").GetComponent<Text>();
 
             // ------------ InspectNpcUI --------------
 
@@ -262,21 +247,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_InspectUiTextUI.LeftEdge = OpenMM8Util.GetComponentAtScenePath<Image>("Edge_Left", topAnchor);
             m_InspectUiTextUI.RightEdge = OpenMM8Util.GetComponentAtScenePath<Image>("Edge_Right", topAnchor);
 
-
-            m_EmptySlotBanners.Add(m_PartyCanvasObj.transform.Find("PC1_EmptySlot").GetComponent<Image>());
-            m_EmptySlotBanners.Add(m_PartyCanvasObj.transform.Find("PC2_EmptySlot").GetComponent<Image>());
-            m_EmptySlotBanners.Add(m_PartyCanvasObj.transform.Find("PC3_EmptySlot").GetComponent<Image>());
-            m_EmptySlotBanners.Add(m_PartyCanvasObj.transform.Find("PC4_EmptySlot").GetComponent<Image>());
-            m_EmptySlotBanners.Add(m_PartyCanvasObj.transform.Find("PC5_EmptySlot").GetComponent<Image>());
-
             m_InspectNpcUI.PreviewImage = npcInfoBackgroundObject.transform.Find("PreviewImageMask").transform.Find("PreviewImage").GetComponent<Image>();
 
             Debug.Log("Load");
-            m_CharDetailUI = CharDetailUI.Load();
+            CharDetailUI = CharDetailUI.Load();
 
-            m_PartyCanvasObj = GameObject.Find("PartyCanvas");
+            PartyCanvasHolder = GameObject.Find("PartyCanvas");
             m_NpcInfoCanvasObj = GameObject.Find("NpcInfoCanvas");
-            m_PlayerParty = GameMgr.Instance.PlayerParty;
 
             // ------ Load state-changing sprites ------ 
             Dictionary<string, Sprite> agroStSpriteMap = new Dictionary<string, Sprite>();
@@ -401,10 +378,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             // Dolls
-            OpenMM8Util.AppendResourcesToMap(m_DollSpriteMap, "Sprites/DOLLS");
-            OpenMM8Util.AppendResourcesToMap(m_SpriteMap, "Sprites/BUFF_ANIM_SPRITES");
+            OpenMM8Util.AppendResourcesToMap(SpriteMap, "Sprites/DOLLS");
+            OpenMM8Util.AppendResourcesToMap(SpriteMap, "Sprites/BUFF_ANIM_SPRITES");
 
-            m_SpellbookUI = SpellbookUI.Create();
+            SpellbookUI = SpellbookUI.Create();
 
 
             // Spell target crosshair
@@ -418,28 +395,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return true;
         }
 
-        private void UpdateEmptySlotBanners(PlayerParty party)
-        {
-            int numPartyMembers = party.Characters.Count;
-            for (int emptySlotIdx = 0; emptySlotIdx < m_EmptySlotBanners.Count; emptySlotIdx++)
-            {
-                if (emptySlotIdx < numPartyMembers)
-                {
-                    m_EmptySlotBanners[emptySlotIdx].enabled = false;
-                }
-                else
-                {
-                    m_EmptySlotBanners[emptySlotIdx].enabled = true;
-                }
-            }
-        }
-
         private void Update()
         {
             m_TimeSinceLastPartyText += Time.deltaTime;
             if (m_TimeSinceLastPartyText > 2.0f)
             {
-                SetPartyInfoText("", false);
+                //SetPartyInfoText("", false);
             }
 
             m_PartyTextLockTime -= Time.deltaTime;
@@ -834,13 +795,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                     case "Spellbook":
                         // Active character HAS TO exist
-                        if (m_PlayerParty.ActiveCharacter == null)
+                        if (GameCore.GetParty().ActiveCharacter == null)
                         {
                             break;
                         }
 
                         m_CurrUIState = new SpellbookUIState();
-                        m_CurrUIState.EnterState(m_PlayerParty.GetActiveCharacter());
+                        m_CurrUIState.EnterState(GameCore.GetParty().GetActiveCharacter());
                         break;
 
                     case "Stats":
@@ -884,14 +845,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
-            foreach (Character chr in m_PlayerParty.Characters)
+            foreach (Character chr in GameCore.GetParty().Characters)
             {
                 chr.UI.Holder.SetActive(false);
             }
 
             if (invoker.IsGameBlocking())
             {
-                GameMgr.Instance.PauseGame();
+                GameCore.Instance.PauseGame();
             }
         }
 
@@ -904,26 +865,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             if (invoker.IsGameBlocking())
             {
-                GameMgr.Instance.PauseGame();
+                GameCore.Instance.PauseGame();
             }
-        }
-
-        public void SetPartyInfoText(string text, bool forceRewrite = true)
-        {
-            if (!forceRewrite)
-            {
-                if (m_PartyTextLockTime < 0)
-                {
-                    m_PartyUI.HoverInfoText.text = text;
-                    m_TimeSinceLastPartyText = 0.0f;
-                }
-
-                return;
-            }
-
-            m_PartyUI.HoverInfoText.text = text;
-            m_TimeSinceLastPartyText = 0.0f;
-            m_PartyTextLockTime = 2.0f;
         }
 
         public void ReturnToGame()
@@ -948,12 +891,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 m_CurrUIState = null;
             }
 
-            foreach (Character chr in m_PlayerParty.Characters)
+            foreach (Character chr in GameCore.GetParty().Characters)
             {
                 chr.UI.Holder.SetActive(true);
             }
 
-            GameMgr.Instance.UnpauseGame();
+            GameCore.Instance.UnpauseGame();
         }
 
         public void SetHeldItem(Item item)
@@ -966,7 +909,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             GameObject inventoryItemObj = (GameObject)GameObject.Instantiate(
-                Resources.Load("Prefabs/UI/Inventory/InventoryItem"), m_PartyCanvasObj.transform);
+                Resources.Load("Prefabs/UI/Inventory/InventoryItem"), PartyCanvasHolder.transform);
 
             InventoryItem inventoryItem = inventoryItemObj.GetComponent<InventoryItem>();
             m_HeldItem = inventoryItemObj.GetComponent<InventoryItem>();
@@ -984,200 +927,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
 
         //=================================== Events ===================================
-
-
-        private void OnCharacterJoinedParty(Character chr, PlayerParty party)
-        {
-            // Set up UI
-            int numPartyMembers = party.Characters.Count;
-
-            CharacterUI chrUI = CharacterUI.Create(chr);
-            //float chrUiOffsetX = (Constants.PC_WidthDelta * m_PartyCanvasObj.transform.localScale.x) * chr.GetPartyIndex();
-            GameObject pc = (GameObject)Instantiate(Resources.Load("Prefabs/UI/PC"), m_PartyCanvasObj.transform);
-            pc.transform.localPosition = new Vector3(Constants.PC_WidthDelta, 0.0f, 0.0f) * chr.GetPartyIndex();
-            //pc.transform.position += new Vector3(Constants.PC_WidthDelta, 0.0f, 0.0f) * chr.Data.PartyIndex;
-            pc.name = "PC_" + chr.Name;
-
-            chrUI.Holder = pc;
-            chrUI.CharacterAvatarImage = pc.transform.Find("PC_Avatar").GetComponent<Image>();
-            chrUI.SelectionRing = pc.transform.Find("PC_SelectRing").GetComponent<Image>();
-            chrUI.AgroStatus = pc.transform.Find("PC_AgroStatus").GetComponent<Image>();
-            chrUI.HealthBar = pc.transform.Find("PC_HealthBar").GetComponent<Image>();
-            chrUI.ManaBar = pc.transform.Find("PC_ManaBar").GetComponent<Image>();
-            chrUI.BlessBuff = pc.transform.Find("PC_BlessBuff").GetComponent<Image>();
-            chrUI.FaceOverlayAnimation = pc.transform.Find("PC_AvatarAnim").GetComponent<SpriteAnimation>();
-            chrUI.PortraitOverlayButton = pc.transform.Find("PC_PortraitOverlay").GetComponent<Button>();
-
-            chr.UI = chrUI;
-
-            chr.CharFaceUpdater = new CharFaceUpdater(chr);
-
-            // Doll for char detail UI (Inventory/Stats/Awards/Skills UI, Adventurer's Inn, Character creation page)
-            //string dollPrefabName = "DOLL_PC_" + ((int)chr.CharacterId).ToString();
-            string dollPrefabName = "GenericDoll";
-            chr.UI.DollUI = new DollUI();
-
-            chr.UI.DollUI.Holder = (GameObject)Instantiate(Resources.Load("Prefabs/UI/Dolls/" + dollPrefabName), m_CharDetailUI.CanvasHolder.transform);
-            chr.UI.DollUI.Holder.transform.SetSiblingIndex(0);
-            chr.UI.DollUI.BackgroundImage = OpenMM8Util.GetComponentAtScenePath<Image>("Background", chr.UI.DollUI.Holder);
-            chr.UI.DollUI.BodyImage = OpenMM8Util.GetComponentAtScenePath<Image>("Body", chr.UI.DollUI.Holder);
-            chr.UI.DollUI.LH_OpenImage = OpenMM8Util.GetComponentAtScenePath<Image>("LeftHand_Open", chr.UI.DollUI.Holder);
-            chr.UI.DollUI.LH_ClosedImage = OpenMM8Util.GetComponentAtScenePath<Image>("LeftHand_Closed", chr.UI.DollUI.Holder);
-            chr.UI.DollUI.LH_HoldImage = OpenMM8Util.GetComponentAtScenePath<Image>("LeftHand_Hold", chr.UI.DollUI.Holder);
-            chr.UI.DollUI.RH_OpenImage = OpenMM8Util.GetComponentAtScenePath<Image>("RightHand_Open", chr.UI.DollUI.Holder);
-            chr.UI.DollUI.RH_HoldImage = OpenMM8Util.GetComponentAtScenePath<Image>("RightHand_Hold", chr.UI.DollUI.Holder);
-            chr.UI.DollUI.RH_WeaponAnchorHolder = OpenMM8Util.GetGameObjAtScenePath("RightHand_WeaponHoldAnchor", chr.UI.DollUI.Holder);
-            //chr.UI.DollUI.RH_HoldFingersImage = OpenMM8Util.GetComponentAtScenePath<Image>("RightHand_HoldFingers", chr.UI.DollUI.Holder);
-            chr.UI.DollUI.Cloak = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("CloakSlot", chr.UI.DollUI.Holder);
-            chr.UI.DollUI.Bow = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("BowSlot", chr.UI.DollUI.Holder);
-            chr.UI.DollUI.Armor = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("ArmorSlot", chr.UI.DollUI.Holder);
-            chr.UI.DollUI.Boots = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("BootsSlot", chr.UI.DollUI.Holder);
-            chr.UI.DollUI.Helmet = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("HelmetSlot", chr.UI.DollUI.Holder);
-            chr.UI.DollUI.Belt = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("BeltSlot", chr.UI.DollUI.Holder);
-            chr.UI.DollUI.RH_Weapon = 
-                OpenMM8Util.GetComponentAtScenePath<InventoryItem>("RightHand_WeaponHoldAnchor/RightHand_WeaponSlot", chr.UI.DollUI.Holder);
-
-            // Background
-            chr.UI.DollUI.BackgroundImage.sprite = m_DollSpriteMap[chr.CharacterData.Background];
-            chr.UI.DollUI.BackgroundImage.SetNativeSize();
-            // Body
-            chr.UI.DollUI.BodyImage.sprite = m_DollSpriteMap[chr.CharacterData.Body];
-            chr.UI.DollUI.BodyImage.SetNativeSize();
-            chr.UI.DollUI.BodyImage.rectTransform.anchoredPosition = chr.CharacterData.DollBodyPos;
-            // LHo (Left Hand Open)
-            if (chr.CharacterData.LHo != "none")
-            {
-                chr.UI.DollUI.LH_OpenImage.sprite = m_DollSpriteMap[chr.CharacterData.LHo];
-                chr.UI.DollUI.LH_OpenImage.SetNativeSize();
-                chr.UI.DollUI.LH_OpenImage.rectTransform.anchoredPosition = chr.DollTypeData.LH_FingersPos;
-            }
-            // LHd (Left Hand Closed)
-            if (chr.CharacterData.LHd != "none")
-            {
-                chr.UI.DollUI.LH_ClosedImage.sprite = m_DollSpriteMap[chr.CharacterData.LHd];
-                chr.UI.DollUI.LH_ClosedImage.SetNativeSize();
-                chr.UI.DollUI.LH_ClosedImage.rectTransform.anchoredPosition = chr.DollTypeData.LH_ClosedPos;
-            }
-            // LHu (Left Hand Hold)
-            if (chr.CharacterData.LHu != "none")
-            {
-                chr.UI.DollUI.LH_HoldImage.sprite = m_DollSpriteMap[chr.CharacterData.LHu];
-                chr.UI.DollUI.LH_HoldImage.SetNativeSize();
-                chr.UI.DollUI.LH_HoldImage.rectTransform.anchoredPosition = chr.DollTypeData.LH_OpenPos;
-            }
-            // RHd (Right Hand Open)
-            if (chr.CharacterData.RHd != "none")
-            {
-                chr.UI.DollUI.RH_OpenImage.sprite = m_DollSpriteMap[chr.CharacterData.RHd];
-                chr.UI.DollUI.RH_OpenImage.SetNativeSize();
-                chr.UI.DollUI.RH_OpenImage.rectTransform.anchoredPosition = chr.DollTypeData.RH_OpenPos;
-            }
-            // RHu (Right Hand Closed)
-            if (chr.CharacterData.RHu != "none")
-            {
-                chr.UI.DollUI.RH_HoldImage.sprite = m_DollSpriteMap[chr.CharacterData.RHu];
-                chr.UI.DollUI.RH_HoldImage.SetNativeSize();
-                chr.UI.DollUI.RH_HoldImage.rectTransform.anchoredPosition = chr.DollTypeData.RH_ClosedPos;
-            }
-            
-            // Right hand fingers
-            if (chr.CharacterData.RHb != "none")
-            {
-                // Right hand fingers + weapon holder
-                Image weaponAnchorImage = chr.UI.DollUI.RH_WeaponAnchorHolder.GetComponent<Image>();
-                weaponAnchorImage.sprite = m_DollSpriteMap[chr.CharacterData.RHb];
-                weaponAnchorImage.SetNativeSize();
-                chr.UI.DollUI.RH_WeaponAnchorHolder.GetComponent<RectTransform>().anchoredPosition =
-                    chr.DollTypeData.RH_FingersPos;
-
-                Image holdFingersImage = OpenMM8Util.GetComponentAtScenePath<Image>("RightHand_HoldFingers", chr.UI.DollUI.RH_WeaponAnchorHolder);
-                holdFingersImage.sprite = m_DollSpriteMap[chr.CharacterData.RHb];
-                holdFingersImage.SetNativeSize();
-                holdFingersImage.rectTransform.anchoredPosition.Set(0.0f, 0.0f);
-            }
-
-            chr.UI.DollUI.AccessoryBackgroundHolder = OpenMM8Util.GetGameObjAtScenePath("AccessoryBackground", chr.UI.DollUI.Holder);
-            chr.UI.DollUI.Ring_1 = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("RingSlot_1", chr.UI.DollUI.AccessoryBackgroundHolder);
-            chr.UI.DollUI.Ring_2 = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("RingSlot_2", chr.UI.DollUI.AccessoryBackgroundHolder);
-            chr.UI.DollUI.Ring_3 = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("RingSlot_3", chr.UI.DollUI.AccessoryBackgroundHolder);
-            chr.UI.DollUI.Ring_4 = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("RingSlot_4", chr.UI.DollUI.AccessoryBackgroundHolder);
-            chr.UI.DollUI.Ring_5 = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("RingSlot_5", chr.UI.DollUI.AccessoryBackgroundHolder);
-            chr.UI.DollUI.Ring_6 = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("RingSlot_6", chr.UI.DollUI.AccessoryBackgroundHolder);
-            chr.UI.DollUI.Gauntlets = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("GauntletSlot", chr.UI.DollUI.AccessoryBackgroundHolder);
-            chr.UI.DollUI.Necklace = OpenMM8Util.GetComponentAtScenePath<InventoryItem>("NecklaceSlot", chr.UI.DollUI.AccessoryBackgroundHolder);
-
-            // Fill inventory slots
-            chr.EquipSlots.Add(chr.UI.DollUI.Armor);
-            chr.EquipSlots.Add(chr.UI.DollUI.Boots);
-            chr.EquipSlots.Add(chr.UI.DollUI.Cloak);
-            chr.EquipSlots.Add(chr.UI.DollUI.Belt);
-            chr.EquipSlots.Add(chr.UI.DollUI.Helmet);
-            chr.EquipSlots.Add(chr.UI.DollUI.Bow);
-            chr.EquipSlots.Add(chr.UI.DollUI.RH_Weapon);
-            //chr.EquipSlots.Add(chr.UI.DollUI.LH_Weapon);
-            //chr.EquipSlots.Add(chr.UI.DollUI.Shield);
-
-            chr.EquipSlots.Add(chr.UI.DollUI.Ring_1);
-            chr.EquipSlots.Add(chr.UI.DollUI.Ring_2);
-            chr.EquipSlots.Add(chr.UI.DollUI.Ring_3);
-            chr.EquipSlots.Add(chr.UI.DollUI.Ring_4);
-            chr.EquipSlots.Add(chr.UI.DollUI.Ring_5);
-            chr.EquipSlots.Add(chr.UI.DollUI.Ring_6);
-            chr.EquipSlots.Add(chr.UI.DollUI.Gauntlets);
-            chr.EquipSlots.Add(chr.UI.DollUI.Necklace);
-
-            chr.UI.DollUI.Holder.SetActive(false);
-
-            OpenMM8Util.GetComponentAtScenePath<Button>("MagnifyGlass", chr.UI.DollUI.Holder).onClick.AddListener(
-                delegate { chr.UI.DollUI.AccessoryBackgroundHolder.SetActive(!chr.UI.DollUI.AccessoryBackgroundHolder.active); });
-
-            // To raycast only non-transparent areas
-            // Settings for the texture-import for dolls was also changed because of this
-            // Read-Write - enabled
-            // Mesh Type - Full Rect
-            chr.UI.DollUI.BodyImage.alphaHitTestMinimumThreshold = 0.4f;
-            chr.UI.DollUI.LH_OpenImage.alphaHitTestMinimumThreshold = 0.4f;
-            chr.UI.DollUI.LH_ClosedImage.alphaHitTestMinimumThreshold = 0.4f;
-            chr.UI.DollUI.LH_HoldImage.alphaHitTestMinimumThreshold = 0.4f;
-            chr.UI.DollUI.RH_OpenImage.alphaHitTestMinimumThreshold = 0.4f;
-            chr.UI.DollUI.RH_HoldImage.alphaHitTestMinimumThreshold = 0.4f;
-
-            chr.UI.InventoryUI = InventoryUI.Create(chr);
-            chr.UI.StatsUI = StatsUI.Create(chr);
-            chr.UI.SkillsUI = SkillsUI.Create(chr);
-
-            //chr.UI.StatsUI.Holder = 
-
-            UpdateEmptySlotBanners(party);
-        }
-
-        private void OnCharacterLeftParty(Character removedChr, PlayerParty party)
-        {
-            removedChr.UI.Destroy();
-
-            foreach (Character chr in party.Characters)
-            {
-                chr.UI.Holder.transform.localPosition =
-                    new Vector3(Constants.PC_WidthDelta, 0.0f, 0.0f) * chr.GetPartyIndex();
-            }
-
-            UpdateEmptySlotBanners(party);
-        }
-
-        public void OnFoundGold(int amount)
-        {
-            SetPartyInfoText("You found " + amount.ToString() + " gold !");
-        }
-
-        public void OnGoldChanged(int oldGold, int newGold, int delta)
-        {
-            m_PartyUI.GoldText.text = newGold.ToString();
-        }
-
-        public void OnFoodChanged(int oldFood, int newFood, int delta)
-        {
-            m_PartyUI.FoodText.text = newFood.ToString();
-        }
 
         public void OnCharRecovered(Character chr)
         {
@@ -1225,7 +974,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
             }
 
-            SetPartyInfoText(hitText);
+            //SetPartyInfoText(hitText);
         }
 
         public void OnCharGotHit(Character chr, AttackInfo attackInfo, AttackResult attackResult)
@@ -1243,7 +992,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnHoverObject(HoverInfo hoverInfo)
         {
-            SetPartyInfoText(hoverInfo.HoverText, false);
+            GameCore.SetStatusBarText(hoverInfo.HoverText, false);
+            //SetPartyInfoText(hoverInfo.HoverText, false);
         }
 
         public void OnNpcInspectStart(Character inspector, BaseNpc npc, MonsterData npcData)
@@ -1345,10 +1095,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private void OnQuestBitAdded(int questId)
         {
-            Character chr = m_PlayerParty.GetActiveCharacter();
+            Character chr = GameCore.GetParty().GetActiveCharacter();
             if (chr == null)
             {
-                chr = m_PlayerParty.GetFirstCharacter();
+                chr = GameCore.GetParty().GetFirstCharacter();
             }
 
             SpriteAnimation FaceOverlayAnim = chr.UI.FaceOverlayAnimation;
@@ -1403,15 +1153,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 //GameObject.Destroy(m_HeldItem.gameObject);
 
                 Vector2Int newPos;
-                if (m_PlayerParty.ActiveCharacter.Inventory.CanReplaceItem(inventoryItem.Item, m_HeldItem.Item, out newPos))
+                if (GameCore.GetParty().ActiveCharacter.Inventory.CanReplaceItem(inventoryItem.Item, m_HeldItem.Item, out newPos))
                 {
                     Item heldItem = m_HeldItem.Item;
                     GameObject.Destroy(m_HeldItem.gameObject);
 
                     SetHeldItem(inventoryItem.Item);
 
-                    m_PlayerParty.ActiveCharacter.Inventory.RemoveItem(inventoryItem.Item);
-                    m_PlayerParty.ActiveCharacter.Inventory.PlaceItem(heldItem, newPos.x, newPos.y);
+                    GameCore.GetParty().ActiveCharacter.Inventory.RemoveItem(inventoryItem.Item);
+                    GameCore.GetParty().ActiveCharacter.Inventory.PlaceItem(heldItem, newPos.x, newPos.y);
                 }
                 else
                 {
@@ -1423,7 +1173,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 SetHeldItem(inventoryItem.Item);
 
-                m_PlayerParty.ActiveCharacter.Inventory.RemoveItem(inventoryItem.Item);
+                GameCore.GetParty().ActiveCharacter.Inventory.RemoveItem(inventoryItem.Item);
             }
         }
 
@@ -1448,7 +1198,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             if (m_HeldItem != null)
             {
                 // Check if we can replace the existing item
-                if (m_PlayerParty.ActiveCharacter.Inventory.PlaceItem(m_HeldItem.Item, x, y, true))
+                if (GameCore.GetParty().ActiveCharacter.Inventory.PlaceItem(m_HeldItem.Item, x, y, true))
                 {
                     GameObject.Destroy(m_HeldItem.gameObject);
                 }
@@ -1463,9 +1213,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 // If not holding anything, remove the item from doll and hold it
                 SetHeldItem(clickedItem.Item);
 
-                m_PlayerParty.ActiveCharacter.Inventory.RemoveItemFromDoll(clickedItem);
+                GameCore.GetParty().ActiveCharacter.Inventory.RemoveItemFromDoll(clickedItem);
 
-                GameEvents.InvokeEvent_OnItemUnequipped(m_PlayerParty.ActiveCharacter, clickedItem.Item);
+                GameEvents.InvokeEvent_OnItemUnequipped(GameCore.GetParty().ActiveCharacter, clickedItem.Item);
             }
             else
             {
@@ -1502,7 +1252,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             // TODO: This should really be handled by Character class, not in UiMgr
 
-            Character currChar = m_PlayerParty.ActiveCharacter;
+            Character currChar = GameCore.GetParty().ActiveCharacter;
             if (currChar == null)
             {
                 Debug.LogError("null active character when doll is clicked ?");
@@ -1561,14 +1311,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 m_HoveredInspectableUiText = null;
             }
-        }
-
-
-        // =========== Game states
-
-        public void OnPauseGame()
-        {
-
         }
 
         // =========== Buttons

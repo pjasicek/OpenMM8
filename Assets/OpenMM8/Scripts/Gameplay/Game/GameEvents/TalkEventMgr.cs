@@ -45,7 +45,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public bool Init()
         {
-            m_PlayerParty = GameMgr.Instance.PlayerParty;
+            m_PlayerParty = GameCore.Instance.PlayerParty;
 
             foreach (var talkDataPair in DbMgr.Instance.NpcTalkDb.Data)
             {
@@ -362,7 +362,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private void AddRosterNpcToParty(int rosterId)
         {
-            GameMgr.Instance.AddRosterNpcToParty(rosterId);
+            GameCore.Instance.AddRosterNpcToParty(rosterId);
         }
 
         /*

@@ -35,9 +35,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 }
 
                 UiMgr.Instance.SetupForFullscreenUiState(this);
-                UiMgr.Instance.m_SpellbookUI.DisplayForCharacter(m_SpellbookOwner);
+                UiMgr.Instance.SpellbookUI.DisplayForCharacter(m_SpellbookOwner);
 
-                UiMgr.Instance.m_SpellbookUI.CloseButton.onClick.AddListener(delegate
+                UiMgr.Instance.SpellbookUI.CloseButton.onClick.AddListener(delegate
                 {
                     UiMgr.Instance.ReturnToGame();
                 });
@@ -47,9 +47,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             public override void LeaveState()
             {
-                UiMgr.Instance.m_SpellbookUI.CloseButton.onClick.RemoveAllListeners();
+                UiMgr.Instance.SpellbookUI.CloseButton.onClick.RemoveAllListeners();
 
-                UiMgr.Instance.m_SpellbookUI.Hide(m_SpellbookOwner);
+                UiMgr.Instance.SpellbookUI.Hide(m_SpellbookOwner);
             }
         }
     } // public partial class UiMgr

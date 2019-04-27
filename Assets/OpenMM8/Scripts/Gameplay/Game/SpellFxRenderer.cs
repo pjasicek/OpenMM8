@@ -20,7 +20,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public static void SetPlayerBuffAnim(string buffAnimPrefix, Character character)
         {
-            Sprite[] allSprites = UiMgr.Instance.m_SpriteMap.Values.Where(
+            Sprite[] allSprites = UiMgr.Instance.SpriteMap.Values.Where(
                 sprite => sprite.name.StartsWith(buffAnimPrefix)).ToArray();
             if (allSprites.Length == 0)
             {

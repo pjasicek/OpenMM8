@@ -17,15 +17,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             ItemGenerator.Instance.Init();
 
             TimeMgr.Instance.Init();
-            GameMgr.Instance.Init();
             UiMgr.Instance.Init();
+            GameCore.Instance.Init();
             SoundMgr.Instance.Init();
             QuestMgr.Instance.Init();
             GameEventMgr.Instance.Init();
             TalkEventMgr.Instance.Init();
 
-            GameMgr.Instance.PostInit();
             UiMgr.Instance.PostInit();
+            GameCore.Instance.PostInit();
 
             GameEvents.InvokeEvent_OnInitComplete();
         }
