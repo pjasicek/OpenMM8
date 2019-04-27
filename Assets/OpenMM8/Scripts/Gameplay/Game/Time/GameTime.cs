@@ -9,6 +9,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 {
     public class GameTime
     {
+        // 1 ingame minute = 2 realtime seconds
+        // 1 ingame hour = 2 realitme minutes
+        // 1 ingame day = 48 realtime minutes
         public long GameSeconds;
 
         public GameTime(long seconds, long minutes = 0, long hours = 0, long days = 0,
@@ -30,7 +33,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         static public GameTime FromCurrentTime(long additionalSeconds)
         {
-            GameTime currTime = TimeMgr.Instance.GetCurrentTime();
+            GameTime currTime = TimeMgr.GetCurrentTime();
 
             GameTime newTime = new GameTime(currTime);
             newTime.GameSeconds += additionalSeconds;
@@ -55,8 +58,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public bool IsExpired()
         {
-            Debug.Log(TimeMgr.Instance.GetCurrentTime().GetSeconds() + "/" + GameSeconds);
-            return TimeMgr.Instance.GetCurrentTime().GetSeconds() > GameSeconds;
+            Debug.Log(TimeMgr.GetCurrentTime().GetSeconds() + "/" + GameSeconds);
+            return TimeMgr.GetCurrentTime().GetSeconds() > GameSeconds;
         }
 
         public long GetSeconds() { return GameSeconds; }

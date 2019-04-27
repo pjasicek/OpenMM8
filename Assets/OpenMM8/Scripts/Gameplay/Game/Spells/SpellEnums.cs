@@ -201,7 +201,8 @@ public enum PartyEffectType
     Heroism,
     Haste,
     DetectLife,
-    FeatherFall
+    FeatherFall,
+    Levitate
 }
 
 // Buffs affecting specific player - cummulative with PartyEffect if applicable

@@ -405,7 +405,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void PauseGame()
         {
-            Time.timeScale = 0;
+            Time.timeScale = 0.0f;
             m_IsGamePaused = true;
             //OnGamePaused();
 

@@ -563,7 +563,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Items
 
                 case 534:
                     Enchant.StatBonusMap.Add(StatType.FearImmunity, 1);
-                    Enchant.StatBonusMap.Add(StatType.StoneImmunity, 1);
+                    Enchant.StatBonusMap.Add(StatType.PetrifyImmunity, 1);
                     Enchant.StatBonusMap.Add(StatType.ParalyzeImmunity, 1);
                     Enchant.StatBonusMap.Add(StatType.SleepImmunity, 1);
                     Enchant.StatBonusMap.Add(StatType.Personality, -15);

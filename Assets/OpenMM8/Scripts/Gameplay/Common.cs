@@ -353,7 +353,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         ParalyzeImmunity,
         PoisonImmunity,
         SleepImmunity,
-        StoneImmunity, // Stoned (medusa etc)
+        PetrifyImmunity, // Stoned (medusa etc)
 
         // Artifacts/Relics
         Elderaxe, // 6-12 cold damage

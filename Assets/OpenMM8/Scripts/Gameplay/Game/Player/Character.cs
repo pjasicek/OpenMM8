@@ -182,6 +182,26 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 GameEvents.InvokeEvent_OnRecovered(this);
             }
+
+            // Handle buff expiration
+            foreach (var playerBuffPair in PlayerBuffMap)
+            {
+                SpellEffect buff = playerBuffPair.Value;
+                PlayerEffectType buffType = playerBuffPair.Key;
+
+                bool justExpired = buff.IsApplied() && buff.IsExpired();
+                if (justExpired)
+                {
+                    switch (buffType)
+                    {
+                        case PlayerEffectType.Haste:
+                            SetCondition(Condition.Weak, false);
+                            break;
+                    }
+
+                    buff.Reset();
+                }
+            }
         }
 
         public bool IsRecovered()
@@ -676,7 +696,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public int GetBaseAge()
         {
-            return (int)(TimeMgr.START_YEAR + TimeMgr.Instance.GetCurrentTime().GetYears()) - BirthYear;
+            return (int)(TimeMgr.START_YEAR + TimeMgr.GetCurrentTime().GetYears()) - BirthYear;
         }
 
         public int GetActualAge()
@@ -1436,11 +1456,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 IsPetrified() ||
                 IsEradicated())
             {
-                return true;
+                return false;
             }
             else
             {
-                return false;
+                return true;
             }
         }
 
@@ -1449,6 +1469,103 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             if (!isBlockable)
             {
                 return true;
+            }
+
+            // Protection from Magic buff
+            SpellEffect protFromMagicBuff = Party.PartyBuffMap[PartyEffectType.ProtectionFromMagic];
+            if (protFromMagicBuff.IsActive())
+            {
+                bool isBlockedByProtMagic = false;
+                switch (condition)
+                {
+                    case Condition.PoisonMedium:
+                    case Condition.PoisonSevere:
+                    case Condition.PoisonWeak:
+                    case Condition.DiseaseMedium:
+                    case Condition.DiseaseSevere:
+                    case Condition.DiseaseWeak:
+                    case Condition.Weak:
+                    case Condition.Paralyzed:
+                    case Condition.Petrified:
+                        isBlockedByProtMagic = true;
+                        break;
+                    case Condition.Dead:
+                    case Condition.Eradicated:
+                        if (protFromMagicBuff.SkillMastery == SkillMastery.Grandmaster)
+                        {
+                            isBlockedByProtMagic = true;
+                        }
+                        break;
+                }
+
+                if (isBlockedByProtMagic)
+                {
+                    // Remove charge
+                    protFromMagicBuff.Power--;
+                    if (protFromMagicBuff.Power <= 0)
+                    {
+                        protFromMagicBuff.Reset();
+                    }
+                    // Player will not be affected - intercepted by protection from magic
+                    return false;
+                }
+            }
+
+            // Check protection from items
+            switch (condition)
+            {
+                case Condition.PoisonMedium:
+                case Condition.PoisonSevere:
+                case Condition.PoisonWeak:
+                    if (WearsItemWithBonusStat(StatType.PoisonImmunity))
+                    {
+                        return false;
+                    }
+                    break;
+
+                case Condition.DiseaseMedium:
+                case Condition.DiseaseSevere:
+                case Condition.DiseaseWeak:
+                    if (WearsItemWithBonusStat(StatType.DiseaseImmunity))
+                    {
+                        return false;
+                    }
+                    break;
+
+                case Condition.Fear:
+                    if (WearsItemWithBonusStat(StatType.FearImmunity))
+                    {
+                        return false;
+                    }
+                    break;
+
+                case Condition.Insane:
+                    if (WearsItemWithBonusStat(StatType.InsanityImmunity))
+                    {
+                        return false;
+                    }
+                    break;
+
+                case Condition.Paralyzed:
+                    if (WearsItemWithBonusStat(StatType.ParalyzeImmunity))
+                    {
+                        return false;
+                    }
+                    break;
+
+                case Condition.Petrified:
+                    if (WearsItemWithBonusStat(StatType.PetrifyImmunity))
+                    {
+                        return false;
+                    }
+                    break;
+
+                case Condition.Sleep:
+                    if (WearsItemWithBonusStat(StatType.SleepImmunity))
+                    {
+                        return false;
+                    }
+                    break;
             }
 
             return true;

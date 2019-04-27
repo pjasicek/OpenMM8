@@ -39,10 +39,22 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public Dictionary<PartyEffectType, SpellEffect> PartyBuffMap = new Dictionary<PartyEffectType, SpellEffect>();
 
+        // Party status flags
+        public bool IsOnWater;
+        public bool IsOnLava;
+        public bool IsFlying;
+
+        // Periodical ticks
+        public GameTime PartyTime = new GameTime(0);
+        public GameTime LastRegenTickTime = new GameTime(0);
+        public GameTime LastWaterLavaTickTime = new GameTime(0);
+
+        public int DaysPlayedWithoutRest = 0;
+
         // Delayed speech sound
         public Character DelayedSpeaker = null;
-        public CharacterSpeech DelayedAvatarAction;
-        public float TimUntilDelayedSpeech;
+        public CharacterReaction DelayedAvatarReaction;
+        public float TimeUntilDelayedSpeech;
 
         // UI
         public PartyBuffUI PartyBuffUI;
@@ -69,86 +81,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             PartyBuffUI = PartyBuffUI.Create(this);
 
             //InvokeRepeating("StableUpdate", 0.0f, 0.05f);
-        }
-
-        public void Update()
-        {
-            // Some things need to be updated even if game is paused, for example character's facial expressions
-            float realtimeSinceStartup = Time.realtimeSinceStartup;
-            float deltaTime = realtimeSinceStartup - PreviousTimeSinceStartup;
-            PreviousTimeSinceStartup = realtimeSinceStartup;
-
-            foreach (Character character in Characters)
-            {
-                character.OnFixedUpdate(deltaTime);
-            }
-
-            // TODO: Make some generic way to determine whether PlayerParty can act ...
-            if (GameMgr.Instance.IsGamePaused() || Time.timeScale == 0.0f)
-            {
-                return;
-            }
-
-            PartyBuffUI.Refresh();
-
-            foreach (Character character in Characters)
-            {
-                character.OnUpdate(Time.deltaTime);
-            }
-
-            if (ActiveCharacter == null || !ActiveCharacter.IsRecovered())
-            {
-                foreach (Character character in Characters)
-                {
-                    if (character.IsRecovered() && ((ActiveCharacter == null) || !ActiveCharacter.IsRecovered()))
-                    {
-                        SetActiveCharacter(character);
-                    }
-                    else
-                    {
-                        character.UI.SelectionRing.enabled = false;
-                    }
-                }
-            }
-
-            HandleHover();
-
-            if (Input.GetButton("Attack") && UiMgr.Instance.m_HeldItem != null)
-            {
-                // TODO: Handle this more elegantly, this should not know anything about UiMgr
-                // Throw the item 
-                Ray throwRay = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.8f, 0.0f));
-                ItemMgr.ThrowItem(transform, throwRay.direction, UiMgr.Instance.m_HeldItem.Item);
-                GameObject.Destroy(UiMgr.Instance.m_HeldItem.gameObject);
-                AttackDelayTimeLeft = 0.1f;
-            }
-            else if (Input.GetButton("Attack") && (AttackDelayTimeLeft <= 0.0f))
-            {
-                //Debug.Log("AttackDelayTimeLeft: " + AttackDelayTimeLeft);
-                Attack();
-            }
-
-            if (Input.GetButtonDown("Interact"))
-            {
-                Interact();
-            }
-
-            if (Input.GetButtonDown("NextPlayer"))
-            {
-                TrySelectNextCharacter(true);
-            }
-
-            UpdateAgroStatus();
-
-            AttackDelayTimeLeft -= Time.deltaTime;
-        }
-
-        public void StableUpdate()
-        {
-            foreach (Character character in Characters)
-            {
-                character.OnFixedUpdate(0.05f);
-            }
         }
 
         public void SelectNextCharacter()
@@ -792,16 +724,267 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         // @item can be null - this way it just clears the held item slot
         public void SetHeldItem(Item item)
         {
+            RemoveHeldItem();
+
+            if (item != null)
+            {
+                UiMgr.Instance.SetHeldItem(item);
+            }
+        }
+
+        public void RemoveHeldItem()
+        {
             Item currHeldItem = GetHeldItem();
             if (currHeldItem != null)
             {
                 GameObject.Destroy(UiMgr.Instance.m_HeldItem.gameObject);
                 UiMgr.Instance.m_HeldItem = null;
             }
+        }
 
-            if (item != null)
+        public bool IsHoldingItem()
+        {
+            return GetHeldItem() != null;
+        }
+
+        //=========================================================================================
+        // PARTY UPDATE ROUTINES
+        //=========================================================================================
+
+        public void Update()
+        {
+            // TODO: Make some init method
+            if (!PartyTime.IsValid()) PartyTime.GameSeconds = TimeMgr.GetCurrentTime().GameSeconds;
+            if (!LastRegenTickTime.IsValid()) LastRegenTickTime.GameSeconds = TimeMgr.GetCurrentTime().GameSeconds;
+            if (!LastWaterLavaTickTime.IsValid()) LastWaterLavaTickTime.GameSeconds = TimeMgr.GetCurrentTime().GameSeconds;
+
+            // Some things need to be updated even if game is paused, for example character's facial expressions
+            float realtimeSinceStartup = Time.realtimeSinceStartup;
+            float deltaTime = realtimeSinceStartup - PreviousTimeSinceStartup;
+            PreviousTimeSinceStartup = realtimeSinceStartup;
+
+            foreach (Character character in Characters)
             {
-                UiMgr.Instance.SetHeldItem(item);
+                character.OnFixedUpdate(deltaTime);
+            }
+
+            // TODO: Make some generic way to determine whether PlayerParty can act ...
+            if (GameMgr.Instance.IsGamePaused() || Time.timeScale == 0.0f)
+            {
+                return;
+            }
+
+            DoPeriodEffects();
+
+            PartyBuffUI.Refresh();
+
+            // Handle party buff expiration (Fly, WaterWalk, Haste, ...)
+            foreach (var partyBuffPair in PartyBuffMap)
+            {
+                SpellEffect buff = partyBuffPair.Value;
+                PartyEffectType buffType = partyBuffPair.Key;
+
+                bool justExpired = buff.IsApplied() && buff.IsExpired();
+                if (justExpired)
+                {
+                    switch (buffType)
+                    {
+                        case PartyEffectType.Haste:
+                            Characters.ForEach(chr =>
+                            {
+                                chr.SetCondition(Condition.Weak, false);
+                            });
+                            break;
+                    }
+
+                    buff.Reset();
+                }
+            }
+
+            foreach (Character character in Characters)
+            {
+                character.OnUpdate(Time.deltaTime);
+            }
+
+            if (ActiveCharacter == null || !ActiveCharacter.IsRecovered())
+            {
+                foreach (Character character in Characters)
+                {
+                    if (character.IsRecovered() && ((ActiveCharacter == null) || !ActiveCharacter.IsRecovered()))
+                    {
+                        SetActiveCharacter(character);
+                    }
+                    else
+                    {
+                        character.UI.SelectionRing.enabled = false;
+                    }
+                }
+            }
+
+            HandleHover();
+
+            if (Input.GetButton("Attack") && IsHoldingItem())
+            {
+                // TODO: Handle this more elegantly, this should not know anything about UiMgr
+                // Throw the item 
+                Ray throwRay = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.8f, 0.0f));
+                ItemMgr.ThrowItem(transform, throwRay.direction, GetHeldItem());
+                RemoveHeldItem();
+                AttackDelayTimeLeft = 0.1f;
+            }
+            else if (Input.GetButton("Attack") && (AttackDelayTimeLeft <= 0.0f))
+            {
+                //Debug.Log("AttackDelayTimeLeft: " + AttackDelayTimeLeft);
+                Attack();
+            }
+
+            if (Input.GetButtonDown("Interact"))
+            {
+                Interact();
+            }
+
+            if (Input.GetButtonDown("NextPlayer"))
+            {
+                TrySelectNextCharacter(true);
+            }
+
+            UpdateAgroStatus();
+
+            AttackDelayTimeLeft -= Time.deltaTime;
+        }
+
+        private void DoPeriodEffects()
+        {
+            long currGameSeconds = TimeMgr.GetCurrentTime().GameSeconds;
+
+            long oldDay = PartyTime.GetDayOfMonth();
+            long oldHour = PartyTime.GetHoursOfDay();
+
+            PartyTime.GameSeconds = TimeMgr.GetCurrentTime().GameSeconds;
+
+            // Check for new days effects
+            if (PartyTime.GetHoursOfDay() >= 3 && (oldHour < 3 || PartyTime.GetDayOfMonth() > oldDay))
+            {
+                // New day
+                Debug.Log("New day");
+
+                DaysPlayedWithoutRest++;
+                if (DaysPlayedWithoutRest > 1)
+                {
+                    Characters.ForEach(chr =>
+                    {
+                        chr.SetCondition(Condition.Weak, false);
+                    });
+
+                    if (Food > 0)
+                    {
+                        // Consume food
+                    }
+                    else
+                    {
+                        // Or suffer health loss
+                        Characters.ForEach(chr =>
+                        {
+                            chr.CurrHitPoints = (chr.CurrHitPoints / (DaysPlayedWithoutRest + 1)) + 1;
+                        });
+                    }
+                }
+
+                // Long time not resting - suffer bad effects (Dead / Insane)
+                if (DaysPlayedWithoutRest > 3)
+                {
+                    Characters.ForEach(chr =>
+                    {
+                        if (!chr.IsPetrified() && !chr.IsDead() && !chr.IsEradicated())
+                        {
+                            if (UnityEngine.Random.Range(0, 100) < 5 * DaysPlayedWithoutRest)
+                            {
+                                chr.SetCondition(Condition.Dead, false);
+                            }
+                            if (UnityEngine.Random.Range(0, 100) < 10 * DaysPlayedWithoutRest)
+                            {
+                                chr.SetCondition(Condition.Insane, false);
+                            }
+                        }
+                    });
+                }
+            }
+
+            // Try to do water damage tick, tick = every 2 minutes (= 1 realtime second)
+            if (IsOnWater && (LastWaterLavaTickTime.GameSeconds + 120 < currGameSeconds))
+            {
+                LastWaterLavaTickTime.GameSeconds = currGameSeconds;
+
+                Characters.ForEach(chr =>
+                {
+                    bool canWalkOnWater = PartyBuffMap[PartyEffectType.WaterWalk].IsActive() ||
+                                          PartyBuffMap[PartyEffectType.Levitate].IsActive();
+                    // TODO: Items can also prevent character from drowning
+
+                    if (canWalkOnWater)
+                    {
+                        // Do this also when levitating ?
+                        chr.PlayCharacterExpression(CharacterExpression.WaterWalkOk);
+                    }
+                    else
+                    {
+                        // Receive damage - 0.1 * maxhealth
+                        // Status text: You're drowning!
+                    }
+                });
+            }
+
+            // Try to do lava damage tick, tick = every 2 minutes (= 1 realtime second)
+            if (IsOnLava && (LastWaterLavaTickTime.GameSeconds + 120 < currGameSeconds))
+            {
+                LastWaterLavaTickTime.GameSeconds = currGameSeconds;
+
+                Characters.ForEach(chr =>
+                {
+                    bool canWalkOnLava = PartyBuffMap[PartyEffectType.Levitate].IsActive();
+                    if (!canWalkOnLava)
+                    {
+                        // Receive damage - 0.1 * maxhealth
+                        // Status text: On fire!
+                    }
+                });
+            }
+
+            // Try to regenerate
+            if (LastRegenTickTime.GameSeconds + 300 < currGameSeconds)
+            {
+                LastRegenTickTime.GameSeconds = currGameSeconds;
+
+                // Handle immolation aura here also (5 min interval)
+
+                Characters.ForEach(chr =>
+                {
+                    // Regen HP from item
+                    if (chr.WearsItemWithBonusStat(StatType.HpRegeneration))
+                    {
+                        bool canRegenHp = !chr.IsDead() && !chr.IsEradicated() &&
+                                          chr.CurrHitPoints < chr.GetMaxHitPoints();
+                        if (canRegenHp)
+                        {
+                            chr.CurrHitPoints++;
+                        }
+                        if (chr.CurrHitPoints > 0 && chr.Conditions[Condition.Unconcious].IsValid())
+                        {
+                            chr.Conditions[Condition.Unconcious].Reset();
+                        }
+                    }
+
+                    // Regen MP from item
+                    if (chr.WearsItemWithBonusStat(StatType.SpRegeneration))
+                    {
+                        bool canRegenMana = !chr.IsDead() && !chr.IsEradicated() &&
+                                            chr.CurrSpellPoints < chr.GetMaxSpellPoints();
+                        if (canRegenMana)
+                        {
+                            chr.CurrSpellPoints++;
+                        }
+                    }
+                });
             }
         }
     }

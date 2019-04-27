@@ -497,7 +497,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpecialEnchantType.OfMedusa:
-                    itemEnchant.StatBonusMap.Add(StatType.StoneImmunity, 1);
+                    itemEnchant.StatBonusMap.Add(StatType.PetrifyImmunity, 1);
                     break;
 
                 case SpecialEnchantType.OfForce:

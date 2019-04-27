@@ -31,7 +31,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private float m_MinutesSinceStart = 0;
         private List<Timer> m_Timers = new List<Timer>();
 
-        private float m_RealtimeSecondsElapsed = 0.0f;
+        private float m_RealtimeUnpausedSecondsElapsed = 0.0f;
 
         private float m_GameSecondsElapsed = 0.0f;
 
@@ -60,9 +60,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void Update()
         {
-            m_RealtimeSecondsElapsed += Time.deltaTime;
+            m_RealtimeUnpausedSecondsElapsed += Time.deltaTime;
 
-            CurrentTime.GameSeconds = m_StartTime.GameSeconds + (long)(m_RealtimeSecondsElapsed / 2 * 60);
+            CurrentTime.GameSeconds = m_StartTime.GameSeconds + (long)(m_RealtimeUnpausedSecondsElapsed / 2 * 60);
+
+            //Debug.Log(CurrentTime.GameSeconds);
 
             UpdateTimers();
         }
@@ -75,9 +77,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             CurrentTime.GameSeconds += 60 * num;
         }
 
-        public GameTime GetCurrentTime()
+        static public GameTime GetCurrentTime()
         {
-            return CurrentTime;
+            return TimeMgr.Instance.CurrentTime;
         }
 
         public void AddTimer(Timer timer)
