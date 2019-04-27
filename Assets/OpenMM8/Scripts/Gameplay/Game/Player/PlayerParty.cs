@@ -183,7 +183,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private void Attack()
         {
-            if (ActiveCharacter != null && ActiveCharacter.IsRecovered())
+            if (ActiveCharacter != null && ActiveCharacter.IsRecovered() && ActiveCharacter.CanAct())
             {
                 Damageable victim = null;
 
@@ -501,7 +501,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 return result;
             }*/
 
-            hitCharacter.AddCurrHitPoints(-1 * result.DamageDealt);
+            //hitCharacter.AddCurrHitPoints(-1 * result.DamageDealt);
+
+            // TODO: This is incorrect now, it is double reduced. Rework all of this anyway.
+            hitCharacter.ReceiveDamage(result.DamageDealt, hitInfo.DamageType);
             if (hitCharacter.CurrHitPoints <= 0)
             {
                 result.Type = AttackResultType.Kill;
@@ -818,13 +821,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 character.OnUpdate(Time.deltaTime);
             }
 
-            if (ActiveCharacter == null || !ActiveCharacter.IsRecovered())
+            if (ActiveCharacter == null || !ActiveCharacter.IsRecovered() || !ActiveCharacter.CanAct())
             {
                 foreach (Character character in Characters)
                 {
-                    if (character.CanAct() && character.IsRecovered() && 
-                        ((ActiveCharacter == null) || !ActiveCharacter.IsRecovered()))
+                    if (character.CanAct() && character.IsRecovered())
                     {
+                        Debug.Log("Can act !");
                         SetActiveCharacter(character);
                     }
                     else

@@ -71,7 +71,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             // Selection ring
             if (!GameCore.Instance.IsGamePaused())
             {
-                if (Owner.IsRecovered() && Owner.Party.ActiveCharacter == Owner)
+                if (Owner.IsRecovered() && Owner.CanAct() && Owner.Party.ActiveCharacter == Owner)
                 {
                     SelectionRing.enabled = true;
                 }
@@ -79,6 +79,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 {
                     SelectionRing.enabled = false;
                 }
+            }
+
+            if (Owner.IsRecovered() && Owner.CanAct())
+            {
+                AgroStatus.enabled = true;
+            }
+            else
+            {
+                AgroStatus.enabled = false;
             }
         }
 

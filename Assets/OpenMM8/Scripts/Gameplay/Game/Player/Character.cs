@@ -188,7 +188,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             bool wasRecovered = IsRecovered();
             TimeUntilRecovery -= secDiff;
 
-            if (!wasRecovered && IsRecovered())
+            if (CanAct() && !wasRecovered && IsRecovered())
             {
                 GameEvents.InvokeEvent_OnRecovered(this);
             }
@@ -221,7 +221,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public bool Attack(Damageable victim)
         {
-            if (TimeUntilRecovery > 0.0f)
+            if (!CanAct() || TimeUntilRecovery > 0.0f)
             {
                 return false;
             }
@@ -1366,7 +1366,82 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         //=============================================================================================================
 
+        public int CalculateIncomingDamage(int damageAmount, SpellElement spellElement)
+        {
+            // Lich is immune to Mind/Body/Spirit
+            if (Class == CharacterClass.Lich &&
+                (spellElement == SpellElement.Mind ||
+                 spellElement == SpellElement.Spirit ||
+                 spellElement == SpellElement.Body))
+            {
+                return 0;
+            }
 
+            int resistAmount = GetActualResistance(spellElement);
+            int luckAmount = GetActualLuck();
+            float resistReductionCoeff = GameMechanics.GetResistanceReductionCoeff(spellElement, resistAmount, luckAmount);
+
+            if (spellElement == SpellElement.Physical)
+            {
+                Item armorItem = GetItemAtSlot(EquipSlot.Armor);
+                if (armorItem != null && !armorItem.IsBroken)
+                {
+                    if (armorItem.Data.SkillGroup == ItemSkillGroup.Plate)
+                    {
+                        if (GetSkillMastery(SkillType.PlateArmor) >= SkillMastery.Master)
+                        {
+                            resistReductionCoeff /= 2.0f;
+                        }
+                    }
+
+                    if (armorItem.Data.SkillGroup == ItemSkillGroup.Chain)
+                    {
+                        if (GetSkillMastery(SkillType.ChainArmor) == SkillMastery.Grandmaster)
+                        {
+                            resistReductionCoeff *= 2.0f / 3.0f;
+                        }
+                    }
+                }
+            }
+
+            return (int)(damageAmount * resistReductionCoeff);
+        }
+
+        public int ReceiveDamage(int damageAmount, SpellElement spellElement)
+        {
+            Conditions[Condition.Sleep].Reset();
+
+            int damageTaken = CalculateIncomingDamage(damageAmount, spellElement);
+            CurrHitPoints -= damageTaken;
+
+            // Player too hurt - unconcious or dead
+            if (CurrHitPoints <= 0)
+            {
+                // High endurance or preservation buff prevents character from dying
+                //   - he will rather stay in unconcious state
+                if ((CurrHitPoints + GetBaseEndurance()) > 0 ||
+                    PlayerBuffMap[PlayerEffectType.Preservation].IsActive())
+                {
+                    SetCondition(Condition.Unconcious, false);
+                }
+                else
+                {
+                    SetCondition(Condition.Dead, false);
+                }
+
+                // Break armor if health dropped below -10
+                if (CurrHitPoints <= -10)
+                {
+                    Item armorItem = GetItemAtSlot(EquipSlot.Armor);
+                    if (armorItem != null)
+                    {
+                        armorItem.IsBroken = true;
+                    }
+                }
+            }
+
+            return damageTaken;
+        }
 
         //=============================================================================================================
 

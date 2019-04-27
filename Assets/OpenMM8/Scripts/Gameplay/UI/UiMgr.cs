@@ -930,15 +930,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnCharRecovered(Character chr)
         {
-            chr.UI.AgroStatus.enabled = true;
+            //chr.UI.AgroStatus.enabled = chr.CanAct();
         }
 
         public void OnCharRecoveryTimeChanged(Character chr, float recoveryTime)
         {
-            if (recoveryTime > 0.0f)
+            /*if (recoveryTime > 0.0f)
             {
                 chr.UI.AgroStatus.enabled = false;
-            }
+            }*/
         }
 
         public void OnCharConditionChanged(Character chr, Condition newCondition)
