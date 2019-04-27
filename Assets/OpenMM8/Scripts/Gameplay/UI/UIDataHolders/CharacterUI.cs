@@ -49,12 +49,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             GameObject.Destroy(Holder);
         }
 
+        // Should only be called when game is running (not paused)
         public void Refresh()
         {
-            // TODO:
-            // HP
-            // Mana
-            // Bless buff
+            //Debug.Log("Refresh");
 
             SetHealth(Owner.GetHealthPercentage());
             SetMana(Owner.GetManaPercentage());
@@ -68,8 +66,20 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
                 }
             }
-
             BlessBuff.enabled = hasBuff;
+
+            // Selection ring
+            if (!GameCore.Instance.IsGamePaused())
+            {
+                if (Owner.IsRecovered() && Owner.Party.ActiveCharacter == Owner)
+                {
+                    SelectionRing.enabled = true;
+                }
+                else
+                {
+                    SelectionRing.enabled = false;
+                }
+            }
         }
 
         public void SetHealth(float percentage)

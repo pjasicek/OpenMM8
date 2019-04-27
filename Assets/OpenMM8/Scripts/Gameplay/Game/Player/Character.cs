@@ -139,6 +139,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             // Testing
             SkillPoints = 15;
 
+            CurrHitPoints = GetMaxHitPoints();
+            CurrSpellPoints = GetMaxSpellPoints();
+
             //=====================================================================================
             // CharacterUI
             //=====================================================================================

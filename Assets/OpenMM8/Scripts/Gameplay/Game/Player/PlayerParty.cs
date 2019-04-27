@@ -422,17 +422,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 return;
             }
 
-            character.Party = this;
             Characters.Add(character);
             
-            GameEvents.InvokeEvent_OnCharacterJoinedParty(character, this);
+            //GameEvents.InvokeEvent_OnCharacterJoinedParty(character, this);
 
-            character.UI.StatsUI.Refresh();
+            /*character.UI.StatsUI.Refresh();
             character.CurrHitPoints = character.GetMaxHitPoints();
             character.CurrSpellPoints = character.GetMaxSpellPoints();
 
             character.UI.SkillsUI.RepositionSkillRows();
-            character.UI.SkillsUI.Repaint(character.SkillPoints);
+            character.UI.SkillsUI.Repaint(character.SkillPoints);*/
 
             PartyUI.UpdateLayout();
         }
@@ -444,19 +443,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 Logger.LogError("Attempting to remove nonexisting character from party");
                 return;
             }
+            character.UI.Destroy();
 
-            GameEvents.InvokeEvent_OnCharacterLeftParty(character, this);
+            //GameEvents.InvokeEvent_OnCharacterLeftParty(character, this);
 
             if (ActiveCharacter == character)
             {
                 // Update will decide next active character
                 ActiveCharacter = null;
-
-                /*Character mostRecChr = GetMostRecoveredCharacter();
-                if (mostRecChr != null && mostRecChr.IsRecovered())
-                {
-                    ActiveCharacter = mostRecChr;
-                }*/
             }
 
             PartyUI.UpdateLayout();
@@ -828,13 +822,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 foreach (Character character in Characters)
                 {
-                    if (character.IsRecovered() && ((ActiveCharacter == null) || !ActiveCharacter.IsRecovered()))
+                    if (character.CanAct() && character.IsRecovered() && 
+                        ((ActiveCharacter == null) || !ActiveCharacter.IsRecovered()))
                     {
                         SetActiveCharacter(character);
                     }
                     else
                     {
-                        character.UI.SelectionRing.enabled = false;
+                        //character.UI.SelectionRing.enabled = false;
                     }
                 }
             }

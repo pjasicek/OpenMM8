@@ -336,8 +336,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 chr.BaseAttributes[attr] = startingStats.DefaultStats[attr];
             }
 
-            PlayerParty.AddCharacter(chr);
-
             foreach (var skillAvailPair in startingSkills.SkillAvailabilityMap)
             {
                 if (skillAvailPair.Value == StartingSkillAvailability.HasByDefault)
@@ -367,9 +365,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 chr.LearnSpell(spell);
             }
-            
+
             //chr.LearnSkill(SkillType.Staff);
             //chr.LearnSkill(SkillType.Blaster);
+
+            chr.CurrHitPoints = chr.GetMaxHitPoints();
+            chr.CurrSpellPoints = chr.GetMaxSpellPoints();
+            PlayerParty.AddCharacter(chr);
         }
 
         public void AddRandChar()

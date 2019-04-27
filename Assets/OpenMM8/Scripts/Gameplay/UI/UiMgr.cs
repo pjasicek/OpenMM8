@@ -794,8 +794,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         break;
 
                     case "Spellbook":
-                        // Active character HAS TO exist
-                        if (GameCore.GetParty().ActiveCharacter == null)
+                        // Active character HAS TO exist to prevent MM6 bug
+                        if (GameCore.GetParty().GetActiveCharacter() == null)
                         {
                             break;
                         }

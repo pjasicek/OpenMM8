@@ -70,7 +70,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             public override bool EnterState(object stateArgs)
             {
                 m_UI = UiMgr.Instance.CharDetailUI;
-                if (GameCore.GetParty().ActiveCharacter == null)
+                if (GameCore.GetParty().GetActiveCharacter() == null)
                 {
                     GameCore.GetParty().SelectCharacter(0);
                 }
