@@ -13,6 +13,7 @@ public class SpriteLookRotator : MonoBehaviour
     Transform CameraTransform;
     LookDirection LookDir = LookDirection.Front;
     bool IsNpc = false;
+    public float facingAngle;
 
     SpriteRenderer Renderer;
     Animator Animator;
@@ -98,7 +99,118 @@ public class SpriteLookRotator : MonoBehaviour
             return;
         }
 
-        float cameraY = CameraTransform.rotation.eulerAngles.y;
+        // Inspipred by (credit goes to): https://github.com/Interkarma/daggerfall-unity
+
+        Transform parent = transform;
+        if (parent == null)
+            return;
+
+
+        Vector3 cameraPosition = Camera.transform.position;
+        Vector3 viewDirection = -new Vector3(Camera.transform.forward.x, 0, Camera.transform.forward.z);
+        //transform.LookAt(transform.position + viewDirection);
+
+
+        // Get direction normal to camera, ignore y axis
+        Vector3 dir = Vector3.Normalize(
+            new Vector3(cameraPosition.x, 0, cameraPosition.z) -
+            new Vector3(transform.position.x, 0, transform.position.z));
+
+        // Get parent forward normal, ignore y axis
+        Vector3 parentForward = transform.forward;
+        parentForward.y = 0;
+
+        // Get angle and cross product for left/right angle
+        facingAngle = Vector3.Angle(dir, parentForward);
+
+
+
+        facingAngle = facingAngle * -Mathf.Sign(Vector3.Cross(dir, parentForward).y);
+
+        // Hand-tune facing index
+        int orientation = 0;
+
+        LookDirection currLook = LookDirection.Front;
+        // Right-hand side
+        if (facingAngle > 0.0f && facingAngle < 22.5f)
+        {
+            // orientation = 0;
+            currLook = LookDirection.Front;
+        }
+        if (facingAngle > 22.5f && facingAngle < 67.5f)
+        {
+            // orientation = 7;
+            currLook = LookDirection.FrontRight;
+        }
+        if (facingAngle > 67.5f && facingAngle < 112.5f)
+        {
+            // orientation = 6;
+            currLook = LookDirection.Right;
+        }   
+        if (facingAngle > 112.5f && facingAngle < 157.5f)
+        {
+            // orientation = 5;
+            currLook = LookDirection.BackRight;
+        }   
+        if (facingAngle > 157.5f && facingAngle < 180.0f)
+        {
+            // orientation = 4;
+            currLook = LookDirection.Back;
+        }
+            
+
+        // Left-hand side
+        if (facingAngle < 0.0f && facingAngle > -22.5f)
+        {
+            // orientation = 0;
+            currLook = LookDirection.Front;
+        }
+        if (facingAngle < -22.5f && facingAngle > -67.5f)
+        {
+            // orientation = 1;
+            currLook = LookDirection.FrontLeft;
+        }   
+        if (facingAngle < -67.5f && facingAngle > -112.5f)
+        {
+            // orientation = 2;
+            currLook = LookDirection.Left;
+        }   
+        if (facingAngle < -112.5f && facingAngle > -157.5f)
+        {
+            // orientation = 3;
+            currLook = LookDirection.BackLeft;
+        }   
+        if (facingAngle < -157.5f && facingAngle > -180.0f)
+        {
+            // orientation = 4;
+            currLook = LookDirection.Back;
+        }
+            
+
+        // Change person to this orientation
+        if (currLook != LookDir)
+        {
+            if (IsNpc)
+            {
+                // Hack
+                BaseNpc.NpcState state = (BaseNpc.NpcState)Animator.GetInteger("State");
+                if (state == BaseNpc.NpcState.Attacking)
+                {
+                    return;
+                    //currLook = LookDirection.Front;
+                }
+            }
+
+            OnLookDirectionChanged(currLook);
+        }
+
+        return;
+
+
+
+
+
+        /*float cameraY = CameraTransform.rotation.eulerAngles.y;
         float thisY = transform.rotation.eulerAngles.y;
 
         float diffAngle = cameraY - thisY;
@@ -145,10 +257,10 @@ public class SpriteLookRotator : MonoBehaviour
         {
             /*Debug.Log("SHOULD NOT EVER HAPPEN ! ANGLE: " + diffAngle);
             Debug.Log("CameraY: " + cameraY + ", ThisY: " + thisY);*/
-            return;
-        }
+        return;
+        
 
-        if (currLook != LookDir)
+       /* if (currLook != LookDir)
         {
             if (IsNpc)
             {
@@ -162,7 +274,7 @@ public class SpriteLookRotator : MonoBehaviour
             }
 
             OnLookDirectionChanged(currLook);
-        }
+        }*/
 
         /*if (diffAngle < 0)
         {
