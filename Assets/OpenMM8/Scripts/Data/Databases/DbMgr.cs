@@ -37,6 +37,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public SpellDataDb SpellDataDb = new SpellDataDb();
         public CharacterFaceExpressionDb CharacterFaceExpressionDb = new CharacterFaceExpressionDb();
         public CharacterReactionDb CharacterReactionDb = new CharacterReactionDb();
+        public SpriteAnimationDb SpriteAnimationDb = new SpriteAnimationDb();
 
         public const string MM8_DATA_PATH = @"Data/";
 
@@ -79,6 +80,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             SpellDataDb.Initialize(MM8_DATA_PATH + "SPELLS");
             CharacterFaceExpressionDb.Initialize(MM8_DATA_PATH + "CHARACTER_FACE_EXPRESSIONS");
             CharacterReactionDb.Initialize(MM8_DATA_PATH + "CHARACTER_REACTIONS");
+            SpriteAnimationDb.Initialize(MM8_DATA_PATH + "SPRITE_FRAME_TABLE");
 
 
             stopwatch.Stop();

@@ -176,7 +176,14 @@ public enum SpellType
     Dragon_UNUSED_8,
     Dragon_UNUSED_9,
     Dragon_UNUSED_10,
-    Dragon_UNUSED_11
+    Dragon_UNUSED_11,
+
+
+    // Misc - not spellbook spells but not normal attacks either
+    //        all of these should have some projectile
+    Misc_Arrow = 1000,
+    Misc_Blaster = 1001,
+    Misc_DragonBreath = 1002,
 }
 
 // Buffs affecting the whole party

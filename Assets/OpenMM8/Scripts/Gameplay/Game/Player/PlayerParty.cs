@@ -129,7 +129,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     tryCharIndex = 0;
                 }
 
-                if (!onlyRecovered || Characters[tryCharIndex].IsRecovered())
+                if (!onlyRecovered || (Characters[tryCharIndex].IsRecovered() && Characters[tryCharIndex].CanAct()))
                 {
                     SelectCharacter(tryCharIndex);
                     found = true;
@@ -655,7 +655,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     if (UiMgr.Instance.m_HeldItem != null)
                     {
                         Ray throwRay = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.8f, 0.0f));
-                        ItemMgr.ThrowItem(transform, throwRay.direction, UiMgr.Instance.m_HeldItem.Item);
+                        GameCore.ThrowItem(transform, throwRay.direction, UiMgr.Instance.m_HeldItem.Item);
                         GameObject.Destroy(UiMgr.Instance.m_HeldItem.gameObject);
                     }
 
@@ -762,6 +762,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return GetHeldItem() != null;
         }
 
+        public Vector3 GetProjectileSpawnPos()
+        {
+            return transform.position + new Vector3(0.0f, 0.3f, 0.0f);
+        }
+
         //=========================================================================================
         // PARTY UPDATE ROUTINES
         //=========================================================================================
@@ -781,6 +786,26 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             foreach (Character character in Characters)
             {
                 character.OnFixedUpdate(deltaTime);
+            }
+
+            bool isCastingTargetedSpell = SpellCastHelper.PendingPlayerSpell != null &&
+                (SpellCastHelper.PendingPlayerSpell.Flags.HasFlag(CastSpellFlags.TargetNpc) ||
+                 SpellCastHelper.PendingPlayerSpell.Flags.HasFlag(CastSpellFlags.TargetCorpse) ||
+                 SpellCastHelper.PendingPlayerSpell.Flags.HasFlag(CastSpellFlags.TargetMesh) || // TODO
+                 SpellCastHelper.PendingPlayerSpell.Flags.HasFlag(CastSpellFlags.TargetOutdoorItem)); // TODO
+            if (Input.GetButtonDown("Attack") && isCastingTargetedSpell)
+            {
+                RaycastHit hit;
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out hit, 100.0f, 1 << LayerMask.NameToLayer("NPC")))
+                {
+                    Transform objectHit = hit.collider.transform;
+                    if ((objectHit.GetComponent<BaseNpc>() != null))
+                    {
+                        BaseNpc npc = objectHit.GetComponent<BaseNpc>();
+                        SpellCastHelper.OnCrosshairClickedOnNpc(npc);   
+                    }
+                }
             }
 
             // TODO: Make some generic way to determine whether PlayerParty can act ...
@@ -844,7 +869,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 // TODO: Handle this more elegantly, this should not know anything about UiMgr
                 // Throw the item 
                 Ray throwRay = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.8f, 0.0f));
-                ItemMgr.ThrowItem(transform, throwRay.direction, GetHeldItem());
+                GameCore.ThrowItem(transform, throwRay.direction, GetHeldItem());
                 RemoveHeldItem();
                 AttackDelayTimeLeft = 0.1f;
             }

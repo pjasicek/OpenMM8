@@ -70,7 +70,7 @@ public class CombatNpc : BaseNpc
             WasInit)
         {
             SetNavMeshAgentEnabled(false);
-            SpriteLookRotator.OnLookDirectionChanged(SpriteLookRotator.LookDirection.Front);
+            SpriteLookRotator.OnLookDirectionChanged(LookDirection.Front);
             SpriteLookRotator.LookLocked = true;
             if (Animator.enabled)
             {
@@ -339,7 +339,9 @@ public class CombatNpc : BaseNpc
                     projectile.AttackInfo = NpcData.Attack2;
                     projectile.IsTargetPlayer = Target.CompareTag("Player");
                     Vector3 add = new Vector3(0, 1.0f, 0);
-                    projectile.Shoot(arrow.transform.position, Target.transform.position + add);
+                    Vector3 shootDirection = (Target.transform.position + add - arrow.transform.position).normalized;
+                    //projectile.Shoot(arrow.transform.position, Target.transform.position + add);
+                    projectile.Shoot(shootDirection);
                 }
             }
         }

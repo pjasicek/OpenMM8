@@ -182,6 +182,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 Cursor.SetCursor(cursorImage, cursorHotspot, CursorMode.Auto);
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+                UiMgr.Instance.CrosshairImage.enabled = false;
 
                 GameCore.Instance.PauseGame();
                 PendingPlayerSpell = playerSpell;
@@ -203,6 +204,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
                     Cursor.lockState = CursorLockMode.Locked;
                     Cursor.visible = false;
+                    UiMgr.Instance.CrosshairImage.enabled = true;
 
                     GameCore.Instance.PlayerParty.Characters.ForEach(chr =>
                     {
@@ -245,6 +247,20 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             ClearPlayerSpell();
         }
 
+        static public void OnCrosshairClickedOnNpc(BaseNpc npc)
+        {
+            if (PendingPlayerSpell == null)
+            {
+                Debug.LogError("No pending player spell ???");
+                return;
+            }
+
+            PendingPlayerSpell.Target = npc;
+            ExecutePlayerSpellCast(PendingPlayerSpell);
+
+            ClearPlayerSpell();
+        }
+
         static public void ExecutePlayerSpellCast(PlayerSpell spell)
         {
             if (spell.Caster.CurrSpellPoints < spell.RequiredMana)
@@ -265,6 +281,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Character targetCharacter = spell.Target as Character;
             InventoryItem targetInventoryItem = spell.Target as InventoryItem;
             BaseNpc targetNpc = spell.Target as BaseNpc;
+
+            Vector3 defaultCrosshairDirection = UiMgr.GetCrosshairRay().direction;
+            
 
             int duration = 0;
             int power = 0;
@@ -300,7 +319,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Fire_FireBolt:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    
+
                     break;
 
                 case SpellType.Fire_FireAura:
@@ -399,7 +419,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Fire_Inferno:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    Ray ray = UiMgr.GetCrosshairRay();
+                    Transform partyTransform = GameCore.GetParty().transform;
+                    GameObject arrow = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/PlaceholderProjectile"),
+                        ray.origin + (ray.direction * 1), partyTransform.rotation);
+                    Projectile projectile = arrow.GetComponent<Projectile>();
+                    projectile.AttackInfo = new AttackInfo();
+                    projectile.IsTargetPlayer = false;
+
+                    Debug.Log("Origin: " + ray.origin + ", Direction: " + ray.direction);
+                    //projectile.Shoot(arrow.transform.position, arrow.transform.position + ray.direction * 100.0f);
                     break;
 
                 case SpellType.Fire_Incinerate:

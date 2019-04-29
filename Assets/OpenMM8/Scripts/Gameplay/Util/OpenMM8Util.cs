@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Assets.OpenMM8.Scripts
 {
-    public class OpenMM8Util
+    public static class OpenMM8Util
     {
         // Returns a GameObject at specified scene path, e.g. /PartyCanvas/GoldFood. 
         // Can search from root - specified GameObject.
@@ -76,6 +76,16 @@ namespace Assets.OpenMM8.Scripts
         {
             int numElements = dict.Count;
             return dict.Keys.ToList()[UnityEngine.Random.Range(0, numElements)];
+        }
+
+        public static long ElapsedNanoSeconds(this System.Diagnostics.Stopwatch watch)
+        {
+            return watch.ElapsedTicks * 1000000000 / System.Diagnostics.Stopwatch.Frequency;
+        }
+
+        public static long ElapsedMicroSeconds(this System.Diagnostics.Stopwatch watch)
+        {
+            return watch.ElapsedTicks * 1000000 / System.Diagnostics.Stopwatch.Frequency;
         }
     }
 }

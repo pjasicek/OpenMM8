@@ -8,7 +8,6 @@ public class CameraFacingBillboard : MonoBehaviour
     public Camera Camera;
     public bool amActive = true;
     public bool autoInit = true;
-    Transform parentTransform;
 
     private Quaternion origRotation;
 
@@ -19,13 +18,6 @@ public class CameraFacingBillboard : MonoBehaviour
             Camera = Camera.main;
             amActive = true;
         }
-
-        /*myContainer = new GameObject();
-        myContainer.name = "GRP_" + transform.gameObject.name;
-        myContainer.transform.position = transform.position;
-        transform.parent = myContainer.transform;*/
-
-        parentTransform = GetComponentInParent<Transform>();
     }
 
     public void OnEnable()

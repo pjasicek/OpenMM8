@@ -34,6 +34,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public InventoryItem m_HeldItem = null;
         public InspectableUiText m_HoveredInspectableUiText = null;
 
+        public RawImage CrosshairImage;
         public Texture2D TargetCrosshairTexture;
 
         // State
@@ -88,8 +89,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             GameEvents.OnCharacterLeftParty += OnCharacterLeftParty;*/
             GameEvents.OnHoverObject += OnHoverObject;
 
-            GameEvents.OnRecovered += OnCharRecovered;
-            GameEvents.OnRecoveryTimeChanged += OnCharRecoveryTimeChanged;
             GameEvents.OnCharHitNpc += OnCharHitNpc;
             GameEvents.OnCharGotHit += OnCharGotHit;
             GameEvents.OnCharAttack += OnCharAttack;
@@ -139,6 +138,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 Debug.LogError("Could not find PartyCanvas gameobject !");
             }
 
+            CrosshairImage = OpenMM8Util.GetComponentAtScenePath<RawImage>("Crosshair", m_PartyBuffsAndButtonsCanvas.gameObject);
             m_MinimapCloseButtonImage = PartyCanvasHolder.transform.Find("MinimapCloseButton").GetComponent<Image>();
 
             m_MapQuestNotesUI = new MapQuestNotesUI();
@@ -928,24 +928,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         //=================================== Events ===================================
 
-        public void OnCharRecovered(Character chr)
-        {
-            //chr.UI.AgroStatus.enabled = chr.CanAct();
-        }
-
-        public void OnCharRecoveryTimeChanged(Character chr, float recoveryTime)
-        {
-            /*if (recoveryTime > 0.0f)
-            {
-                chr.UI.AgroStatus.enabled = false;
-            }*/
-        }
-
-        public void OnCharConditionChanged(Character chr, Condition newCondition)
-        {
-
-        }
-
         public void OnCharHitNpc(Character chr, AttackInfo attackInfo, AttackResult result)
         {
             //chr.CharFaceUpdater.ResetTimer();
@@ -1036,31 +1018,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public void OnNpcInspectEnd(Character inspector, BaseNpc npc, MonsterData npcData)
         {
             m_InspectNpcUI.Canvas.enabled = false;
-        }
-
-        public void OnItemInspect(Character inspectorChr, ItemData itemData/*, InspectResult result*/)
-        {
-
-        }
-
-        public void OnItemInspectEnd()
-        {
-
-        }
-
-        public void OnItemEquip(/*Item item, EquipResult equipResult*/)
-        {
-
-        }
-
-        public void OnItemHold(ItemData item)
-        {
-
-        }
-
-        public void OnItemHoldEnd()
-        {
-
         }
 
         public void OnMinimapMarkerCreated(MinimapMarker marker)

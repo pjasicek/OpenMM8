@@ -170,6 +170,13 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         {
             GetComponent<MinimapMarker>().Color = Color.green;
         }
+
+        GameCore.Instance.NpcList.Add(this);
+    }
+
+    private void OnDestroy()
+    {
+        GameCore.Instance.NpcList.Remove(this);
     }
 
     private AttackResult OnAttackReceived(AttackInfo hitInfo, GameObject source)
@@ -305,7 +312,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
 
         enabled = false;
         NavMeshObstacle.enabled = false;
-        SpriteLookRotator.OnLookDirectionChanged(SpriteLookRotator.LookDirection.Front);
+        SpriteLookRotator.OnLookDirectionChanged(LookDirection.Front);
         SpriteLookRotator.LookLocked = true;
         GetComponent<CapsuleCollider>().center = new Vector3(0, -1.75f, 0);
         GetComponent<CapsuleCollider>().radius = 0.75f;
@@ -328,7 +335,10 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         }
 
         GetComponent<Lootable>().enabled = true;
-        GetComponent<MinimapMarker>().Color = Color.yellow; 
+        GetComponent<MinimapMarker>().Color = Color.yellow;
+
+
+        GameCore.Instance.NpcList.Remove(this);
     }
 
     // Animator
@@ -469,7 +479,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         if (go.CompareTag("Player"))
         {
             transform.LookAt(transform.position + go.transform.rotation * Vector3.back, go.transform.rotation * Vector3.up);
-            SpriteLookRotator.OnLookDirectionChanged(SpriteLookRotator.LookDirection.Front);
+            SpriteLookRotator.OnLookDirectionChanged(LookDirection.Front);
         }
         else
         {

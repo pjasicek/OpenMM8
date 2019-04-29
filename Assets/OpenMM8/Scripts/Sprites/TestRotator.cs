@@ -1,25 +1,12 @@
-﻿using System.Collections;
+﻿using Assets.OpenMM8.Scripts.Gameplay;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
-// Relative to camera
-public enum LookDirection
-{
-    Front,
-    FrontRight,
-    Right,
-    BackRight,
-    Back,
-    BackLeft,
-    Left,
-    FrontLeft
-};
-
-
 [RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(Animator))]
-public class SpriteLookRotator : MonoBehaviour
+[RequireComponent(typeof(SpriteBillboardAnimator))]
+public class TestRotator : MonoBehaviour
 {
     Camera Camera;
     Transform CameraTransform;
@@ -33,6 +20,8 @@ public class SpriteLookRotator : MonoBehaviour
     public float RefreshRate = 50.0f;
     public bool LookLocked = false;
 
+    SpriteBillboardAnimator SpriteBillboardAnimator;
+
     // Use this for initialization
     void Start()
     {
@@ -42,6 +31,7 @@ public class SpriteLookRotator : MonoBehaviour
         Renderer = GetComponent<SpriteRenderer>();
         Animator = GetComponent<Animator>();
         IsNpc = GetComponent<BaseNpc>() != null;
+        SpriteBillboardAnimator = GetComponent<SpriteBillboardAnimator>();
 
         InvokeRepeating("AlignRotation", 0.0f, RefreshRate / 1000.0f);
     }
@@ -52,52 +42,7 @@ public class SpriteLookRotator : MonoBehaviour
 
         //Debug.Log("Look direction changed to: " + current);
 
-        Renderer.flipX = false;
-
-        if (LookDir == LookDirection.Front)
-        {
-            Animator.SetInteger("LookDirection", 0);
-        }
-        else if (LookDir == LookDirection.FrontRight)
-        {
-            //Debug.Log("FrontRight");
-            Animator.SetInteger("LookDirection", 1);
-            Renderer.flipX = true;
-        }
-        else if (LookDir == LookDirection.Right)
-        {
-            Animator.SetInteger("LookDirection", 2);
-            Renderer.flipX = true;
-        }
-        else if (LookDir == LookDirection.BackRight)
-        {
-            Animator.SetInteger("LookDirection", 3);
-            Renderer.flipX = true;
-        }
-        else if (LookDir == LookDirection.Back)
-        {
-            Animator.SetInteger("LookDirection", 4);
-        }
-        else if (LookDir == LookDirection.BackLeft)
-        {
-            Animator.SetInteger("LookDirection", 3);
-            //m_Renderer.flipX = true;
-        }
-        else if (LookDir == LookDirection.Left)
-        {
-            Animator.SetInteger("LookDirection", 2);
-            //m_Renderer.flipX = true;
-        }
-        else if (LookDir == LookDirection.FrontLeft)
-        {
-            //Debug.Log("FrontLeft");
-            Animator.SetInteger("LookDirection", 1);
-            //m_Renderer.flipX = true;
-        }
-        else
-        {
-            UnityEngine.Assertions.Assert.IsTrue(false, "Invalid LookDirection: " + LookDir);
-        }
+        SpriteBillboardAnimator.SetLookDirection(LookDir);
     }
 
     // Instead of Update to not drain CPU

@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using Assets.OpenMM8.Scripts.Data;
 
 using IngameDebugConsole;
+using Assets.OpenMM8.Scripts.Gameplay.Items;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
@@ -38,7 +39,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         [HideInInspector]
         public bool m_IsGamePaused = false;
 
+        public List<BaseNpc> NpcList = new List<BaseNpc>();
+
         // Private
+
+        // TODO: Get rid of this
         private Inspectable m_InspectedObj;
 
         void Awake()
@@ -62,6 +67,20 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             StatusTextBar = new StatusTextBar();
             StatusTextBar.TargetText = PlayerParty.PartyUI.StatusBarText;
+
+
+
+            //......
+            SpriteRegistry.LoadSpritesheet("Decals");
+            SpriteRegistry.LoadSpritesheet("RocksTreesFlowers");
+            SpriteRegistry.LoadSpritesheet("SpellsProjectiles");
+
+            OpenMM8_SpriteAnimation testAnim = SpriteRegistry.GetSpriteAnimation("spell57");
+            foreach (Sprite animSprite in testAnim.BackSprites)
+            {
+                Debug.Log(animSprite.name);
+            }
+
 
             return true;
         }
@@ -112,6 +131,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         //=========================================================================================
         void Update()
         {
+            //Debug.Log("Alive NPCs: " + NpcList.Count);
+
             // 1) Display pointed status object string (not sure if necessary to do that here ?)
 
             StatusTextBar.DoUpdate();
@@ -300,6 +321,46 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     }
                 }
             }
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                GameObject arrow = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/PlaceholderProjectile"));
+                Projectile projectile = arrow.GetComponent<Projectile>();
+
+                // Test
+                projectile.AttackInfo = new AttackInfo();
+                projectile.AttackInfo.AttackMod = 1;
+                projectile.AttackInfo.MaxDamage = 2;
+                projectile.AttackInfo.MinDamage = 1;
+                projectile.AttackInfo.DamageType = SpellElement.Physical;
+                projectile.Owner = GetParty().gameObject;
+
+                projectile.IsTargetPlayer = false;
+
+                Ray ray = UiMgr.GetCrosshairRay();
+                projectile.ShootFromParty(PlayerParty, ray.direction);
+            }
+
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                GameObject arrow = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/TestSpellProjectile"));
+                arrow.GetComponent<SpriteBillboardAnimator>().SetAnimation(SpriteRegistry.GetSpriteAnimation("spell57"));
+
+                Projectile projectile = arrow.GetComponent<Projectile>();
+
+                // Test
+                projectile.AttackInfo = new AttackInfo();
+                projectile.AttackInfo.AttackMod = 1;
+                projectile.AttackInfo.MaxDamage = 2;
+                projectile.AttackInfo.MinDamage = 1;
+                projectile.AttackInfo.DamageType = SpellElement.Physical;
+                projectile.Owner = GetParty().gameObject;
+
+                projectile.IsTargetPlayer = false;
+
+                Ray ray = UiMgr.GetCrosshairRay();
+                projectile.ShootFromParty(PlayerParty, ray.direction);
+            }
         }
 
         public void AddRosterNpcToParty(int rosterId)
@@ -359,6 +420,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             chr.LearnSkill(SkillType.DarkElfAbility);
             chr.LearnSkill(SkillType.VampireAbility);
             chr.LearnSkill(SkillType.DragonAbility);
+
+            chr.AddSKill(SkillType.Meditation, SkillMastery.Grandmaster, 20);
 
             // Learn all spells
             foreach (SpellType spell in Enum.GetValues(typeof(SpellType)))
@@ -425,6 +488,21 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         static public void SetStatusBarText(string text, bool overrideExisting = true, float duration = 2.0f)
         {
             Instance.StatusTextBar.SetText(text, overrideExisting, duration);
+        }
+
+        static public void ThrowItem(Transform transform, Vector3 direction, Item item)
+        {
+            GameObject outdoorItem = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Objects/OutdoorItem"),
+                transform.position + (transform.forward * 2.5f), transform.rotation);
+
+            outdoorItem.GetComponent<SpriteRenderer>().sprite = item.Data.OutdoorSprite;
+            outdoorItem.GetComponent<Lootable>().Loot.Item = item;
+            outdoorItem.GetComponent<InspectableItem>().Item = item;
+
+            Debug.Log("[ThrowItem] Id: " + item.Data.Id);
+
+            Vector3 speed = UiMgr.GetCrosshairRay().direction * 5.0f;
+            outdoorItem.GetComponent<Rigidbody>().velocity = speed;
         }
     }
 }
