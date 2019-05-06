@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Assets.OpenMM8.Scripts.Gameplay.Data
 {
-    public class NpcDb : DataDb<MonsterData>
+    public class MonsterDb : DataDb<MonsterData>
     {
         Dictionary<MonsterType, MonsterData> Npcs = new Dictionary<MonsterType, MonsterData>();
 
@@ -33,18 +33,29 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             npcData.Treasure = new NpcLootPrototype(columns[7]);
             npcData.Quest = int.Parse(columns[8]);
             npcData.Fly = columns[9].ToLower() == "y";
-            npcData.Move = columns[10];
+            switch (columns[10].ToLower())
+            {
+                case "short": npcData.MoveType = MonsterMoveType.Short; break;
+                case "med": npcData.MoveType = MonsterMoveType.Medium; break;
+                case "long": npcData.MoveType = MonsterMoveType.Long; break;
+                case "free": npcData.MoveType = MonsterMoveType.Free; break;
+                case "stationary": npcData.MoveType = MonsterMoveType.Stationary; break;
+                case "global": npcData.MoveType = MonsterMoveType.Global; break;
+                default: npcData.MoveType = MonsterMoveType.Free; break;
+            }
+
             switch (columns[11].ToLower())
             {
-                case "wimp": npcData.Agressivity = NpcAgressivityType.Wimp; break;
-                case "normal": npcData.Agressivity = NpcAgressivityType.Normal; break;
-                case "aggress": npcData.Agressivity = NpcAgressivityType.Agressive; break;
-                case "suicidal": npcData.Agressivity = NpcAgressivityType.Suicidal; break;
+                case "wimp": npcData.Agressivity = MonsterAggresivityType.Wimp; break;
+                case "normal": npcData.Agressivity = MonsterAggresivityType.Normal; break;
+                case "aggress": npcData.Agressivity = MonsterAggresivityType.Agressive; break;
+                case "suicidal": npcData.Agressivity = MonsterAggresivityType.Suicidal; break;
                 default: break;
             }
             npcData.Hostility = int.Parse(columns[12]);
             npcData.Speed = int.Parse(columns[13]);
-            npcData.Rec = int.Parse(columns[14]);
+            // Not sure why but this is how it should be
+            npcData.RecoveryTime = (int.Parse(columns[14]) / 128.0f) * 2.13333f; 
             switch (columns[15].ToLower())
             {
                 case "d": npcData.PreferredClass = CharacterClass.Dragon; break;
@@ -55,6 +66,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                 case "k": npcData.PreferredClass = CharacterClass.Knight; break;
                 //case "x": npcData.PreferredClass = Class.Male; break;
                 //case "o": npcData.PreferredClass = Class.Female; break;
+                
                 default: npcData.PreferredClass = CharacterClass.None; break;
             }
             npcData.BonusAbility = columns[16];

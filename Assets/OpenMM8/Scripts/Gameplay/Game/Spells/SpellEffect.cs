@@ -59,11 +59,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return ExpiryTime.GameSeconds > TimeMgr.GetCurrentTime().GameSeconds;
         }
 
-        public bool IsExpired()
+        public bool IsAppliedAndExpired()
         {
             if (!IsApplied())
             {
-                return true;
+                return false;
             }            
 
             return ExpiryTime.GameSeconds <= TimeMgr.GetCurrentTime().GameSeconds;

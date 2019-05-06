@@ -597,11 +597,4 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         L6,
         None
     }
-    public enum NpcAgressivityType
-    {
-        Wimp,
-        Normal,
-        Agressive,
-        Suicidal
-    }
 }

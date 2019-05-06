@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 
-public class OpenMM8_SpriteAnimation
+public class SpriteObject
 {
     public string Name;
     public float TotalAnimationLengthSeconds;

@@ -13,7 +13,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public class DbMgr : Singleton<DbMgr>
     {
         public ItemDb ItemDb = new ItemDb();
-        public NpcDb MonsterDb = new NpcDb();
+        public MonsterDb MonsterDb = new MonsterDb();
         public NpcGreetDb NpcGreetDb = new NpcGreetDb();
         public NpcTextDb NpcTextDb = new NpcTextDb();
         public NpcTopicDb NpcTopicDb = new NpcTopicDb();
@@ -37,7 +37,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public SpellDataDb SpellDataDb = new SpellDataDb();
         public CharacterFaceExpressionDb CharacterFaceExpressionDb = new CharacterFaceExpressionDb();
         public CharacterReactionDb CharacterReactionDb = new CharacterReactionDb();
-        public SpriteAnimationDb SpriteAnimationDb = new SpriteAnimationDb();
+        public SpriteObjectDb SpriteObjectDb = new SpriteObjectDb();
+        public MonsterObjectDb MonsterObjectDb = new MonsterObjectDb();
+        public MonsterRelationDb MonsterRelationDb = new MonsterRelationDb();
 
         public const string MM8_DATA_PATH = @"Data/";
 
@@ -80,7 +82,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             SpellDataDb.Initialize(MM8_DATA_PATH + "SPELLS");
             CharacterFaceExpressionDb.Initialize(MM8_DATA_PATH + "CHARACTER_FACE_EXPRESSIONS");
             CharacterReactionDb.Initialize(MM8_DATA_PATH + "CHARACTER_REACTIONS");
-            SpriteAnimationDb.Initialize(MM8_DATA_PATH + "SPRITE_FRAME_TABLE");
+            SpriteObjectDb.Initialize(MM8_DATA_PATH + "SPRITE_FRAME_TABLE");
+            MonsterObjectDb.Initialize(MM8_DATA_PATH + "MONSTER_LIST");
+            MonsterRelationDb.Initialize(MM8_DATA_PATH + "MONSTER_RELATION_DATA");
 
 
             stopwatch.Stop();

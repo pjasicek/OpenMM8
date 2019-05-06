@@ -19,17 +19,42 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public NpcLootPrototype Treasure;
         public int Quest;
         public bool Fly;
-        public string Move;
-        public NpcAgressivityType Agressivity;
+        public MonsterMoveType MoveType;
+        public MonsterAggresivityType Agressivity;
         public int Hostility;
         public int Speed;
-        public int Rec;
+        public float RecoveryTime;
         public CharacterClass PreferredClass;
         public string BonusAbility;
 
         public AttackInfo Attack1;
         public int ChanceAttack2;
         public AttackInfo Attack2;
+
+        // TODO:
+        public SpellElement Attack1Element = SpellElement.None;
+        public int Attack1DamageDiceRolls;
+        public int Attack1DamageDiceSides;
+        public string Attack1Missile;
+
+        public SpellElement Attack2Element = SpellElement.None;
+        public int Attack2DamageDiceRolls;
+        public int Attack2DamageDiceSides;
+        public string Attack2Missile;
+        public int Attack2UseChance;
+
+        // TODO:
+        public int Spell1UseChance;
+        public int Spell1ID;
+        public int Spell1SkillLevel;
+        public SkillMastery Spell1SkillMastery;
+
+        public int Spell2UseChance;
+        public int Spell2ID;
+        public int Spell2SkillLevel;
+        public SkillMastery Spell2SkillMastery;
+
+
         public int ChanceSpellAttack1;
         public SpellInfo SpellAttack1;
         public int ChanceSpellAttack2;

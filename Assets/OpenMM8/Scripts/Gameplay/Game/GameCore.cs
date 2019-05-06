@@ -40,6 +40,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public bool m_IsGamePaused = false;
 
         public List<BaseNpc> NpcList = new List<BaseNpc>();
+        public List<Monster> MonsterList = new List<Monster>();
+
+        public List<Monster> NearbyMonsterList = new List<Monster>();
+        public List<float> NearbyMonsterDistanceList = new List<float>();
+
+        public float TimeSinceMonsterUpdate = 0.0f;
 
         // Private
 
@@ -55,6 +61,20 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             GameState = GameState.Ingame;
             MapType = MapType.Outdoor;
+
+
+            //......
+            SpriteObjectRegistry.LoadSpritesheet("Decals");
+            SpriteObjectRegistry.LoadSpritesheet("RocksTreesFlowers");
+            SpriteObjectRegistry.LoadSpritesheet("SpellsProjectiles");
+            SpriteObjectRegistry.LoadSpritesheet("m401");
+            SpriteObjectRegistry.LoadSpritesheet("m413");
+
+            SpriteObject testAnim = SpriteObjectRegistry.GetSpriteObject("spell57");
+            foreach (Sprite animSprite in testAnim.BackSprites)
+            {
+                Debug.Log(animSprite.name);
+            }
         }
 
         public bool Init()
@@ -67,19 +87,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             StatusTextBar = new StatusTextBar();
             StatusTextBar.TargetText = PlayerParty.PartyUI.StatusBarText;
-
-
-
-            //......
-            SpriteRegistry.LoadSpritesheet("Decals");
-            SpriteRegistry.LoadSpritesheet("RocksTreesFlowers");
-            SpriteRegistry.LoadSpritesheet("SpellsProjectiles");
-
-            OpenMM8_SpriteAnimation testAnim = SpriteRegistry.GetSpriteAnimation("spell57");
-            foreach (Sprite animSprite in testAnim.BackSprites)
-            {
-                Debug.Log(animSprite.name);
-            }
 
 
             return true;
@@ -142,6 +149,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             // 3) Do event loop - not sure if it's applicable here ? I do not do async events, I process
             //    everything directly when it happens
+
+            TimeSinceMonsterUpdate += Time.deltaTime;
+            if (TimeSinceMonsterUpdate >= 0.02)
+            {
+                Monster.UpdateMonsters(TimeSinceMonsterUpdate);
+
+                TimeSinceMonsterUpdate = 0.0f;
+            }
 
             // 4) If arcomage is in progress - just update arcomage and continue
 
@@ -344,7 +359,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             if (Input.GetKeyDown(KeyCode.R))
             {
                 GameObject arrow = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/TestSpellProjectile"));
-                arrow.GetComponent<SpriteBillboardAnimator>().SetAnimation(SpriteRegistry.GetSpriteAnimation("spell57"));
+                arrow.GetComponent<SpriteBillboardAnimator>().SetAnimation(SpriteObjectRegistry.GetSpriteObject("spell57"));
 
                 Projectile projectile = arrow.GetComponent<Projectile>();
 
@@ -503,6 +518,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             Vector3 speed = UiMgr.GetCrosshairRay().direction * 5.0f;
             outdoorItem.GetComponent<Rigidbody>().velocity = speed;
+        }
+
+        static public SpriteObject GetSpriteObject(string name, string fromSpritesheet = "")
+        {
+            return SpriteObjectRegistry.GetSpriteObject(name, fromSpritesheet);
         }
     }
 }

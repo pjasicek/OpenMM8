@@ -14,29 +14,29 @@ using UnityEngine.Assertions;
 //       since not all of these entries are animations ... some have just a single sprite
 //
 // All spriesheets used for this HAVE TO be in "Resources/Sprites/OriginalSprites" !!!
-public class SpriteRegistry
+public class SpriteObjectRegistry
 {
-    static public Dictionary<string, OpenMM8_SpriteAnimation> SpriteAnimationMap = 
-        new Dictionary<string, OpenMM8_SpriteAnimation>();
+    static public Dictionary<string, SpriteObject> SpriteObjectMap = 
+        new Dictionary<string, SpriteObject>();
 
     // WHAT TO DO WITH THE ONE IN UIMGR
     static public Dictionary<string, Sprite> SpriteMap = new Dictionary<string, Sprite>();
 
     static private List<string> m_LoadedSpritesheets = new List<string>();
 
-    static public OpenMM8_SpriteAnimation GetSpriteAnimation(string name, string spritesheetName = "")
+    static public SpriteObject GetSpriteObject(string name, string spritesheetName = "")
     {
         name = name.ToLower();
 
-        OpenMM8_SpriteAnimation anim = null;
-        if (SpriteAnimationMap.TryGetValue(name, out anim))
+        SpriteObject spriteObject = null;
+        if (SpriteObjectMap.TryGetValue(name, out spriteObject))
         {
-            return anim;
+            return spriteObject;
         }
         else
         {
             // Load it and cache it
-            SpriteAnimationData dbData = DbMgr.Instance.SpriteAnimationDb.Get(name);
+            SpriteObjectData dbData = DbMgr.Instance.SpriteObjectDb.Get(name);
             Assert.IsTrue(dbData != null);
             Assert.IsTrue(dbData.AnimFrameNames.Count > 0);
 
@@ -66,13 +66,13 @@ public class SpriteRegistry
             }
 
             // Here we assume all required sprites are available in our cache (@this.SpriteMap)
-            anim = new OpenMM8_SpriteAnimation();
-            anim.Name = name;
-            anim.TotalAnimationLengthSeconds = dbData.TotalAnimationLengthSeconds;
-            anim.Scale = dbData.Scale;
-            anim.IsAlwaysFacingCamera = dbData.IsAlwaysLookingFront;
-            anim.IsAnimated = dbData.AnimFrameNames.Count > 1;
-            anim.FrameDurationsSeconds = dbData.AnimFrameLengths.ToArray();
+            spriteObject = new SpriteObject();
+            spriteObject.Name = name;
+            spriteObject.TotalAnimationLengthSeconds = dbData.TotalAnimationLengthSeconds;
+            spriteObject.Scale = dbData.Scale;
+            spriteObject.IsAlwaysFacingCamera = dbData.IsAlwaysLookingFront;
+            spriteObject.IsAnimated = dbData.AnimFrameNames.Count > 1;
+            spriteObject.FrameDurationsSeconds = dbData.AnimFrameLengths.ToArray();
 
             if (hasRotatedSpriteVariations)
             {
@@ -85,36 +85,36 @@ public class SpriteRegistry
 
                 foreach (string spriteFrameBaseName in dbData.AnimFrameNames)
                 {
-                    anim.FrontSprites.Add(SpriteMap[spriteFrameBaseName + "0"]);
-                    anim.FrontLeftSprites.Add(SpriteMap[spriteFrameBaseName + "1"]);
-                    anim.LeftSprites.Add(SpriteMap[spriteFrameBaseName + "2"]);
-                    anim.BackLeftSprites.Add(SpriteMap[spriteFrameBaseName + "3"]);
-                    anim.BackSprites.Add(SpriteMap[spriteFrameBaseName + "4"]);
+                    spriteObject.FrontSprites.Add(SpriteMap[spriteFrameBaseName + "0"]);
+                    spriteObject.FrontLeftSprites.Add(SpriteMap[spriteFrameBaseName + "1"]);
+                    spriteObject.LeftSprites.Add(SpriteMap[spriteFrameBaseName + "2"]);
+                    spriteObject.BackLeftSprites.Add(SpriteMap[spriteFrameBaseName + "3"]);
+                    spriteObject.BackSprites.Add(SpriteMap[spriteFrameBaseName + "4"]);
                 }
             }
             else
             {
                 foreach (string spriteName in dbData.AnimFrameNames)
                 {
-                    anim.FrontSprites.Add(SpriteMap[spriteName]);
+                    spriteObject.FrontSprites.Add(SpriteMap[spriteName]);
                 }
 
-                anim.BackSprites = null;
-                anim.BackLeftSprites = null;
-                anim.LeftSprites = null;
-                anim.FrontLeftSprites = null;
+                spriteObject.BackSprites = null;
+                spriteObject.BackLeftSprites = null;
+                spriteObject.LeftSprites = null;
+                spriteObject.FrontLeftSprites = null;
             }
 
-            SpriteAnimationMap.Add(name, anim);
-            return anim;
+            SpriteObjectMap.Add(name, spriteObject);
+            return spriteObject;
         }
 
         return null;
     }
 
-    static public bool LoadSpriteAnimation(string animationName)
+    static public bool LoadSpriteObject(string animationName)
     {
-        SpriteAnimationData dbData = DbMgr.Instance.SpriteAnimationDb.Get(animationName);
+        SpriteObjectData dbData = DbMgr.Instance.SpriteObjectDb.Get(animationName);
         Assert.IsTrue(dbData != null);
 
         return false;
@@ -124,7 +124,7 @@ public class SpriteRegistry
     {
         if (m_LoadedSpritesheets.Contains(spritesheetName))
         {
-            Debug.LogError(spritesheetName + " was already loaded !");
+            //Debug.LogError(spritesheetName + " was already loaded !");
             return;
         }
 
@@ -135,6 +135,6 @@ public class SpriteRegistry
     // I really should not care that much about memory - even if it takes up 1GB its fine these days
     static public void UnloadAnimation(string name)
     {
-        SpriteAnimationMap.Remove(name);
+        SpriteObjectMap.Remove(name);
     }
 }

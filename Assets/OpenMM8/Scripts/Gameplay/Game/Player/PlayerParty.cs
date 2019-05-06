@@ -767,6 +767,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return transform.position + new Vector3(0.0f, 0.3f, 0.0f);
         }
 
+        public bool IsInvisible()
+        {
+            return PartyBuffMap[PartyEffectType.Invisibility].IsActive();
+        }
+
         //=========================================================================================
         // PARTY UPDATE ROUTINES
         //=========================================================================================
@@ -824,8 +829,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 SpellEffect buff = partyBuffPair.Value;
                 PartyEffectType buffType = partyBuffPair.Key;
 
-                bool justExpired = buff.IsApplied() && buff.IsExpired();
-                if (justExpired)
+                if (buff.IsAppliedAndExpired())
                 {
                     switch (buffType)
                     {

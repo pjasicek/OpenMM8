@@ -7,15 +7,16 @@ using Assets.OpenMM8.Scripts;
 [RequireComponent(typeof(SpriteRenderer))]
 public class SpriteBillboardAnimator : MonoBehaviour
 {
-    public string DefaultAnimation = "";
+    public string DefaultObject = "";
     public SpriteRenderer SpriteRenderer;
 
     public LookDirection LookDirection = LookDirection.Front;
-    public OpenMM8_SpriteAnimation Animation = null;
+    public SpriteObject SpriteObject = null;
 
     public List<Sprite> CurrentSprites = null;
 
-    bool IsStopped = false;
+    public bool Loop = true;
+    public bool IsStopped = false;
 
     public float AnimationLength = 0.0f;
     public float AnimationTimePassed = 0.0f;
@@ -30,7 +31,11 @@ public class SpriteBillboardAnimator : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        
+        if (DefaultObject != "")
+        {
+            SpriteObject = SpriteObjectRegistry.GetSpriteObject(DefaultObject);
+            SetAnimation(SpriteObject);
+        }
     }
 
     public void OnDestroy()
@@ -40,20 +45,16 @@ public class SpriteBillboardAnimator : MonoBehaviour
 
     private void OnPostInit()
     {
-        if (DefaultAnimation != "")
-        {
-            Animation = SpriteRegistry.GetSpriteAnimation(DefaultAnimation);
-            SetAnimation(Animation);
-        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-        sw.Start();
+        /*System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        sw.Start();*/
 
-        if (Animation == null || IsStopped)
+        if (SpriteObject == null || IsStopped)
         {
             return;
         }
@@ -67,18 +68,27 @@ public class SpriteBillboardAnimator : MonoBehaviour
         AnimationTimePassed += Time.deltaTime;
         if (AnimationTimePassed >= AnimationLength)
         {
-            // Loop
-            AnimationTimePassed = 0;
+            if (!Loop)
+            {
+                AnimationTimePassed -= Time.deltaTime;
+                IsStopped = true;
+            }
+            else
+            {
+                // Loop
+                AnimationTimePassed = 0;
+            }
         }
 
         UpdateFrame();
 
-        sw.Stop();
+        //sw.Stop();
         //Debug.Log("Elapsed: " + sw.ElapsedMicroSeconds());
     }
 
     public void ResetAnimation()
     {
+        Loop = true;
         IsStopped = false;
         AnimationTimePassed = 0.0f;
     }
@@ -95,22 +105,22 @@ public class SpriteBillboardAnimator : MonoBehaviour
         AnimationTimePassed = 0.0f;
     }
 
-    public void SetAnimation(OpenMM8_SpriteAnimation animation)
+    public void SetAnimation(SpriteObject animation)
     {
-        Animation = animation;
-        AnimationLength = Animation.TotalAnimationLengthSeconds;
+        SpriteObject = animation;
+        AnimationLength = SpriteObject.TotalAnimationLengthSeconds;
         ResetAnimation();
         UpdateFrame();
     }
 
     public void UpdateFrame()
     {
-        if (Animation == null)
+        if (SpriteObject == null)
         {
             return;
         }
 
-        if (Animation.IsAlwaysFacingCamera)
+        if (SpriteObject.IsAlwaysFacingCamera)
         {
             LookDirection = LookDirection.Front;
         }
@@ -118,34 +128,34 @@ public class SpriteBillboardAnimator : MonoBehaviour
         switch (LookDirection)
         {
             case LookDirection.Front:
-                CurrentSprites = Animation.FrontSprites;
+                CurrentSprites = SpriteObject.FrontSprites;
                 break;
             case LookDirection.FrontRight:
-                CurrentSprites = Animation.FrontLeftSprites;
+                CurrentSprites = SpriteObject.FrontLeftSprites;
                 SpriteRenderer.flipX = true;
                 break;
             case LookDirection.Right:
-                CurrentSprites = Animation.LeftSprites;
+                CurrentSprites = SpriteObject.LeftSprites;
                 SpriteRenderer.flipX = true;
                 break;
             case LookDirection.BackRight:
-                CurrentSprites = Animation.BackLeftSprites;
+                CurrentSprites = SpriteObject.BackLeftSprites;
                 SpriteRenderer.flipX = true;
                 break;
             case LookDirection.Back:
-                CurrentSprites = Animation.BackSprites;
+                CurrentSprites = SpriteObject.BackSprites;
                 SpriteRenderer.flipX = false;
                 break;
             case LookDirection.BackLeft:
-                CurrentSprites = Animation.BackLeftSprites;
+                CurrentSprites = SpriteObject.BackLeftSprites;
                 SpriteRenderer.flipX = false;
                 break;
             case LookDirection.Left:
-                CurrentSprites = Animation.LeftSprites;
+                CurrentSprites = SpriteObject.LeftSprites;
                 SpriteRenderer.flipX = false;
                 break;
             case LookDirection.FrontLeft:
-                CurrentSprites = Animation.FrontLeftSprites;
+                CurrentSprites = SpriteObject.FrontLeftSprites;
                 SpriteRenderer.flipX = false;
                 break;
             default:
@@ -170,7 +180,7 @@ public class SpriteBillboardAnimator : MonoBehaviour
             return;
         }
 
-        if (Animation == null)
+        if (SpriteObject == null)
         {
             Debug.LogError("Null animation");
             return;

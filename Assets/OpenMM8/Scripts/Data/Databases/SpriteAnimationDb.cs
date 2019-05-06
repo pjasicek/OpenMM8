@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Assets.OpenMM8.Scripts.Gameplay.Data
 {
     // SPRITE_FRAME_TABLE
-    public class SpriteAnimationData : DbData<string>
+    public class SpriteObjectData : DbData<string>
     {
         // string Id
         public string Name;                // same as ID
@@ -33,11 +33,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
         //       they consist only of one sprite
     }
 
-    public class SpriteAnimationDb : DataDb<SpriteAnimationData, string>
+    public class SpriteObjectDb : DataDb<SpriteObjectData, string>
     {
-        private SpriteAnimationData m_Previous = null;
+        private SpriteObjectData m_Previous = null;
 
-        override public SpriteAnimationData ProcessCsvDataRow(int row, string[] columns)
+        override public SpriteObjectData ProcessCsvDataRow(int row, string[] columns)
         {
             if (!string.IsNullOrEmpty(columns[0]) && columns[0].StartsWith("//"))
             {
@@ -46,7 +46,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
 
             //Debug.Log("[" + (row + 1).ToString() + "] Processing: " + columns[0]);
 
-            SpriteAnimationData data = null;
+            SpriteObjectData data = null;
             bool isNewAnim = !string.IsNullOrEmpty(columns[2]) && columns[2].ToLower() == "new";
             if (isNewAnim)
             {
@@ -57,7 +57,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                     return null;
                 }
 
-                data = new SpriteAnimationData();
+                data = new SpriteObjectData();
                 data.Id = animName;
                 data.Scale = float.Parse(columns[4].Replace('.', ','));
                 data.LightIntensity = int.Parse(columns[5]);

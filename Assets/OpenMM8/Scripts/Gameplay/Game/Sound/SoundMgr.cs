@@ -78,6 +78,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public static void PlaySoundById(int soundId, AudioSource audioSource = null)
         {
+            // 0 is not valid sound
+            if (soundId == 0)
+            {
+                return;
+            }
+
             if (audioSource == null)
             {
                 audioSource = Instance.m_AudioSource;

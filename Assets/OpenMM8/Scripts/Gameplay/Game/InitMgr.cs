@@ -11,9 +11,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
     class InitMgr : MonoBehaviour
     {
-        private void Start()
+        private void Awake()
         {
             DbMgr.Instance.Init();
+        }
+
+        private void Start()
+        {
+            
             ItemGenerator.Instance.Init();
 
             TimeMgr.Instance.Init();

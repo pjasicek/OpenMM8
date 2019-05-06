@@ -199,8 +199,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 SpellEffect buff = playerBuffPair.Value;
                 PlayerEffectType buffType = playerBuffPair.Key;
 
-                bool justExpired = buff.IsApplied() && buff.IsExpired();
-                if (justExpired)
+                if (buff.IsAppliedAndExpired())
                 {
                     switch (buffType)
                     {
