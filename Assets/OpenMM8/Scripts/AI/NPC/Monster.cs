@@ -851,34 +851,23 @@ public class Monster : MonoBehaviour
         UpdateAnimation();
     }
 
-    public void AI_Pursue1(Transform target, float duration)
+    public void AI_PursueKiteRanged(Transform target, float duration)
     {
         float distanceSqr = (target.transform.position - transform.position).sqrMagnitude;
         Vector3 pursueDirection = (target.transform.position - transform.position).normalized;
 
         if (distanceSqr < MAX_MELEE_DISTANCE_SQR)
         {
-            AI_Stand(pursueDirection, duration);
+            CurrentActionLength = duration;
+            AI_Stand(pursueDirection, 2.0f);
             return;
         }
 
         if (Speed == 0.0f)
         {
-            AI_Stand(pursueDirection, duration);
+            AI_Stand(pursueDirection, 2.0f);
             return;
         }
-
-        // Add noise to pursue direction
-        if (UnityEngine.Random.Range(0, 2) == 0)
-        {
-            pursueDirection.Set(pursueDirection.x, pursueDirection.y * 1.1f, pursueDirection.z);
-        }
-        else
-        {
-            pursueDirection.Set(pursueDirection.x, pursueDirection.y * 0.9f, pursueDirection.z);
-        }
-
-        SetNavMeshAgentEnabled(true);
 
         if (duration == 0.0f)
         {
@@ -887,9 +876,20 @@ public class Monster : MonoBehaviour
         CurrentActionLength = duration;
         CurrentActionTime = 0.0f;
 
-        // Make this rather large. TODO: Check if its really okay
-        Vector3 pursueDestination = pursueDirection * 100.0f;
+        // Add noise to pursue direction
+        // TODO: Try to find out how much
+        float rotationNoiseDegrees = 3.0f;
+        if ((UnityEngine.Random.Range(0, MonsterId) % 2) == 0)
+        {
+            rotationNoiseDegrees *= -1.0f;
+        }
+        rotationNoiseDegrees += 180.0f;
+        pursueDirection = Quaternion.AngleAxis(rotationNoiseDegrees, Vector3.up) * pursueDirection;
 
+        // Make this rather large. TODO: Check if its really okay
+        Vector3 pursueDestination = transform.position + pursueDirection * 10.0f;
+
+        SetNavMeshAgentEnabled(true);
         NavMeshAgent.SetDestination(pursueDestination);
 
         AIState = MonsterState.Pursuing;
@@ -897,7 +897,7 @@ public class Monster : MonoBehaviour
     }
 
     // This seems to be the case where monsters with melee attacks are pursuing
-    public void AI_Pursue2(Transform target, float duration)
+    public void AI_PursueToMeleeDirect(Transform target, float duration)
     {
         float distanceSqr = (target.transform.position - transform.position).sqrMagnitude;
         Vector3 pursueDirection = (target.transform.position - transform.position).normalized;
@@ -933,7 +933,7 @@ public class Monster : MonoBehaviour
         UpdateAnimation();
     }
 
-    public void AI_Pursue3(Transform target, float duration)
+    public void AI_PursueToMeleeFarAway(Transform target, float duration)
     {
         float distanceSqr = (target.transform.position - transform.position).sqrMagnitude;
         Vector3 pursueDirection = (target.transform.position - transform.position).normalized;
@@ -1011,10 +1011,51 @@ public class Monster : MonoBehaviour
         {
             Vector3 direction = (target.position - transform.position).normalized;
 
+            CurrentActionLength = AnimationShoot.TotalAnimationLengthSeconds;
+            CurrentActionTime = 0.0f;
+            RecoveryTimeLeft = MonsterData.RecoveryTime;
+
+            Quaternion.LookRotation(direction);
+            AIState = MonsterState.AttackingRanged1;
+            UpdateAnimation();
+
+            SoundMgr.PlaySoundById(SoundIdAttack, AudioSource);
+
+            SetNavMeshAgentEnabled(false);
+        }
+        else
+        {
+            AI_PursueKiteRanged(target, 0.5f);
+        }   
+    }
+
+    public void AI_MissileAttack(Transform target, MonsterAttackType missileAttackType)
+    {
+        if (missileAttackType != MonsterAttackType.Attack1 &&
+            missileAttackType != MonsterAttackType.Attack2)
+        {
+            Debug.LogError("Invalid missileAttackType: " + missileAttackType);
+            return;
+        }
+        
+        // TODO: This has to be resolved sooner or later...
+        bool canSee = true;
+        if (canSee)
+        {
+            Vector3 direction = (target.position - transform.position).normalized;
+
             CurrentActionLength = AnimationAttack.TotalAnimationLengthSeconds;
             CurrentActionTime = 0.0f;
 
-            AIState = MonsterState.AttackingMelee;
+            if (missileAttackType == MonsterAttackType.Attack1)
+            {
+                AIState = MonsterState.AttackingRanged1;
+            }
+            else
+            {
+                AIState = MonsterState.AttackingRanged2;
+            }
+
             SoundMgr.PlaySoundById(SoundIdAttack, AudioSource);
             RecoveryTimeLeft = MonsterData.RecoveryTime;
             Quaternion.LookRotation(direction);
@@ -1027,8 +1068,60 @@ public class Monster : MonoBehaviour
         }
         else
         {
-            AI_Pursue2(target, 0.5f);
-        }   
+            AI_PursueKiteRanged(target, 0.5f);
+        }
+    }
+
+    public void AI_SpellAttack(Transform target, MonsterAttackType spellAttackType)
+    {
+        if (spellAttackType != MonsterAttackType.Spell1 &&
+            spellAttackType != MonsterAttackType.Spell2)
+        {
+            Debug.LogError("Invalid spellAttackType: " + spellAttackType);
+            return;
+        }
+
+        // TODO: This has to be resolved sooner or later...
+        bool canSee = true;
+        if (canSee)
+        {
+            Vector3 direction = (target.position - transform.position).normalized;
+
+            CurrentActionLength = AnimationAttack.TotalAnimationLengthSeconds;
+            CurrentActionTime = 0.0f;
+            RecoveryTimeLeft = MonsterData.RecoveryTime;
+
+            SpellType spell = (SpellType)MonsterData.Spell1ID;
+            AIState = MonsterState.AttackingRanged3;
+            if (spellAttackType == MonsterAttackType.Spell2)
+            {
+                spell = (SpellType)MonsterData.Spell2ID;
+                AIState = MonsterState.AttackingRanged4;
+            }
+
+            SoundMgr.PlaySoundById(SoundIdAttack, AudioSource);
+            Quaternion.LookRotation(direction);
+
+            bool shouldPlayFidgetAnim = false;
+            if (shouldPlayFidgetAnim)
+            {
+                AIState = MonsterState.Fidgeting;
+                CurrentActionLength = AnimationFidget.TotalAnimationLengthSeconds;
+            }
+
+            UpdateAnimation();
+
+            SetNavMeshAgentEnabled(false);
+        }
+        else
+        {
+            AI_PursueKiteRanged(target, 0.5f);
+        }
+    }
+
+    public void AI_CastSpell(Transform target, SpellType spellType, int skillLevel, SkillMastery skillMastery)
+    {
+
     }
 
     //=============================================================================================
@@ -1297,11 +1390,19 @@ public class Monster : MonoBehaviour
                 }
                 else if (monster.AIState == MonsterState.AttackingRanged3)
                 {
+                    SpellType spellType = (SpellType)monster.MonsterData.Spell1ID;
+                    int skillLevel = monster.MonsterData.Spell1SkillLevel;
+                    SkillMastery skillMastery = monster.MonsterData.Spell1SkillMastery;
 
+                    monster.AI_CastSpell(target, spellType, skillLevel, skillMastery);
                 }
                 else if (monster.AIState == MonsterState.AttackingRanged4)
                 {
+                    SpellType spellType = (SpellType)monster.MonsterData.Spell2ID;
+                    int skillLevel = monster.MonsterData.Spell2SkillLevel;
+                    SkillMastery skillMastery = monster.MonsterData.Spell2SkillMastery;
 
+                    monster.AI_CastSpell(target, spellType, skillLevel, skillMastery);
                 }
             }
 
@@ -1439,19 +1540,20 @@ public class Monster : MonoBehaviour
                         {
                             if (monster.RecoveryTimeLeft <= 0.0f)
                             {
-                                // monster.AI_MissileAttack1
+                                // Play attack animation
+                                monster.AI_MissileAttack(target, chosenAttackType);
                             }
                             else if (monster.MonsterData.MoveType == MonsterMoveType.Stationary)
                             {
-                                // monster.AI_Stand
+                                monster.AI_Stand(targetLookDirection, monster.MonsterData.RecoveryTime);
                             }
                             else if (distance < MAX_MELEE_DISTANCE_SQR)
                             {
-                                // monster.AI_Stand
+                                monster.AI_Stand(targetLookDirection, monster.MonsterData.RecoveryTime);
                             }
                             else
                             {
-                                // monster.AI_Pursue1
+                                monster.AI_PursueKiteRanged(target, monster.MonsterData.RecoveryTime);
                             }
                         }
                         else // Melee attack
@@ -1464,13 +1566,13 @@ public class Monster : MonoBehaviour
                                 }
                                 else if (distance >= 512.0f)
                                 {
-                                    monster.AI_Pursue3(target, 2.0f);
+                                    monster.AI_PursueToMeleeFarAway(target, 2.0f);
                                 }
                                 else
                                 {
                                     //Debug.Log("Pursue 2");
                                     // Close to target - direct route
-                                    monster.AI_Pursue2(target, 2.0f);
+                                    monster.AI_PursueToMeleeDirect(target, 2.0f);
                                 }
                             }
                             else if (monster.RecoveryTimeLeft > 0.0f)
@@ -1479,20 +1581,47 @@ public class Monster : MonoBehaviour
                             }
                             else
                             {
-                                // monster.AI_MeleeAttack
-                                //Debug.Log(("Melee Attack"));
+                                // Play attack animation
                                 monster.AI_MeleeAttack(target);
                             }
                         }
-
-                        // We are done here
-                        continue;
                     }
                     else if (chosenAttackType == MonsterAttackType.Spell1 ||
                              chosenAttackType == MonsterAttackType.Spell2)
                     {
-                        // ...
+                        SpellType spellType = SpellType.None;
+                        if (chosenAttackType == MonsterAttackType.Spell1)
+                        {
+                            spellType = (SpellType)monster.MonsterData.Spell1ID;
+                        }
+                        else
+                        {
+                            spellType = (SpellType)monster.MonsterData.Spell2ID;
+                        }
+
+                        if (spellType != SpellType.None)
+                        {
+                            if (monster.RecoveryTimeLeft <= 0.0f)
+                            {
+                                monster.AI_SpellAttack(target, chosenAttackType);
+                            }
+                            else if (distance > MAX_MELEE_DISTANCE_SQR)
+                            {
+                                monster.AI_PursueKiteRanged(target, monster.MonsterData.RecoveryTime);
+                            }
+                            else
+                            {
+                                monster.AI_Stand(targetLookDirection, monster.MonsterData.RecoveryTime);
+                            }
+                        }
+                        else
+                        {
+                            Debug.LogError("Should have casted spell but no spelltype for: " + chosenAttackType);
+                        }
                     }
+
+                    // We are done here
+                    continue;
                 }
             }
 
