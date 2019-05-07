@@ -11,7 +11,7 @@ using Assets.OpenMM8.Scripts;
 public class Monster : MonoBehaviour
 {
     public const int MAX_RANGE_DISTANCE_SQR = 2560;
-    public const int MAX_MELEE_DISTANCE_SQR = 16;
+    public const int MAX_MELEE_DISTANCE_SQR = 13;
 
     public int MonsterId;
     public string Name;
@@ -669,6 +669,22 @@ public class Monster : MonoBehaviour
         Debug.Log("Distance: [" + distanceToTargetSqr + "], targetDir: [" + targetDir + "]");*/
     }
 
+    public bool CanDirectlySeeTarget(Transform target, string layerToIgnore = "")
+    {
+        int layerMask = int.MaxValue;
+        if (layerToIgnore != "")
+        {
+            layerMask &= ~(1 << LayerMask.NameToLayer(layerToIgnore));
+        }
+
+        RaycastHit hitInfo;
+        if (Physics.Linecast(transform.position, target.position, out hitInfo, layerMask))
+        {
+            return hitInfo.transform == target;
+        }
+
+        return false;
+    }
 
     //=============================================================================================
     // AI
@@ -797,6 +813,42 @@ public class Monster : MonoBehaviour
         {
             AI_Stand(lookDirection, duration);
         }
+    }
+
+    public void AI_Flee(Transform aggressor, float duration = 0.0f)
+    {
+        if (!CanAct())
+        {
+            return;
+        }
+
+        if (aggressor == null)
+        {
+            Debug.LogError("No aggressor yet have to flee");
+            return;
+        }
+
+        Vector3 fleeDirection = (aggressor.transform.position - transform.position).normalized;
+
+        float randRotMod = UnityEngine.Random.Range(-20.0f, 20.0f);
+        fleeDirection = Quaternion.AngleAxis(randRotMod, Vector3.up) * fleeDirection;
+
+        SetNavMeshAgentEnabled(true);
+        CurrentDestination = transform.position - fleeDirection * 6.0f;
+        NavMeshAgent.SetDestination(CurrentDestination);
+
+        Vector3 lookDirection = (CurrentDestination - transform.position).normalized;
+        transform.rotation = Quaternion.LookRotation(lookDirection);
+
+        if (duration > 2.0f || duration == 0.0f)
+        {
+            duration = 2.0f;
+        }
+
+        CurrentActionLength = duration;
+        CurrentActionTime = 0.0f;
+        AIState = MonsterState.Fleeing;
+        UpdateAnimation();
     }
 
     public void AI_Pursue1(Transform target, float duration)
@@ -939,21 +991,44 @@ public class Monster : MonoBehaviour
             
         }*/
 
-        Vector3 direction = (target.position - transform.position).normalized;
+        /*string ignoredLayer = "";
+        // Ignore other monsters standing in the way
+        if (target.GetComponent<PlayerParty>() != null)
+        {
+            ignoredLayer = "NPC";
+        }
+        else if (target.GetComponent<Monster>() != null)
+        {
+            ignoredLayer = "Player";
+        }
+        bool canSee = CanDirectlySeeTarget(target, ignoredLayer);
+        Debug.Log("CanSee: " + canSee);*/
 
-        CurrentActionLength = AnimationAttack.TotalAnimationLengthSeconds;
-        CurrentActionTime = 0.0f;
 
-        AIState = MonsterState.AttackingMelee;
-        SoundMgr.PlaySoundById(SoundIdAttack, AudioSource);
-        RecoveryTimeLeft = MonsterData.RecoveryTime;
-        Quaternion.LookRotation(direction);
+        // TODO: This has to be resolved sooner or later...
+        bool canSee = true;
+        if (canSee)
+        {
+            Vector3 direction = (target.position - transform.position).normalized;
 
-        //Debug.LogError("RecoveryTime: " + RecoveryTimeLeft);
+            CurrentActionLength = AnimationAttack.TotalAnimationLengthSeconds;
+            CurrentActionTime = 0.0f;
 
-        UpdateAnimation();
+            AIState = MonsterState.AttackingMelee;
+            SoundMgr.PlaySoundById(SoundIdAttack, AudioSource);
+            RecoveryTimeLeft = MonsterData.RecoveryTime;
+            Quaternion.LookRotation(direction);
 
-        SetNavMeshAgentEnabled(false);
+            //Debug.LogError("RecoveryTime: " + RecoveryTimeLeft);
+
+            UpdateAnimation();
+
+            SetNavMeshAgentEnabled(false);
+        }
+        else
+        {
+            AI_Pursue2(target, 0.5f);
+        }   
     }
 
     //=============================================================================================
@@ -1278,7 +1353,7 @@ public class Monster : MonoBehaviour
                 else
                 {
                     // Flee from target
-                    // TODO: Actor::AI_Flee(actor_id, target_pid, 0, pDir);
+                    monster.AI_Flee(target);
                 }
 
                 // No further action, he is afraid
@@ -1308,7 +1383,7 @@ public class Monster : MonoBehaviour
                     }
                     else
                     {
-                        // monster.AI_Flee(target, 0, targetDir, distanceToTargetSqr);
+                        monster.AI_Flee(target);
                         continue;
                     }
                 }
@@ -1331,8 +1406,8 @@ public class Monster : MonoBehaviour
 
                         if (monster.CurrentHp < fleeHpThreshold && distanceToTargetSqr < 10240.0f)
                         {
-                            // monster.AI_Flee(target, 0, targetDir, distanceToTargetSqr);
-                            Debug.Log("3");
+                            Debug.Log("Flee due to low hp");
+                            monster.AI_Flee(target);
                             continue;
                         }
                     }
@@ -1346,17 +1421,18 @@ public class Monster : MonoBehaviour
                     Vector3 targetLookDirection = (target.transform.position - monster.transform.position).normalized;
 
                     MonsterAttackType chosenAttackType = monster.RandomizeUsedAbility();
+                    //Debug.Log("Chosen: " + chosenAttackType);
                     if (chosenAttackType == MonsterAttackType.Attack1 ||
                         chosenAttackType == MonsterAttackType.Attack2)
                     {
                         bool isMissileAttack = false;
                         if (chosenAttackType == MonsterAttackType.Attack1)
                         {
-                            isMissileAttack = monster.MonsterData.Attack1Missile != "";
+                            isMissileAttack = monster.MonsterData.Attack1Missile != null;
                         }
                         else if (chosenAttackType == MonsterAttackType.Attack2)
                         {
-                            isMissileAttack = monster.MonsterData.Attack2Missile != "";
+                            isMissileAttack = monster.MonsterData.Attack2Missile != null;
                         }
 
                         if (isMissileAttack)
@@ -1392,6 +1468,7 @@ public class Monster : MonoBehaviour
                                 }
                                 else
                                 {
+                                    //Debug.Log("Pursue 2");
                                     // Close to target - direct route
                                     monster.AI_Pursue2(target, 2.0f);
                                 }
