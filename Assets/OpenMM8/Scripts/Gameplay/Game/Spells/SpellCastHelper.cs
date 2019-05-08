@@ -75,7 +75,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 case SpellType.Mind_PsychicShock:
                 case SpellType.Body_Harm:
                 case SpellType.Body_FlyingFist:
-                case SpellType.Light_LightBold:
+                case SpellType.Light_LightBolt:
                 case SpellType.Light_DestroyUndead:
                 case SpellType.Light_Sunray:
                 case SpellType.Dark_ToxicCloud:
@@ -419,7 +419,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Fire_Inferno:
-                    Ray ray = UiMgr.GetCrosshairRay();
+                    /*Ray ray = UiMgr.GetCrosshairRay();
                     Transform partyTransform = GameCore.GetParty().transform;
                     GameObject arrow = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/PlaceholderProjectile"),
                         ray.origin + (ray.direction * 1), partyTransform.rotation);
@@ -427,7 +427,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     projectile.AttackInfo = new AttackInfo();
                     projectile.IsTargetPlayer = false;
 
-                    Debug.Log("Origin: " + ray.origin + ", Direction: " + ray.direction);
+                    Debug.Log("Origin: " + ray.origin + ", Direction: " + ray.direction);*/
                     //projectile.Shoot(arrow.transform.position, arrow.transform.position + ray.direction * 100.0f);
                     break;
 
@@ -899,7 +899,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     Debug.LogError("Spell not implemented: " + spellType);
                     break;
 
-                case SpellType.Light_LightBold:
+                case SpellType.Light_LightBolt:
                     Debug.LogError("Spell not implemented: " + spellType);
                     break;
 

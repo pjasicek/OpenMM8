@@ -8,6 +8,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+using Assets.OpenMM8.Scripts.Gameplay.Data;
+
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
     public partial class UiMgr : Singleton<UiMgr>
@@ -362,13 +364,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 ObjectDisplayData outdoorDisplayData = DbMgr.Instance.ObjectDisplayDb.Get(itemData.SpriteIndex);
                 if (outdoorDisplayData != null)
                 {
-                    if (m_OutdoorItemSpriteMap.ContainsKey(outdoorDisplayData.SpriteName))
+                    if (m_OutdoorItemSpriteMap.ContainsKey(outdoorDisplayData.SFTLabel))
                     {
-                        itemData.OutdoorSprite = m_OutdoorItemSpriteMap[outdoorDisplayData.SpriteName];
+                        itemData.OutdoorSprite = m_OutdoorItemSpriteMap[outdoorDisplayData.SFTLabel];
                     }
                     else
                     {
-                        Debug.LogError("Item: " + itemData.Name + " does not have outoor display sprite");
+                        Debug.LogError("Item: " + itemData.Name + " does not have outdoor display sprite: " +
+                            + itemData.SpriteIndex + ": " + outdoorDisplayData.SFTLabel);
                     }
                 }
                 else

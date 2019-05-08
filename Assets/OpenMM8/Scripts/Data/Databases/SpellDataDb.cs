@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Assets.OpenMM8.Scripts.Gameplay.Data
 {
-    // SOUNDS
+    // SPELLS.TXT
     public class SpellData : DbData<SpellType>
     {
         // SpellType Id = spell type, all spells in the table need to be defined in the enum
@@ -34,6 +34,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
         public int RecoveryRateMaster;
         public int RecoveryRateGrandmaster;
         public int EffectSoundId;
+        public int DisplayObjectId;
+        public int ImpactDisplayObjectId;
     }
 
     public class SpellDataDb : DataDb<SpellData, SpellType>
@@ -87,6 +89,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             data.RecoveryRateGrandmaster = int.Parse(columns[18]);
 
             data.EffectSoundId = int.Parse(columns[19]);
+
+            data.DisplayObjectId = int.Parse(columns[20]);
+            data.ImpactDisplayObjectId = int.Parse(columns[21]);
 
             return data;
         }

@@ -182,7 +182,7 @@ public class SpriteBillboardAnimator : MonoBehaviour
 
         if (SpriteObject == null)
         {
-            Debug.LogError("Null animation");
+            Debug.LogError("Null animation: " + name);
             return;
         }
 

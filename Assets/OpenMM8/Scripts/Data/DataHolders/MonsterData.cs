@@ -32,27 +32,29 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public AttackInfo Attack2;
 
         // TODO:
-        public SpellElement Attack1Element = SpellElement.None;
-        public int Attack1DamageDiceRolls;
-        public int Attack1DamageDiceSides;
-        public string Attack1Missile;
+        public SpellElement Attack1_Element = SpellElement.None;
+        public int Attack1_DamageDiceRolls;
+        public int Attack1_DamageDiceSides;
+        public int Attack1_DamageBonus;
+        public string Attack1_Missile;
 
-        public SpellElement Attack2Element = SpellElement.None;
-        public int Attack2DamageDiceRolls;
-        public int Attack2DamageDiceSides;
-        public string Attack2Missile;
-        public int Attack2UseChance;
+        public SpellElement Attack2_Element = SpellElement.None;
+        public int Attack2_DamageDiceRolls;
+        public int Attack2_DamageDiceSides;
+        public int Attack2_DamageBonus;
+        public string Attack2_Missile;
+        public int Attack2_UseChance;
 
         // TODO:
-        public int Spell1UseChance;
-        public int Spell1ID;
-        public int Spell1SkillLevel;
-        public SkillMastery Spell1SkillMastery;
+        public int Spell1_UseChance;
+        public SpellType Spell1_SpellType = SpellType.None;
+        public int Spell1_SkillLevel;
+        public SkillMastery Spell1_SkillMastery;
 
-        public int Spell2UseChance;
-        public int Spell2ID;
-        public int Spell2SkillLevel;
-        public SkillMastery Spell2SkillMastery;
+        public int Spell2_UseChance;
+        public SpellType Spell2_SpellType = SpellType.None;
+        public int Spell2_SkillLevel;
+        public SkillMastery Spell2_SkillMastery;
 
 
         public int ChanceSpellAttack1;

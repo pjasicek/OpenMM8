@@ -57,6 +57,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             QuestDb.Initialize(MM8_DATA_PATH + @"Quests.csv");
             NpcTalkDb.Initialize(MM8_DATA_PATH + @"NpcTalkData.csv");*/
 
+            SpellDataDb.Initialize(MM8_DATA_PATH + "SPELLS");
             ItemDb.Initialize(MM8_DATA_PATH + @"ITEMS", 2);
             MonsterDb.Initialize(MM8_DATA_PATH + @"MONSTERS", 2);
             NpcGreetDb.Initialize(MM8_DATA_PATH + @"NPC_GREET");
@@ -67,7 +68,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             NpcTalkDb.Initialize(MM8_DATA_PATH + @"NPC", 2);
             BuildingDb.Initialize(MM8_DATA_PATH + @"BUILDINGS");
             ItemEquipPosDb.Initialize(MM8_DATA_PATH + @"ITEM_EQUIP_POS");
-            ObjectDisplayDb.Initialize(MM8_DATA_PATH + @"OBJLIST");
+            ObjectDisplayDb.Initialize(MM8_DATA_PATH + @"OBJECT_LIST");
             SkillDescriptionDb.Initialize(MM8_DATA_PATH + @"SKILL_DESCRIPTION", 2);
             ClassSkillsDb.Initialize(MM8_DATA_PATH + @"CLASS_SKILLS");
             StartingStatsDb.Initialize(MM8_DATA_PATH + @"RACE_STARTING_STATS");
@@ -79,7 +80,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             SoundDb.Initialize(MM8_DATA_PATH + "SOUNDS");
             ItemEnchantStandardDb.Initialize(MM8_DATA_PATH + "ITEM_ENCHANT_STANDARD");
             ItemEnchantSpecialDb.Initialize(MM8_DATA_PATH + "ITEM_ENCHANT_SPECIAL");
-            SpellDataDb.Initialize(MM8_DATA_PATH + "SPELLS");
             CharacterFaceExpressionDb.Initialize(MM8_DATA_PATH + "CHARACTER_FACE_EXPRESSIONS");
             CharacterReactionDb.Initialize(MM8_DATA_PATH + "CHARACTER_REACTIONS");
             SpriteObjectDb.Initialize(MM8_DATA_PATH + "SPRITE_FRAME_TABLE");

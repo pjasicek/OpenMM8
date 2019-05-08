@@ -68,7 +68,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             SpriteObjectRegistry.LoadSpritesheet("RocksTreesFlowers");
             SpriteObjectRegistry.LoadSpritesheet("SpellsProjectiles");
             SpriteObjectRegistry.LoadSpritesheet("m401");
+            SpriteObjectRegistry.LoadSpritesheet("m409");
             SpriteObjectRegistry.LoadSpritesheet("m413");
+            SpriteObjectRegistry.LoadSpritesheet("m417");
+            SpriteObjectRegistry.LoadSpritesheet("m421");
 
             SpriteObject testAnim = SpriteObjectRegistry.GetSpriteObject("spell57");
             foreach (Sprite animSprite in testAnim.BackSprites)
@@ -339,7 +342,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             if (Input.GetKeyDown(KeyCode.E))
             {
-                GameObject arrow = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/PlaceholderProjectile"));
+                /*GameObject arrow = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/PlaceholderProjectile"));
                 Projectile projectile = arrow.GetComponent<Projectile>();
 
                 // Test
@@ -353,12 +356,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 projectile.IsTargetPlayer = false;
 
                 Ray ray = UiMgr.GetCrosshairRay();
-                projectile.ShootFromParty(PlayerParty, ray.direction);
+                projectile.ShootFromParty(PlayerParty, ray.direction);*/
             }
 
             if (Input.GetKeyDown(KeyCode.R))
             {
-                GameObject arrow = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/TestSpellProjectile"));
+                /*GameObject arrow = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/TestSpellProjectile"));
                 arrow.GetComponent<SpriteBillboardAnimator>().SetAnimation(SpriteObjectRegistry.GetSpriteObject("spell57"));
 
                 Projectile projectile = arrow.GetComponent<Projectile>();
@@ -374,7 +377,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 projectile.IsTargetPlayer = false;
 
                 Ray ray = UiMgr.GetCrosshairRay();
-                projectile.ShootFromParty(PlayerParty, ray.direction);
+                projectile.ShootFromParty(PlayerParty, ray.direction);*/
+
+                ProjectileInfo projectileInfo = new ProjectileInfo();
+                projectileInfo.Shooter = PlayerParty.GetActiveCharacter();
+                projectileInfo.ShooterTransform = PlayerParty.transform;
+                //projectileInfo.TargetDirection = UiMgr.GetCrosshairRay().direction;
+                projectileInfo.TargetPosition = UiMgr.GetCrosshairRay().GetPoint(100.0f);
+                projectileInfo.DisplayData = DbMgr.Instance.ObjectDisplayDb.Get(7030);
+
+                Projectile.Spawn(projectileInfo);
             }
         }
 

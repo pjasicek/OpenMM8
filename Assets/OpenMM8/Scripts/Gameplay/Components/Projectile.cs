@@ -1,36 +1,92 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Assets.OpenMM8.Scripts.Gameplay;
+using UnityStandardAssets.Utility;
 
 // Can be spell, arrow, blaster particle, dragon breath attack
 // basically anything that is moving from PointA to PointB and causes some action on impact
 // For this reason, every projectile should have some "SpellType" associated with it
 public class Projectile : MonoBehaviour
 {
-    public AttackInfo AttackInfo = null;
-    public float Speed = 15.0f;
-    public bool IsTargetPlayer = false;
-    public GameObject Owner;
+    public ProjectileInfo ProjectileInfo;
 
-    // TODO: Properties below should be the only ones
-    public SpellType SpellType = SpellType.None;
-    public SkillMastery SkillMastery = SkillMastery.None;
-    public int SkillLevel = 0;
+    public Character ShooterAsCharacter = null;
+    public Monster ShooterAsMonster = null;
 
+    public PlayerParty TargetAsPlayerParty = null;
+    public Monster TargetAsMonster = null;
 
-    public void Shoot(/*Vector3 fromPoint, */Vector3 direction)
+    static public void Spawn(ProjectileInfo projectileInfo)
     {
-        //Vector3 heading = (toPoint - fromPoint).normalized;
-        //Vector3 speed = heading * Speed;
-        Vector3 speed = direction.normalized * Speed;
-        GetComponent<Rigidbody>().velocity = speed;
+        GameObject projectileObject = (GameObject)Instantiate(Resources.Load("Prefabs/TestSpellProjectile"));
+        Projectile projectile = projectileObject.GetComponent<Projectile>();
+        projectile.ProjectileInfo = projectileInfo;
+
+        if (projectileInfo.Shooter != null)
+        {
+            projectile.ShooterAsCharacter = projectileInfo.Shooter as Character;
+            projectile.ShooterAsMonster = projectileInfo.Shooter as Monster;
+        }
+        if (projectileInfo.Target != null)
+        {
+            projectile.TargetAsPlayerParty = projectileInfo.Target as PlayerParty;
+            projectile.TargetAsMonster = projectileInfo.Target as Monster;
+        }
+
+        projectileObject.transform.rotation = projectileInfo.ShooterTransform.rotation;
+        if (projectile.ShooterAsCharacter != null)
+        {
+            int characterIndex = projectile.ShooterAsCharacter.GetPartyIndex();
+            projectileObject.transform.position = 
+                projectile.ShooterAsCharacter.Party.GetProjectileSpawnPos(characterIndex);
+        }
+        else if (projectile.ShooterAsMonster != null)
+        {
+            float monsterHeight = projectile.ShooterAsMonster.GetComponent<CapsuleCollider>().height;
+            projectileObject.transform.position = projectile.ShooterAsMonster.transform.position + 
+                new Vector3(0.0f, monsterHeight / 4.0f, 0.0f);
+        }
+        else
+        {
+            projectileObject.transform.position = projectileInfo.ShooterTransform.position;
+        }
+
+        SpriteObject projectileAnim = SpriteObjectRegistry.GetSpriteObject(projectileInfo.DisplayData.SFTLabel);
+        projectileObject.GetComponent<SpriteBillboardAnimator>().SetAnimation(projectileAnim);
+
+        Vector3 targetDirection = (projectileInfo.TargetPosition - projectileObject.transform.position).normalized;
+        //Vector3 targetDirection = projectileInfo.TargetDirection;
+        Vector3 speed = targetDirection * projectileInfo.DisplayData.Speed;
+        projectileObject.GetComponent<Rigidbody>().velocity = speed;
+
+        CapsuleCollider collider = projectileObject.GetComponent<CapsuleCollider>();
+        collider.height = projectileInfo.DisplayData.Height;
+        collider.radius = projectileInfo.DisplayData.Radius;
+
+        if (projectileInfo.DisplayData.IsLifetimeInSFT)
+        {
+            float lifetime = projectileAnim.TotalAnimationLengthSeconds;
+            projectile.SetLifetime(lifetime);
+        }
+        else if (projectileInfo.DisplayData.Lifetime > 0.0f)
+        {
+            projectile.SetLifetime(projectileInfo.DisplayData.Lifetime);
+        }
+        else
+        {
+            Debug.LogError("Projectile has infite lifetime");
+        }
     }
 
-    public void ShootFromParty(PlayerParty party, Vector3 direction)
+    private void SetLifetime(float lifetime)
     {
-        transform.position = party.GetProjectileSpawnPos();
-        transform.rotation = party.transform.rotation;
-        Shoot(direction);
+        Invoke("DestroyNow", lifetime);
+    }
+
+    private void DestroyNow()
+    {
+        transform.DetachChildren();
+        Destroy(gameObject);
     }
 
     public void OnTriggerEnter(Collider other)
@@ -42,23 +98,25 @@ public class Projectile : MonoBehaviour
             return;
         }
 
-        if (Owner != null && Owner.Equals(other.gameObject))
+        // Cannot shoot self
+        if (ProjectileInfo.ShooterTransform != null && 
+            ProjectileInfo.ShooterTransform.gameObject.Equals(other.gameObject))
         {
             return;
         }
 
         // I am trying to shoot player, but some other NPC intercepted my projectile
-        if (IsTargetPlayer && other.gameObject.GetComponent<BaseNpc>() != null)
+        if (ShooterAsMonster && other.gameObject.GetComponent<Monster>() != null)
         {
             Destroy(gameObject);
             return;
         }
 
-        Damageable damageable = other.gameObject.GetComponent<Damageable>();
+        /*Damageable damageable = other.gameObject.GetComponent<Damageable>();
         if (damageable != null)
         {
             damageable.ReceiveAttack(AttackInfo, Owner);
-        }
+        }*/
 
         Destroy(gameObject);
     }

@@ -762,9 +762,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return GetHeldItem() != null;
         }
 
-        public Vector3 GetProjectileSpawnPos()
+        public Vector3 GetProjectileSpawnPos(int characterIndex)
         {
-            return transform.position + new Vector3(0.0f, 0.3f, 0.0f);
+            float offsetX = (characterIndex - 2) * 0.3f;
+            return transform.position + new Vector3(offsetX, 0.1f, 0.0f);
         }
 
         public bool IsInvisible()

@@ -17,7 +17,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             string[] defs = def.ToLower().Split(',');
             if (defs.Length == 3)
             {
-                SpellName = defs[0];
+                SpellName = defs[0].ToLower();
                 switch (defs[1])
                 {
                     case "n": SpellMastery = SkillMastery.Normal; break;

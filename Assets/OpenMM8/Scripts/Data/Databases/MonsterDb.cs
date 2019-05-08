@@ -20,90 +20,131 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                 return null;
             }
 
-            MonsterData npcData = new MonsterData();
+            MonsterData data = new MonsterData();
 
-            npcData.Id = int.Parse(columns[0]);
-            npcData.MonsterType = (MonsterType)npcData.Id;
-            npcData.Name = columns[1];
-            npcData.Picture = columns[2];
-            npcData.Level = int.Parse(columns[3]);
-            npcData.HitPoints = int.Parse(columns[4]);
-            npcData.ArmorClass = int.Parse(columns[5]);
-            npcData.ExperienceWorth = int.Parse(columns[6].Replace(",", ""));
-            npcData.Treasure = new NpcLootPrototype(columns[7]);
-            npcData.Quest = int.Parse(columns[8]);
-            npcData.Fly = columns[9].ToLower() == "y";
+            data.Id = int.Parse(columns[0]);
+            data.MonsterType = (MonsterType)data.Id;
+            data.Name = columns[1];
+            data.Picture = columns[2];
+            data.Level = int.Parse(columns[3]);
+            data.HitPoints = int.Parse(columns[4]);
+            data.ArmorClass = int.Parse(columns[5]);
+            data.ExperienceWorth = int.Parse(columns[6].Replace(",", ""));
+            data.Treasure = new NpcLootPrototype(columns[7]);
+            data.Quest = int.Parse(columns[8]);
+            data.Fly = columns[9].ToLower() == "y";
             switch (columns[10].ToLower())
             {
-                case "short": npcData.MoveType = MonsterMoveType.Short; break;
-                case "med": npcData.MoveType = MonsterMoveType.Medium; break;
-                case "long": npcData.MoveType = MonsterMoveType.Long; break;
-                case "free": npcData.MoveType = MonsterMoveType.Free; break;
-                case "stationary": npcData.MoveType = MonsterMoveType.Stationary; break;
-                case "global": npcData.MoveType = MonsterMoveType.Global; break;
-                default: npcData.MoveType = MonsterMoveType.Free; break;
+                case "short": data.MoveType = MonsterMoveType.Short; break;
+                case "med": data.MoveType = MonsterMoveType.Medium; break;
+                case "long": data.MoveType = MonsterMoveType.Long; break;
+                case "free": data.MoveType = MonsterMoveType.Free; break;
+                case "stationary": data.MoveType = MonsterMoveType.Stationary; break;
+                case "global": data.MoveType = MonsterMoveType.Global; break;
+                default: data.MoveType = MonsterMoveType.Free; break;
             }
 
             switch (columns[11].ToLower())
             {
-                case "wimp": npcData.Agressivity = MonsterAggresivityType.Wimp; break;
-                case "normal": npcData.Agressivity = MonsterAggresivityType.Normal; break;
-                case "aggress": npcData.Agressivity = MonsterAggresivityType.Agressive; break;
-                case "suicidal": npcData.Agressivity = MonsterAggresivityType.Suicidal; break;
+                case "wimp": data.Agressivity = MonsterAggresivityType.Wimp; break;
+                case "normal": data.Agressivity = MonsterAggresivityType.Normal; break;
+                case "aggress": data.Agressivity = MonsterAggresivityType.Agressive; break;
+                case "suicidal": data.Agressivity = MonsterAggresivityType.Suicidal; break;
                 default: break;
             }
-            npcData.Hostility = int.Parse(columns[12]);
-            npcData.Speed = int.Parse(columns[13]);
+            data.Hostility = int.Parse(columns[12]);
+            data.Speed = int.Parse(columns[13]);
             // Not sure why but this is how it should be
-            npcData.RecoveryTime = (int.Parse(columns[14]) / 128.0f) * 2.13333f; 
+            data.RecoveryTime = (int.Parse(columns[14]) / 128.0f) * 2.13333f; 
             switch (columns[15].ToLower())
             {
-                case "d": npcData.PreferredClass = CharacterClass.Dragon; break;
-                case "n": npcData.PreferredClass = CharacterClass.Necromancer; break;
-                case "c": npcData.PreferredClass = CharacterClass.Cleric; break;
-                case "m": npcData.PreferredClass = CharacterClass.Minotaur; break;
-                case "t": npcData.PreferredClass = CharacterClass.Troll; break;
-                case "k": npcData.PreferredClass = CharacterClass.Knight; break;
+                case "d": data.PreferredClass = CharacterClass.Dragon; break;
+                case "n": data.PreferredClass = CharacterClass.Necromancer; break;
+                case "c": data.PreferredClass = CharacterClass.Cleric; break;
+                case "m": data.PreferredClass = CharacterClass.Minotaur; break;
+                case "t": data.PreferredClass = CharacterClass.Troll; break;
+                case "k": data.PreferredClass = CharacterClass.Knight; break;
                 //case "x": npcData.PreferredClass = Class.Male; break;
                 //case "o": npcData.PreferredClass = Class.Female; break;
                 
-                default: npcData.PreferredClass = CharacterClass.None; break;
+                default: data.PreferredClass = CharacterClass.None; break;
             }
-            npcData.BonusAbility = columns[16];
+            data.BonusAbility = columns[16];
 
             // Attack 1
-            npcData.Attack1 = new AttackInfo();
-            npcData.Attack1.DamageType = CsvSpellElementToEnum(columns[17]);
-            npcData.AttackAmountText = columns[18];
-            CsvDamageRangeToInt(columns[18], out npcData.Attack1.MinDamage, out npcData.Attack1.MaxDamage);
-            npcData.Attack1.Missile = columns[19];
-            // Attack 2
-            npcData.ChanceAttack2 = int.Parse(columns[20]);
-            npcData.Attack2 = new AttackInfo();
-            npcData.Attack2.DamageType = CsvSpellElementToEnum(columns[21]);
-            CsvDamageRangeToInt(columns[22], out npcData.Attack2.MinDamage, out npcData.Attack2.MaxDamage);
-            npcData.Attack2.Missile = columns[23];
-            // Spell Attack 1
-            npcData.ChanceSpellAttack1 = int.Parse(columns[24]);
-            npcData.SpellAttack1 = new SpellInfo(columns[25]);
-            // Spell Attack 2
-            npcData.ChanceSpellAttack2 = int.Parse(columns[26]);
-            npcData.SpellAttack2 = new SpellInfo(columns[27]);
-            // Resistances
-            npcData.Resistances[SpellElement.Fire] = CsvResistanceAmountToInt(columns[28]);
-            npcData.Resistances[SpellElement.Air] = CsvResistanceAmountToInt(columns[29]);
-            npcData.Resistances[SpellElement.Water] = CsvResistanceAmountToInt(columns[30]);
-            npcData.Resistances[SpellElement.Earth] = CsvResistanceAmountToInt(columns[31]);
-            npcData.Resistances[SpellElement.Mind] = CsvResistanceAmountToInt(columns[32]);
-            npcData.Resistances[SpellElement.Spirit] = CsvResistanceAmountToInt(columns[33]);
-            npcData.Resistances[SpellElement.Body] = CsvResistanceAmountToInt(columns[34]);
-            npcData.Resistances[SpellElement.Light] = CsvResistanceAmountToInt(columns[35]);
-            npcData.Resistances[SpellElement.Dark] = CsvResistanceAmountToInt(columns[36]);
-            npcData.Resistances[SpellElement.Physical] = CsvResistanceAmountToInt(columns[37]);
-            // Special
-            npcData.SpecialAbility = columns[38];
+            data.Attack1_Element = CsvSpellElementToEnum(columns[17]);
+            data.Attack1_Missile = columns[19];
+            CsvDamageRangeToInt(columns[18], 
+                out data.Attack1_DamageDiceRolls, 
+                out data.Attack1_DamageDiceSides, 
+                out data.Attack1_DamageBonus);
 
-            return npcData;
+            // Attack 2
+            data.Attack2_UseChance = int.Parse(columns[20]);
+            data.Attack2_Element = CsvSpellElementToEnum(columns[21]);
+            data.Attack2_Missile = columns[23];
+            CsvDamageRangeToInt(columns[22],
+                out data.Attack2_DamageDiceRolls,
+                out data.Attack2_DamageDiceSides,
+                out data.Attack2_DamageBonus);
+
+            SpellDataDb spellDb = DbMgr.Instance.SpellDataDb;
+
+            // Spell Attack 1
+            data.Spell1_UseChance = int.Parse(columns[24]);
+            if (columns[25] != "0")
+            {
+                SpellInfo spell1 = new SpellInfo(columns[25]);
+                foreach (SpellData spellData in spellDb.Data.Values)
+                {
+                    if (spell1.SpellName == spellData.Name.ToLower())
+                    {
+                        data.Spell1_SpellType = spellData.Id;
+                        data.Spell1_SkillLevel = spell1.SpellLevel;
+                        data.Spell1_SkillMastery = spell1.SpellMastery;
+                        break;
+                    }
+                }
+                if (data.Spell1_SpellType == SpellType.None)
+                {
+                    Debug.LogError("Failed to retrieve spell info for: " + columns[25]);
+                }
+            }
+            // Spell Attack 2
+            data.ChanceSpellAttack2 = int.Parse(columns[26]);
+            if (columns[27] != "0")
+            {
+                SpellInfo spell2 = new SpellInfo(columns[27]);
+                foreach (SpellData spellData in spellDb.Data.Values)
+                {
+                    if (spell2.SpellName == spellData.Name.ToLower())
+                    {
+                        data.Spell2_SpellType = spellData.Id;
+                        data.Spell2_SkillLevel = spell2.SpellLevel;
+                        data.Spell2_SkillMastery = spell2.SpellMastery;
+                        break;
+                    }
+                }
+                if (data.Spell2_SpellType == SpellType.None)
+                {
+                    Debug.LogError("Failed to retrieve spell info for: " + columns[27]);
+                }
+            }
+            // Resistances
+            data.Resistances[SpellElement.Fire] = CsvResistanceAmountToInt(columns[28]);
+            data.Resistances[SpellElement.Air] = CsvResistanceAmountToInt(columns[29]);
+            data.Resistances[SpellElement.Water] = CsvResistanceAmountToInt(columns[30]);
+            data.Resistances[SpellElement.Earth] = CsvResistanceAmountToInt(columns[31]);
+            data.Resistances[SpellElement.Mind] = CsvResistanceAmountToInt(columns[32]);
+            data.Resistances[SpellElement.Spirit] = CsvResistanceAmountToInt(columns[33]);
+            data.Resistances[SpellElement.Body] = CsvResistanceAmountToInt(columns[34]);
+            data.Resistances[SpellElement.Light] = CsvResistanceAmountToInt(columns[35]);
+            data.Resistances[SpellElement.Dark] = CsvResistanceAmountToInt(columns[36]);
+            data.Resistances[SpellElement.Physical] = CsvResistanceAmountToInt(columns[37]);
+            // Special
+            data.SpecialAbility = columns[38];
+
+            return data;
         }
 
         private static SpellElement CsvSpellElementToEnum(string csv)
@@ -136,11 +177,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             return val;
         }
 
-        private static bool CsvDamageRangeToInt(string csv, out int minDamage, out int maxDamage)
+        private static bool CsvDamageRangeToInt(string csv, out int diceRolls, out int diceSides, out int bonus)
         {
-            int baseDamage = 0;
-            minDamage = 0;
-            maxDamage = 0;
+            diceRolls = 0;
+            diceSides = 0;
+            bonus = 0;
 
             csv = csv.ToLower();
 
@@ -151,18 +192,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
 
             if (csv.Contains('+'))
             {
-                baseDamage = int.Parse(csv.Substring(csv.LastIndexOf('+') + 1));
+                bonus = int.Parse(csv.Substring(csv.LastIndexOf('+') + 1));
             }
 
             Match diceRoll = Regex.Match(csv, "[0-9]*d[0-9]*");
             if (diceRoll.Success)
             {
                 string diceRollStr = diceRoll.Value;
-                int numDiceSides = int.Parse(diceRollStr.Substring(0, diceRollStr.IndexOf('d')));
-                int numDiceRolls = int.Parse(diceRoll.Value.Substring(diceRoll.Value.LastIndexOf('d') + 1));
-
-                minDamage = numDiceSides + baseDamage;
-                maxDamage = numDiceSides * numDiceRolls + baseDamage;
+                diceRolls = int.Parse(diceRollStr.Substring(0, diceRollStr.IndexOf('d')));
+                diceSides = int.Parse(diceRoll.Value.Substring(diceRoll.Value.LastIndexOf('d') + 1));
 
                 return true;
             }

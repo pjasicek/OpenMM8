@@ -559,5 +559,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             return SpellSchool.None;
         }
+
+        static public float ConvertToUnitySpeed(float mmSpeed)
+        {
+            return mmSpeed / 80.0f;
+        }
+
+        static public float ConvertToUnitySize(float mmSizeUnits)
+        {
+            return mmSizeUnits / 40.0f;
+        }
     }
 }

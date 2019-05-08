@@ -331,7 +331,7 @@ public class CombatNpc : BaseNpc
             else
             {
                 // Spawn projectile
-                if (NpcData.Attack2.Missile != "0")
+                /*if (NpcData.Attack2.Missile != "0")
                 {
                     //Debug.Log("Spawn missile: " + NpcData.Attack2.Missile);
                     GameObject arrow = (GameObject)Instantiate(Resources.Load("Prefabs/Objects/ArrowPrefab"), transform.position + (transform.forward * 2), transform.rotation);
@@ -342,7 +342,7 @@ public class CombatNpc : BaseNpc
                     Vector3 shootDirection = (Target.transform.position + add - arrow.transform.position).normalized;
                     //projectile.Shoot(arrow.transform.position, Target.transform.position + add);
                     projectile.Shoot(shootDirection);
-                }
+                }*/
             }
         }
     }

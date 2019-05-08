@@ -114,7 +114,7 @@ public enum SpellType
     Body_PowerCure,
 
     // Light school
-    Light_LightBold,
+    Light_LightBolt,
     Light_DestroyUndead,
     Light_DispelMagic,
     Light_Paralyze,
