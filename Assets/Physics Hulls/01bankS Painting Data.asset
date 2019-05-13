@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0de965f2e710c1c489ead8e62cd25da0, type: 3}
+  m_Name: 01bankS Painting Data
+  m_EditorClassIdentifier: 
+  hullData: {fileID: 11400000, guid: 713b120f7f682474087fc3485674dc14, type: 2}
+  sourceMesh: {fileID: 0}
+  activeHull: 0
+  faceThickness: 0.1
+  hulls:
+  - name: Hull 2
+    type: 1
+    colour: {r: 1, g: 0, b: 1, a: 0.3}
+    material: {fileID: 0}
+    isTrigger: 0
+    selectedFaces: 570000003e0000003f0000000900000056000000550000004f000000540000004e0000000300000010000000110000002800000027000000290000001200000030000000310000001300000020000000210000004200000043000000260000000e00000032000000330000000f0000002a0000002b000000
+    collisionMesh: {fileID: 43702731652761554, guid: 713b120f7f682474087fc3485674dc14,
+      type: 2}
+    faceCollisionMesh: {fileID: 0}
+    collisionBox:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0, y: 0, z: 0}
+    hasColliderError: 0
+    numColliderFaces: 15

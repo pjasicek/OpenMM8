@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0de965f2e710c1c489ead8e62cd25da0, type: 3}
+  m_Name: 01hut_5S Painting Data
+  m_EditorClassIdentifier: 
+  hullData: {fileID: 11400000, guid: 9934d8dc2533a084481c0afde4c3657c, type: 2}
+  sourceMesh: {fileID: 0}
+  activeHull: 1
+  faceThickness: 0.1
+  hulls:
+  - name: Hull 1
+    type: 1
+    colour: {r: 0, g: 1, b: 1, a: 0.3}
+    material: {fileID: 0}
+    isTrigger: 0
+    selectedFaces: 230000006c0000007d0000007c0000006f0000006e0000006d00000022000000270000002600000069000000640000006500000068000000490000004800000055000000540000007500000074000000250000002400000057000000560000005200000061000000530000007300000072000000600000005f0000005e00000070000000710000004b0000004a0000007b0000007a0000005d0000005c0000005b0000005a0000004f0000004e0000007700000058000000590000004c0000004d000000790000006a0000006b00000078000000760000005100000050000000460000006200000063000000670000006600000047000000
+    collisionMesh: {fileID: 43755641588530398, guid: 9934d8dc2533a084481c0afde4c3657c,
+      type: 2}
+    faceCollisionMesh: {fileID: 0}
+    collisionBox:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0, y: 0, z: 0}
+    hasColliderError: 0
+    numColliderFaces: 16
+  - name: Hull 2
+    type: 1
+    colour: {r: 1, g: 0, b: 1, a: 0.3}
+    material: {fileID: 0}
+    isTrigger: 0
+    selectedFaces: 4400000039000000380000004500000033000000320000002a000000430000004200000029000000340000003500000028000000360000003700000031000000
+    collisionMesh: {fileID: 43805382600176970, guid: 9934d8dc2533a084481c0afde4c3657c,
+      type: 2}
+    faceCollisionMesh: {fileID: 0}
+    collisionBox:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0, y: 0, z: 0}
+    hasColliderError: 0
+    numColliderFaces: 17
