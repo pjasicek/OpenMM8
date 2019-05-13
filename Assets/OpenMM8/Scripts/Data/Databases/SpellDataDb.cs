@@ -36,6 +36,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
         public int EffectSoundId;
         public int DisplayObjectId;
         public int ImpactDisplayObjectId;
+        public int BaseDamage;
+        public int DamageDiceSides;
     }
 
     public class SpellDataDb : DataDb<SpellData, SpellType>
@@ -92,6 +94,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
 
             data.DisplayObjectId = int.Parse(columns[20]);
             data.ImpactDisplayObjectId = int.Parse(columns[21]);
+
+            data.BaseDamage = int.Parse(columns[22]);
+            data.DamageDiceSides = int.Parse(columns[23]);
 
             return data;
         }

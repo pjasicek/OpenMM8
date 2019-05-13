@@ -814,6 +814,7 @@ public partial class Monster : MonoBehaviour
         bool willHitStun = false;
         bool willHitParalyze = false;
         bool willHitHalveAC = false;
+        bool isAdditionalDamagePossible = false;
 
         SpellElement damageElement = SpellElement.Physical;
         int damageAmount = 0;
@@ -889,7 +890,47 @@ public partial class Monster : MonoBehaviour
             // TODO: Spells, ranged attacks, etc
             damageAmount = 1;
 
-            //switch ()
+            switch (projectileInfo.SpellType)
+            {
+                case SpellType.Misc_Arrow:
+                    damageElement = SpellElement.Physical;
+                    damageAmount = GameMechanics.CalculatePlayerRangedDamage(dmgDealer, this);
+                    if (BuffMap[MonsterBuffType.Shield].IsActive())
+                    {
+                        damageAmount /= 2;
+                    }
+                    isAdditionalDamagePossible = true;
+                    // Handle carnage
+
+                    if (!GameMechanics.WillPlayerHitMonster(dmgDealer, this))
+                    {
+                        dmgDealer.PlayEventReaction(CharacterReaction.MissedAttack);
+                        return;
+                    }
+                    break;
+
+                case SpellType.Misc_Blaster:
+                case SpellType.Misc_DragonBreath:
+                    damageElement = SpellElement.Physical;
+                    damageAmount = 0;
+                    break;
+
+                default:
+                    SpellData spellData = DbMgr.Instance.SpellDataDb.Get(projectileInfo.SpellType);
+                    if (spellData == null)
+                    {
+                        Debug.LogError("No spell data for: " + projectileInfo.SpellType);
+                        break;
+                    }
+
+                    damageElement = spellData.SpellElement;
+                    damageAmount = GameMechanics.CalculateSpellDamage(
+                        projectileInfo.SpellType, 
+                        projectileInfo.SkillMastery, 
+                        projectileInfo.SkillLevel, 
+                        CurrentHp);
+                    break;
+            }
         }
 
         if (dmgDealer.IsWeak())
@@ -911,7 +952,10 @@ public partial class Monster : MonoBehaviour
                 SpellElement.Body, BuffMap[MonsterBuffType.Hammerhands].Power);
         }
 
-        // TODO: Handle additional damage, like weapon enchants
+        if (isAdditionalDamagePossible)
+        {
+            // TODO: Handle additional damage, like weapon enchants
+        }
 
         CurrentHp -= damageAmount;
         if (damageAmount == 0 && !willHitStun && !willHitParalyze)
@@ -1397,9 +1441,9 @@ public partial class Monster : MonoBehaviour
             if (monster.BuffMap[MonsterBuffType.Afraid].IsActive())
             {
                 // If too far away, just move
-                if (distanceToTargetSqr >= 10240.0f)
+                if (distanceToTargetSqr >= 5120.0f)
                 {
-                    // TODO: Actor::AI_RandomMove(actor_id, target_pid, 1024, 0);
+                    monster.AI_RandomMove(target, 512.0f, 2.0f);
                 }
                 else
                 {

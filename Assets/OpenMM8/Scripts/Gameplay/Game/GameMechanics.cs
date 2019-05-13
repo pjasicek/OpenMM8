@@ -1,4 +1,5 @@
-﻿using Assets.OpenMM8.Scripts.Gameplay.Items;
+﻿using Assets.OpenMM8.Scripts.Gameplay.Data;
+using Assets.OpenMM8.Scripts.Gameplay.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -116,6 +117,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         static public void DamagePlayerFromMonster(Monster monster, PlayerParty playerParty)
         {
+            Character victim = SelectMonsterAttackVictim(monster, playerParty);
+            if (victim == null)
+            {
+                Debug.LogError("No available victim for monster attack");
+                return;
+            }
+
 
         }
 
@@ -332,62 +340,81 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return totalDamage;
         }
 
-        static public AttackResult DamageFromPlayerToNpc(AttackInfo hitInfo,
-            Dictionary<SpellElement, int> npcResistances,
-            int npcArmorClass)
+        static public int CalculatePlayerRangedDamage(Character dmgDealer, Monster victim)
         {
-            AttackResult result = new AttackResult();
-
-            float chanceBeingHit = (float)(15 + hitInfo.AttackMod * 2) / (float)(30 + hitInfo.AttackMod * 2 + npcArmorClass);
-            if (UnityEngine.Random.Range(0.0f, 1.0f) > chanceBeingHit)
+            if (!dmgDealer.WearsItemAtSlot(EquipSlot.Bow))
             {
-                result.Type = AttackResultType.Miss;
-                result.DamageDealt = 0;
-                return result;
-            }
-            else
-            {
-                result.Type = AttackResultType.Hit;
+                return 0;
             }
 
-            //float damageDealt = (Gaussian.Random() * (hitInfo.MaxDamage - hitInfo.MinDamage)) + hitInfo.MinDamage;
-            float damageDealt = Gaussian.RandomRange(hitInfo.MinDamage, hitInfo.MaxDamage);
+            Item bow = dmgDealer.GetItemAtSlot(EquipSlot.Bow);
+            int damage = bow.GetMod() + GetDiceResult(bow.GetDiceRolls(), bow.GetDiceSides());
 
-            // Apply resistances
-            int attackResistance = npcResistances[hitInfo.DamageType];
-            damageDealt *= GetResistanceReductionCoeff(hitInfo.DamageType, attackResistance, 0);
+            if (victim != null)
+            {
+                // Handle x2 damage enchants
+            }
 
-            result.DamageDealt = Mathf.RoundToInt(damageDealt);
-
-            return result;
+            return damage + dmgDealer.GetSkillsBonus(StatType.RangedDamageBonus);
         }
 
-        static public AttackResult DamageFromNpcToPlayer(AttackInfo hitInfo,
-            Dictionary<SpellElement, int> playerResistances,
-            int playerArmorClass,
-            int playerLuck)
+        static public int CalculateSpellDamage(SpellType spellType, SkillMastery skillMastery, int skillLevel, int currentHp)
         {
-            AttackResult result = new AttackResult();
-
-            float chanceBeingHit = (float)(5 + hitInfo.SourceLevel * 2) / (float)(10 + hitInfo.SourceLevel * 2 + playerArmorClass);
-            if (UnityEngine.Random.Range(0.0f, 1.0f) > chanceBeingHit)
+            SpellData spellData = DbMgr.Instance.SpellDataDb.Get(spellType);
+            if (spellData == null)
             {
-                result.Type = AttackResultType.Miss;
-                result.DamageDealt = 0;
-                return result;
-            }
-            else
-            {
-                result.Type = AttackResultType.Hit;
+                Debug.LogError("No such spell data for: " + spellType);
+                return 0;
             }
 
-            float damageDealt = Gaussian.RandomRange(hitInfo.MinDamage, hitInfo.MaxDamage);// (Gaussian.Random() * (hitInfo.MaxDamage - hitInfo.MinDamage)) + hitInfo.MinDamage;
+            int damage = 0;
+            switch (spellType)
+            {
+                case SpellType.Fire_FireSpike:
+                    int numDiceSides = 0;
+                    switch (skillMastery)
+                    {
+                        case SkillMastery.Normal:
+                        case SkillMastery.Expert:
+                            numDiceSides = 6;
+                            break;
+                        case SkillMastery.Master:
+                            numDiceSides = 8;
+                            break;
+                        case SkillMastery.Grandmaster:
+                            numDiceSides = 10;
+                            break;
+                        default:
+                            numDiceSides = 0;
+                            break;
+                    }
+                    damage = GetDiceResult(skillLevel, numDiceSides);
+                    break;
 
-            // Apply resistances
-            int attackResistance = playerResistances[hitInfo.DamageType];
-            damageDealt *= GetResistanceReductionCoeff(hitInfo.DamageType, attackResistance, playerLuck);
+                case SpellType.Earth_MassDistortion:
+                    damage = currentHp * (spellData.BaseDamage + 2 * skillLevel) / 100;
+                    break;
 
-            result.DamageDealt = Mathf.RoundToInt(damageDealt);
+                default:
+                    damage = spellData.BaseDamage + GetDiceResult(skillLevel, spellData.DamageDiceSides);
+                    break;
+            }
+
+            return damage;
+        }
+
+
+
+
+    
+
+        public static int GetDiceResult(int numRolls, int numDiceSides)
+        {
+            int result = 0;
+            for (int i = 0; i < numRolls; i++)
+            {
+                result += UnityEngine.Random.Range(0, numDiceSides) + 1;
+            }
 
             return result;
         }
