@@ -122,7 +122,9 @@ public enum MonsterAttackType
     Attack1,
     Attack2,
     Spell1,
-    Spell2
+    Spell2,
+    Special,
+    None
 }
 
 public enum SpecialAbilityType

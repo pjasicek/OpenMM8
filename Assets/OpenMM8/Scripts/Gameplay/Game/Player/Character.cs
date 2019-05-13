@@ -225,15 +225,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 return false;
             }
 
+            // TODO: 
             TimeUntilRecovery = UnityEngine.Random.Range(1.25f, 2.0f);
-
-            AttackInfo attackInfo = new AttackInfo();
-            attackInfo.MinDamage = 38;
-            attackInfo.MaxDamage = 64;
-            attackInfo.AttackMod = 10000;
-            attackInfo.DamageType = SpellElement.Physical;
-
-            GameEvents.InvokeEvent_OnCharAttack(this, attackInfo);
 
             if (victim)
             {
@@ -1367,83 +1360,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         //=============================================================================================================
 
-        public int CalculateIncomingDamage(int damageAmount, SpellElement spellElement)
-        {
-            // Lich is immune to Mind/Body/Spirit
-            if (Class == CharacterClass.Lich &&
-                (spellElement == SpellElement.Mind ||
-                 spellElement == SpellElement.Spirit ||
-                 spellElement == SpellElement.Body))
-            {
-                return 0;
-            }
-
-            int resistAmount = GetActualResistance(spellElement);
-            int luckAmount = GetActualLuck();
-            float resistReductionCoeff = GameMechanics.GetResistanceReductionCoeff(spellElement, resistAmount, luckAmount);
-
-            if (spellElement == SpellElement.Physical)
-            {
-                Item armorItem = GetItemAtSlot(EquipSlot.Armor);
-                if (armorItem != null && !armorItem.IsBroken)
-                {
-                    if (armorItem.Data.SkillGroup == ItemSkillGroup.Plate)
-                    {
-                        if (GetSkillMastery(SkillType.PlateArmor) >= SkillMastery.Master)
-                        {
-                            resistReductionCoeff /= 2.0f;
-                        }
-                    }
-
-                    if (armorItem.Data.SkillGroup == ItemSkillGroup.Chain)
-                    {
-                        if (GetSkillMastery(SkillType.ChainArmor) == SkillMastery.Grandmaster)
-                        {
-                            resistReductionCoeff *= 2.0f / 3.0f;
-                        }
-                    }
-                }
-            }
-
-            return (int)(damageAmount * resistReductionCoeff);
-        }
-
-        public int ReceiveDamage(int damageAmount, SpellElement spellElement)
-        {
-            Conditions[Condition.Sleep].Reset();
-
-            int damageTaken = CalculateIncomingDamage(damageAmount, spellElement);
-            CurrHitPoints -= damageTaken;
-
-            // Player too hurt - unconcious or dead
-            if (CurrHitPoints <= 0)
-            {
-                // High endurance or preservation buff prevents character from dying
-                //   - he will rather stay in unconcious state
-                if ((CurrHitPoints + GetBaseEndurance()) > 0 ||
-                    PlayerBuffMap[PlayerEffectType.Preservation].IsActive())
-                {
-                    SetCondition(Condition.Unconcious, false);
-                }
-                else
-                {
-                    SetCondition(Condition.Dead, false);
-                }
-
-                // Break armor if health dropped below -10
-                if (CurrHitPoints <= -10)
-                {
-                    Item armorItem = GetItemAtSlot(EquipSlot.Armor);
-                    if (armorItem != null)
-                    {
-                        armorItem.IsBroken = true;
-                    }
-                }
-            }
-
-            return damageTaken;
-        }
-
         //=============================================================================================================
 
         //{16, 15, 14, 17, 13, 2, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 1, 0}};
@@ -1797,6 +1713,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 int rndExpressionIndex = UnityEngine.Random.Range(0, numExpressionVariants);
                 CharacterExpression expressionVariant = reactionData.ExpressionVariants[rndExpressionIndex];
+                Debug.Log("Len: " + numExpressionVariants + ", Chosen: " + expressionVariant);
                 PlayCharacterExpression(expressionVariant);
             }
         }
@@ -1976,6 +1893,279 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 default:
                     break;
             }
+        }
+
+        //=========================================================================================
+        // Receiving and dealing damage
+        //=========================================================================================
+
+
+        // Damage @damageAmount reduced by respective resistances to @spellElement
+        public int CalculateIncomingDamage(int damageAmount, SpellElement spellElement)
+        {
+            // Lich is immune to Mind/Body/Spirit
+            if (Class == CharacterClass.Lich &&
+                (spellElement == SpellElement.Mind ||
+                 spellElement == SpellElement.Spirit ||
+                 spellElement == SpellElement.Body))
+            {
+                return 0;
+            }
+
+            int resistAmount = GetActualResistance(spellElement);
+            int luckAmount = GetActualLuck();
+            float resistReductionCoeff = GameMechanics.GetResistanceReductionCoeff(spellElement, resistAmount, luckAmount);
+
+            if (spellElement == SpellElement.Physical)
+            {
+                Item armorItem = GetItemAtSlot(EquipSlot.Armor);
+                if (armorItem != null && !armorItem.IsBroken)
+                {
+                    if (armorItem.Data.SkillGroup == ItemSkillGroup.Plate)
+                    {
+                        if (GetSkillMastery(SkillType.PlateArmor) >= SkillMastery.Master)
+                        {
+                            resistReductionCoeff /= 2.0f;
+                        }
+                    }
+
+                    if (armorItem.Data.SkillGroup == ItemSkillGroup.Chain)
+                    {
+                        if (GetSkillMastery(SkillType.ChainArmor) == SkillMastery.Grandmaster)
+                        {
+                            resistReductionCoeff *= 2.0f / 3.0f;
+                        }
+                    }
+                }
+            }
+
+            return (int)(damageAmount * resistReductionCoeff);
+        }
+
+
+        // This damage is already probably partly reduced by effects like Shield
+        //    - but is further reduced by resistances to @damageElement
+        public int ReceiveDamage(int damageAmount, SpellElement damageElement)
+        {
+            Conditions[Condition.Sleep].Reset();
+
+            int damageTaken = CalculateIncomingDamage(damageAmount, damageElement);
+            CurrHitPoints -= damageTaken;
+
+            // Player too hurt - unconcious or dead
+            if (CurrHitPoints <= 0)
+            {
+                // High endurance or preservation buff prevents character from dying
+                //   - he will rather stay in unconcious state
+                if ((CurrHitPoints + GetBaseEndurance()) > 0 ||
+                    PlayerBuffMap[PlayerEffectType.Preservation].IsActive())
+                {
+                    SetCondition(Condition.Unconcious, false);
+                }
+                else
+                {
+                    SetCondition(Condition.Dead, false);
+                }
+
+                // Break armor if health dropped below -10
+                if (CurrHitPoints <= -10)
+                {
+                    Item armorItem = GetItemAtSlot(EquipSlot.Armor);
+                    if (armorItem != null)
+                    {
+                        armorItem.IsBroken = true;
+                    }
+                }
+            }
+
+            if (damageTaken > 0 && CanAct())
+            {
+                // TODO: Each character should have his own audio source
+                //PlayEventReaction(CharacterReaction.DamagedOww);
+            }
+
+            return damageTaken;
+        }
+
+
+        // Calculates melee damage with specific weapon to specific monster
+        public int CalculateMeleeDamageToMonsterWithWeapon(Item weapon,
+            Monster monster,
+            bool addOneDice = false)
+        {
+            int diceCount = weapon.GetDiceRolls();
+            if (addOneDice)
+            {
+                diceCount++;
+            }
+
+            int diceResult = 0;
+            for (int i = 0; i < diceCount; i++)
+            {
+                diceResult += UnityEngine.Random.Range(0, weapon.GetDiceSides()) + 1;
+            }
+
+            int totalDamage = weapon.GetMod() + diceResult;
+
+            if (monster != null)
+            {
+                // TODO: Check double damage to ogres, titans, dragons, etc.
+            }
+
+            if (GetSkillMastery(SkillType.Dagger) >= SkillMastery.Master &&
+                weapon.Data.SkillGroup == ItemSkillGroup.Dagger)
+            {
+                if (UnityEngine.Random.Range(0, 100) < 10)
+                {
+                    totalDamage *= 3;
+                }
+            }
+
+            return totalDamage;
+        }
+
+
+        // Calculates ranged damage to specific monster
+        public int CalculateRangedDamage(Monster victim)
+        {
+            if (!WearsItemAtSlot(EquipSlot.Bow))
+            {
+                return 0;
+            }
+
+            Item bow = GetItemAtSlot(EquipSlot.Bow);
+            int damage = bow.GetMod() + GameMechanics.GetDiceResult(bow.GetDiceRolls(), bow.GetDiceSides());
+
+            if (victim != null)
+            {
+                // Handle x2 damage enchants
+            }
+
+            return damage + GetSkillsBonus(StatType.RangedDamageBonus);
+        }
+
+
+        // Generates true/false whether the attack will miss or hit
+        public bool WillHitMonster(Monster monster)
+        {
+            int monsterArmor = monster.Data.ArmorClass;
+            int armorBuff = 0;
+
+            if (monster.BuffMap[MonsterBuffType.HalvedArmorClass].IsActive())
+            {
+                monsterArmor /= 2;
+            }
+
+            if (monster.BuffMap[MonsterBuffType.HourOfPower].IsActive())
+            {
+                armorBuff = monster.BuffMap[MonsterBuffType.HourOfPower].Power;
+            }
+
+            if (monster.BuffMap[MonsterBuffType.Stoneskin].IsActive() &&
+                monster.BuffMap[MonsterBuffType.Stoneskin].Power > armorBuff)
+            {
+                armorBuff = monster.BuffMap[MonsterBuffType.Stoneskin].Power;
+            }
+
+            int effectiveArmor = monsterArmor + armorBuff;
+
+            // Distance modificator
+            int distanceMod = 0;
+
+            // TODO: Im not really sure
+            float distance = (monster.transform.position - Party.transform.position).sqrMagnitude;
+            if (distance < Monster.MAX_MELEE_DISTANCE_SQR)
+            {
+                distanceMod = 0;
+            }
+            else if (distance < 512)
+            {
+                distanceMod = 1;
+            }
+            else if (distance < 1280)
+            {
+                distanceMod = 2;
+            }
+            else
+            {
+                distanceMod = 3;
+            }
+
+            int attackBonus;
+            if (distanceMod == 0)
+            {
+                attackBonus = GetMeleeAttack();
+            }
+            else
+            {
+                attackBonus = GetRangedAttack();
+            }
+
+            int attackPositiveMod = UnityEngine.Random.Range(0,
+                effectiveArmor + 2 * attackBonus + 30);
+
+            int attackNegativeMod;
+            if (distanceMod == 2)
+            {
+                attackNegativeMod = ((effectiveArmor + 15) / 2) + effectiveArmor + 15;
+            }
+            else if (distanceMod == 3)
+            {
+                attackNegativeMod = 2 * effectiveArmor + 30;
+            }
+            else
+            {
+                attackNegativeMod = effectiveArmor + 15;
+            }
+
+            return (attackPositiveMod > attackNegativeMod);
+        }
+
+
+        // Generates melee damage to specific monster
+        public int CalculateMeleeDamageToMonster(Monster victim)
+        {
+            int mainhandWeaponDamage = 0;
+            int offhandWeaponDamage = 0;
+
+            if (IsUnarmed())
+            {
+                mainhandWeaponDamage = UnityEngine.Random.Range(0, 3) + 1;
+            }
+            else
+            {
+                Item mainhandItem = GetItemAtSlot(EquipSlot.MainHand);
+                Item offhandItem = GetItemAtSlot(EquipSlot.OffHand);
+
+                if (mainhandItem != null)
+                {
+                    bool holdsSpearWithNoShield = mainhandItem.Data.SkillGroup == ItemSkillGroup.Spear &&
+                        (offhandItem == null || offhandItem.Data.SkillGroup != ItemSkillGroup.Shield);
+
+                    mainhandWeaponDamage = CalculateMeleeDamageToMonsterWithWeapon(
+                        mainhandItem, victim, holdsSpearWithNoShield);
+                }
+
+                if (offhandItem != null)
+                {
+                    if (offhandItem.Data.ItemType != ItemType.Shield)
+                    {
+                        offhandWeaponDamage = CalculateMeleeDamageToMonsterWithWeapon(
+                            offhandItem, victim, false);
+                    }
+                }
+            }
+
+            int damageSum = mainhandWeaponDamage + offhandWeaponDamage;
+
+
+            if (damageSum < 1)
+            {
+                damageSum = 1;
+            }
+
+            return 200;
+            return damageSum;
         }
     }
 }

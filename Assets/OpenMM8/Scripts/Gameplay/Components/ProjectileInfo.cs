@@ -37,4 +37,7 @@ public class ProjectileInfo
     public int DamageDiceRolls = 0;
     public int DamageDiceSides = 0;
     public int DamageBonus = 0;
+
+    // Or if shooter is monster also this
+    public MonsterAttackType MonsterAttackType = MonsterAttackType.None;
 }

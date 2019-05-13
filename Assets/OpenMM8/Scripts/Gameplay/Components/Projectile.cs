@@ -132,6 +132,9 @@ public class Projectile : MonoBehaviour
 
             // Damage player
             Debug.Log(ShooterAsMonster.Name + " -> " + victimAsPlayer.name);
+            ShooterAsMonster.DealDamageToPlayer(victimAsPlayer, 
+                ProjectileInfo.MonsterAttackType, 
+                this);
         }
         else if (ShooterAsCharacter != null && victimAsMonster != null)
         {
@@ -139,6 +142,8 @@ public class Projectile : MonoBehaviour
 
             // Damage monster
             Debug.Log(ShooterAsCharacter.Name + " -> " + victimAsMonster.Name);
+
+            victimAsMonster.ReceiveDamageFromPlayer(ShooterAsCharacter, this);
         }
 
         if (ProjectileInfo.ImpactObject != null &&

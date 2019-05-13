@@ -10,8 +10,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 {
     
 
-    [RequireComponent(typeof(HostilityChecker))]
-    [RequireComponent(typeof(Damageable))]
     public class PlayerParty : MonoBehaviour, ITriggerListener
     {
         public List<Character> Characters = new List<Character>();
@@ -81,10 +79,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public void Initialize()
         {
             HostilityChecker = GetComponent<HostilityChecker>();
-
-            Damageable damageable = GetComponent<Damageable>();
-            damageable.OnAttackReceieved += new AttackReceived(OnAttackReceived);
-            damageable.OnSpellReceived += new SpellReceived(OnSpellReceived);
             PlayerAudioSource = transform.Find("FirstPersonCharacter").GetComponent<AudioSource>();
 
             //=====================================================================================
@@ -468,69 +462,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             PartyUI.UpdateLayout();
         }
 
-        // Damageable events
-        AttackResult OnAttackReceived(AttackInfo hitInfo, GameObject source)
-        {
-            Character hitCharacter = null;
-            if (hitInfo.PreferredClass != CharacterClass.None)
-            {
-                List<Character> preferredCharacters = new List<Character>();
-                foreach (Character character in Characters)
-                {
-                    if (character.Class == hitInfo.PreferredClass)
-                    {
-                        preferredCharacters.Add(character);
-                    }
-                }
-
-                if (preferredCharacters.Count > 0)
-                {
-                    hitCharacter = preferredCharacters[UnityEngine.Random.Range(0, preferredCharacters.Count)];
-                }
-                else
-                {
-                    hitCharacter = Characters[UnityEngine.Random.Range(0, Characters.Count)];
-                }
-            }
-            else
-            {
-                hitCharacter = Characters[UnityEngine.Random.Range(0, Characters.Count)];
-            }
-
-            if (hitCharacter == null)
-            {
-                Debug.LogError("hitCharacter is null !");
-                return new AttackResult();
-            }
-
-            AttackResult result = DamageCalculator.DamageFromNpcToPlayer(hitInfo,
-                hitCharacter.BaseResistances, // TODO: not like this
-                hitCharacter.GetActualArmorClass(),
-                hitCharacter.GetActualLuck());
-            result.Victim = this.gameObject;
-            /*if (result.Type == AttackResultType.Miss)
-            {
-                return result;
-            }*/
-
-            //hitCharacter.AddCurrHitPoints(-1 * result.DamageDealt);
-
-            // TODO: This is incorrect now, it is double reduced. Rework all of this anyway.
-            hitCharacter.ReceiveDamage(result.DamageDealt, hitInfo.DamageType);
-            if (hitCharacter.CurrHitPoints <= 0)
-            {
-                result.Type = AttackResultType.Kill;
-            }
-
-            hitCharacter.OnAttackReceived(hitInfo, result);
-
-            return result;
-        }
-
-        SpellResult OnSpellReceived(SpellInfo hitInfo, GameObject source)
-        {
-            return new SpellResult();
-        }
+        
 
         //---------------------------------------------------------------------
         // Triggers
@@ -816,6 +748,63 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public bool IsInvisible()
         {
             return PartyBuffMap[PartyEffectType.Invisibility].IsActive();
+        }
+
+        // Experience from killing monsters - learning is applied
+        // Experience from quests should be separate for each characters, learning is NOT applied there
+        public void ReceiveExperience(int experienceAmount)
+        {
+            int numEligibleCharacters = GetNumConciousCharacters();
+            if (numEligibleCharacters == 0)
+            {
+                return;
+            }
+
+            int expPerCharacter = experienceAmount / numEligibleCharacters;
+            Characters.ForEach(chr =>
+            {
+                if (chr.IsUnconcious() || chr.IsDead() || chr.IsPetrified() || chr.IsEradicated())
+                {
+                    return;
+                }
+
+                float expCoeff = 1.0f;
+                if (chr.HasSkill(SkillType.Learning))
+                {
+                    int learningMult = chr.GetSkillLevelMultiplier(SkillType.Learning, 1, 2, 3, 5);
+                    expCoeff = 1.0f + (learningMult * chr.GetActualSkillLevel(SkillType.Learning)) / 100.0f;
+                }
+
+                chr.Experience += (int)(experienceAmount * expCoeff);
+            });
+        }
+
+        public int GetNumConciousCharacters()
+        {
+            int num = 0;
+            Characters.ForEach(chr =>
+            {
+                if (!chr.IsUnconcious() && !chr.IsDead() && !chr.IsPetrified() && !chr.IsEradicated())
+                {
+                    num++;
+                }
+            });
+
+            return num;
+        }
+
+        public int GetNumCharactersThatCanAct()
+        {
+            int num = 0;
+            Characters.ForEach(chr =>
+            {
+                if (chr.CanAct())
+                {
+                    num++;
+                }
+            });
+
+            return num;
         }
 
         //=========================================================================================

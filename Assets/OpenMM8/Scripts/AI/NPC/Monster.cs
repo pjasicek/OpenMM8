@@ -16,7 +16,7 @@ public partial class Monster : MonoBehaviour
 
     public int MonsterId;
     public string Name;
-    public MonsterData MonsterData;
+    public MonsterData Data;
     public MonsterObjectData DisplayData;
 
     public int Height;
@@ -94,14 +94,14 @@ public partial class Monster : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        MonsterData = DbMgr.Instance.MonsterDb.Get(MonsterId);
+        Data = DbMgr.Instance.MonsterDb.Get(MonsterId);
         DisplayData = DbMgr.Instance.MonsterObjectDb.Get(MonsterId);
 
         // TODO: Transform to unity scale
         Name = DisplayData.Name;
         Height = DisplayData.Height;
         Radius = DisplayData.Radius;
-        Speed = GameMechanics.ConvertToUnitySpeed(MonsterData.Speed); // Scaled to unity units
+        Speed = GameMechanics.ConvertToUnitySpeed(Data.Speed); // Scaled to unity units
 
         NavMeshAgent.speed = Speed;
 
@@ -145,7 +145,7 @@ public partial class Monster : MonoBehaviour
             Flags |= MonsterFlags.Aggressor;
         }
 
-        CurrentHp = MonsterData.HitPoints;
+        CurrentHp = Data.HitPoints;
 
         GameCore.Instance.MonsterList.Add(this);
 
@@ -327,7 +327,7 @@ public partial class Monster : MonoBehaviour
         }
         else
         {
-            thisGroup = (MonsterData.Id - 1) / 3 + 1;
+            thisGroup = (Data.Id - 1) / 3 + 1;
         }
 
         if (otherMonster != null)
@@ -347,7 +347,7 @@ public partial class Monster : MonoBehaviour
             }
             else
             {
-                otherGroup = (otherMonster.MonsterData.Id - 1) / 3 + 1;
+                otherGroup = (otherMonster.Data.Id - 1) / 3 + 1;
             }
         }
         else
@@ -513,7 +513,7 @@ public partial class Monster : MonoBehaviour
         switch (spellType)
         {
             case SpellType.Body_PowerCure:
-                if (CurrentHp >= MonsterData.HitPoints)
+                if (CurrentHp >= Data.HitPoints)
                 {
                     return false;
                 }
@@ -591,21 +591,21 @@ public partial class Monster : MonoBehaviour
     {
         // TODO: Summon
 
-        bool canCastSpell1 = CanCastSpell((SpellType)MonsterData.Spell1_SpellType);
-        bool canCastSpell2 = CanCastSpell((SpellType)MonsterData.Spell2_SpellType);
+        bool canCastSpell1 = CanCastSpell((SpellType)Data.Spell1_SpellType);
+        bool canCastSpell2 = CanCastSpell((SpellType)Data.Spell2_SpellType);
 
-        if (canCastSpell1 && MonsterData.Spell1_UseChance > 0 &&
-            UnityEngine.Random.Range(0, 100) < MonsterData.Spell1_UseChance)
+        if (canCastSpell1 && Data.Spell1_UseChance > 0 &&
+            UnityEngine.Random.Range(0, 100) < Data.Spell1_UseChance)
         {
             return MonsterAttackType.Spell1;
         }
-        if (canCastSpell2 && MonsterData.Spell2_UseChance > 0 &&
-            UnityEngine.Random.Range(0, 100) < MonsterData.Spell2_UseChance)
+        if (canCastSpell2 && Data.Spell2_UseChance > 0 &&
+            UnityEngine.Random.Range(0, 100) < Data.Spell2_UseChance)
         {
             return MonsterAttackType.Spell2;
         }
-        if (MonsterData.Attack2_UseChance > 0 &&
-            UnityEngine.Random.Range(0, 100) < MonsterData.Attack2_UseChance)
+        if (Data.Attack2_UseChance > 0 &&
+            UnityEngine.Random.Range(0, 100) < Data.Attack2_UseChance)
         {
             return MonsterAttackType.Attack2;
         }
@@ -799,6 +799,47 @@ public partial class Monster : MonoBehaviour
         return IsEnemy() || GetRelationTo(null) > 0;
     }
 
+    public void GenerateLoot()
+    {
+        if (AnimationDead != null)
+        {
+            Lootable lootable = GetComponent<Lootable>();
+            lootable.Loot = new Loot();
+
+            int goldAmount = 0;
+            for (int i = 0; i < Data.Treasure.GoldDiceRolls; i++)
+            {
+                goldAmount += UnityEngine.Random.Range(0, Data.Treasure.GoldDiceSides) + 1;
+            }
+
+            Debug.Log("GoldAmount: " + goldAmount);
+
+            lootable.Loot.GoldAmount = goldAmount;
+
+            if (Data.Treasure.ItemChance > 0 &&
+                UnityEngine.Random.Range(0, 100) < Data.Treasure.ItemChance)
+            {
+                TreasureLevel itemLevel = Data.Treasure.ItemLevel;
+                if (Data.Treasure.ItemType != ItemType.None)
+                {
+                    lootable.Loot.Item = ItemGenerator.GenerateItem(itemLevel, Data.Treasure.ItemType);
+                }
+                else if (Data.Treasure.ItemSkillGroup != ItemSkillGroup.None)
+                {
+                    lootable.Loot.Item = ItemGenerator.GenerateItem(itemLevel, Data.Treasure.ItemSkillGroup);
+                }
+                else
+                {
+                    lootable.Loot.Item = ItemGenerator.GenerateItem(itemLevel);
+                }
+            }
+        }
+    }
+
+    //=============================================================================================
+    // Dealing and Receiving damage
+    //=============================================================================================
+
     public void ReceiveDamageFromPlayer(Character dmgDealer, Projectile projectile)
     {
         if (dmgDealer == null)
@@ -869,14 +910,14 @@ public partial class Monster : MonoBehaviour
             }
 
             damageElement = SpellElement.Physical;
-            if (!GameMechanics.WillPlayerHitMonster(dmgDealer, this))
+            if (!dmgDealer.WillHitMonster(this))
             {
                 dmgDealer.PlayEventReaction(CharacterReaction.MissedAttack);
                 return;
             }
             else
             {
-                damageAmount = GameMechanics.MeleeDamageFromPlayerToMonster(dmgDealer, this);
+                damageAmount = dmgDealer.CalculateMeleeDamageToMonster(this);
             }
         }
         else
@@ -894,7 +935,7 @@ public partial class Monster : MonoBehaviour
             {
                 case SpellType.Misc_Arrow:
                     damageElement = SpellElement.Physical;
-                    damageAmount = GameMechanics.CalculatePlayerRangedDamage(dmgDealer, this);
+                    damageAmount = dmgDealer.CalculateRangedDamage(this);
                     if (BuffMap[MonsterBuffType.Shield].IsActive())
                     {
                         damageAmount /= 2;
@@ -902,7 +943,7 @@ public partial class Monster : MonoBehaviour
                     isAdditionalDamagePossible = true;
                     // Handle carnage
 
-                    if (!GameMechanics.WillPlayerHitMonster(dmgDealer, this))
+                    if (!dmgDealer.WillHitMonster(this))
                     {
                         dmgDealer.PlayEventReaction(CharacterReaction.MissedAttack);
                         return;
@@ -925,9 +966,9 @@ public partial class Monster : MonoBehaviour
 
                     damageElement = spellData.SpellElement;
                     damageAmount = GameMechanics.CalculateSpellDamage(
-                        projectileInfo.SpellType, 
-                        projectileInfo.SkillMastery, 
-                        projectileInfo.SkillLevel, 
+                        projectileInfo.SpellType,
+                        projectileInfo.SkillMastery,
+                        projectileInfo.SkillLevel,
                         CurrentHp);
                     break;
             }
@@ -990,13 +1031,13 @@ public partial class Monster : MonoBehaviour
         {
             AI_Die();
             AggroSurroundingMonsters(true);
-            if (MonsterData.ExperienceWorth > 0)
+            if (Data.ExperienceWorth > 0)
             {
-                //dmgDealer.Party.RecieveExperience(MonsterData.ExperienceWorth);
+                dmgDealer.Party.ReceiveExperience(Data.ExperienceWorth);
             }
 
             CharacterReaction killReaction = CharacterReaction.MonsterKilledGeneric;
-            if (MonsterData.HitPoints >= 100)
+            if (Data.HitPoints >= 100)
             {
                 killReaction = CharacterReaction.BigMonsterKilled;
             }
@@ -1017,7 +1058,7 @@ public partial class Monster : MonoBehaviour
         // TODO: Knockback
         // TODO: Bloodsplats ?
 
-        if (willHitParalyze && CanAct() /*&& isImmune?*/)
+        if (willHitParalyze && CanAct() /*&& !isImmuneToParalysis?*/)
         {
             int maceLevel = dmgDealer.GetActualSkillLevel(SkillType.Mace);
             int paralyzeDurationMinutes = maceLevel;
@@ -1032,9 +1073,53 @@ public partial class Monster : MonoBehaviour
         }
     }
 
+    public int CalculateMonsterDamage(MonsterAttackType monsterAttackType)
+    {
+        int damage = 0;
+        switch (monsterAttackType)
+        {
+            case MonsterAttackType.Attack1:
+                if (BuffMap[MonsterBuffType.HourOfPower].IsActive())
+                {
+                    damage = BuffMap[MonsterBuffType.HourOfPower].Power;
+                }
+                if (BuffMap[MonsterBuffType.Heroism].IsActive() &&
+                    BuffMap[MonsterBuffType.Heroism].Power > damage)
+                {
+                    damage = BuffMap[MonsterBuffType.Heroism].Power;
+                }
+                if (BuffMap[MonsterBuffType.Hammerhands].IsActive())
+                {
+                    damage += BuffMap[MonsterBuffType.Hammerhands].Power;
+                }
+
+                damage += Data.Attack1_DamageBonus;
+                damage += GameMechanics.GetDiceResult(
+                    Data.Attack1_DamageDiceRolls, Data.Attack1_DamageDiceSides);
+                break;
+            case MonsterAttackType.Attack2:
+                damage = Data.Attack2_DamageBonus;
+                damage += GameMechanics.GetDiceResult(
+                    Data.Attack2_DamageDiceRolls, Data.Attack2_DamageDiceSides);
+                break;
+            case MonsterAttackType.Spell1:
+                damage = GameMechanics.CalculateSpellDamage(Data.Spell1_SpellType,
+                    Data.Spell1_SkillMastery, Data.Spell1_SkillLevel, 0);
+                break;
+            case MonsterAttackType.Spell2:
+                damage = GameMechanics.CalculateSpellDamage(Data.Spell2_SpellType,
+                    Data.Spell2_SkillMastery, Data.Spell2_SkillLevel, 0);
+                break;
+            default:
+                break;
+        }
+
+        return damage;
+    }
+
     public int CalculateIncomingMagicalDamage(SpellElement spellElement, int incomingDamage)
     {
-        int resistance = MonsterData.Resistances[spellElement];
+        int resistance = Data.Resistances[spellElement];
         if (BuffMap[MonsterBuffType.HourOfPower].IsActive())
         {
             resistance += BuffMap[MonsterBuffType.HourOfPower].Power;
@@ -1045,42 +1130,297 @@ public partial class Monster : MonoBehaviour
         return incomingDamage;
     }
 
-    public void GenerateLoot()
+    public bool WillHitPlayer(Character victim)
     {
-        if (AnimationDead != null)
+        int hitBonus = 0;
+        if (BuffMap[MonsterBuffType.HourOfPower].IsActive())
         {
-            Lootable lootable = GetComponent<Lootable>();
-            lootable.Loot = new Loot();
+            hitBonus = BuffMap[MonsterBuffType.HourOfPower].Power;
+        }
+        if (BuffMap[MonsterBuffType.Bless].IsActive() &&
+            BuffMap[MonsterBuffType.Bless].Power > hitBonus)
+        {
+            hitBonus = BuffMap[MonsterBuffType.Bless].Power;
+        }
+        if (BuffMap[MonsterBuffType.Fate].IsActive())
+        {
+            hitBonus += BuffMap[MonsterBuffType.Fate].Power;
+            BuffMap[MonsterBuffType.Fate].Reset();
+        }
 
-            int goldAmount = 0;
-            for (int i = 0; i < MonsterData.Treasure.GoldDiceRolls; i++)
+        int attackNegativeMod = victim.GetActualArmorClass() + 2 * Data.Level + 10;
+        int attackPositiveMod = hitBonus + UnityEngine.Random.Range(0, attackNegativeMod);
+
+        return attackPositiveMod > (victim.GetActualArmorClass() + 5);
+    }
+
+    public bool WillHitMonster(Monster victim)
+    {
+        return false;
+    }
+
+    public void DealDamageToPlayer(PlayerParty playerParty,
+        MonsterAttackType attackType,
+        Projectile projectile)
+    {
+        Character victim = SelectAttackVictim(playerParty);
+        if (victim == null)
+        {
+            Debug.LogError("No available victim for monster attack");
+            return;
+        }
+
+        Debug.Log("Victim: " + victim.Name);
+
+        ProjectileInfo projectileInfo = projectile?.ProjectileInfo;
+        if (projectileInfo == null)
+        {
+            // Melee attack
+            if (!WillHitPlayer(victim))
             {
-                goldAmount += UnityEngine.Random.Range(0, MonsterData.Treasure.GoldDiceSides) + 1;
+                Debug.Log("Monster wont hit player");
+                return;
             }
 
-            Debug.Log("GoldAmount: " + goldAmount);
+            int healthBefore = victim.CurrHitPoints;
+            Item equippedArmor = victim.GetItemAtSlot(EquipSlot.Armor);
 
-            lootable.Loot.GoldAmount = goldAmount;
-
-            if (MonsterData.Treasure.ItemChance > 0 &&
-                UnityEngine.Random.Range(0, 100) < MonsterData.Treasure.ItemChance)
+            int weaponSoundToPlay = 0;
+            bool isLightOrNoProtected = equippedArmor == null || equippedArmor.IsBroken ||
+                equippedArmor.Data.SkillGroup == ItemSkillGroup.Leather;
+            if (isLightOrNoProtected)
             {
-                TreasureLevel itemLevel = MonsterData.Treasure.ItemLevel;
-                if (MonsterData.Treasure.ItemType != ItemType.None)
+                switch (UnityEngine.Random.Range(0, 4))
                 {
-                    lootable.Loot.Item = ItemGenerator.GenerateItem(itemLevel, MonsterData.Treasure.ItemType);
+                    case 0:
+                        weaponSoundToPlay = 108;
+                        break;
+                    case 1:
+                        weaponSoundToPlay = 109;
+                        break;
+                    case 2:
+                        weaponSoundToPlay = 110;
+                        break;
+                    case 3:
+                        weaponSoundToPlay = 44;
+                        break;
+                    default:
+                        break;
                 }
-                else if (MonsterData.Treasure.ItemSkillGroup != ItemSkillGroup.None)
+            }
+            else
+            {
+                switch (UnityEngine.Random.Range(0, 4))
                 {
-                    lootable.Loot.Item = ItemGenerator.GenerateItem(itemLevel, MonsterData.Treasure.ItemSkillGroup);
+                    case 0:
+                        weaponSoundToPlay = 105;
+                        break;
+                    case 1:
+                        weaponSoundToPlay = 106;
+                        break;
+                    case 2:
+                        weaponSoundToPlay = 107;
+                        break;
+                    case 3:
+                        weaponSoundToPlay = 45;
+                        break;
+                    default:
+                        break;
                 }
-                else
+            }
+
+            SoundMgr.PlaySoundById(weaponSoundToPlay, playerParty.PlayerAudioSource);
+            int damage = CalculateMonsterDamage(attackType);
+            if (BuffMap[MonsterBuffType.Shrink].IsActive())
+            {
+                int shrinkPower = BuffMap[MonsterBuffType.Shrink].Power;
+                if (shrinkPower > 0)
                 {
-                    lootable.Loot.Item = ItemGenerator.GenerateItem(itemLevel);
+                    damage /= shrinkPower;
                 }
+            }
+
+            SpellElement damageElement = SpellElement.Physical;
+            switch (attackType)
+            {
+                case MonsterAttackType.Attack1:
+                    damageElement = Data.Attack1_Element;
+                    break;
+                case MonsterAttackType.Attack2:
+                    damageElement = Data.Attack2_Element;
+                    break;
+                case MonsterAttackType.Spell1:
+                    damageElement = DbMgr.Instance.SpellDataDb.Get(Data.Spell1_SpellType).SpellElement;
+                    break;
+                case MonsterAttackType.Spell2:
+                    damageElement = DbMgr.Instance.SpellDataDb.Get(Data.Spell2_SpellType).SpellElement;
+                    break;
+                case MonsterAttackType.Special:
+                    break;
+                case MonsterAttackType.None:
+                    break;
+                default:
+                    break;
+            }
+
+            int damageDealt = victim.ReceiveDamage(damage, damageElement);
+            if (victim.PlayerBuffMap[PlayerEffectType.PainReflection].IsActive())
+            {
+                // TODO: Handle pain reflection
+            }
+
+            // TODO: Handle special attack
+
+            int yellThreshold = victim.GetMaxHitPoints() / 4;
+            bool shouldCharacterYell = victim.CurrHitPoints < yellThreshold &&
+                yellThreshold <= healthBefore &&
+                victim.CurrHitPoints > 0;
+            Debug.Log("YellThresh: " + yellThreshold + ", CurrentHP: " + victim.CurrHitPoints + ", healthBefore: " + healthBefore);
+            if (shouldCharacterYell)
+            {
+                victim.PlayEventReaction(CharacterReaction.ModeratelyInjured);
             }
         }
+        else
+        {
+            // TODO: Ranged / Spell attack
+            victim.ReceiveDamage(10, SpellElement.Physical);
+            Debug.Log(projectileInfo.MonsterAttackType + " -> " + victim.Name);
+        }
     }
+
+    public Character SelectAttackVictim(PlayerParty playerParty)
+    {
+        List<Character> victimList = new List<Character>();
+
+        foreach (Character chr in playerParty.Characters)
+        {
+            AttackPreferenceMask attackPreferenceMask = Data.AttackPreferenceMask;
+
+            if (attackPreferenceMask.HasFlag(AttackPreferenceMask.ClassCleric) &&
+                (chr.Class == CharacterClass.Cleric ||
+                 chr.Class == CharacterClass.Priest))
+            {
+                victimList.Add(chr);
+                continue;
+            }
+            if (attackPreferenceMask.HasFlag(AttackPreferenceMask.ClassKnight) &&
+                (chr.Class == CharacterClass.Knight ||
+                 chr.Class == CharacterClass.Champion))
+            {
+                victimList.Add(chr);
+                continue;
+            }
+            if (attackPreferenceMask.HasFlag(AttackPreferenceMask.ClassNecromancer) &&
+                (chr.Class == CharacterClass.Necromancer ||
+                 chr.Class == CharacterClass.Lich))
+            {
+                victimList.Add(chr);
+                continue;
+            }
+            // Race classes wont be handled here, like troll, dark elf etc
+
+            if (attackPreferenceMask.HasFlag(AttackPreferenceMask.GenderMale) &&
+                chr.IsMale())
+            {
+                victimList.Add(chr);
+                continue;
+            }
+            if (attackPreferenceMask.HasFlag(AttackPreferenceMask.GenderFemale) &&
+                chr.IsFemale())
+            {
+                victimList.Add(chr);
+                continue;
+            }
+
+            if (attackPreferenceMask.HasFlag(AttackPreferenceMask.RaceDarkElf) &&
+                chr.Race == CharacterRace.DarkElf)
+            {
+                victimList.Add(chr);
+                continue;
+            }
+            if (attackPreferenceMask.HasFlag(AttackPreferenceMask.RaceGoblin) &&
+                chr.Race == CharacterRace.Goblin)
+            {
+                victimList.Add(chr);
+                continue;
+            }
+            if (attackPreferenceMask.HasFlag(AttackPreferenceMask.RaceElf) &&
+                chr.Race == CharacterRace.Elf)
+            {
+                victimList.Add(chr);
+                continue;
+            }
+            if (attackPreferenceMask.HasFlag(AttackPreferenceMask.RaceDragon) &&
+                chr.Race == CharacterRace.Dragon)
+            {
+                victimList.Add(chr);
+                continue;
+            }
+            if (attackPreferenceMask.HasFlag(AttackPreferenceMask.RaceMinotaur) &&
+                chr.Race == CharacterRace.Minotaur)
+            {
+                victimList.Add(chr);
+                continue;
+            }
+            if (attackPreferenceMask.HasFlag(AttackPreferenceMask.RaceTroll) &&
+                chr.Race == CharacterRace.Troll)
+            {
+                victimList.Add(chr);
+                continue;
+            }
+            if (attackPreferenceMask.HasFlag(AttackPreferenceMask.RaceUndead) &&
+                chr.Race == CharacterRace.Undead)
+            {
+                victimList.Add(chr);
+                continue;
+            }
+            if (attackPreferenceMask.HasFlag(AttackPreferenceMask.RaceVampire) &&
+                chr.Race == CharacterRace.Vampire)
+            {
+                victimList.Add(chr);
+                continue;
+            }
+        }
+
+        // Remove all characters which are not in attackable state
+        victimList.RemoveAll(chr =>
+        {
+            return chr.IsParalyzed() ||
+                chr.IsUnconcious() ||
+                chr.IsDead() ||
+                chr.IsPetrified() ||
+                chr.IsEradicated();
+        });
+
+        // If monster has some specific victims, use them
+        if (victimList.Count > 0)
+        {
+            return victimList[UnityEngine.Random.Range(0, victimList.Count)];
+        }
+
+        // If none, build it
+        foreach (Character chr in playerParty.Characters)
+        {
+            if (!(chr.IsParalyzed() ||
+                chr.IsUnconcious() ||
+                chr.IsDead() ||
+                chr.IsPetrified() ||
+                chr.IsEradicated()))
+            {
+                victimList.Add(chr);
+            }
+        }
+
+        if (victimList.Count == 0)
+        {
+            Debug.LogError("No valid attack target");
+            return null;
+        }
+
+        return victimList[UnityEngine.Random.Range(0, victimList.Count)];
+    }
+
 
     //=============================================================================================
     // Static methods
@@ -1264,7 +1604,7 @@ public partial class Monster : MonoBehaviour
                 continue;
             }
 
-            float nonAttackActionTimeLength = monster.MonsterData.RecoveryTime * 2.1333f;
+            float nonAttackActionTimeLength = monster.Data.RecoveryTime * 2.1333f;
 
             float radiusMultiplier = 0.5f;
             if (targetAsPlayerParty != null)
@@ -1290,7 +1630,7 @@ public partial class Monster : MonoBehaviour
             }
             else if (monster.BuffMap[MonsterBuffType.Charm].IsAppliedAndExpired())
             {
-                monster.HostilityType = (HostilityType)monster.MonsterData.Hostility;
+                monster.HostilityType = (HostilityType)monster.Data.Hostility;
             }
 
             // If monster summoning time is up
@@ -1372,7 +1712,13 @@ public partial class Monster : MonoBehaviour
                 }
                 else if (monster.AIState == MonsterState.AttackingMelee)
                 {
-
+                    if (targetAsPlayerParty != null)
+                    {
+                        Debug.Log("monster.AIState == MonsterState.AttackingMelee");
+                        monster.DealDamageToPlayer(targetAsPlayerParty, 
+                            MonsterAttackType.Attack1, 
+                            null);
+                    }
                 }
                 else if (monster.AIState == MonsterState.AttackingRanged1)
                 {
@@ -1384,17 +1730,17 @@ public partial class Monster : MonoBehaviour
                 }
                 else if (monster.AIState == MonsterState.AttackingRanged3)
                 {
-                    SpellType spellType = (SpellType)monster.MonsterData.Spell1_SpellType;
-                    int skillLevel = monster.MonsterData.Spell1_SkillLevel;
-                    SkillMastery skillMastery = monster.MonsterData.Spell1_SkillMastery;
+                    SpellType spellType = (SpellType)monster.Data.Spell1_SpellType;
+                    int skillLevel = monster.Data.Spell1_SkillLevel;
+                    SkillMastery skillMastery = monster.Data.Spell1_SkillMastery;
 
                     monster.AI_CastSpell(target, spellType, skillLevel, skillMastery);
                 }
                 else if (monster.AIState == MonsterState.AttackingRanged4)
                 {
-                    SpellType spellType = (SpellType)monster.MonsterData.Spell2_SpellType;
-                    int skillLevel = monster.MonsterData.Spell2_SkillLevel;
-                    SkillMastery skillMastery = monster.MonsterData.Spell2_SkillMastery;
+                    SpellType spellType = (SpellType)monster.Data.Spell2_SpellType;
+                    int skillLevel = monster.Data.Spell2_SkillLevel;
+                    SkillMastery skillMastery = monster.Data.Spell2_SkillMastery;
 
                     monster.AI_CastSpell(target, spellType, skillLevel, skillMastery);
                 }
@@ -1470,9 +1816,9 @@ public partial class Monster : MonoBehaviour
             // Monster has target (To attack, to flee from, etc)
             if (monster.HostilityType == HostilityType.HostileLong && target != null)
             {
-                if (monster.MonsterData.Agressivity == MonsterAggresivityType.Wimp)
+                if (monster.Data.Agressivity == MonsterAggresivityType.Wimp)
                 {
-                    if (monster.MonsterData.MoveType == MonsterMoveType.Stationary)
+                    if (monster.Data.MoveType == MonsterMoveType.Stationary)
                     {
                         // monster.AI_Stand(target, nonAttackActionTimeLength, targetDir, distanceToTargetSqr);
                     }
@@ -1485,17 +1831,17 @@ public partial class Monster : MonoBehaviour
 
                 if (!monster.Flags.HasFlag(MonsterFlags.Fleeing))
                 {
-                    if (monster.MonsterData.Agressivity == MonsterAggresivityType.Normal ||
-                        monster.MonsterData.Agressivity == MonsterAggresivityType.Agressive)
+                    if (monster.Data.Agressivity == MonsterAggresivityType.Normal ||
+                        monster.Data.Agressivity == MonsterAggresivityType.Agressive)
                     {
                         float fleeHpThreshold = 0.0f;
-                        if (monster.MonsterData.Agressivity == MonsterAggresivityType.Normal)
+                        if (monster.Data.Agressivity == MonsterAggresivityType.Normal)
                         {
-                            fleeHpThreshold = monster.MonsterData.HitPoints * 0.2f;
+                            fleeHpThreshold = monster.Data.HitPoints * 0.2f;
                         }
-                        else if (monster.MonsterData.Agressivity == MonsterAggresivityType.Agressive)
+                        else if (monster.Data.Agressivity == MonsterAggresivityType.Agressive)
                         {
-                            fleeHpThreshold = monster.MonsterData.HitPoints * 0.1f;
+                            fleeHpThreshold = monster.Data.HitPoints * 0.1f;
                         }
 
 
@@ -1523,13 +1869,13 @@ public partial class Monster : MonoBehaviour
                         bool isMissileAttack = false;
                         if (chosenAttackType == MonsterAttackType.Attack1)
                         {
-                            isMissileAttack = monster.MonsterData.Attack1_Missile != null &&
-                                monster.MonsterData.Attack1_Missile != "0";
+                            isMissileAttack = monster.Data.Attack1_Missile != null &&
+                                monster.Data.Attack1_Missile != "0";
                         }
                         else if (chosenAttackType == MonsterAttackType.Attack2)
                         {
-                            isMissileAttack = monster.MonsterData.Attack2_Missile != null &&
-                                monster.MonsterData.Attack2_Missile != "0"; ;
+                            isMissileAttack = monster.Data.Attack2_Missile != null &&
+                                monster.Data.Attack2_Missile != "0"; ;
                         }
                         /*Debug.Log("Chosen: " + chosenAttackType + ", " + monster.MonsterData.Name);
                         Debug.Log("[" + monster.MonsterData.Attack1_Missile + ", " + monster.MonsterData.Attack2_Missile + "]");
@@ -1543,26 +1889,26 @@ public partial class Monster : MonoBehaviour
                                 // Play attack animation
                                 monster.AI_MissileAttack(target, chosenAttackType);
                             }
-                            else if (monster.MonsterData.MoveType == MonsterMoveType.Stationary)
+                            else if (monster.Data.MoveType == MonsterMoveType.Stationary)
                             {
-                                monster.AI_Stand(targetLookDirection, monster.MonsterData.RecoveryTime);
+                                monster.AI_Stand(targetLookDirection, monster.Data.RecoveryTime);
                             }
                             else if (distance < MAX_MELEE_DISTANCE_SQR)
                             {
-                                monster.AI_Stand(targetLookDirection, monster.MonsterData.RecoveryTime);
+                                monster.AI_Stand(targetLookDirection, monster.Data.RecoveryTime);
                             }
                             else
                             {
-                                monster.AI_PursueKiteRanged(target, monster.MonsterData.RecoveryTime);
+                                monster.AI_PursueKiteRanged(target, monster.Data.RecoveryTime);
                             }
                         }
                         else // Melee attack
                         {
                             if (distance > MAX_MELEE_DISTANCE_SQR)
                             {
-                                if (monster.MonsterData.MoveType == MonsterMoveType.Stationary)
+                                if (monster.Data.MoveType == MonsterMoveType.Stationary)
                                 {
-                                    monster.AI_Stand(targetLookDirection, monster.MonsterData.RecoveryTime);
+                                    monster.AI_Stand(targetLookDirection, monster.Data.RecoveryTime);
                                 }
                                 else if (distance >= 512.0f)
                                 {
@@ -1592,11 +1938,11 @@ public partial class Monster : MonoBehaviour
                         SpellType spellType = SpellType.None;
                         if (chosenAttackType == MonsterAttackType.Spell1)
                         {
-                            spellType = (SpellType)monster.MonsterData.Spell1_SpellType;
+                            spellType = (SpellType)monster.Data.Spell1_SpellType;
                         }
                         else
                         {
-                            spellType = (SpellType)monster.MonsterData.Spell2_SpellType;
+                            spellType = (SpellType)monster.Data.Spell2_SpellType;
                         }
 
                         if (spellType != SpellType.None)
@@ -1607,11 +1953,11 @@ public partial class Monster : MonoBehaviour
                             }
                             else if (distance > MAX_MELEE_DISTANCE_SQR)
                             {
-                                monster.AI_PursueKiteRanged(target, monster.MonsterData.RecoveryTime);
+                                monster.AI_PursueKiteRanged(target, monster.Data.RecoveryTime);
                             }
                             else
                             {
-                                monster.AI_Stand(targetLookDirection, monster.MonsterData.RecoveryTime);
+                                monster.AI_Stand(targetLookDirection, monster.Data.RecoveryTime);
                             }
                         }
                         else
@@ -1630,27 +1976,27 @@ public partial class Monster : MonoBehaviour
                 target == null ||
                 distanceToTargetSqr > MAX_RANGE_DISTANCE_SQR)
             {
-                if (monster.MonsterData.MoveType == MonsterMoveType.Short)
+                if (monster.Data.MoveType == MonsterMoveType.Short)
                 {
                     // dist = 512.0f;
                     monster.AI_RandomMove(target, 10, 0.0f);
                 }
-                else if (monster.MonsterData.MoveType == MonsterMoveType.Medium)
+                else if (monster.Data.MoveType == MonsterMoveType.Medium)
                 {
                     // dist = 1280.0f;
                     monster.AI_RandomMove(target, 20, 0.0f);
                 }
-                else if (monster.MonsterData.MoveType == MonsterMoveType.Long)
+                else if (monster.Data.MoveType == MonsterMoveType.Long)
                 {
                     // dist = 2560.0f;
                     monster.AI_RandomMove(target, 40, 0.0f);
                 }
-                else if (monster.MonsterData.MoveType == MonsterMoveType.Free)
+                else if (monster.Data.MoveType == MonsterMoveType.Free)
                 {
                     // dist = 5120.0f;
                     monster.AI_RandomMove(target, 80, 0.0f);
                 }
-                else if (monster.MonsterData.MoveType == MonsterMoveType.Stationary)
+                else if (monster.Data.MoveType == MonsterMoveType.Stationary)
                 {
                     // Direction to player
                     // monster.AI_Stand(DirectionToPlayer, nonAttackActionTimeLength)

@@ -316,7 +316,7 @@ public partial class Monster
 
             CurrentActionLength = AnimationShoot.TotalAnimationLengthSeconds;
             CurrentActionTime = 0.0f;
-            RecoveryTimeLeft = MonsterData.RecoveryTime;
+            RecoveryTimeLeft = Data.RecoveryTime;
 
             transform.rotation = Quaternion.LookRotation(direction);
             AIState = MonsterState.AttackingMelee;
@@ -347,7 +347,7 @@ public partial class Monster
 
             CurrentActionLength = AnimationAttack.TotalAnimationLengthSeconds;
             CurrentActionTime = 0.0f;
-            RecoveryTimeLeft = MonsterData.RecoveryTime + CurrentActionLength;
+            RecoveryTimeLeft = Data.RecoveryTime + CurrentActionLength;
 
             if (missileAttackType == MonsterAttackType.Attack1)
             {
@@ -390,13 +390,13 @@ public partial class Monster
 
             CurrentActionLength = AnimationAttack.TotalAnimationLengthSeconds;
             CurrentActionTime = 0.0f;
-            RecoveryTimeLeft = MonsterData.RecoveryTime + CurrentActionLength;
+            RecoveryTimeLeft = Data.RecoveryTime + CurrentActionLength;
 
-            SpellType spell = MonsterData.Spell1_SpellType;
+            SpellType spell = Data.Spell1_SpellType;
             AIState = MonsterState.AttackingRanged3;
             if (spellAttackType == MonsterAttackType.Spell2)
             {
-                spell = MonsterData.Spell2_SpellType;
+                spell = Data.Spell2_SpellType;
                 AIState = MonsterState.AttackingRanged4;
             }
 
@@ -625,9 +625,9 @@ public partial class Monster
 
             case SpellType.Body_PowerCure:
                 CurrentHp += 5 * skillLevel + 10;
-                if (CurrentHp > MonsterData.HitPoints)
+                if (CurrentHp > Data.HitPoints)
                 {
-                    CurrentHp = MonsterData.HitPoints;
+                    CurrentHp = Data.HitPoints;
                 }
 
                 // Render some monster buff effect
@@ -730,13 +730,16 @@ public partial class Monster
     public void AI_SpawnMissile(Transform target)
     {
         string missileName = "";
+        MonsterAttackType monsterAttackType = MonsterAttackType.None;
         if (AIState == MonsterState.AttackingRanged1)
         {
-            missileName = MonsterData.Attack1_Missile;
+            missileName = Data.Attack1_Missile;
+            monsterAttackType = MonsterAttackType.Attack1;
         }
         else if (AIState == MonsterState.AttackingRanged2)
         {
-            missileName = MonsterData.Attack2_Missile;
+            missileName = Data.Attack2_Missile;
+            monsterAttackType = MonsterAttackType.Attack2;
         }
         else
         {
@@ -774,6 +777,7 @@ public partial class Monster
         projectileInfo.ShooterTransform = transform;
         projectileInfo.TargetPosition = target.position;
         projectileInfo.DisplayData = missileObjectData;
+        projectileInfo.MonsterAttackType = monsterAttackType;
 
         Projectile.Spawn(projectileInfo);
     }
@@ -785,7 +789,7 @@ public partial class Monster
             Flags |= MonsterFlags.Fleeing;
         }
 
-        if (MonsterData.Hostility != 4)
+        if (Data.Hostility != 4)
         {
             Flags &= ~MonsterFlags.Unknown_4;
         }

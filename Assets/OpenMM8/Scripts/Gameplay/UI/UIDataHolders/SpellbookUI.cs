@@ -48,6 +48,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 spellbookPage.Holder.SetActive(false);
                 spellbookPage.PageButton.gameObject.SetActive(false);
 
+                spellbookPage.PageButton.onClick.RemoveAllListeners();
                 spellbookPage.PageButton.onClick.AddListener(delegate
                 {
                     if (UnityEngine.Random.Range(0, 2) == 0) SoundMgr.PlaySoundById(SoundType.TurnPageUp);

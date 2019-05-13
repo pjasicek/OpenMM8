@@ -276,14 +276,33 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             SkillMastery skillMastery = spell.SkillMastery;
             int skillLevel = spell.SkillLevel;
             SpellData spellData = DbMgr.Instance.SpellDataDb.Get(spellType);
-            PlayerParty Party = GameCore.Instance.PlayerParty;
+            PlayerParty Party = GameCore.GetParty();
 
             Character targetCharacter = spell.Target as Character;
             InventoryItem targetInventoryItem = spell.Target as InventoryItem;
             Monster targetMonster = spell.Target as Monster;
 
-            Vector3 defaultCrosshairDirection = UiMgr.GetCrosshairRay().direction;
-            
+            // Prepare projectile, even though it is not used all the time, it saves a lot of boilerplate code
+            ProjectileInfo projectileInfo = new ProjectileInfo();
+            projectileInfo.Shooter = spell.Caster;
+            projectileInfo.ShooterTransform = Party.transform;
+            if (targetMonster != null)
+            {
+                projectileInfo.TargetPosition = targetMonster.transform.position;
+            }
+            else
+            {
+                projectileInfo.TargetPosition = UiMgr.GetCrosshairRay().GetPoint(100.0f);
+            }
+            projectileInfo.SpellType = spellType;
+            projectileInfo.SkillMastery = skillMastery;
+            projectileInfo.SkillLevel = skillLevel;
+
+            if (DbMgr.Instance.ObjectDisplayDb.Data.ContainsKey(spellData.DisplayObjectId))
+            {
+                projectileInfo.DisplayData = DbMgr.Instance.ObjectDisplayDb.Get(spellData.DisplayObjectId);
+                //projectileInfo.ImpactObject = DbMgr.Instance.ObjectDisplayDb.Get(spellData.ImpactDisplayObjectId);
+            }
 
             int duration = 0;
             int power = 0;
@@ -319,8 +338,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Fire_FireBolt:
-                    
-
+                    // TODO: Special projectile ?
                     break;
 
                 case SpellType.Fire_FireAura:
@@ -403,11 +421,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Fire_Fireball:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    Projectile.Spawn(projectileInfo);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Fire_FireSpike:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    // TODO: Should just drop on ground like landmine
                     break;
 
                 case SpellType.Fire_Immolation:
@@ -432,7 +451,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Fire_Incinerate:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    Projectile.Spawn(projectileInfo);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Air_WizardEye:
@@ -456,7 +476,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Air_LightningBolt:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    Projectile.Spawn(projectileInfo);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Air_Invisibility:
@@ -480,11 +501,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Water_PoisonSpray:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    Projectile.Spawn(projectileInfo);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Water_IceBolt:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    Projectile.Spawn(projectileInfo);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Water_WaterWalk:
@@ -524,7 +547,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Earth_DeadlySwarm:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    Projectile.Spawn(projectileInfo);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Earth_Stoneskin:
@@ -717,7 +741,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Spirit_SpiritLash:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    Projectile.Spawn(projectileInfo);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Spirit_RaiseDead:
@@ -741,7 +766,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Mind_MindBlast:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    Projectile.Spawn(projectileInfo);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Mind_Charm:
@@ -765,7 +791,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Mind_PsychicShock:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    Projectile.Spawn(projectileInfo);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Mind_Enslave:
@@ -781,7 +808,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Body_Harm:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    Projectile.Spawn(projectileInfo);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Body_Regeneration:
@@ -892,7 +920,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Body_FlyingFist:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    Projectile.Spawn(projectileInfo);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Body_PowerCure:
@@ -900,7 +929,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Light_LightBolt:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    Projectile.Spawn(projectileInfo);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Light_DestroyUndead:
@@ -936,7 +966,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Light_Sunray:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    Projectile.Spawn(projectileInfo);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Light_DivineIntervention:
@@ -948,7 +979,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Dark_ToxicCloud:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    Projectile.Spawn(projectileInfo);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Dark_VampiricWeapon:
@@ -976,7 +1008,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Dark_DragonBreath:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    Projectile.Spawn(projectileInfo);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Dark_Armageddon:
@@ -1000,11 +1033,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.DarkElf_DarkfireBolt:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    Projectile.Spawn(projectileInfo);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Vampire_Lifedrain:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    Projectile.Spawn(projectileInfo);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Vampire_Levitate:
@@ -1024,7 +1059,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Dragon_FlameBlast:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    Projectile.Spawn(projectileInfo);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Dragon_Flight:
@@ -1040,6 +1076,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
             }
+
+            spell.Caster.PlayEventReaction(CharacterReaction.CastedSpell);
         }
     }
 }
