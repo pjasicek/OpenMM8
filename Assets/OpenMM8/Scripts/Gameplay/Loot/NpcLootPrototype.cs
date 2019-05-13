@@ -10,12 +10,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 {
     public class NpcLootPrototype
     {
-        public int MinGold = 0;
-        public int MaxGold = 0;
+        public int GoldDiceRolls = 0;
+        public int GoldDiceSides = 0;
         public int ItemChance = 0;
-        public ItemType ItemType = ItemType.NotAvailable;
         public TreasureLevel ItemLevel = TreasureLevel.None;
         public int CertainItemId = 0;
+
+        public ItemType ItemType = ItemType.None;
+        public ItemSkillGroup ItemSkillGroup = ItemSkillGroup.None;
 
         public NpcLootPrototype(string treasureDef)
         {
@@ -55,79 +57,78 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 }
 
                 // Loot item type if supplied
-                // TODO: Needs a separate enum
-                /*if (treasureDef.Contains("gem"))
+                if (treasureDef.Contains("gem"))
                 {
-                    ItemType = EquipType.Gem;
+                    ItemType = ItemType.Gem;
                 }
                 else if (treasureDef.Contains("sword"))
                 {
-                    ItemType = EquipType.WeaponDualWield;
+                    ItemSkillGroup = ItemSkillGroup.Sword;
                 }
                 else if (treasureDef.Contains("bow"))
                 {
-                    ItemType = EquipType.Missile;
+                    ItemSkillGroup = ItemSkillGroup.Bow;
                 }
                 else if (treasureDef.Contains("wand"))
                 {
-                    ItemType = EquipType.Wand;
+                    ItemType = ItemType.Wand;
                 }
                 else if (treasureDef.Contains("club"))
                 {
-                    ItemType = EquipType.WeaponOneHanded;
+                    ItemSkillGroup = ItemSkillGroup.Club;
                 }
                 else if (treasureDef.Contains("ring"))
                 {
-                    ItemType = EquipType.Ring;
+                    ItemType = ItemType.Ring;
                 }
                 else if (treasureDef.Contains("plate"))
                 {
-                    ItemType = EquipType.Armor;
+                    ItemSkillGroup = ItemSkillGroup.Plate;
                 }
                 else if (treasureDef.Contains("staff"))
                 {
-                    ItemType = EquipType.staf;
+                    ItemSkillGroup = ItemSkillGroup.Staff;
                 }
                 else if (treasureDef.Contains("boots"))
                 {
-                    ItemType = EquipType.Gem;
+                    ItemType = ItemType.Boots;
                 }
                 else if (treasureDef.Contains("gloves"))
                 {
-                    ItemType = EquipType.Gem;
+                    ItemType = ItemType.Gauntlets;
                 }
                 else if (treasureDef.Contains("cloak"))
                 {
-                    ItemType = EquipType.Gem;
+                    ItemType = ItemType.Cloak;
                 }
                 else if (treasureDef.Contains("ore"))
                 {
-                    ItemType = EquipType.Gem;
+                    ItemType = ItemType.Ore;
                 }
                 else if (treasureDef.Contains("bow"))
                 {
-                    ItemType = EquipType.Gem;
+                    ItemSkillGroup = ItemSkillGroup.Bow;
                 }
                 else if (treasureDef.Contains("scroll"))
                 {
-                    ItemType = EquipType.Gem;
+                    ItemType = ItemType.SpellScroll;
                 }
                 else if (treasureDef.Contains("amulet"))
                 {
-                    ItemType = EquipType.Gem;
+                    ItemType = ItemType.Amulet;
                 }
                 else if (treasureDef.Contains("dagger"))
                 {
-                    ItemType = EquipType.Gem;
+                    ItemSkillGroup = ItemSkillGroup.Dagger;
                 }
                 else if (treasureDef.Contains("spear"))
                 {
-                    ItemType = EquipType.Gem;
+                    ItemSkillGroup = ItemSkillGroup.Spear;
                 }
                 else if (treasureDef.Contains("chain"))
                 {
-                    ItemType = EquipType.Gem;
-                }*/
+                    ItemSkillGroup = ItemSkillGroup.Chain;
+                }
 
                 // Chance if supplied
                 int percentSignIdx = treasureDef.IndexOf('%');
@@ -135,17 +136,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 {
                     ItemChance = int.Parse(treasureDef.Substring(0, percentSignIdx));
                 }
+                else
+                {
+                    ItemChance = 100;
+                }
             }
 
             Match diceRoll = Regex.Match(treasureDef, "[0-9]*d[0-9]*");
             if (diceRoll.Success)
             {
                 string diceRollStr = diceRoll.Value;
-                int numDiceRolls = int.Parse(diceRollStr.Substring(0, diceRollStr.IndexOf('d')));
-                int numDiceSides = int.Parse(diceRoll.Value.Substring(diceRoll.Value.LastIndexOf('d') + 1));
-
-                MinGold = numDiceRolls;
-                MaxGold = numDiceRolls * numDiceSides;
+                GoldDiceRolls = int.Parse(diceRollStr.Substring(0, diceRollStr.IndexOf('d')));
+                GoldDiceSides = int.Parse(diceRoll.Value.Substring(diceRoll.Value.LastIndexOf('d') + 1));
             }
         }
     }

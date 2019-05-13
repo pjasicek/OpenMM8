@@ -132,3 +132,46 @@ public enum SpecialAbilityType
     Summon,
     Explode
 }
+
+[Flags]
+public enum AttackPreferenceMask
+{
+    None = 0x0,
+
+    // Class
+    ClassCleric      = 0x1, // c
+    ClassDarkElf     = 0x2,
+    ClassDragon      = 0x4, 
+    ClassKnight      = 0x8, // k
+    ClassMinotaur    = 0x10,
+    ClassTroll       = 0x20,
+    ClassVampire     = 0x40,
+    ClassNecromancer = 0x80, // n
+
+    // Gender
+    GenderMale   = 0x1000,   // x
+    GenderFemale = 0x2000,   // o
+
+    // Race
+    RaceVampire  = 0x010000, // v
+    RaceDarkElf  = 0x020000, // de
+    RaceMinotaur = 0x040000, // m
+    RaceTroll    = 0x080000, // t
+    RaceDragon   = 0x100000, // d
+    RaceUndead   = 0x200000, // u
+    RaceElf      = 0x400000, // e
+    RaceGoblin   = 0x800000  // g
+}
+
+/*
+ * Human,
+        Vampire,
+        DarkElf,
+        Minotaur,
+        Troll,
+        Dragon,
+        Undead,
+        Elf,
+        Goblin,
+        None
+*/

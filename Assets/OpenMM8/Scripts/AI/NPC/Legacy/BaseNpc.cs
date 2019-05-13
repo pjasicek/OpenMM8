@@ -154,7 +154,7 @@ public abstract class BaseNpc : MonoBehaviour, ITriggerListener
         }
 
         //Loot.GoldAmount = (int)(Gaussian.Random() * (NpcData.Treasure.MaxGold - NpcData.Treasure.MinGold) + NpcData.Treasure.MinGold);
-        Loot.GoldAmount = Gaussian.RandomRange(NpcData.Treasure.MinGold, NpcData.Treasure.MaxGold);
+        //Loot.GoldAmount = Gaussian.RandomRange(NpcData.Treasure.MinGold, NpcData.Treasure.MaxGold);
         //Debug.Log(NpcData.Treasure.MinGold + " " + NpcData.Treasure.MaxGold + " " + Loot.GoldAmount);
 
         GetComponent<Lootable>().Loot = Loot;

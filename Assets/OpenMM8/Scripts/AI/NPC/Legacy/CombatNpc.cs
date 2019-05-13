@@ -40,9 +40,9 @@ public class CombatNpc : BaseNpc
 
         //Debug.Log("Missile1: " + NpcData.Attack1.Missile);
 
-        IsRanged = NpcData.Attack1.Missile != "0";
+        /*IsRanged = NpcData.Attack1.Missile != "0";
         HasAltRangedAttack = NpcData.Attack2.Missile != "0";
-        AltRangedAttackChance = NpcData.ChanceAttack2;
+        AltRangedAttackChance = NpcData.ChanceAttack2;*/
         CurrAltAttackRecoveryTime = UnityEngine.Random.Range(MinAltAttackRecoveryTime, MaxAltAttackRecoveryTime);
         /*NavMeshAgent.velocity = new Vector3(0, -10, 0);
         SetNavMeshAgentEnabled(true);
@@ -325,7 +325,7 @@ public class CombatNpc : BaseNpc
                 {
                     /*Debug.Log("Min damage: " + NpcData.Attack1.MinDamage + ", Max damage: " + NpcData.Attack1.MaxDamage);
                     Debug.Log("Name: " + NpcData.Name);*/
-                    damageable.ReceiveAttack(NpcData.Attack1, this.gameObject);
+                    //damageable.ReceiveAttack(NpcData.Attack1, this.gameObject);
                 }
             }
             else

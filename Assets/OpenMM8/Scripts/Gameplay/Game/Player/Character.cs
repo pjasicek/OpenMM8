@@ -218,7 +218,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return TimeUntilRecovery <= 0.0f;
         }
 
-        public bool Attack(Damageable victim)
+        public bool Attack(Monster victim)
         {
             if (!CanAct() || TimeUntilRecovery > 0.0f)
             {
@@ -237,9 +237,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             if (victim)
             {
-                AttackResult result = victim.ReceiveAttack(attackInfo, Party.gameObject);
+                //AttackResult result = victim.ReceiveAttack(attackInfo, Party.gameObject);
+
+                victim.ReceiveDamageFromPlayer(this, null);
                 
-                GameEvents.InvokeEvent_OnCharHitNpc(this, attackInfo, result);
+                //GameEvents.InvokeEvent_OnCharHitNpc(this, attackInfo, result);
             }
 
             return true;

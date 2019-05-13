@@ -72,6 +72,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             SpriteObjectRegistry.LoadSpritesheet("m413");
             SpriteObjectRegistry.LoadSpritesheet("m417");
             SpriteObjectRegistry.LoadSpritesheet("m421");
+            SpriteObjectRegistry.LoadSpritesheet("m549");
 
             SpriteObject testAnim = SpriteObjectRegistry.GetSpriteObject("spell57");
             foreach (Sprite animSprite in testAnim.BackSprites)
@@ -160,6 +161,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                 TimeSinceMonsterUpdate = 0.0f;
             }
+
+            PlayerParty?.DoUpdate(Time.deltaTime);
 
             // 4) If arcomage is in progress - just update arcomage and continue
 
@@ -384,7 +387,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 projectileInfo.ShooterTransform = PlayerParty.transform;
                 //projectileInfo.TargetDirection = UiMgr.GetCrosshairRay().direction;
                 projectileInfo.TargetPosition = UiMgr.GetCrosshairRay().GetPoint(100.0f);
-                projectileInfo.DisplayData = DbMgr.Instance.ObjectDisplayDb.Get(7030);
+                projectileInfo.DisplayData = DbMgr.Instance.ObjectDisplayDb.Get(6030);
+                projectileInfo.ImpactObject = DbMgr.Instance.ObjectDisplayDb.Get(6031);
 
                 Projectile.Spawn(projectileInfo);
             }
@@ -494,7 +498,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             Time.timeScale = 1;
             m_IsGamePaused = false;
             //OnGameUnpaused();
-
+            
             GameEvents.InvokeEvent_OnUnpauseGame();
         }
 

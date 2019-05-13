@@ -24,14 +24,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public int Hostility;
         public int Speed;
         public float RecoveryTime;
-        public CharacterClass PreferredClass;
+        public AttackPreferenceMask AttackPreferenceMask;
+        public int NumCharactersAffectedByBonusAbility;
         public string BonusAbility;
 
-        public AttackInfo Attack1;
-        public int ChanceAttack2;
-        public AttackInfo Attack2;
-
-        // TODO:
         public SpellElement Attack1_Element = SpellElement.None;
         public int Attack1_DamageDiceRolls;
         public int Attack1_DamageDiceSides;
@@ -45,7 +41,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public string Attack2_Missile;
         public int Attack2_UseChance;
 
-        // TODO:
         public int Spell1_UseChance;
         public SpellType Spell1_SpellType = SpellType.None;
         public int Spell1_SkillLevel;
@@ -55,12 +50,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public SpellType Spell2_SpellType = SpellType.None;
         public int Spell2_SkillLevel;
         public SkillMastery Spell2_SkillMastery;
-
-
-        public int ChanceSpellAttack1;
-        public SpellInfo SpellAttack1;
-        public int ChanceSpellAttack2;
-        public SpellInfo SpellAttack2;
 
         public Dictionary<SpellElement, int> Resistances = new Dictionary<SpellElement, int>();
 

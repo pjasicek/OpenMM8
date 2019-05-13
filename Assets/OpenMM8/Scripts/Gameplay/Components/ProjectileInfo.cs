@@ -26,7 +26,7 @@ public class ProjectileInfo
     public ObjectDisplayData DisplayData;
 
     // Not all projectiles have impact object
-    public ObjectDisplayData ImpactObject = null;
+    public ObjectDisplayData ImpactObject;
 
     // Either this
     public SpellType SpellType = SpellType.None;

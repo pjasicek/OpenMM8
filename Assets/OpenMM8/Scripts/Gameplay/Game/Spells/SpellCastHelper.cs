@@ -247,7 +247,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             ClearPlayerSpell();
         }
 
-        static public void OnCrosshairClickedOnNpc(BaseNpc npc)
+        static public void OnCrosshairClickedOnMonster(Monster monster)
         {
             if (PendingPlayerSpell == null)
             {
@@ -255,7 +255,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 return;
             }
 
-            PendingPlayerSpell.Target = npc;
+            PendingPlayerSpell.Target = monster;
             ExecutePlayerSpellCast(PendingPlayerSpell);
 
             ClearPlayerSpell();
@@ -280,7 +280,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             Character targetCharacter = spell.Target as Character;
             InventoryItem targetInventoryItem = spell.Target as InventoryItem;
-            BaseNpc targetNpc = spell.Target as BaseNpc;
+            Monster targetMonster = spell.Target as Monster;
 
             Vector3 defaultCrosshairDirection = UiMgr.GetCrosshairRay().direction;
             
@@ -621,7 +621,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     }
                     duration = 5; // 5 minutes or until character / npc attacks
 
-                    Assert.IsTrue(targetNpc != null || targetCharacter != null);
+                    Assert.IsTrue(targetMonster != null || targetCharacter != null);
                     if (targetCharacter != null)
                     {
                         targetCharacter.PlayerBuffMap[PlayerEffectType.Bless].Apply(
@@ -631,7 +631,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                                 spell.Caster);
                         SpellFxRenderer.SetPlayerBuffAnim("spell47", targetCharacter);
                     }
-                    else if (targetNpc != null)
+                    else if (targetMonster != null)
                     {
                         // TODO...
                     }

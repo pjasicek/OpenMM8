@@ -27,9 +27,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public List<GameObject> EnemiesInAgroRange = new List<GameObject>();
         public List<GameObject> ObjectsInMeleeRange = new List<GameObject>();
 
+        public List<Monster> EnemyMonstersInMeleeRange = new List<Monster>();
+        public List<Monster> EnemyMonstersInRangedRange = new List<Monster>();
+
         // Misc
         public float AttackDelayTimeLeft = 0.0f;
-        private float TimeSinceLastPartyText = 0.0f;
 
         private float PreviousTimeSinceStartup = 0.0f;
 
@@ -185,33 +187,38 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             if (ActiveCharacter != null && ActiveCharacter.IsRecovered() && ActiveCharacter.CanAct())
             {
-                Damageable victim = null;
+                Monster victim = null;
 
                 // 1) Try to attack NPC which is being targeted by the crosshair
                 //    - does not have to be enemy, when we are aiming with attack
                 //    directly on NPC, we can attack guard / villager this way
                 RaycastHit hit;
                 Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5F, 0.595F, 0));
-                if (Physics.Raycast(ray, out hit, 100.0f, 1 << LayerMask.NameToLayer("NPC")))
+
+                // TODO: Verify that this is OK
+                float maxDistanceFromMonster = Mathf.Sqrt(Monster.MAX_RANGE_DISTANCE_SQR) + 5.0f;
+                if (Physics.Raycast(ray, out hit, maxDistanceFromMonster, 1 << LayerMask.NameToLayer("NPC")))
                 {
                     Transform objectHit = hit.collider.transform;
-                    if ((objectHit.GetComponent<Damageable>() != null) &&
-                        (ObjectsInMeleeRange.Contains(objectHit.gameObject)))
+                    Monster hitObjectAsMonster = objectHit.GetComponent<Monster>();
+
+                    if ((hitObjectAsMonster != null) /*&&
+                        (EnemyMonstersInMeleeRange.Contains(hitObjectAsMonster))*/)
                     {
-                        victim = objectHit.GetComponent<Damageable>();
+                        victim = hitObjectAsMonster;
                     }
                 }
 
                 // 2) Try to attack enemy which is closest to Player
-                if ((victim == null) && (EnemiesInMeleeRange.Count > 0))
+                if ((victim == null) && (EnemyMonstersInMeleeRange.Count > 0))
                 {
-                    EnemiesInMeleeRange.RemoveAll(t => t == null);
-                    EnemiesInMeleeRange.OrderBy(t => (t.transform.position - transform.position).sqrMagnitude);
-                    foreach (GameObject enemyObject in EnemiesInMeleeRange)
+                    EnemyMonstersInMeleeRange.RemoveAll(t => t == null);
+                    EnemyMonstersInMeleeRange.OrderBy(t => (t.transform.position - transform.position).sqrMagnitude);
+                    foreach (Monster enemyMonster in EnemyMonstersInMeleeRange)
                     {
-                        if (enemyObject.GetComponent<Renderer>().isVisible)
+                        if (enemyMonster.GetComponent<Renderer>().isVisible)
                         {
-                            victim = enemyObject.GetComponent<Damageable>();
+                            victim = enemyMonster;
                             break;
                         }
                     }
@@ -226,6 +233,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 {
                     Debug.Log("Hit with ");
                 }*/
+
+                if (victim != null)
+                {
+                    Debug.Log("Should attack: " + victim.Name);
+                }
 
                 ActiveCharacter.Attack(victim);
                 if (!TrySelectNextCharacter(true))
@@ -523,6 +535,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         //---------------------------------------------------------------------
         // Triggers
         //---------------------------------------------------------------------
+
+        [Obsolete]
         public void OnObjectEnteredMyTrigger(GameObject other, TriggerType triggerType)
         {
             //Debug.Log("Entered: " + other.name);
@@ -546,6 +560,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
+        [Obsolete]
         public void OnObjectLeftMyTrigger(GameObject other, TriggerType triggerType)
         {
             switch (triggerType)
@@ -568,16 +583,19 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
+        [Obsolete]
         private void OnObjectLeftInteractibleRange(GameObject other)
         {
             
         }
 
+        [Obsolete]
         private void OnObjectEnteredInteractibleRange(GameObject other)
         {
             
         }
 
+        [Obsolete]
         public void OnObjectEnteredMeleeRange(GameObject other)
         {
             if (HostilityChecker.IsHostileTo(other))
@@ -589,6 +607,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             ObjectsInMeleeRange.Add(other);
         }
 
+        [Obsolete]
         public void OnObjectLeftMeleeRange(GameObject other)
         {
             EnemiesInMeleeRange.Remove(other);
@@ -597,6 +616,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             ObjectsInMeleeRange.Remove(other);
         }
 
+        [Obsolete]
         public void OnObjectEnteredAgroRange(GameObject other)
         {
             if (HostilityChecker.IsHostileTo(other))
@@ -606,6 +626,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
+        [Obsolete]
         public void OnObjectLeftAgroRange(GameObject other)
         {
             EnemiesInAgroRange.Remove(other);
@@ -614,11 +635,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private void UpdateAgroStatus()
         {
-            if (EnemiesInMeleeRange.Count > 0)
+            if (EnemyMonstersInMeleeRange.Count > 0)
             {
                 UpdatePartyAgroStatus(AgroState.HostileClose);
             }
-            else if (EnemiesInAgroRange.Count > 0)
+            else if (EnemyMonstersInRangedRange.Count > 0)
             {
                 UpdatePartyAgroStatus(AgroState.HostileNearby);
             }
@@ -630,6 +651,32 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnAcquiredLoot(Loot loot)
         {
+            // Status text and character expression
+            if (loot.Item != null || loot.GoldAmount > 0)
+            {
+                string lootString;
+                if (loot.Item == null)
+                {
+                    lootString = string.Format("You found {0} gold!",
+                        loot.GoldAmount);
+                }
+                else if (loot.GoldAmount == 0)
+                {
+                    lootString = string.Format("You found an item ({0})!",
+                        loot.Item.Data.NotIdentifiedName);
+                }
+                else
+                {
+                    lootString = string.Format("You found {0} gold and an item ({1})!",
+                        loot.GoldAmount,
+                        loot.Item.Data.NotIdentifiedName);
+                }
+                GameCore.SetStatusBarText(lootString);
+
+                GetMostRecoveredCharacter().PlayEventReaction(CharacterReaction.FoundGold);
+                SoundMgr.PlaySoundById(SoundType.FoundLoot, PlayerAudioSource);
+            }
+
             // Handle item
             if (loot.Item != null)
             {
@@ -670,14 +717,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 GameEvents.InvokeEvent_OnFoundGold(loot.GoldAmount);
             }
 
-            if (loot.Item != null || loot.GoldAmount > 0)
-            {
-                GameEvents.InvokeEvent_OnPickedUpLoot(loot);
-            }
+            GameEvents.InvokeEvent_OnPickedUpLoot(loot);
         }
 
         public void AddGold(int amount)
         {
+            Debug.Log("Added gold");
             Gold += amount;
 
             GameEvents.InvokeEvent_OnGoldChanged(Gold - amount, Gold, amount);
@@ -777,7 +822,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         // PARTY UPDATE ROUTINES
         //=========================================================================================
 
-        public void Update()
+        public void DoUpdate(float timeDelta)
         {
             // TODO: Make some init method
             if (!PartyTime.IsValid()) PartyTime.GameSeconds = TimeMgr.GetCurrentTime().GameSeconds;
@@ -803,16 +848,21 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 RaycastHit hit;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out hit, 100.0f, 1 << LayerMask.NameToLayer("NPC")))
+
+                // TODO: Verify that this is OK
+                float maxTargetDistance = Mathf.Sqrt(Monster.MAX_RANGE_DISTANCE_SQR) + 10.0f;
+                if (Physics.Raycast(ray, out hit, maxTargetDistance, 1 << LayerMask.NameToLayer("NPC")))
                 {
                     Transform objectHit = hit.collider.transform;
-                    if ((objectHit.GetComponent<BaseNpc>() != null))
+                    if ((objectHit.GetComponent<Monster>() != null))
                     {
-                        BaseNpc npc = objectHit.GetComponent<BaseNpc>();
-                        SpellCastHelper.OnCrosshairClickedOnNpc(npc);   
+                        Monster monster = objectHit.GetComponent<Monster>();
+                        SpellCastHelper.OnCrosshairClickedOnMonster(monster);   
                     }
                 }
             }
+
+            UpdateAgroStatus();
 
             // TODO: Make some generic way to determine whether PlayerParty can act ...
             if (GameCore.Instance.IsGamePaused() || Time.timeScale == 0.0f)
@@ -822,6 +872,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             DoPeriodEffects();
 
+            PartyUI.Refresh();
             PartyBuffUI.Refresh();
 
             // Handle party buff expiration (Fly, WaterWalk, Haste, ...)
@@ -848,7 +899,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             foreach (Character character in Characters)
             {
-                character.OnUpdate(Time.deltaTime);
+                character.OnUpdate(deltaTime);
             }
 
             if (ActiveCharacter == null || !ActiveCharacter.IsRecovered() || !ActiveCharacter.CanAct())
@@ -894,9 +945,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 TrySelectNextCharacter(true);
             }
 
-            UpdateAgroStatus();
-
-            AttackDelayTimeLeft -= Time.deltaTime;
+            AttackDelayTimeLeft -= deltaTime;
         }
 
         private void DoPeriodEffects()

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.OpenMM8.Scripts.Gameplay.Items;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,9 +8,330 @@ using UnityEngine;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    // Thanks to: https://grayface.github.io/mm/mechanics/
     static public class GameMechanics
     {
+        static public bool WillPlayerHitMonster(Character character, Monster monster)
+        {
+            int monsterArmor = monster.MonsterData.ArmorClass;
+            int armorBuff = 0;
+
+            if (monster.BuffMap[MonsterBuffType.HalvedArmorClass].IsActive())
+            {
+                monsterArmor /= 2;
+            }
+
+            if (monster.BuffMap[MonsterBuffType.HourOfPower].IsActive())
+            {
+                armorBuff = monster.BuffMap[MonsterBuffType.HourOfPower].Power;
+            }
+
+            if (monster.BuffMap[MonsterBuffType.Stoneskin].IsActive() &&
+                monster.BuffMap[MonsterBuffType.Stoneskin].Power > armorBuff)
+            {
+                armorBuff = monster.BuffMap[MonsterBuffType.Stoneskin].Power;
+            }
+
+            int effectiveArmor = monsterArmor + armorBuff;
+
+            // Distance modificator
+            int distanceMod = 0;
+
+            // TODO: Im not really sure
+            float distance = (monster.transform.position - character.Party.transform.position).sqrMagnitude;
+            if (distance < Monster.MAX_MELEE_DISTANCE_SQR)
+            {
+                distanceMod = 0;
+            }
+            else if (distance < 512)
+            {
+                distanceMod = 1;
+            }
+            else if (distance < 1280)
+            {
+                distanceMod = 2;
+            }
+            else
+            {
+                distanceMod = 3;
+            }
+
+            int attackBonus;
+            if (distanceMod == 0)
+            {
+                attackBonus = character.GetMeleeAttack();
+            }
+            else
+            {
+                attackBonus = character.GetRangedAttack();
+            }
+
+            int attackPositiveMod = UnityEngine.Random.Range(0, 
+                effectiveArmor + 2 * attackBonus + 30);
+
+            int attackNegativeMod;
+            if (distanceMod == 2)
+            {
+                attackNegativeMod = ((effectiveArmor + 15) / 2) + effectiveArmor + 15;
+            }
+            else if (distanceMod == 3)
+            {
+                attackNegativeMod = 2 * effectiveArmor + 30;
+            }
+            else
+            {
+                attackNegativeMod = effectiveArmor + 15;
+            }
+
+            return (attackPositiveMod > attackNegativeMod);
+        }
+
+        static public bool WillMonsterHitPlayer(Monster monster, Character victim)
+        {
+            int hitBonus = 0;
+            if (monster.BuffMap[MonsterBuffType.HourOfPower].IsActive())
+            {
+                hitBonus = monster.BuffMap[MonsterBuffType.HourOfPower].Power;
+            }
+            if (monster.BuffMap[MonsterBuffType.Bless].IsActive() &&
+                monster.BuffMap[MonsterBuffType.Bless].Power > hitBonus)
+            {
+                hitBonus = monster.BuffMap[MonsterBuffType.Bless].Power;
+            }
+            if (monster.BuffMap[MonsterBuffType.Fate].IsActive())
+            {
+                hitBonus += monster.BuffMap[MonsterBuffType.Fate].Power;
+                monster.BuffMap[MonsterBuffType.Fate].Reset();
+            }
+
+            int attackNegativeMod = victim.GetActualArmorClass() + 2 * monster.MonsterData.Level + 10;
+            int attackPositiveMod = hitBonus + UnityEngine.Random.Range(0, attackNegativeMod);
+
+            return attackPositiveMod > (attackNegativeMod + 5);
+        }
+
+        static public bool WillMonsterHitMonster(Monster monster, Monster victim)
+        {
+            return false;
+        }
+
+        static public void DamagePlayerFromMonster(Monster monster, PlayerParty playerParty)
+        {
+
+        }
+
+        static public Character SelectMonsterAttackVictim(Monster monster, PlayerParty playerParty)
+        {
+            List<Character> victimList = new List<Character>();
+
+            foreach (Character chr in playerParty.Characters)
+            {
+                AttackPreferenceMask attackPreferenceMask = monster.MonsterData.AttackPreferenceMask;
+
+                if (attackPreferenceMask.HasFlag(AttackPreferenceMask.ClassCleric) &&
+                    (chr.Class == CharacterClass.Cleric ||
+                     chr.Class == CharacterClass.Priest))
+                {
+                    victimList.Add(chr);
+                    continue;
+                }
+                if (attackPreferenceMask.HasFlag(AttackPreferenceMask.ClassKnight) &&
+                    (chr.Class == CharacterClass.Knight ||
+                     chr.Class == CharacterClass.Champion))
+                {
+                    victimList.Add(chr);
+                    continue;
+                }
+                if (attackPreferenceMask.HasFlag(AttackPreferenceMask.ClassNecromancer) &&
+                    (chr.Class == CharacterClass.Necromancer ||
+                     chr.Class == CharacterClass.Lich))
+                {
+                    victimList.Add(chr);
+                    continue;
+                }
+                // Race classes wont be handled here, like troll, dark elf etc
+
+                if (attackPreferenceMask.HasFlag(AttackPreferenceMask.GenderMale) &&
+                    chr.IsMale())
+                {
+                    victimList.Add(chr);
+                    continue;
+                }
+                if (attackPreferenceMask.HasFlag(AttackPreferenceMask.GenderFemale) &&
+                    chr.IsFemale())
+                {
+                    victimList.Add(chr);
+                    continue;
+                }
+
+                if (attackPreferenceMask.HasFlag(AttackPreferenceMask.RaceDarkElf) &&
+                    chr.Race == CharacterRace.DarkElf)
+                {
+                    victimList.Add(chr);
+                    continue;
+                }
+                if (attackPreferenceMask.HasFlag(AttackPreferenceMask.RaceGoblin) &&
+                    chr.Race == CharacterRace.Goblin)
+                {
+                    victimList.Add(chr);
+                    continue;
+                }
+                if (attackPreferenceMask.HasFlag(AttackPreferenceMask.RaceElf) &&
+                    chr.Race == CharacterRace.Elf)
+                {
+                    victimList.Add(chr);
+                    continue;
+                }
+                if (attackPreferenceMask.HasFlag(AttackPreferenceMask.RaceDragon) &&
+                    chr.Race == CharacterRace.Dragon)
+                {
+                    victimList.Add(chr);
+                    continue;
+                }
+                if (attackPreferenceMask.HasFlag(AttackPreferenceMask.RaceMinotaur) &&
+                    chr.Race == CharacterRace.Minotaur)
+                {
+                    victimList.Add(chr);
+                    continue;
+                }
+                if (attackPreferenceMask.HasFlag(AttackPreferenceMask.RaceTroll) &&
+                    chr.Race == CharacterRace.Troll)
+                {
+                    victimList.Add(chr);
+                    continue;
+                }
+                if (attackPreferenceMask.HasFlag(AttackPreferenceMask.RaceUndead) &&
+                    chr.Race == CharacterRace.Undead)
+                {
+                    victimList.Add(chr);
+                    continue;
+                }
+                if (attackPreferenceMask.HasFlag(AttackPreferenceMask.RaceVampire) &&
+                    chr.Race == CharacterRace.Vampire)
+                {
+                    victimList.Add(chr);
+                    continue;
+                }
+            }
+
+            // Remove all characters which are not in attackable state
+            victimList.RemoveAll(chr =>
+            {
+                return chr.IsParalyzed() ||
+                    chr.IsUnconcious() ||
+                    chr.IsDead() ||
+                    chr.IsPetrified() ||
+                    chr.IsEradicated();
+            });
+
+            // If monster has some specific victims, use them
+            if (victimList.Count > 0)
+            {
+                return victimList[UnityEngine.Random.Range(0, victimList.Count)];
+            }
+
+            // If none, build it
+            foreach (Character chr in playerParty.Characters)
+            {
+                if (!chr.IsParalyzed() ||
+                    chr.IsUnconcious() ||
+                    chr.IsDead() ||
+                    chr.IsPetrified() ||
+                    chr.IsEradicated())
+                {
+                    victimList.Add(chr);
+                }
+            }
+
+            if (victimList.Count == 0)
+            {
+                Debug.LogError("No valid attack target");
+                return null;
+            }
+
+            return victimList[UnityEngine.Random.Range(0, victimList.Count)];
+        }
+
+        static public int MeleeDamageFromPlayerToMonster(Character dmgDealer, Monster victim)
+        {
+            int mainhandWeaponDamage = 0;
+            int offhandWeaponDamage = 0;
+
+            if (dmgDealer.IsUnarmed())
+            {
+                mainhandWeaponDamage = UnityEngine.Random.Range(0, 3) + 1;
+            }
+            else
+            {
+                Item mainhandItem = dmgDealer.GetItemAtSlot(EquipSlot.MainHand);
+                Item offhandItem = dmgDealer.GetItemAtSlot(EquipSlot.OffHand);
+
+                if (mainhandItem != null)
+                {
+                    bool holdsSpearWithNoShield = mainhandItem.Data.SkillGroup == ItemSkillGroup.Spear &&
+                        (offhandItem == null || offhandItem.Data.SkillGroup != ItemSkillGroup.Shield);
+
+                    mainhandWeaponDamage = CalculateMeleeDamageToMonsterWithWeapon(
+                        dmgDealer, mainhandItem, victim, holdsSpearWithNoShield);
+                }
+
+                if (offhandItem != null)
+                {
+                    if (offhandItem.Data.ItemType != ItemType.Shield)
+                    {
+                        offhandWeaponDamage = CalculateMeleeDamageToMonsterWithWeapon(
+                            dmgDealer, offhandItem, victim, false);
+                    }
+                }
+            }
+
+            int damageSum = mainhandWeaponDamage + offhandWeaponDamage;
+
+
+            if (damageSum < 1)
+            {
+                damageSum = 1;
+            }
+
+            return 200;
+            return damageSum;
+        }
+
+        static public int CalculateMeleeDamageToMonsterWithWeapon(Character dmgDealer, 
+            Item weapon, 
+            Monster monster, 
+            bool addOneDice = false)
+        {
+            int diceCount = weapon.GetDiceRolls();
+            if (addOneDice)
+            {
+                diceCount++;
+            }
+
+            int diceResult = 0;
+            for (int i = 0; i < diceCount; i++)
+            {
+                diceResult += UnityEngine.Random.Range(0, weapon.GetDiceSides()) + 1;
+            }
+
+            int totalDamage = weapon.GetMod() + diceResult;
+
+            if (monster != null)
+            {
+                // TODO: Check double damage to ogres, titans, dragons, etc.
+            }
+
+            if (dmgDealer.GetSkillMastery(SkillType.Dagger) >= SkillMastery.Master &&
+                weapon.Data.SkillGroup == ItemSkillGroup.Dagger)
+            {
+                if (UnityEngine.Random.Range(0, 100) < 10)
+                {
+                    totalDamage *= 3;
+                }
+            }
+
+            return totalDamage;
+        }
+
         static public AttackResult DamageFromPlayerToNpc(AttackInfo hitInfo,
             Dictionary<SpellElement, int> npcResistances,
             int npcArmorClass)
@@ -562,7 +884,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         static public float ConvertToUnitySpeed(float mmSpeed)
         {
-            return mmSpeed / 80.0f;
+            return mmSpeed / 100.0f;
         }
 
         static public float ConvertToUnitySize(float mmSizeUnits)

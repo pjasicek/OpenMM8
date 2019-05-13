@@ -56,19 +56,28 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             data.Speed = int.Parse(columns[13]);
             // Not sure why but this is how it should be
             data.RecoveryTime = (int.Parse(columns[14]) / 128.0f) * 2.13333f; 
+
             switch (columns[15].ToLower())
             {
-                case "d": data.PreferredClass = CharacterClass.Dragon; break;
-                case "n": data.PreferredClass = CharacterClass.Necromancer; break;
-                case "c": data.PreferredClass = CharacterClass.Cleric; break;
-                case "m": data.PreferredClass = CharacterClass.Minotaur; break;
-                case "t": data.PreferredClass = CharacterClass.Troll; break;
-                case "k": data.PreferredClass = CharacterClass.Knight; break;
-                //case "x": npcData.PreferredClass = Class.Male; break;
-                //case "o": npcData.PreferredClass = Class.Female; break;
-                
-                default: data.PreferredClass = CharacterClass.None; break;
+                case "c": data.AttackPreferenceMask |= AttackPreferenceMask.ClassCleric; break;
+                case "k": data.AttackPreferenceMask |= AttackPreferenceMask.ClassKnight; break;
+                case "n": data.AttackPreferenceMask |= AttackPreferenceMask.ClassNecromancer; break;
+
+                case "x": data.AttackPreferenceMask |= AttackPreferenceMask.GenderMale; break;
+                case "o": data.AttackPreferenceMask |= AttackPreferenceMask.GenderFemale; break;
+
+                case "v": data.AttackPreferenceMask |= AttackPreferenceMask.RaceVampire; break;
+                case "de": data.AttackPreferenceMask |= AttackPreferenceMask.RaceDarkElf; break;
+                case "m": data.AttackPreferenceMask |= AttackPreferenceMask.RaceMinotaur; break;
+                case "t": data.AttackPreferenceMask |= AttackPreferenceMask.RaceTroll; break;
+                case "d": data.AttackPreferenceMask |= AttackPreferenceMask.RaceDragon; break;
+                case "u": data.AttackPreferenceMask |= AttackPreferenceMask.RaceUndead; break;
+                case "e": data.AttackPreferenceMask |= AttackPreferenceMask.RaceElf; break;
+                case "g": data.AttackPreferenceMask |= AttackPreferenceMask.RaceGoblin; break;
             }
+
+            data.NumCharactersAffectedByBonusAbility = 1;
+            int.TryParse(columns[15], out data.NumCharactersAffectedByBonusAbility);
             data.BonusAbility = columns[16];
 
             // Attack 1
@@ -91,9 +100,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             SpellDataDb spellDb = DbMgr.Instance.SpellDataDb;
 
             // Spell Attack 1
-            data.Spell1_UseChance = int.Parse(columns[24]);
             if (columns[25] != "0")
             {
+                data.Spell1_UseChance = int.Parse(columns[24]);
                 SpellInfo spell1 = new SpellInfo(columns[25]);
                 foreach (SpellData spellData in spellDb.Data.Values)
                 {
@@ -111,9 +120,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                 }
             }
             // Spell Attack 2
-            data.ChanceSpellAttack2 = int.Parse(columns[26]);
             if (columns[27] != "0")
             {
+                data.Spell2_UseChance = int.Parse(columns[26]);
                 SpellInfo spell2 = new SpellInfo(columns[27]);
                 foreach (SpellData spellData in spellDb.Data.Values)
                 {

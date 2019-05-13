@@ -8,6 +8,8 @@ public enum SoundType
 {
     Error = 27,
 
+    FoundLoot = 133,
+
     TurnPageUp = 137,
     TurnPageDown = 138,
 
@@ -20,5 +22,5 @@ public enum SoundType
     Eradicate = 158,
     ElectricCircle = 159,
     OpenBook = 163,
-    CloseBook = 164
+    CloseBook = 164,
 }

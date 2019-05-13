@@ -987,9 +987,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_InspectNpcUI.NpcNameText.text = npcData.Name;
             m_InspectNpcUI.HitPointsText.text = npc.CurrentHitPoints.ToString() + "/" + npcData.HitPoints;
             m_InspectNpcUI.ArmorClassText.text = npcData.ArmorClass.ToString();
-            m_InspectNpcUI.AttackText.text = npcData.Attack1.DamageType.ToString();
+            m_InspectNpcUI.AttackText.text = npcData.Attack1_Element.ToString();
             m_InspectNpcUI.DamageText.text = npcData.AttackAmountText;
-            m_InspectNpcUI.SpellText.text = npcData.SpellAttack1.SpellName == "" ? "None" : npcData.SpellAttack1.SpellName;
+            //m_InspectNpcUI.SpellText.text = npcData.SpellAttack1.SpellName == "" ? "None" : npcData.SpellAttack1.SpellName;
+            m_InspectNpcUI.SpellText.text = "None";
             m_InspectNpcUI.FireResistanceText.text = npcData.Resistances[SpellElement.Fire].ToString();
             m_InspectNpcUI.AirResistanceText.text = npcData.Resistances[SpellElement.Air].ToString();
             m_InspectNpcUI.WaterResistanceText.text = npcData.Resistances[SpellElement.Water].ToString();

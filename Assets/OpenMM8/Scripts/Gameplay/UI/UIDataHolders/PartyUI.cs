@@ -19,7 +19,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void Refresh()
         {
-
+            GoldText.text = Party.Gold.ToString();
+            FoodText.text = Party.Food.ToString();
         }
 
         public void UpdateLayout()

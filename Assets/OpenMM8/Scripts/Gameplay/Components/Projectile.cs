@@ -37,13 +37,13 @@ public class Projectile : MonoBehaviour
         if (projectile.ShooterAsCharacter != null)
         {
             int characterIndex = projectile.ShooterAsCharacter.GetPartyIndex();
-            projectileObject.transform.position = 
+            projectileObject.transform.position =
                 projectile.ShooterAsCharacter.Party.GetProjectileSpawnPos(characterIndex);
         }
         else if (projectile.ShooterAsMonster != null)
         {
             float monsterHeight = projectile.ShooterAsMonster.GetComponent<CapsuleCollider>().height;
-            projectileObject.transform.position = projectile.ShooterAsMonster.transform.position + 
+            projectileObject.transform.position = projectile.ShooterAsMonster.transform.position +
                 new Vector3(0.0f, monsterHeight / 4.0f, 0.0f);
         }
         else
@@ -95,29 +95,85 @@ public class Projectile : MonoBehaviour
 
         if (other.isTrigger)
         {
+            Debug.LogError("Other is trigger, wont collide");
             return;
         }
 
         // Cannot shoot self
-        if (ProjectileInfo.ShooterTransform != null && 
+        if (ProjectileInfo.ShooterTransform != null &&
             ProjectileInfo.ShooterTransform.gameObject.Equals(other.gameObject))
         {
             return;
         }
 
-        // I am trying to shoot player, but some other NPC intercepted my projectile
-        if (ShooterAsMonster && other.gameObject.GetComponent<Monster>() != null)
+
+        Monster victimAsMonster = other.gameObject.GetComponent<Monster>();
+        PlayerParty victimAsPlayer = other.gameObject.GetComponent<PlayerParty>();
+        if (ShooterAsMonster != null && victimAsMonster != null)
         {
-            Destroy(gameObject);
-            return;
+            // I am trying to shoot player, but some other NPC intercepted my projectile
+
+            bool areMonstersFriendly = ShooterAsMonster.GetRelationTo(victimAsMonster) == 0;
+            if (areMonstersFriendly)
+            {
+                // Monster are friendly, so just destroy projectile
+                // I dont think that friendly fire was allowed in original game
+                Destroy(gameObject);
+                return;
+            }
+            else
+            {
+                // Damage monster
+            }
+        }
+        else if (ShooterAsMonster != null && victimAsPlayer != null)
+        {
+            // Monster shot player
+
+            // Damage player
+            Debug.Log(ShooterAsMonster.Name + " -> " + victimAsPlayer.name);
+        }
+        else if (ShooterAsCharacter != null && victimAsMonster != null)
+        {
+            // Player shot monster
+
+            // Damage monster
+            Debug.Log(ShooterAsCharacter.Name + " -> " + victimAsMonster.Name);
         }
 
-        /*Damageable damageable = other.gameObject.GetComponent<Damageable>();
-        if (damageable != null)
+        if (ProjectileInfo.ImpactObject != null &&
+            !string.IsNullOrEmpty(ProjectileInfo.ImpactObject.SFTLabel) &&
+            ProjectileInfo.ImpactObject.SFTLabel.ToLower() != "null")
         {
-            damageable.ReceiveAttack(AttackInfo, Owner);
-        }*/
+            //Debug.LogError("Spawning impact object");
+            Vector3 impactPoint = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+            //impactPoint += new Vector3(0.0f, 0.0f, GetComponent<CapsuleCollider>().height / 2.0f);
+
+
+            RaycastHit hit;
+            Vector3 tmpPos = transform.position + transform.forward * -5.0f;
+            if (Physics.Raycast(tmpPos, transform.forward, out hit))
+            {
+                impactPoint = hit.point;
+            }
+
+            /*Vector3 tmpDirection = (other.transform.position - transform.position);
+            Vector3 tmpContactPoint = transform.position + tmpDirection;
+            impactPoint = tmpContactPoint;*/
+
+            impactPoint += transform.forward * -0.2f;
+
+            OutdoorSpriteEffect.Spawn(impactPoint, transform.rotation, ProjectileInfo.ImpactObject);
+        }
 
         Destroy(gameObject);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        foreach (ContactPoint contact in collision.contacts)
+        {
+            Debug.DrawRay(contact.point, contact.normal, Color.white);
+        }
     }
 }

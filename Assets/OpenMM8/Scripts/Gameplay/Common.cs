@@ -450,7 +450,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         Chain,
         Plate,
         Shield,
-        Misc
+        Misc,
+        None
     }
 
     public enum SpecialEnchantType

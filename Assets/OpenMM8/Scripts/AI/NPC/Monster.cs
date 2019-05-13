@@ -7,8 +7,9 @@ using System.Collections.Generic;
 using System;
 
 using Assets.OpenMM8.Scripts;
+using Assets.OpenMM8.Scripts.Gameplay.Items;
 
-public class Monster : MonoBehaviour
+public partial class Monster : MonoBehaviour
 {
     public const int MAX_RANGE_DISTANCE_SQR = 2560;
     public const int MAX_MELEE_DISTANCE_SQR = 13;
@@ -44,6 +45,7 @@ public class Monster : MonoBehaviour
     public SpriteRotator SpriteLookRotator;
     public HoverInfo HoverInfo;
     public SpriteRenderer SpriteRenderer;
+    public MinimapMarker MinimapMarker;
 
     // State
     public MonsterState AIState = MonsterState.Standing;
@@ -79,6 +81,7 @@ public class Monster : MonoBehaviour
         SpriteLookRotator = GetComponent<SpriteRotator>();
         HoverInfo = GetComponent<HoverInfo>();
         SpriteRenderer = GetComponent<SpriteRenderer>();
+        MinimapMarker = GetComponent<MinimapMarker>();
 
         InitialPosition = transform.position;
 
@@ -705,808 +708,334 @@ public class Monster : MonoBehaviour
         if (layerToIgnore != "")
         {
             layerMask &= ~(1 << LayerMask.NameToLayer(layerToIgnore));
+            //layerMask = ~(1 << LayerMask.NameToLayer(layerToIgnore));
         }
 
         RaycastHit hitInfo;
-        if (Physics.Linecast(transform.position, target.position, out hitInfo, layerMask))
+        if (Physics.Linecast(transform.position, target.position, out hitInfo, layerMask, QueryTriggerInteraction.Ignore))
         {
+            //Debug.LogError("Linecast target: " + hitInfo.transform.name);
+            //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hitInfo.distance, Color.yellow);
             return hitInfo.transform == target;
         }
 
         return false;
     }
 
-    //=============================================================================================
-    // AI
-    //=============================================================================================
-
-    public void AI_RandomMove(Transform target, float radius, float actionLength)
+    static public bool AreMonstersOfSameFaction(Monster monster1, Monster monster2)
     {
-        if (UnityEngine.Random.Range(0, 100) < 25)
+        int faction1 = monster1.Ally;
+        if (faction1 == 0)
         {
-            AI_StandWhile();
-            return;
+            faction1 = GetMonsterRelationIndex(monster1.MonsterId);
         }
 
-        if (AIState != MonsterState.Walking)
+        int faction2 = monster2.Ally;
+        if (faction2 == 0)
         {
-            SetNavMeshAgentEnabled(true);
+            faction2 = GetMonsterRelationIndex(monster2.MonsterId);
+        }
 
-            //radius = Mathf.Sqrt(radius);
-            CurrentDestination = InitialPosition + new Vector3(
-                UnityEngine.Random.Range(-radius * 0.5f, radius * 0.5f),
-                0,
-                UnityEngine.Random.Range(-radius * 0.5f, radius * 0.5f));
-            NavMeshAgent.ResetPath();
+        if (faction1 == faction2)
+        {
+            return true;
+        }
 
-            NavMeshAgent.SetDestination(CurrentDestination);
+        bool areLizardmen = faction1 >= 1 && faction1 <= 2 && faction2 >= 1 && faction2 <= 2;
+        bool areDarkElf = faction1 >= 7 && faction1 <= 9 && faction2 >= 7 && faction2 <= 9;
+        bool areRatmen = faction1 >= 12 && faction1 <= 14 && faction2 >= 12 && faction2 <= 14;
+        bool areDragonHunters = faction1 == 15 && faction2 == 15;
+        bool areOfTheSun = faction1 >= 16 && faction1 <= 17 && faction2 >= 16 && faction2 <= 17;
+        bool areTrolls = faction1 >= 20 && faction1 <= 21 && faction2 >= 20 && faction2 <= 21;
+        bool areMinotaurs = faction1 >= 22 && faction1 <= 23 && faction2 >= 22 && faction2 <= 23;
+        // .......
 
-            Vector3 direction = (CurrentDestination - transform.position).normalized;
-            transform.rotation = Quaternion.LookRotation(direction);
+        if (areLizardmen ||
+            areDarkElf ||
+            areRatmen ||
+            areDragonHunters ||
+            areOfTheSun ||
+            areTrolls ||
+            areMinotaurs)
+        {
+            return true;
+        }
 
-            CurrentActionLength = 4.0f + UnityEngine.Random.Range(0.0f, 1.5f);
-            CurrentActionTime = 0.0f;
+        return false;
+    }
 
-            AIState = MonsterState.Walking;
-            UpdateAnimation();
+    public void AggroSurroundingMonsters(bool sourceIsParty)
+    {
+        if (sourceIsParty)
+        {
+            Flags |= MonsterFlags.Aggressor;
+        }
 
-            if (UnityEngine.Random.Range(0, 100) < 2)
+        List<Monster> allMonsters = GameCore.Instance.MonsterList;
+        foreach (Monster monster in allMonsters)
+        {
+            if (!monster.CanAct() || monster == this)
             {
-                SoundMgr.PlaySoundById(SoundIdFidget, AudioSource);
-            }
-        }
-        else
-        {
-            AI_Stand(transform.forward, 2.0f + UnityEngine.Random.Range(0.0f, 2.0f));
-        }
-    }
-
-    public void AI_StandWhile()
-    {
-        CurrentActionLength = 1.0f + UnityEngine.Random.Range(0.0f, 1.0f);
-        CurrentActionTime = 0.0f;
-        AIState = MonsterState.Standing;
-        UpdateAnimation();
-
-        SetNavMeshAgentEnabled(false);
-    }
-
-    public void AI_Stand(Vector3 lookDirection, float timeLength = 0.0f)
-    {
-        if (timeLength == 0.0f)
-        {
-            timeLength = 2.0f + UnityEngine.Random.Range(0.0f, 2.0f);
-        }
-
-        CurrentActionLength = timeLength;
-        CurrentActionTime = 0.0f;
-        transform.rotation = Quaternion.LookRotation(lookDirection);
-        AIState = MonsterState.Standing;
-        UpdateAnimation();
-
-        SetNavMeshAgentEnabled(false);
-    }
-
-    public void AI_Bored(Vector3 lookDirection)
-    {
-        CurrentActionLength = AnimationFidget.TotalAnimationLengthSeconds;
-        CurrentActionTime = 0.0f;
-
-        if (SpriteRenderer.isVisible)
-        {
-            AIState = MonsterState.Fidgeting;
-            transform.rotation = Quaternion.LookRotation(lookDirection);
-            UpdateAnimation();
-
-            if (UnityEngine.Random.Range(0, 100) < 5)
-            {
-                SoundMgr.PlaySoundById(SoundIdFidget, AudioSource);
+                continue;
             }
 
-            SetNavMeshAgentEnabled(false);
-        }
-        else
-        {
-            // If not visible on camera, just stand
-            AI_Stand(lookDirection, CurrentActionLength);
-        }
-    }
-
-    public void AI_FaceObject(Transform targetTransform)
-    {
-        Vector3 lookDirection = (targetTransform.position - transform.position).normalized;
-
-
-        if (UnityEngine.Random.Range(0, 100) >= 5)
-        {
-            AIState = MonsterState.Interacting;
-            CurrentActionLength = 2.0f;
-            CurrentActionTime = 0.0f;
-            transform.rotation = Quaternion.LookRotation(lookDirection);
-            UpdateAnimation();
-
-            SetNavMeshAgentEnabled(false);
-        }
-        else
-        {
-            AI_Bored(lookDirection);
-        }
-    }
-
-    public void AI_StandOrBored(Vector3 lookDirection, float duration)
-    {
-        if (UnityEngine.Random.Range(0, 2) == 0)
-        {
-            AI_Bored(lookDirection);
-        }
-        else
-        {
-            AI_Stand(lookDirection, duration);
-        }
-    }
-
-    public void AI_Flee(Transform aggressor, float duration = 0.0f)
-    {
-        if (!CanAct())
-        {
-            return;
-        }
-
-        if (aggressor == null)
-        {
-            Debug.LogError("No aggressor yet have to flee");
-            return;
-        }
-
-        Vector3 fleeDirection = (aggressor.transform.position - transform.position).normalized;
-
-        float randRotMod = UnityEngine.Random.Range(-20.0f, 20.0f);
-        fleeDirection = Quaternion.AngleAxis(randRotMod, Vector3.up) * fleeDirection;
-
-        SetNavMeshAgentEnabled(true);
-        CurrentDestination = transform.position - fleeDirection * 6.0f;
-        NavMeshAgent.SetDestination(CurrentDestination);
-
-        Vector3 lookDirection = (CurrentDestination - transform.position).normalized;
-        transform.rotation = Quaternion.LookRotation(lookDirection);
-
-        if (duration > 2.0f || duration == 0.0f)
-        {
-            duration = 2.0f;
-        }
-
-        CurrentActionLength = duration;
-        CurrentActionTime = 0.0f;
-        AIState = MonsterState.Fleeing;
-        UpdateAnimation();
-    }
-
-    public void AI_PursueKiteRanged(Transform target, float duration)
-    {
-        float distanceSqr = (target.transform.position - transform.position).sqrMagnitude;
-        Vector3 pursueDirection = (target.transform.position - transform.position).normalized;
-
-        if (distanceSqr < MAX_MELEE_DISTANCE_SQR)
-        {
-            CurrentActionLength = duration;
-            AI_Stand(pursueDirection, 2.0f);
-            return;
-        }
-
-        if (Speed == 0.0f)
-        {
-            AI_Stand(pursueDirection, 2.0f);
-            return;
-        }
-
-        if (duration == 0.0f)
-        {
-            duration = 1.0f;
-        }
-        CurrentActionLength = duration;
-        CurrentActionTime = 0.0f;
-
-        // Add noise to pursue direction
-        // TODO: Try to find out how much
-        float rotationNoiseDegrees = 3.0f;
-        if ((UnityEngine.Random.Range(0, MonsterId) % 2) == 0)
-        {
-            rotationNoiseDegrees *= -1.0f;
-        }
-        rotationNoiseDegrees += 90.0f;
-        pursueDirection = Quaternion.AngleAxis(rotationNoiseDegrees, Vector3.up) * pursueDirection;
-
-        // Make this rather large. TODO: Check if its really okay
-        Vector3 pursueDestination = transform.position + pursueDirection * 10.0f;
-
-        SetNavMeshAgentEnabled(true);
-        NavMeshAgent.SetDestination(pursueDestination);
-
-        AIState = MonsterState.Pursuing;
-        UpdateAnimation();
-    }
-
-    // This seems to be the case where monsters with melee attacks are pursuing
-    public void AI_PursueToMeleeDirect(Transform target, float duration)
-    {
-        float distanceSqr = (target.transform.position - transform.position).sqrMagnitude;
-        Vector3 pursueDirection = (target.transform.position - transform.position).normalized;
-
-        //Debug.Log("DistanceSqr: " + distanceSqr);
-        if (distanceSqr < MAX_MELEE_DISTANCE_SQR)
-        {
-            AI_StandOrBored(pursueDirection, duration);
-            return;
-        }
-
-        if (Speed == 0.0f)
-        {
-            AI_Stand(pursueDirection, duration);
-            return;
-        }
-
-        SetNavMeshAgentEnabled(true);
-
-        if (duration == 0.0f)
-        {
-            duration = 2.0f;
-        }
-        CurrentActionLength = duration;
-        CurrentActionTime = 0.0f;
-
-        // Make this rather large. TODO: Check if its really okay
-        Vector3 pursueDestination = target.position;
-
-        NavMeshAgent.SetDestination(pursueDestination);
-
-        AIState = MonsterState.Pursuing;
-        UpdateAnimation();
-    }
-
-    public void AI_PursueToMeleeFarAway(Transform target, float duration)
-    {
-        float distanceSqr = (target.transform.position - transform.position).sqrMagnitude;
-        Vector3 pursueDirection = (target.transform.position - transform.position).normalized;
-
-        if (distanceSqr < MAX_MELEE_DISTANCE_SQR)
-        {
-            CurrentActionLength = duration;
-            AI_Stand(pursueDirection);
-            return;
-        }
-
-        if (Speed == 0.0f)
-        {
-            AI_Stand(pursueDirection, duration);
-            return;
-        }
-
-        if (duration == 0.0f)
-        {
-            duration = 2.0f;
-        }
-        CurrentActionLength = duration + UnityEngine.Random.Range(0.0f, duration);
-        CurrentActionTime = 0.0f;
-
-        // Add noise to pursue direction
-        // TODO: Try to find out how much
-        float rotationNoiseDegrees = 45.0f;
-        if (UnityEngine.Random.Range(0, 2) == 0)
-        {
-            rotationNoiseDegrees *= -1.0f;
-        }
-        pursueDirection = Quaternion.AngleAxis(rotationNoiseDegrees, Vector3.up) * pursueDirection;
-
-        // Make this rather large. TODO: Check if its really okay
-        Vector3 pursueDestination = transform.position + pursueDirection * 10.0f;
-
-        SetNavMeshAgentEnabled(true);
-        NavMeshAgent.SetDestination(pursueDestination);
-
-        AIState = MonsterState.Pursuing;
-        UpdateAnimation();
-
-        if (UnityEngine.Random.Range(0, 100) < 2)
-        {
-            // ???
-            SoundMgr.PlaySoundById(SoundIdGetHit, AudioSource);
-        }
-    }
-
-
-    public void AI_MeleeAttack(Transform target)
-    {
-        /*if (direction == Vector3.zero)
-        {
-            
-        }*/
-
-        /*string ignoredLayer = "";
-        // Ignore other monsters standing in the way
-        if (target.GetComponent<PlayerParty>() != null)
-        {
-            ignoredLayer = "NPC";
-        }
-        else if (target.GetComponent<Monster>() != null)
-        {
-            ignoredLayer = "Player";
-        }
-        bool canSee = CanDirectlySeeTarget(target, ignoredLayer);
-        Debug.Log("CanSee: " + canSee);*/
-
-
-        // TODO: This has to be resolved sooner or later...
-        bool canSee = true;
-        if (canSee)
-        {
-            Vector3 direction = (target.position - transform.position).normalized;
-
-            CurrentActionLength = AnimationShoot.TotalAnimationLengthSeconds;
-            CurrentActionTime = 0.0f;
-            RecoveryTimeLeft = MonsterData.RecoveryTime;
-
-            transform.rotation = Quaternion.LookRotation(direction);
-            AIState = MonsterState.AttackingRanged1;
-            UpdateAnimation();
-
-            SoundMgr.PlaySoundById(SoundIdAttack, AudioSource);
-
-            SetNavMeshAgentEnabled(false);
-        }
-        else
-        {
-            AI_PursueKiteRanged(target, 0.5f);
-        }   
-    }
-
-    public void AI_MissileAttack(Transform target, MonsterAttackType missileAttackType)
-    {
-        if (missileAttackType != MonsterAttackType.Attack1 &&
-            missileAttackType != MonsterAttackType.Attack2)
-        {
-            Debug.LogError("Invalid missileAttackType: " + missileAttackType);
-            return;
-        }
-        
-        // TODO: This has to be resolved sooner or later...
-        bool canSee = true;
-        if (CanDirectlySeeTarget(target))
-        {
-            Vector3 direction = (target.position - transform.position).normalized;
-
-            CurrentActionLength = AnimationAttack.TotalAnimationLengthSeconds;
-            CurrentActionTime = 0.0f;
-            RecoveryTimeLeft = MonsterData.RecoveryTime + CurrentActionLength;
-
-            if (missileAttackType == MonsterAttackType.Attack1)
+            if (AreMonstersOfSameFaction(this, monster))
             {
-                AIState = MonsterState.AttackingRanged1;
-            }
-            else
-            {
-                AIState = MonsterState.AttackingRanged2;
-            }
-
-            SetNavMeshAgentEnabled(false);
-
-            SoundMgr.PlaySoundById(SoundIdAttack, AudioSource);
-            transform.rotation = Quaternion.LookRotation(direction);
-
-            //Debug.LogError("RecoveryTime: " + RecoveryTimeLeft);
-
-            UpdateAnimation();
-
-            
-        }
-        else
-        {
-            AI_PursueKiteRanged(target, 0.5f);
-        }
-    }
-
-    public void AI_SpellAttack(Transform target, MonsterAttackType spellAttackType)
-    {
-        if (spellAttackType != MonsterAttackType.Spell1 &&
-            spellAttackType != MonsterAttackType.Spell2)
-        {
-            Debug.LogError("Invalid spellAttackType: " + spellAttackType);
-            return;
-        }
-
-        // TODO: This has to be resolved sooner or later...
-        bool canSee = true;
-        if (CanDirectlySeeTarget(target))
-        {
-            Vector3 direction = (target.position - transform.position).normalized;
-
-            CurrentActionLength = AnimationAttack.TotalAnimationLengthSeconds;
-            CurrentActionTime = 0.0f;
-            RecoveryTimeLeft = MonsterData.RecoveryTime + CurrentActionLength;
-
-            SpellType spell = MonsterData.Spell1_SpellType;
-            AIState = MonsterState.AttackingRanged3;
-            if (spellAttackType == MonsterAttackType.Spell2)
-            {
-                spell = MonsterData.Spell2_SpellType;
-                AIState = MonsterState.AttackingRanged4;
-            }
-
-            SetNavMeshAgentEnabled(false);
-
-            SoundMgr.PlaySoundById(SoundIdAttack, AudioSource);
-            transform.rotation = Quaternion.LookRotation(direction);
-
-            // This makes projectile spells casted sooner than other spells
-            // What is the reasoning behind this I have no idea
-            // It is hard to believe it is a bug
-            bool shouldPlayFidgetAnim = ShouldPlayFidgetAttackAnim(spell);
-            if (shouldPlayFidgetAnim)
-            {
-                MonsterState currState = AIState;
-                AIState = MonsterState.Fidgeting;
-                CurrentActionLength = AnimationFidget.TotalAnimationLengthSeconds;
-                UpdateAnimation();
-
-                AIState = currState;
-            }
-            else
-            {
-                UpdateAnimation();
-            }
-        }
-        else
-        {
-            AI_PursueKiteRanged(target, 0.5f);
-        }
-    }
-
-    public void AI_CastSpell(Transform target, SpellType spellType, int skillLevel, SkillMastery skillMastery)
-    {
-        SpellData spellData = DbMgr.Instance.SpellDataDb.Get(spellType);
-        if (spellData == null)
-        {
-            Debug.LogError("Failed to retrieve spell data for : " + spellType);
-            return;
-        }
-
-        ProjectileInfo projectileInfo = null;
-
-        object projectileTarget = null;
-        if (target.GetComponent<PlayerParty>() != null)
-        {
-            projectileTarget = target.GetComponent<PlayerParty>();
-        }
-        else if (target.GetComponent<Monster>() != null)
-        {
-            projectileTarget = target.GetComponent<Monster>();
-        }
-
-        int buffDurationMins = 0;
-        int spellPower = 0;
-        PlayerParty party = GameCore.GetParty();
-
-        switch (spellType)
-        {
-            // Single target projectiles
-            case SpellType.Fire_FireBolt:
-            case SpellType.Fire_Fireball:
-            case SpellType.Fire_Incinerate:
-            case SpellType.Air_LightningBolt:
-            case SpellType.Water_IceBolt:
-            case SpellType.Water_AcidBurst:
-            case SpellType.Earth_Blades:
-            case SpellType.Earth_RockBlast:
-            case SpellType.Mind_MindBlast:
-            case SpellType.Mind_PsychicShock:
-            case SpellType.Body_Harm:
-            case SpellType.Light_LightBolt:
-            case SpellType.Dark_ToxicCloud:
-            case SpellType.Dark_DragonBreath:
-                projectileInfo = new ProjectileInfo();
-                projectileInfo.Shooter = this;
-                projectileInfo.ShooterTransform = transform;
-                projectileInfo.Target = projectileTarget;
-                projectileInfo.TargetPosition = target.position;
-
-                projectileInfo.DisplayData = DbMgr.Instance.ObjectDisplayDb.Get(spellData.DisplayObjectId);
-                projectileInfo.ImpactObject = DbMgr.Instance.ObjectDisplayDb.Get(spellData.ImpactDisplayObjectId);
-
-                projectileInfo.SpellType = spellType;
-                projectileInfo.SkillMastery = skillMastery;
-                projectileInfo.SkillLevel = skillLevel;
-
-                SoundMgr.PlaySoundById(spellData.EffectSoundId, AudioSource);
-                Projectile.Spawn(projectileInfo);
-                break;
-
-            // Buffs
-
-            case SpellType.Fire_Haste:
-                if (skillMastery == SkillMastery.Normal || skillMastery == SkillMastery.Expert)
+                float distanceSqr = (monster.transform.position - transform.position).sqrMagnitude;
+                if (distanceSqr < 4096)
                 {
-                    buffDurationMins = 60 + skillLevel;
-                }
-                else if (skillMastery == SkillMastery.Master)
-                {
-                    buffDurationMins = 60 + skillLevel * 2;
-                }
-                else if (skillMastery == SkillMastery.Grandmaster)
-                {
-                    buffDurationMins = 60 + skillLevel * 3;
-                }
-
-                BuffMap[MonsterBuffType.Haste].Apply(skillMastery, skillLevel, 
-                    GameTime.FromCurrentTime(60 * buffDurationMins));
-                // Render some monster buff effect
-                SoundMgr.PlaySoundById(spellData.EffectSoundId, AudioSource);
-                break;
-
-            case SpellType.Air_Shield:
-                if (skillMastery == SkillMastery.Normal || skillMastery == SkillMastery.Expert)
-                {
-                    buffDurationMins = 64 + skillLevel * 5;
-                }
-                else if (skillMastery == SkillMastery.Master)
-                {
-                    buffDurationMins = 64 + skillLevel * 15;
-                }
-                else if (skillMastery == SkillMastery.Grandmaster)
-                {
-                    buffDurationMins = 64 + skillLevel * 60;
-                }
-
-                BuffMap[MonsterBuffType.Shield].Apply(skillMastery, skillLevel,
-                    GameTime.FromCurrentTime(60 * buffDurationMins));
-                // Render some monster buff effect
-                SoundMgr.PlaySoundById(spellData.EffectSoundId, AudioSource);
-                break;
-
-            case SpellType.Earth_Stoneskin:
-                if (skillMastery == SkillMastery.Normal || skillMastery == SkillMastery.Expert)
-                {
-                    buffDurationMins = 64 + skillLevel * 5;
-                }
-                else if (skillMastery == SkillMastery.Master)
-                {
-                    buffDurationMins = 64 + skillLevel * 15;
-                }
-                else if (skillMastery == SkillMastery.Grandmaster)
-                {
-                    buffDurationMins = 64 + skillLevel * 60;
-                }
-
-                // AC = skillLevel + 5
-                BuffMap[MonsterBuffType.Stoneskin].Apply(skillMastery, skillLevel + 5,
-                    GameTime.FromCurrentTime(60 * buffDurationMins));
-                // Render some monster buff effect
-                SoundMgr.PlaySoundById(spellData.EffectSoundId, AudioSource);
-                break;
-
-            case SpellType.Spirit_Bless:
-                if (skillMastery == SkillMastery.Normal || skillMastery == SkillMastery.Expert)
-                {
-                    buffDurationMins = 64 + skillLevel * 5;
-                }
-                else if (skillMastery == SkillMastery.Master)
-                {
-                    buffDurationMins = 64 + skillLevel * 15;
-                }
-                else if (skillMastery == SkillMastery.Grandmaster)
-                {
-                    buffDurationMins = 64 + skillLevel * 20;
-                }
-
-                // Attack Bonus = skillLevel + 5
-                BuffMap[MonsterBuffType.Bless].Apply(skillMastery, skillLevel + 5,
-                    GameTime.FromCurrentTime(60 * buffDurationMins));
-                // Render some monster buff effect
-                SoundMgr.PlaySoundById(spellData.EffectSoundId, AudioSource);
-                break;
-
-            case SpellType.Spirit_Fate:
-                if (skillMastery == SkillMastery.Normal || skillMastery == SkillMastery.Expert)
-                {
-                    spellPower = 2 * skillLevel + 40;
-                }
-                else if (skillMastery == SkillMastery.Master)
-                {
-                    spellPower = 3 * skillLevel + 60;
-                }
-                else if (skillMastery == SkillMastery.Grandmaster)
-                {
-                    spellPower = 6 * skillLevel + 120;
-                }
-
-                // Attack Bonus = skillLevel + 5
-                BuffMap[MonsterBuffType.Fate].Apply(skillMastery, spellPower,
-                    GameTime.FromCurrentTime(60 * 5));
-                // Render some monster buff effect
-                SoundMgr.PlaySoundById(spellData.EffectSoundId, AudioSource);
-                break;
-
-            case SpellType.Spirit_Heroism:
-                if (skillMastery == SkillMastery.Normal || skillMastery == SkillMastery.Expert)
-                {
-                    buffDurationMins = 64 + skillLevel * 5;
-                }
-                else if (skillMastery == SkillMastery.Master)
-                {
-                    buffDurationMins = 64 + skillLevel * 15;
-                }
-                else if (skillMastery == SkillMastery.Grandmaster)
-                {
-                    buffDurationMins = 64 + skillLevel * 20;
-                }
-
-                // Attack Bonus = skillLevel + 5
-                BuffMap[MonsterBuffType.Heroism].Apply(skillMastery, skillLevel + 5,
-                    GameTime.FromCurrentTime(60 * buffDurationMins));
-                // Render some monster buff effect
-                SoundMgr.PlaySoundById(spellData.EffectSoundId, AudioSource);
-                break;
-
-            case SpellType.Body_Hammerhands:
-                buffDurationMins = 60 * skillLevel;
-
-                BuffMap[MonsterBuffType.Heroism].Apply(skillMastery, skillLevel,
-                    GameTime.FromCurrentTime(60 * buffDurationMins));
-                // Render some monster buff effect
-                SoundMgr.PlaySoundById(spellData.EffectSoundId, AudioSource);
-                break;
-
-            case SpellType.Body_PowerCure:
-                CurrentHp += 5 * skillLevel + 10;
-                if (CurrentHp > MonsterData.HitPoints)
-                {
-                    CurrentHp = MonsterData.HitPoints;
-                }
-
-                // Render some monster buff effect
-                SoundMgr.PlaySoundById(14020, AudioSource);
-                break;
-
-            case SpellType.Light_DispelMagic:
-                foreach (SpellEffect partyBuff in party.PartyBuffMap.Values)
-                {
-                    partyBuff.Reset();
-                }
-
-                party.Characters.ForEach(chr =>
-                {
-                    int intellectBonus = GameMechanics.GetAttributeEffect(chr.GetActualIntellect());
-                    int luckBonus = GameMechanics.GetAttributeEffect(chr.GetActualLuck());
-                    int dispelResistance = intellectBonus + luckBonus + 30;
-
-                    if (UnityEngine.Random.Range(0, dispelResistance) < 30)
+                    monster.HostilityType = HostilityType.HostileLong;
+                    if (sourceIsParty)
                     {
-                        foreach (SpellEffect playerBuff in chr.PlayerBuffMap.Values)
-                        {
-                            playerBuff.Reset();
-                        }
-                        // TODO: I dont know what is the actual one for dispel, maybe none
-                        SpellFxRenderer.SetPlayerBuffAnim("sp108", chr);
+                        monster.Flags |= MonsterFlags.Aggressor;
                     }
-                });
-                SoundMgr.PlaySoundById(spellData.EffectSoundId, AudioSource);
-                break;
-
-            case SpellType.Light_DayOfProtection:
-                if (skillMastery == SkillMastery.Normal || skillMastery == SkillMastery.Expert)
-                {
-                    buffDurationMins = 64 + skillLevel * 5;
                 }
-                else if (skillMastery == SkillMastery.Master)
-                {
-                    buffDurationMins = 64 + skillLevel * 15;
-                }
-                else if (skillMastery == SkillMastery.Grandmaster)
-                {
-                    buffDurationMins = 64 + skillLevel * 20;
-                }
-
-                BuffMap[MonsterBuffType.DayOfProtection].Apply(skillMastery, skillLevel,
-                    GameTime.FromCurrentTime(60 * buffDurationMins));
-                // Render some monster buff effect
-                SoundMgr.PlaySoundById(spellData.EffectSoundId, AudioSource);
-                break;
-
-            case SpellType.Light_HourOfPower:
-                if (skillMastery == SkillMastery.Normal || skillMastery == SkillMastery.Expert)
-                {
-                    buffDurationMins = 64 + skillLevel * 5;
-                }
-                else if (skillMastery == SkillMastery.Master)
-                {
-                    buffDurationMins = 64 + skillLevel * 15;
-                }
-                else if (skillMastery == SkillMastery.Grandmaster)
-                {
-                    buffDurationMins = 64 + skillLevel * 20;
-                }
-
-                BuffMap[MonsterBuffType.HourOfPower].Apply(skillMastery, skillLevel + 5,
-                    GameTime.FromCurrentTime(60 * buffDurationMins));
-                // Render some monster buff effect
-                SoundMgr.PlaySoundById(spellData.EffectSoundId, AudioSource);
-                break;
-
-            case SpellType.Dark_PainReflection:
-                if (skillMastery == SkillMastery.Normal || 
-                    skillMastery == SkillMastery.Expert ||
-                    skillMastery == SkillMastery.Master)
-                {
-                    buffDurationMins = 64 + skillLevel * 3;
-                }
-                else if (skillMastery == SkillMastery.Grandmaster)
-                {
-                    buffDurationMins = 64 + skillLevel * 15;
-                }
-
-                BuffMap[MonsterBuffType.HourOfPower].Apply(skillMastery, skillLevel,
-                    GameTime.FromCurrentTime(60 * buffDurationMins));
-                // Render some monster buff effect
-                SoundMgr.PlaySoundById(spellData.EffectSoundId, AudioSource);
-                break;
-
-            case SpellType.Dark_Sharpmetal:
-            case SpellType.Fire_MeteorShower:
-            case SpellType.Air_Sparks:
-
-            default:
-                Debug.LogError("Attempted to cast unimplemented spell: " + spellType);
-                break;
+            }
         }
     }
 
-    public void AI_SpawnMissile(Transform target)
+    public bool IsHostileToPlayer()
     {
-        string missileName = "";
-        if (AIState == MonsterState.AttackingRanged1)
+        return IsEnemy() || GetRelationTo(null) > 0;
+    }
+
+    public void ReceiveDamageFromPlayer(Character dmgDealer, Projectile projectile)
+    {
+        if (dmgDealer == null)
         {
-            missileName = MonsterData.Attack1_Missile;
+            Debug.LogError("Null damage dealer character");
+            return;
         }
-        else if (AIState == MonsterState.AttackingRanged2)
+
+        PlayerParty party = GameCore.GetParty();
+        ProjectileInfo projectileInfo = projectile?.ProjectileInfo;
+        bool isMeleeAttack = projectileInfo == null;
+
+        bool willHitStun = false;
+        bool willHitParalyze = false;
+        bool willHitHalveAC = false;
+
+        SpellElement damageElement = SpellElement.Physical;
+        int damageAmount = 0;
+        if (isMeleeAttack)
         {
-            missileName = MonsterData.Attack2_Missile;
+            Item mainHandItem = dmgDealer.GetItemAtSlot(EquipSlot.MainHand);
+            if (mainHandItem != null)
+            {
+                SkillMastery weaponMastery;
+                int skillLevel;
+                switch (mainHandItem.Data.SkillGroup)
+                {
+                    case ItemSkillGroup.Staff:
+                        // Master staff - can stun
+
+                        weaponMastery = dmgDealer.GetSkillMastery(SkillType.Staff);
+                        skillLevel = dmgDealer.GetActualSkillLevel(SkillType.Staff);
+                        if (weaponMastery >= SkillMastery.Master)
+                        {
+                            if (UnityEngine.Random.Range(0, 100) < skillLevel)
+                            {
+                                willHitStun = true;
+                            }
+                        }
+                        break;
+
+                    case ItemSkillGroup.Mace:
+                        // Master mace - can stun
+                        // Grandmaster mace - can paralyze
+
+                        weaponMastery = dmgDealer.GetSkillMastery(SkillType.Mace);
+                        skillLevel = dmgDealer.GetActualSkillLevel(SkillType.Mace);
+                        if (weaponMastery >= SkillMastery.Master)
+                        {
+                            if (UnityEngine.Random.Range(0, 100) < skillLevel)
+                            {
+                                willHitStun = true;
+                            }
+                        }
+                        if (weaponMastery == SkillMastery.Grandmaster)
+                        {
+                            if (UnityEngine.Random.Range(0, 100) < skillLevel)
+                            {
+                                willHitParalyze = true;
+                            }
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            damageElement = SpellElement.Physical;
+            if (!GameMechanics.WillPlayerHitMonster(dmgDealer, this))
+            {
+                dmgDealer.PlayEventReaction(CharacterReaction.MissedAttack);
+                return;
+            }
+            else
+            {
+                damageAmount = GameMechanics.MeleeDamageFromPlayerToMonster(dmgDealer, this);
+            }
         }
         else
         {
-            Debug.LogError("Invalid AI state when trying to spawn missile: " + AIState);
+            float distance = (transform.position - dmgDealer.Party.transform.position).sqrMagnitude;
+            if (distance > 2560 && !Flags.HasFlag(MonsterFlags.InUpdateRange))
+            {
+                return;
+            }
+
+            // TODO: Spells, ranged attacks, etc
+            damageAmount = 1;
+
+            //switch ()
+        }
+
+        if (dmgDealer.IsWeak())
+        {
+            damageAmount /= 2;
+        }
+
+        if (BuffMap[MonsterBuffType.Stoned].IsActive())
+        {
+            damageAmount = 0;
+        }
+
+
+        damageAmount = CalculateIncomingMagicalDamage(damageElement, damageAmount);
+
+        if (projectile == null && dmgDealer.IsUnarmed() && BuffMap[MonsterBuffType.Hammerhands].IsActive())
+        {
+            damageAmount += CalculateIncomingMagicalDamage(
+                SpellElement.Body, BuffMap[MonsterBuffType.Hammerhands].Power);
+        }
+
+        // TODO: Handle additional damage, like weapon enchants
+
+        CurrentHp -= damageAmount;
+        if (damageAmount == 0 && !willHitStun && !willHitParalyze)
+        {
+            dmgDealer.PlayEventReaction(CharacterReaction.MissedAttack);
             return;
         }
 
-        int missileDisplayId = 0;
-        switch (missileName.ToLower())
+        if (CurrentHp > 0)
         {
-            case "arrow": missileDisplayId = 545; break;
-            case "arrowf": missileDisplayId = 550; break;
-            case "fire": missileDisplayId = 510; break;
-            case "air": missileDisplayId = 500; break;
-            case "water": missileDisplayId = 515; break;
-            case "earth": missileDisplayId = 505; break;
-            case "spirit": missileDisplayId = 530; break;
-            case "mind": missileDisplayId = 525; break;
-            case "body": missileDisplayId = 520; break;
-            case "light": missileDisplayId = 535; break;
-            case "dark": missileDisplayId = 540; break;
-            case "ener": missileDisplayId = 555; break;
-            default: break;
+            AI_Stun(false);
+            AggroSurroundingMonsters(true);
+
+            if (projectile != null)
+            {
+                string statusString = String.Format("{0} shoots {1} for {2} points",
+                    dmgDealer.Name,
+                    Name,
+                    damageAmount);
+                GameCore.SetStatusBarText(statusString);
+            }
+            else
+            {
+                string statusString = String.Format("{0} hits {1} for {2} points",
+                    dmgDealer.Name,
+                    Name,
+                    damageAmount);
+                GameCore.SetStatusBarText(statusString);
+            }
+        }
+        else
+        {
+            AI_Die();
+            AggroSurroundingMonsters(true);
+            if (MonsterData.ExperienceWorth > 0)
+            {
+                //dmgDealer.Party.RecieveExperience(MonsterData.ExperienceWorth);
+            }
+
+            CharacterReaction killReaction = CharacterReaction.MonsterKilledGeneric;
+            if (MonsterData.HitPoints >= 100)
+            {
+                killReaction = CharacterReaction.BigMonsterKilled;
+            }
+            else
+            {
+                killReaction = CharacterReaction.SmallMonsterKilled;
+            }
+            dmgDealer.PlayEventReaction(killReaction);
+
+            string statusString = String.Format("{0} inflicts {1} killing {2}",
+                    dmgDealer.Name,
+                    damageAmount,
+                    Name);
+            GameCore.SetStatusBarText(statusString);
         }
 
-        ObjectDisplayData missileObjectData = DbMgr.Instance.ObjectDisplayDb.Get(missileDisplayId);
-        if (missileObjectData == null || missileDisplayId == 0)
+        // TODO: Pain reflection
+        // TODO: Knockback
+        // TODO: Bloodsplats ?
+
+        if (willHitParalyze && CanAct() /*&& isImmune?*/)
         {
-            Debug.LogError("Invalid ObjectDisplayData for missile: " + missileName);
-            return;
+            int maceLevel = dmgDealer.GetActualSkillLevel(SkillType.Mace);
+            int paralyzeDurationMinutes = maceLevel;
+            BuffMap[MonsterBuffType.Paralyzed].Apply(dmgDealer.GetSkillMastery(SkillType.Mace),
+                0,
+                GameTime.FromCurrentTime(60 * paralyzeDurationMinutes));
+
+            string statusString = String.Format("{0} paralyzes {1}",
+                    dmgDealer.Name,
+                    Name);
+            GameCore.SetStatusBarText(statusString);
         }
+    }
 
-        ProjectileInfo projectileInfo = new ProjectileInfo();
-        projectileInfo.Shooter = this;
-        projectileInfo.ShooterTransform = transform;
-        projectileInfo.TargetPosition = target.position;
-        projectileInfo.DisplayData = missileObjectData;
+    public int CalculateIncomingMagicalDamage(SpellElement spellElement, int incomingDamage)
+    {
+        int resistance = MonsterData.Resistances[spellElement];
+        if (BuffMap[MonsterBuffType.HourOfPower].IsActive())
+        {
+            resistance += BuffMap[MonsterBuffType.HourOfPower].Power;
+        }
+        float resistanceCoeff = GameMechanics.GetResistanceReductionCoeff(spellElement, resistance, 0);
+        incomingDamage = (int)((float)incomingDamage * resistanceCoeff);
 
-        Projectile.Spawn(projectileInfo);
+        return incomingDamage;
+    }
+
+    public void GenerateLoot()
+    {
+        if (AnimationDead != null)
+        {
+            Lootable lootable = GetComponent<Lootable>();
+            lootable.Loot = new Loot();
+
+            int goldAmount = 0;
+            for (int i = 0; i < MonsterData.Treasure.GoldDiceRolls; i++)
+            {
+                goldAmount += UnityEngine.Random.Range(0, MonsterData.Treasure.GoldDiceSides) + 1;
+            }
+
+            Debug.Log("GoldAmount: " + goldAmount);
+
+            lootable.Loot.GoldAmount = goldAmount;
+
+            if (MonsterData.Treasure.ItemChance > 0 &&
+                UnityEngine.Random.Range(0, 100) < MonsterData.Treasure.ItemChance)
+            {
+                TreasureLevel itemLevel = MonsterData.Treasure.ItemLevel;
+                if (MonsterData.Treasure.ItemType != ItemType.None)
+                {
+                    lootable.Loot.Item = ItemGenerator.GenerateItem(itemLevel, MonsterData.Treasure.ItemType);
+                }
+                else if (MonsterData.Treasure.ItemSkillGroup != ItemSkillGroup.None)
+                {
+                    lootable.Loot.Item = ItemGenerator.GenerateItem(itemLevel, MonsterData.Treasure.ItemSkillGroup);
+                }
+                else
+                {
+                    lootable.Loot.Item = ItemGenerator.GenerateItem(itemLevel);
+                }
+            }
+        }
     }
 
     //=============================================================================================
@@ -1543,8 +1072,24 @@ public class Monster : MonoBehaviour
 
         PlayerParty party = GameCore.GetParty();
         Vector3 partyPosition = party.transform.position;
+        party.EnemyMonstersInMeleeRange.Clear();
+        party.EnemyMonstersInRangedRange.Clear();
+
         foreach (Monster monster in GameCore.Instance.MonsterList)
         {
+            if (monster.AIState == MonsterState.Dead)
+            {
+                monster.MinimapMarker.Color = Color.yellow;
+            }
+            else if (monster.IsHostileToPlayer())
+            {
+                monster.MinimapMarker.Color = Color.red;
+            }
+            else
+            {
+                monster.MinimapMarker.Color = Color.green;
+            }
+
             monster.Flags &= ~MonsterFlags.InUpdateRange;
             if (!monster.CanAct())
             {
@@ -1562,10 +1107,12 @@ public class Monster : MonoBehaviour
                     if (distanceSqr < MAX_MELEE_DISTANCE_SQR)
                     {
                         // Red alert
+                        party.EnemyMonstersInMeleeRange.Add(monster);
                     }
                     else if (distanceSqr < MAX_RANGE_DISTANCE_SQR)
                     {
                         // Yellow alert
+                        party.EnemyMonstersInRangedRange.Add(monster);
                     }
                 }
 
@@ -1612,6 +1159,24 @@ public class Monster : MonoBehaviour
             if (monster.AIState == MonsterState.Dying)
             {
                 monster.AIState = MonsterState.Dead;
+
+                // Remove navmesh agent/collider
+                CapsuleCollider collider = monster.GetComponent<CapsuleCollider>();
+                collider.isTrigger = true;
+
+                monster.SetNavMeshAgentEnabled(false);
+                monster.NavMeshAgent.enabled = false;
+                monster.NavMeshObstacle.enabled = false;
+
+                // Dead -> Can be looted
+
+                if (monster.AnimationDead != null)
+                {
+                    monster.GetComponent<Lootable>().enabled = true;
+                    monster.GenerateLoot();
+                }
+
+                monster.UpdateAnimation();
             }
             else if (monster.AIState == MonsterState.Summoned)
             {
@@ -1922,9 +1487,9 @@ public class Monster : MonoBehaviour
                             isMissileAttack = monster.MonsterData.Attack2_Missile != null &&
                                 monster.MonsterData.Attack2_Missile != "0"; ;
                         }
-                        Debug.Log("Chosen: " + chosenAttackType + ", " + monster.MonsterData.Name);
+                        /*Debug.Log("Chosen: " + chosenAttackType + ", " + monster.MonsterData.Name);
                         Debug.Log("[" + monster.MonsterData.Attack1_Missile + ", " + monster.MonsterData.Attack2_Missile + "]");
-                        Debug.Log("Bonus: " + monster.MonsterData.Attack1_DamageBonus);
+                        Debug.Log("Bonus: " + monster.MonsterData.Attack1_DamageBonus);*/
 
                         if (isMissileAttack)
                         {
