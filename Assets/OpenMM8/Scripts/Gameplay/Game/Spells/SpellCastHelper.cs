@@ -263,10 +263,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         static public void ExecutePlayerSpellCast(PlayerSpell spell)
         {
+            /*if (spell.Caster.GetMaxSpellPoints() == 0)
+            {
+                GameCore.SetStatusBarText(spell.Caster.Class.ToString() + " cannot cast spells !");
+                SoundMgr.PlaySoundById(SoundType.SpellFail);
+                return;
+            }*/
+
             if (spell.Caster.CurrSpellPoints < spell.RequiredMana)
             {
                 Debug.Log("Not enough mana: " + spell.Caster.CurrSpellPoints + " (Required " + spell.RequiredMana + ")");
-                // Play some sounds / expression
+                GameCore.SetStatusBarText("Not enough mana !");
+                SoundMgr.PlaySoundById(SoundType.SpellFail);
                 return;
             }
 
@@ -402,7 +410,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     {
                         // TODO: Check if this character has Weak condition
                         wasAppliedAtleastOnce = true;
-                        SpellFxRenderer.SetPlayerBuffAnim("sp05", chr);
+                        SpellFxRenderer.SetPlayerBuffAnim(spellType, chr);
                     });
 
                     if (wasAppliedAtleastOnce)
@@ -430,7 +438,28 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Fire_Immolation:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    switch (skillMastery)
+                    {
+                        case SkillMastery.Normal:
+                        case SkillMastery.Expert:
+                        case SkillMastery.Master:
+                            duration = skillLevel;
+                            break;
+
+                        case SkillMastery.Grandmaster:
+                            duration = 10 * skillLevel;
+                            break;
+                    }
+
+                    Party.Characters.ForEach(chr =>
+                    {
+                        SpellFxRenderer.SetPlayerBuffAnim(spellType, chr);
+                    });
+                    Party.PartyBuffMap[PartyEffectType.Immolation].Apply(skillMastery,
+                        skillLevel,
+                        GameTime.FromCurrentTime(60 * duration),
+                        spell.Caster);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Fire_MeteorShower:
@@ -456,11 +485,38 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Air_WizardEye:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    duration = 60 * skillLevel;
+                    Party.PartyBuffMap[PartyEffectType.WizardEye].Apply(skillMastery,
+                        skillLevel,
+                        GameTime.FromCurrentTime(60 * duration),
+                        spell.Caster);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Air_FeatherFall:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    switch (skillMastery)
+                    {
+                        case SkillMastery.Normal:
+                            duration = 5 * skillLevel;
+                            break;
+                        case SkillMastery.Expert:
+                            duration = 10 * skillLevel;
+                            break;
+                        case SkillMastery.Master:
+                        case SkillMastery.Grandmaster:
+                            duration = 60 * duration;
+                            break;
+                    }
+
+                    Party.PartyBuffMap[PartyEffectType.FeatherFall].Apply(skillMastery,
+                        0,
+                        GameTime.FromCurrentTime(60 * duration),
+                        spell.Caster);
+                    Party.Characters.ForEach(chr =>
+                    {
+                        SpellFxRenderer.SetPlayerBuffAnim(spellType, chr);
+                    });
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Air_Sparks:
@@ -468,11 +524,45 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Air_Jump:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    if (Party.IsGrounded())
+                    {
+                        Party.Controller.IsSpellJumpQueued = true;
+                        Party.Controller.SpellJumpVelocity = 25.0f;
+                        SoundMgr.PlaySoundById(spellData.EffectSoundId);
+                    }
+                    else
+                    {
+                        GameCore.SetStatusBarText("Can't cast Jump while airborne !");
+                        SoundMgr.PlaySoundById(SoundType.SpellFail);
+                        return;
+                    }
+
                     break;
 
                 case SpellType.Air_Shield:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    switch (skillMastery)
+                    {
+                        case SkillMastery.Normal:
+                        case SkillMastery.Expert:
+                            duration = 60 + 5 * skillLevel;
+                            break;
+                        case SkillMastery.Master:
+                            duration = 60 + 15 * skillLevel;
+                            break;
+                        case SkillMastery.Grandmaster:
+                            duration = 60 + 60 * skillLevel;
+                            break;
+                    }
+
+                    Party.Characters.ForEach(chr =>
+                    {
+                        SpellFxRenderer.SetPlayerBuffAnim(spellType, chr);
+                    });
+                    Party.PartyBuffMap[PartyEffectType.Shield].Apply(skillMastery,
+                        skillLevel,
+                        GameTime.FromCurrentTime(60 * duration),
+                        spell.Caster);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Air_LightningBolt:
@@ -481,7 +571,41 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Air_Invisibility:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    if (GameCore.Instance.NearbyMonsterList.Count > 0)
+                    {
+                        GameCore.SetStatusBarText("There are hostile creatures nearby !");
+                        return;
+                    }
+
+                    switch (skillMastery)
+                    {
+                        case SkillMastery.Normal:
+                            duration = 10 * skillLevel;
+                            power = skillLevel;
+                            break;
+                        case SkillMastery.Expert:
+                            duration = 10 * skillLevel;
+                            power = 2 * skillLevel;
+                            break;
+                        case SkillMastery.Master:
+                            duration = 10 * skillLevel;
+                            power = 3 * skillLevel;
+                            break;
+                        case SkillMastery.Grandmaster:
+                            duration = 60 * skillLevel;
+                            power = 4 * skillLevel;
+                            break;
+                    }
+
+                    Party.Characters.ForEach(chr =>
+                    {
+                        SpellFxRenderer.SetPlayerBuffAnim(spellType, chr);
+                    });
+                    Party.PartyBuffMap[PartyEffectType.Invisibility].Apply(skillMastery,
+                        power,
+                        GameTime.FromCurrentTime(60 * duration),
+                        spell.Caster);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Air_Implosion:
@@ -489,7 +613,28 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Air_Fly:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    if (GameCore.Instance.MapType == MapType.Indoor)
+                    {
+                        GameCore.SetStatusBarText("Can't cast Fly indoors !");
+                        SoundMgr.PlaySoundById(SoundType.SpellFail);
+                        return;
+                    }
+
+                    duration = 60 * skillLevel;
+                    if (skillMastery == SkillMastery.Grandmaster)
+                    {
+                        power = 0;
+                    }
+                    else
+                    {
+                        power = 1;
+                    }
+
+                    Party.PartyBuffMap[PartyEffectType.Fly].Apply(skillMastery,
+                        power,
+                        GameTime.FromCurrentTime(60 * duration),
+                        spell.Caster);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Air_Startburst:
@@ -497,7 +642,42 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Water_Awaken:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    switch (skillMastery)
+                    {
+                        case SkillMastery.Normal:
+                            duration = 3 * skillLevel;
+                            break;
+                        case SkillMastery.Expert:
+                            duration = 60 * skillLevel;
+                            break;
+                        case SkillMastery.Master:
+                            duration = 1440 * skillLevel;
+                            break;
+                        case SkillMastery.Grandmaster:
+                            duration = 0;
+                            break;
+                    }
+
+                    Party.Characters.ForEach(chr =>
+                    {
+                        if (duration == 0)
+                        {
+                            if (chr.Conditions[Condition.Sleep].IsValid())
+                            {
+                                chr.Conditions[Condition.Sleep].Reset();
+                                chr.PlayEventReaction(CharacterReaction.WokeUp);
+                            }
+                        }
+                        else
+                        {
+                            if (chr.DiscardConditionIfLastsLessThan(Condition.Sleep, GameTime.FromSeconds(duration)))
+                            {
+                                chr.PlayEventReaction(CharacterReaction.WokeUp);
+                            }
+                        }
+                    });
+
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Water_PoisonSpray:
@@ -511,7 +691,27 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Water_WaterWalk:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    switch (skillMastery)
+                    {
+                        case SkillMastery.Normal:
+                        case SkillMastery.Expert:
+                            duration = 10 * skillLevel;
+                            break;
+                        case SkillMastery.Master:
+                        case SkillMastery.Grandmaster:
+                            duration = 60 * skillLevel;
+                            break;
+                    }
+
+                    Party.Characters.ForEach(chr =>
+                    {
+                        SpellFxRenderer.SetPlayerBuffAnim(spellType, chr);
+                    });
+                    Party.PartyBuffMap[PartyEffectType.WaterWalk].Apply(skillMastery,
+                        skillLevel,
+                        GameTime.FromCurrentTime(60 * duration),
+                        spell.Caster);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Water_RechargeItem:
@@ -531,7 +731,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Water_IceBlast:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    Projectile.Spawn(projectileInfo);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Water_LloydsBeacon:
@@ -560,7 +761,33 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Earth_StoneToFlesh:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    switch (skillMastery)
+                    {
+                        case SkillMastery.Normal:
+                        case SkillMastery.Expert:
+                            duration = 60 * skillLevel;
+                            break;
+                        case SkillMastery.Master:
+                            duration = 1440 * skillLevel;
+                            break;
+                        case SkillMastery.Grandmaster:
+                            duration = 0;
+                            break;
+                    }
+
+                    if (duration == 0)
+                    {
+                        if (targetCharacter.Conditions[Condition.Petrified].IsValid())
+                        {
+                            targetCharacter.Conditions[Condition.Petrified].Reset();
+                        }
+                    }
+                    else
+                    {
+                        targetCharacter.DiscardConditionIfLastsLessThan(Condition.Sleep, GameTime.FromSeconds(duration));
+                    }
+
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Earth_RockBlast:
@@ -576,11 +803,36 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Earth_MassDistortion:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    Projectile.Spawn(projectileInfo);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Spirit_DetectLife:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    switch (skillMastery)
+                    {
+                        case SkillMastery.Normal:
+                            duration = 10 * skillLevel;
+                            break;
+                        case SkillMastery.Expert:
+                            duration = 30 * skillLevel;
+                            break;
+                        case SkillMastery.Master:
+                        case SkillMastery.Grandmaster:
+                            duration = 60 * skillLevel;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    Party.Characters.ForEach(chr =>
+                    {
+                        SpellFxRenderer.SetPlayerBuffAnim(spellType, chr);
+                    });
+                    Party.PartyBuffMap[PartyEffectType.DetectLife].Apply(skillMastery,
+                        skillLevel,
+                        GameTime.FromCurrentTime(60 * duration),
+                        spell.Caster);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Spirit_Bless:
@@ -608,7 +860,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                                 skillLevel,
                                 GameTime.FromCurrentTime(60 * duration),
                                 spell.Caster);
-                            SpellFxRenderer.SetPlayerBuffAnim("spell46", chr);
+                            SpellFxRenderer.SetPlayerBuffAnim(spellType, chr);
                         });
                     }
                     else
@@ -620,7 +872,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                             skillLevel,
                             GameTime.FromCurrentTime(60 * duration),
                             spell.Caster);
-                        SpellFxRenderer.SetPlayerBuffAnim("spell46", targetCharacter);
+                        SpellFxRenderer.SetPlayerBuffAnim(spellType, targetCharacter);
                     }
 
                     SoundMgr.PlaySoundById(spellData.EffectSoundId);
@@ -653,11 +905,17 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                                 power,
                                 GameTime.FromCurrentTime(60 * duration),
                                 spell.Caster);
-                        SpellFxRenderer.SetPlayerBuffAnim("spell47", targetCharacter);
+                        SpellFxRenderer.SetPlayerBuffAnim(spellType, targetCharacter);
                     }
                     else if (targetMonster != null)
                     {
-                        // TODO...
+                        targetMonster.BuffMap[MonsterBuffType.Fate].Apply(skillMastery,
+                            power,
+                            GameTime.FromCurrentTime(60 * duration),
+                            spell.Caster);
+
+                        // WHY WOULD THIS TURN THE MONSTER TO AGGRSSION ?!?!?!?
+                        //targetMonster.Flags |= MonsterFlags.Aggressor;
                     }
 
                     SoundMgr.PlaySoundById(spellData.EffectSoundId);
@@ -669,7 +927,43 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Spirit_RemoveCurse:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    switch (skillMastery)
+                    {
+                        case SkillMastery.Normal:
+                        case SkillMastery.Expert:
+                            duration = 60 * skillLevel;
+                            break;
+                        case SkillMastery.Master:
+                            duration = 1440 * skillLevel;
+                            break;
+                        case SkillMastery.Grandmaster:
+                            duration = 0;
+                            break;
+                    }
+
+                    bool wasCurseRemoved = false;
+                    if (duration == 0)
+                    {
+                        if (targetCharacter.Conditions[Condition.Cursed].IsValid())
+                        {
+                            targetCharacter.Conditions[Condition.Cursed].Reset();
+                            wasCurseRemoved = true;
+                        }
+                    }
+                    else
+                    {
+                        if (targetCharacter.DiscardConditionIfLastsLessThan(Condition.Cursed, GameTime.FromSeconds(duration)))
+                        {
+                            wasCurseRemoved = true;
+                        }
+                    }
+
+                    if (wasCurseRemoved)
+                    {
+                        SpellFxRenderer.SetPlayerBuffAnim(spellType, targetCharacter);
+                    }
+                    
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Spirit_Preservation:
@@ -695,7 +989,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                                 skillLevel,
                                 GameTime.FromCurrentTime(60 * duration),
                                 spell.Caster);
-                            SpellFxRenderer.SetPlayerBuffAnim("spell56", chr);
+                            SpellFxRenderer.SetPlayerBuffAnim(spellType, chr);
                         });
                     }
                     else
@@ -707,7 +1001,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                             skillLevel,
                             GameTime.FromCurrentTime(60 * duration),
                             spell.Caster);
-                        SpellFxRenderer.SetPlayerBuffAnim("spell56", targetCharacter);
+                        SpellFxRenderer.SetPlayerBuffAnim(spellType, targetCharacter);
                     }
 
                     SoundMgr.PlaySoundById(spellData.EffectSoundId);
@@ -735,7 +1029,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     }
 
                     Party.PartyBuffMap[PartyEffectType.Heroism].Apply(skillMastery, power, GameTime.FromCurrentTime(60 * duration), spell.Caster);
-                    Party.Characters.ForEach(chr => SpellFxRenderer.SetPlayerBuffAnim("sp51", chr));
+                    Party.Characters.ForEach(chr => SpellFxRenderer.SetPlayerBuffAnim(spellType, chr));
                     SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     //TimeUntilRecovery = recoveryTime / 100.0f;
                     break;
@@ -838,7 +1132,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         GameTime.FromCurrentTime(60 * duration),
                         spell.Caster);
                     SoundMgr.PlaySoundById(spellData.EffectSoundId);
-                    SpellFxRenderer.SetPlayerBuffAnim("sp71", targetCharacter);
+                    SpellFxRenderer.SetPlayerBuffAnim(spellType, targetCharacter);
 
                     break;
 
@@ -849,32 +1143,25 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 case SpellType.Mind_ProtectionFromMind:
                 case SpellType.Body_ProtectionFromBody:
                     PartyEffectType partyEffectType = PartyEffectType.Torchlight;
-                    string buffAnim = "";
                     switch (spell.SpellType)
                     {
                         case SpellType.Fire_ProtectionFromFire:
                             partyEffectType = PartyEffectType.ResistFire;
-                            buffAnim = "spell03";
                             break;
                         case SpellType.Air_ProtectionFromAir:
                             partyEffectType = PartyEffectType.ResistAir;
-                            buffAnim = "spell14";
                             break;
                         case SpellType.Water_ProtectionFromWater:
                             partyEffectType = PartyEffectType.ResistWater;
-                            buffAnim = "sp25";
                             break;
                         case SpellType.Earth_ProtectionFromEarth:
                             partyEffectType = PartyEffectType.ResistEarth;
-                            buffAnim = "spell36";
                             break;
                         case SpellType.Mind_ProtectionFromMind:
                             partyEffectType = PartyEffectType.ResistMind;
-                            buffAnim = "sp58";
                             break;
                         case SpellType.Body_ProtectionFromBody:
                             partyEffectType = PartyEffectType.ResistBody;
-                            buffAnim = "spell69";
                             break;
                     }
 
@@ -897,7 +1184,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                     Party.Characters.ForEach(chr =>
                     {
-                        SpellFxRenderer.SetPlayerBuffAnim(buffAnim, chr);
+                        SpellFxRenderer.SetPlayerBuffAnim(spellType, chr);
                     });
                     SoundMgr.PlaySoundById(spellData.EffectSoundId);
 
@@ -1064,7 +1351,28 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Dragon_Flight:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    if (GameCore.Instance.MapType == MapType.Indoor)
+                    {
+                        GameCore.SetStatusBarText("Can't cast Fly indoors !");
+                        SoundMgr.PlaySoundById(SoundType.SpellFail);
+                        return;
+                    }
+
+                    duration = 60 * skillLevel;
+                    if (skillMastery == SkillMastery.Grandmaster)
+                    {
+                        power = 0;
+                    }
+                    else
+                    {
+                        power = 1;
+                    }
+
+                    Party.PartyBuffMap[PartyEffectType.Fly].Apply(skillMastery,
+                        power,
+                        GameTime.FromCurrentTime(60 * duration),
+                        spell.Caster);
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Dragon_WingBuffer:

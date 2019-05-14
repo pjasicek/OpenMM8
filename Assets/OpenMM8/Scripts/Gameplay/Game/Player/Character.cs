@@ -1399,6 +1399,24 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return Condition.Good;
         }
 
+        public bool DiscardConditionIfLastsLessThan(Condition condition, GameTime maxDuration)
+        {
+            if (!Conditions[condition].IsValid())
+            {
+                return false;
+            }
+
+            GameTime conditionDuration = new GameTime(
+                TimeMgr.GetCurrentTime().GetSeconds() - Conditions[condition].GetSeconds());
+            if (conditionDuration.GetSeconds() < maxDuration.GetSeconds())
+            {
+                Conditions[condition].Reset();
+                return true;
+            }
+
+            return false;
+        }
+
         public bool IsWeak()
         {
             return Conditions[Condition.Weak].IsValid();

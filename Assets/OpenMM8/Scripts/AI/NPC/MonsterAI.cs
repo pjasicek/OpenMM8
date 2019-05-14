@@ -653,7 +653,7 @@ public partial class Monster
                             playerBuff.Reset();
                         }
                         // TODO: I dont know what is the actual one for dispel, maybe none
-                        SpellFxRenderer.SetPlayerBuffAnim("sp108", chr);
+                        //SpellFxRenderer.SetPlayerBuffAnim("sp108", chr);
                     }
                 });
                 SoundMgr.PlaySoundById(spellData.EffectSoundId, AudioSource);

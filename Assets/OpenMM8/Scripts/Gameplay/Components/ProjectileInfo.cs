@@ -1,5 +1,6 @@
 ﻿using Assets.OpenMM8.Scripts.Gameplay;
 using Assets.OpenMM8.Scripts.Gameplay.Data;
+using Assets.OpenMM8.Scripts.Gameplay.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,10 +24,14 @@ public class ProjectileInfo
     public Vector3 TargetPosition;
     //public Vector3 TargetDirection;
 
+    // Display data of the projectile - CANNOT be null
     public ObjectDisplayData DisplayData;
 
-    // Not all projectiles have impact object
+    // Not all projectiles have impact object - can be null
     public ObjectDisplayData ImpactObject;
+
+    // Item with which this projectile was shot with - can be null
+    public Item ContainingItem;
 
     // Either this
     public SpellType SpellType = SpellType.None;

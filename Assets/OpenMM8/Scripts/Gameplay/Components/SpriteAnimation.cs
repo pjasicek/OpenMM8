@@ -75,4 +75,9 @@ public class SpriteAnimation : MonoBehaviour
 
         OnAnimationFinished();
     }
+
+    private void OnDisable()
+    {
+        SetVisible(false);
+    }
 }

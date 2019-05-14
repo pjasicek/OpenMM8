@@ -184,6 +184,9 @@ public enum SpellType
     Misc_Arrow = 1000,
     Misc_Blaster = 1001,
     Misc_DragonBreath = 1002,
+
+    Misc_Disease = 1100,
+    Misc_QuestCompleted = 1101,
 }
 
 // Buffs affecting the whole party

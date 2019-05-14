@@ -40,6 +40,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public SpriteObjectDb SpriteObjectDb = new SpriteObjectDb();
         public MonsterObjectDb MonsterObjectDb = new MonsterObjectDb();
         public MonsterRelationDb MonsterRelationDb = new MonsterRelationDb();
+        public InterfaceAnimDb InterfaceAnimDb = new InterfaceAnimDb();
 
         public const string MM8_DATA_PATH = @"Data/";
 
@@ -85,6 +86,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             SpriteObjectDb.Initialize(MM8_DATA_PATH + "SPRITE_FRAME_TABLE");
             MonsterObjectDb.Initialize(MM8_DATA_PATH + "MONSTER_LIST");
             MonsterRelationDb.Initialize(MM8_DATA_PATH + "MONSTER_RELATION_DATA");
+            InterfaceAnimDb.Initialize(MM8_DATA_PATH + "INTERFACE_FRAME_TABLE");
 
 
             stopwatch.Stop();

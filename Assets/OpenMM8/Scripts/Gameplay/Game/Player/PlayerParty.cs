@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
@@ -60,6 +61,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public PartyBuffUI PartyBuffUI;
         public PartyUI PartyUI;
 
+        public FirstPersonController Controller;
+
         // ========================================================================================
 
         private void Awake()
@@ -68,6 +71,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 PartyBuffMap.Add(effect, new SpellEffect());
             }
+
+            Controller = GetComponent<FirstPersonController>();
         }
 
         private void Start()
@@ -805,6 +810,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             });
 
             return num;
+        }
+
+        public bool IsGrounded()
+        {
+            return Controller.m_CharacterController.isGrounded;
+        }
+
+        public bool IsInAir()
+        {
+            return !IsGrounded();
         }
 
         //=========================================================================================

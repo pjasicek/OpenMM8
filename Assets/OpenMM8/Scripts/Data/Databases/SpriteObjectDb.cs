@@ -53,7 +53,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                 string animName = columns[0].ToLower();
                 if (Data.ContainsKey(animName))
                 {
-                    Debug.LogError("[" + (row + 1).ToString() + "]" + "SpriteAnimationDB already contains key: " + animName);
+                    Debug.LogError("[" + (row + 1).ToString() + "]" + "SpriteObjectDb already contains key: " + animName);
                     return null;
                 }
 

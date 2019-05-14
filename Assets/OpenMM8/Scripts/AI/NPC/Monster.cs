@@ -840,6 +840,24 @@ public partial class Monster : MonoBehaviour
     // Dealing and Receiving damage
     //=============================================================================================
 
+    public bool WillResistSpellEffect(SpellElement spellElement)
+    {
+        int resistAmount = Data.Resistances[spellElement];
+
+        bool willResist = false;
+        if (resistAmount < 200)
+        {
+            willResist = UnityEngine.Random.Range(0, (Data.Level / 4) + resistAmount + 30) >= 30;
+        }
+        else
+        {
+            // Considered immune
+            willResist = true;
+        }
+
+        return willResist;
+    }
+
     public void ReceiveDamageFromPlayer(Character dmgDealer, Projectile projectile)
     {
         if (dmgDealer == null)
