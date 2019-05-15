@@ -1392,6 +1392,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 if (Conditions[testCond].IsValid())
                 {
+                    //Debug.LogError("Dead: " + Conditions[testCond].GameSeconds + " " + testCond);
                     return testCond;
                 }
             }
@@ -1490,6 +1491,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 return true;
             }
+            Debug.LogError(condition);
 
             // Protection from Magic buff
             SpellEffect protFromMagicBuff = Party.PartyBuffMap[PartyEffectType.ProtectionFromMagic];
@@ -1691,7 +1693,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             });
 
             // Set the condition for this player
-            Conditions[condition] = TimeMgr.Instance.CurrentTime;
+            Conditions[condition] = GameTime.FromCurrentTime(0);
 
             // Check how many players can act after this player has this condition set
             int playersNow = 0;

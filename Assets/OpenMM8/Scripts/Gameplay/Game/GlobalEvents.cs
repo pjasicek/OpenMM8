@@ -10,8 +10,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public delegate void CharacterAvatarClicked(Character chr);
     public delegate void OutdoorItemInspectStart(Item item);
     public delegate void OutdoorItemInspectEnd(Item item);
-    public delegate void NpcInspectStartDlg(Character inspector, BaseNpc npc, MonsterData npcData);
-    public delegate void NpcInspecEndDlg(Character inspector, BaseNpc npc, MonsterData npcData);
+    public delegate void NpcInspectStartDlg(Character inspector, Monster monster, MonsterData npcData);
+    public delegate void NpcInspecEndDlg(Character inspector, Monster monster, MonsterData npcData);
     public delegate void InventoryCellClicked(int x, int y);
     public delegate void InventoryItemHoverStart(InventoryItem inventoryItem);
     public delegate void InventoryItemHoverEnd(InventoryItem inventoryItem);
@@ -143,14 +143,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             OnOutdoorItemInspectEnd?.Invoke(item);
         }
 
-        static public void InvokeEvent_OnNpcInspectStart(Character inspector, BaseNpc npc, MonsterData npcData)
+        static public void InvokeEvent_OnNpcInspectStart(Character inspector, Monster monster, MonsterData npcData)
         {
-            OnNpcInspectStart?.Invoke(inspector, npc, npcData);
+            OnNpcInspectStart?.Invoke(inspector, monster, npcData);
         }
 
-        static public void InvokeEvent_OnNpcInspectEnd(Character inspector, BaseNpc npc, MonsterData npcData)
+        static public void InvokeEvent_OnNpcInspectEnd(Character inspector, Monster monster, MonsterData npcData)
         {
-            OnNpcInspectEnd(inspector, npc, npcData);
+            OnNpcInspectEnd(inspector, monster, npcData);
         }
 
         static public void InvokeEvent_OnInventoryCellClicked(int x, int y)

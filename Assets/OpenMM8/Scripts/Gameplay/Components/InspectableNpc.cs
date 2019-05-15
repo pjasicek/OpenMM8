@@ -3,34 +3,34 @@ using System.Collections;
 
 using Assets.OpenMM8.Scripts.Gameplay;
 
-[RequireComponent(typeof(BaseNpc))]
+[RequireComponent(typeof(Monster))]
 public class InspectableNpc : Inspectable
 {
-    private MonsterData NpcData = null;
-    private BaseNpc Npc = null;
+    private MonsterData MonsterData = null;
+    private Monster Monster = null;
 
     void Start()
     {
-        Npc = GetComponent<BaseNpc>();
+        Monster = GetComponent<Monster>();
     }
 
     public override void StartInspect(Character inspector)
     {
-        if (NpcData == null)
+        if (MonsterData == null)
         {
-            NpcData = Npc.NpcData;
+            MonsterData = Monster.Data;
         }
 
-        GameEvents.InvokeEvent_OnNpcInspectStart(inspector, Npc, NpcData);
+        GameEvents.InvokeEvent_OnNpcInspectStart(inspector, Monster, MonsterData);
     }
 
     public override void EndInspect(Character inspector)
     {
-        if (NpcData == null)
+        if (MonsterData == null)
         {
-            NpcData = Npc.NpcData;
+            MonsterData = Monster.Data;
         }
 
-        GameEvents.InvokeEvent_OnNpcInspectEnd(inspector, Npc, NpcData);
+        GameEvents.InvokeEvent_OnNpcInspectEnd(inspector, Monster, MonsterData);
     }
 }

@@ -981,30 +981,31 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             //SetPartyInfoText(hoverInfo.HoverText, false);
         }
 
-        public void OnNpcInspectStart(Character inspector, BaseNpc npc, MonsterData npcData)
+        public void OnNpcInspectStart(Character inspector, Monster monster, MonsterData monsterData)
         {
             m_InspectNpcUI.Canvas.enabled = true;
-            m_InspectNpcUI.NpcNameText.text = npcData.Name;
-            m_InspectNpcUI.HitPointsText.text = npc.CurrentHitPoints.ToString() + "/" + npcData.HitPoints;
-            m_InspectNpcUI.ArmorClassText.text = npcData.ArmorClass.ToString();
-            m_InspectNpcUI.AttackText.text = npcData.Attack1_Element.ToString();
-            m_InspectNpcUI.DamageText.text = npcData.AttackAmountText;
+            m_InspectNpcUI.NpcNameText.text = monsterData.Name;
+            m_InspectNpcUI.HitPointsText.text = monster.CurrentHp.ToString() + "/" + monsterData.HitPoints;
+            m_InspectNpcUI.ArmorClassText.text = monsterData.ArmorClass.ToString();
+            m_InspectNpcUI.AttackText.text = monsterData.Attack1_Element.ToString();
+            m_InspectNpcUI.DamageText.text = monsterData.AttackAmountText;
             //m_InspectNpcUI.SpellText.text = npcData.SpellAttack1.SpellName == "" ? "None" : npcData.SpellAttack1.SpellName;
-            m_InspectNpcUI.SpellText.text = "None";
-            m_InspectNpcUI.FireResistanceText.text = npcData.Resistances[SpellElement.Fire].ToString();
-            m_InspectNpcUI.AirResistanceText.text = npcData.Resistances[SpellElement.Air].ToString();
-            m_InspectNpcUI.WaterResistanceText.text = npcData.Resistances[SpellElement.Water].ToString();
-            m_InspectNpcUI.EarthResistanceText.text = npcData.Resistances[SpellElement.Earth].ToString();
-            m_InspectNpcUI.MindResistanceText.text = npcData.Resistances[SpellElement.Mind].ToString();
-            m_InspectNpcUI.SpiritResistanceText.text = npcData.Resistances[SpellElement.Spirit].ToString();
-            m_InspectNpcUI.BodyResistanceText.text = npcData.Resistances[SpellElement.Body].ToString();
-            m_InspectNpcUI.LightResistanceText.text = npcData.Resistances[SpellElement.Light].ToString();
-            m_InspectNpcUI.DarkResistanceText.text = npcData.Resistances[SpellElement.Dark].ToString();
-            m_InspectNpcUI.PhysicalResistanceText.text = npcData.Resistances[SpellElement.Physical].ToString();
+            m_InspectNpcUI.SpellText.text = monsterData.Spell1_SpellType.ToString();
+            m_InspectNpcUI.FireResistanceText.text = monsterData.Resistances[SpellElement.Fire].ToString();
+            m_InspectNpcUI.AirResistanceText.text = monsterData.Resistances[SpellElement.Air].ToString();
+            m_InspectNpcUI.WaterResistanceText.text = monsterData.Resistances[SpellElement.Water].ToString();
+            m_InspectNpcUI.EarthResistanceText.text = monsterData.Resistances[SpellElement.Earth].ToString();
+            m_InspectNpcUI.MindResistanceText.text = monsterData.Resistances[SpellElement.Mind].ToString();
+            m_InspectNpcUI.SpiritResistanceText.text = monsterData.Resistances[SpellElement.Spirit].ToString();
+            m_InspectNpcUI.BodyResistanceText.text = monsterData.Resistances[SpellElement.Body].ToString();
+            m_InspectNpcUI.LightResistanceText.text = monsterData.Resistances[SpellElement.Light].ToString();
+            m_InspectNpcUI.DarkResistanceText.text = monsterData.Resistances[SpellElement.Dark].ToString();
+            m_InspectNpcUI.PhysicalResistanceText.text = monsterData.Resistances[SpellElement.Physical].ToString();
 
-            m_InspectNpcUI.PreviewImage.sprite = npc.PreviewImage;
+            // TODO: Make this animated like in original
+            m_InspectNpcUI.PreviewImage.sprite = monster.AnimationStand.FrontSprites[0];
 
-            m_InspectNpcUI.Healthbar.fillAmount = (float)npc.CurrentHitPoints / (float)npcData.HitPoints;
+            m_InspectNpcUI.Healthbar.fillAmount = (float)monster.CurrentHp / (float)monsterData.HitPoints;
             if (m_InspectNpcUI.Healthbar.fillAmount > 0.66f)
             {
                 m_InspectNpcUI.Healthbar.sprite = InspectNpcUI.HealthbarSprite_Green;
@@ -1019,7 +1020,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
-        public void OnNpcInspectEnd(Character inspector, BaseNpc npc, MonsterData npcData)
+        public void OnNpcInspectEnd(Character inspector, Monster monster, MonsterData npcData)
         {
             m_InspectNpcUI.Canvas.enabled = false;
         }

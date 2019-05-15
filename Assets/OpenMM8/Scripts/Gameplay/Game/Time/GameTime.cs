@@ -33,12 +33,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         static public GameTime FromCurrentTime(long additionalSeconds)
         {
-            GameTime currTime = TimeMgr.GetCurrentTime();
-
-            GameTime newTime = new GameTime(currTime);
-            newTime.GameSeconds += additionalSeconds;
-
-            return newTime;
+            return FromSeconds(TimeMgr.GetCurrentTime().GameSeconds + additionalSeconds);
         }
 
         public void AddMinutes(int minutes)

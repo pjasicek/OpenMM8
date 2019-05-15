@@ -245,6 +245,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 {
                     spellbookPage.SpellButtons[spellButton.SpellType] = spellButton;
                     spellButton.Parent = spellbookPage;
+                    spellButton.gameObject.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;
                 }
             }
 

@@ -942,7 +942,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     }
 
                     bool wasCurseRemoved = false;
-                    if (duration == 0)
+                    if (skillMastery == SkillMastery.Grandmaster)
                     {
                         if (targetCharacter.Conditions[Condition.Cursed].IsValid())
                         {
@@ -1038,17 +1038,63 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     Projectile.Spawn(projectileInfo);
                     SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
+                    
+                case SpellType.Spirit_Ressurection:
+                    switch (skillMastery)
+                    {
+                        case SkillMastery.Normal:
+                            duration = 3 * skillLevel;
+                            break;
+                        case SkillMastery.Expert:
+                            duration = 180 * skillLevel;
+                            break;
+                        case SkillMastery.Master:
+                            duration = 3 * 1440 * skillLevel;
+                            break;
+                    }
 
-                case SpellType.Spirit_RaiseDead:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    if (targetCharacter.IsDead())
+                    {
+                        if (skillMastery == SkillMastery.Grandmaster ||
+                            targetCharacter.DiscardConditionIfLastsLessThan(Condition.Dead, 
+                                GameTime.FromSeconds(60 * duration)))
+                        {
+                            targetCharacter.CurrHitPoints = (int)(0.15f * targetCharacter.GetMaxHitPoints());
+                            targetCharacter.Conditions[Condition.Dead].Reset();
+                            targetCharacter.Conditions[Condition.Unconcious].Reset();
+                            targetCharacter.Conditions[Condition.Weak] = GameTime.FromCurrentTime(0);
+                        }
+                    }
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Spirit_SharedLife:
                     Debug.LogError("Spell not implemented: " + spellType);
                     break;
+                    
+                case SpellType.Spirit_RaiseDead:
+                    if (skillMastery < SkillMastery.Grandmaster)
+                    {
+                        duration = 1440 * skillLevel;
+                    }
 
-                case SpellType.Spirit_Ressurection:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    if (targetCharacter.IsEradicated() || targetCharacter.IsDead())
+                    {
+                        if (skillMastery == SkillMastery.Grandmaster ||
+                            targetCharacter.DiscardConditionIfLastsLessThan(Condition.Eradicated,
+                                GameTime.FromSeconds(60 * duration)) ||
+                            targetCharacter.DiscardConditionIfLastsLessThan(Condition.Dead,
+                                GameTime.FromSeconds(60 * duration)))
+                        {
+                            targetCharacter.CurrHitPoints = (int)(0.15f * targetCharacter.GetMaxHitPoints());
+                            targetCharacter.Conditions[Condition.Eradicated].Reset();
+                            targetCharacter.Conditions[Condition.Dead].Reset();
+                            targetCharacter.Conditions[Condition.Unconcious].Reset();
+                            targetCharacter.Conditions[Condition.Weak] = GameTime.FromCurrentTime(0);
+                        }
+                    }
+
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
                     break;
 
                 case SpellType.Mind_Telepathy:

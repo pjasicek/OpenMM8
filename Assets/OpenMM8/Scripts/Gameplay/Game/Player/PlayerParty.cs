@@ -838,11 +838,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             float deltaTime = realtimeSinceStartup - PreviousTimeSinceStartup;
             PreviousTimeSinceStartup = realtimeSinceStartup;
 
-            foreach (Character character in Characters)
-            {
-                character.OnFixedUpdate(deltaTime);
-            }
-
             bool isCastingTargetedSpell = SpellCastHelper.PendingPlayerSpell != null &&
                 (SpellCastHelper.PendingPlayerSpell.Flags.HasFlag(CastSpellFlags.TargetNpc) ||
                  SpellCastHelper.PendingPlayerSpell.Flags.HasFlag(CastSpellFlags.TargetCorpse) ||
@@ -866,6 +861,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 }
             }
 
+            foreach (Character character in Characters)
+            {
+                character.OnFixedUpdate(deltaTime);
+            }
+
             UpdateAgroStatus();
 
             // TODO: Make some generic way to determine whether PlayerParty can act ...
@@ -873,6 +873,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             {
                 return;
             }
+
+            //==================================================
+            // Gameplay update - game is NOT paused here
+            //==================================================
+
 
             DoPeriodEffects();
 

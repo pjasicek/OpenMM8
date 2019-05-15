@@ -1302,7 +1302,7 @@ public partial class Monster : MonoBehaviour
         else
         {
             // TODO: Ranged / Spell attack
-            victim.ReceiveDamage(10, SpellElement.Physical);
+            victim.ReceiveDamage(100, SpellElement.Physical);
             Debug.Log(projectileInfo.MonsterAttackType + " -> " + victim.Name);
         }
     }

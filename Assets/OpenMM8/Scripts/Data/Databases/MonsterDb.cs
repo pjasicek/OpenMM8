@@ -80,6 +80,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             int.TryParse(columns[15], out data.NumCharactersAffectedByBonusAbility);
             data.BonusAbility = columns[16];
 
+            data.AttackAmountText = columns[18];
+
             // Attack 1
             data.Attack1_Element = CsvSpellElementToEnum(columns[17]);
             data.Attack1_Missile = columns[19];
