@@ -967,7 +967,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             PartyTime.GameSeconds = TimeMgr.GetCurrentTime().GameSeconds;
 
             // Check for new days effects
-            if (PartyTime.GetHoursOfDay() >= 3 && (oldHour < 3 || PartyTime.GetDayOfMonth() > oldDay))
+            bool isNewDay = PartyTime.GetHoursOfDay() >= 3 && (oldHour < 3 || PartyTime.GetDayOfMonth() > oldDay);
+            if (isNewDay)
             {
                 // New day
                 Debug.Log("New day");
