@@ -261,6 +261,15 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             ClearPlayerSpell();
         }
 
+        // This one is generic
+        static public void OnCrosshairTargetClicked(object target)
+        {
+            PendingPlayerSpell.Target = target;
+            ExecutePlayerSpellCast(PendingPlayerSpell);
+
+            ClearPlayerSpell();
+        }
+
         static public void ExecutePlayerSpellCast(PlayerSpell spell)
         {
             /*if (spell.Caster.GetMaxSpellPoints() == 0)
@@ -1069,7 +1078,44 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
 
                 case SpellType.Spirit_SharedLife:
-                    Debug.LogError("Spell not implemented: " + spellType);
+                    if (skillMastery == SkillMastery.Grandmaster)
+                    {
+                        power = 4;
+                    }
+                    else
+                    {
+                        power = 3;
+                    }
+
+                    int sharedLifePool = power * skillLevel;
+
+                    List<Character> eligibleCharacters = new List<Character>();
+                    Party.Characters.ForEach(chr =>
+                    {
+                        if (!chr.IsDead() && chr.IsEradicated() && !chr.IsPetrified())
+                        {
+                            eligibleCharacters.Add(chr);
+                            sharedLifePool += chr.CurrHitPoints;
+                        }
+                    });
+
+                    int meanLife = sharedLifePool / eligibleCharacters.Count;
+                    eligibleCharacters.ForEach(chr =>
+                    {
+                        chr.CurrHitPoints = meanLife;
+                        if (chr.CurrHitPoints > chr.GetMaxHitPoints())
+                        {
+                            chr.CurrHitPoints = chr.GetMaxHitPoints();
+                        }
+                        if (chr.CurrHitPoints > 0)
+                        {
+                            chr.RemoveCondition(Condition.Unconcious);
+                        }
+                        SpellFxRenderer.SetPlayerBuffAnim(spellType, chr);
+                    });
+
+                    SoundMgr.PlaySoundById(spellData.EffectSoundId);
+
                     break;
                     
                 case SpellType.Spirit_RaiseDead:
@@ -1434,4 +1480,5 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             spell.Caster.PlayEventReaction(CharacterReaction.CastedSpell);
         }
     }
+
 }

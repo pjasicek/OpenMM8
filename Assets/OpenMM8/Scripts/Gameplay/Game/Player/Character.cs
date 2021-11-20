@@ -1418,6 +1418,17 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return false;
         }
 
+        public bool RemoveCondition(Condition condition)
+        {
+            if (Conditions[condition].IsValid())
+            {
+                Conditions[condition].Reset();
+                return true;
+            }
+
+            return false;
+        }
+
         public bool IsWeak()
         {
             return Conditions[Condition.Weak].IsValid();
