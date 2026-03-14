@@ -59,7 +59,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
 
                 data = new SpriteObjectData();
                 data.Id = animName;
-                data.Scale = float.Parse(columns[4].Replace('.', ','));
+                if (columns[4].StartsWith("."))
+                {
+                    columns[4] = "0" + columns[4];
+                }
+                data.Scale = float.Parse(columns[4]);
                 data.LightIntensity = int.Parse(columns[5]);
                 data.IsAlwaysLookingFront = (int.Parse(columns[7]) & 4) == 0; // Flag 0x4
                 data.X = int.Parse(columns[8]);

@@ -1,85 +1,231 @@
 fileFormatVersion: 2
 guid: 6b8810ca4311ade4ba945b9b0d6d810a
-timeCreated: 1518245102
-licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: IRA-1_01
-    21300002: IRA-1_02
-    21300004: IRA-1_03
-    21300006: IRA-1_04
-    21300008: IRA-1_05
-    21300010: IRA-1_06
-    21300012: IRA-1_07
-    21300014: IRA-1_08
-    21300016: IRA-1_09
-    21300018: IRA-1_10
-    21300020: IRA-2_01
-    21300022: IRA-2_02
-    21300024: IRA-2_03
-    21300026: IRA-2_04
-    21300028: IRA-2_05
-    21300030: IRA-2_06
-    21300032: IRA-2_07
-    21300034: IRA-2_08
-    21300036: IRA-2_09
-    21300038: IRA-2_10
-    21300040: IRA-3_01
-    21300042: IRA-3_02
-    21300044: IRA-3_03
-    21300046: IRA-3_04
-    21300048: IRA-3_05
-    21300050: IRA-3_06
-    21300052: IRA-3_07
-    21300054: IRA-3_08
-    21300056: IRA-3_09
-    21300058: IRA-4_01
-    21300060: IRA-4_02
-    21300062: IRA-4_03
-    21300064: IRA-4_04
-    21300066: IRA-4_05
-    21300068: IRA-4_06
-    21300070: IRA-4_07
-    21300072: IRA-4_08
-    21300074: IRA-4_09
-    21300076: IRA-4_10
-    21300078: IRA-4_11
-    21300080: IRB-1
-    21300082: IRB-1_Ed
-    21300084: IRB-1_Eh
-    21300086: IRB-1_Nd
-    21300088: IRB-1_Nh
-    21300090: IRB-1_Sd
-    21300092: IRB-1_Sh
-    21300094: IRB-1_wd
-    21300096: IRB-1_wh
-    21300098: IRB-2
-    21300100: IRB-3
-    21300102: IRB-4
-    21300104: IRBgrnd
-    21300106: IRT01b
-    21300108: IRT01r
-    21300110: IRT02b
-    21300112: IRT02r
-    21300114: IRT03b
-    21300116: IRT03r
-    21300118: IRT04b
-    21300120: IRT04r
-    21300122: IRT05b
-    21300124: IRT05r
-    21300126: IRT06b
-    21300128: IRT06r
-    21300130: IRT07b
-    21300132: IRT07r
-    21300134: IRT08b
-    21300136: IRT08r
-    21300138: IRT09b
-    21300140: IRT09r
-    21300142: IRT10b
-    21300144: IRT10r
-    21300146: IRT076r
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: IRA-1_01
+  - first:
+      213: 21300002
+    second: IRA-1_02
+  - first:
+      213: 21300004
+    second: IRA-1_03
+  - first:
+      213: 21300006
+    second: IRA-1_04
+  - first:
+      213: 21300008
+    second: IRA-1_05
+  - first:
+      213: 21300010
+    second: IRA-1_06
+  - first:
+      213: 21300012
+    second: IRA-1_07
+  - first:
+      213: 21300014
+    second: IRA-1_08
+  - first:
+      213: 21300016
+    second: IRA-1_09
+  - first:
+      213: 21300018
+    second: IRA-1_10
+  - first:
+      213: 21300020
+    second: IRA-2_01
+  - first:
+      213: 21300022
+    second: IRA-2_02
+  - first:
+      213: 21300024
+    second: IRA-2_03
+  - first:
+      213: 21300026
+    second: IRA-2_04
+  - first:
+      213: 21300028
+    second: IRA-2_05
+  - first:
+      213: 21300030
+    second: IRA-2_06
+  - first:
+      213: 21300032
+    second: IRA-2_07
+  - first:
+      213: 21300034
+    second: IRA-2_08
+  - first:
+      213: 21300036
+    second: IRA-2_09
+  - first:
+      213: 21300038
+    second: IRA-2_10
+  - first:
+      213: 21300040
+    second: IRA-3_01
+  - first:
+      213: 21300042
+    second: IRA-3_02
+  - first:
+      213: 21300044
+    second: IRA-3_03
+  - first:
+      213: 21300046
+    second: IRA-3_04
+  - first:
+      213: 21300048
+    second: IRA-3_05
+  - first:
+      213: 21300050
+    second: IRA-3_06
+  - first:
+      213: 21300052
+    second: IRA-3_07
+  - first:
+      213: 21300054
+    second: IRA-3_08
+  - first:
+      213: 21300056
+    second: IRA-3_09
+  - first:
+      213: 21300058
+    second: IRA-4_01
+  - first:
+      213: 21300060
+    second: IRA-4_02
+  - first:
+      213: 21300062
+    second: IRA-4_03
+  - first:
+      213: 21300064
+    second: IRA-4_04
+  - first:
+      213: 21300066
+    second: IRA-4_05
+  - first:
+      213: 21300068
+    second: IRA-4_06
+  - first:
+      213: 21300070
+    second: IRA-4_07
+  - first:
+      213: 21300072
+    second: IRA-4_08
+  - first:
+      213: 21300074
+    second: IRA-4_09
+  - first:
+      213: 21300076
+    second: IRA-4_10
+  - first:
+      213: 21300078
+    second: IRA-4_11
+  - first:
+      213: 21300080
+    second: IRB-1
+  - first:
+      213: 21300082
+    second: IRB-1_Ed
+  - first:
+      213: 21300084
+    second: IRB-1_Eh
+  - first:
+      213: 21300086
+    second: IRB-1_Nd
+  - first:
+      213: 21300088
+    second: IRB-1_Nh
+  - first:
+      213: 21300090
+    second: IRB-1_Sd
+  - first:
+      213: 21300092
+    second: IRB-1_Sh
+  - first:
+      213: 21300094
+    second: IRB-1_wd
+  - first:
+      213: 21300096
+    second: IRB-1_wh
+  - first:
+      213: 21300098
+    second: IRB-2
+  - first:
+      213: 21300100
+    second: IRB-3
+  - first:
+      213: 21300102
+    second: IRB-4
+  - first:
+      213: 21300104
+    second: IRBgrnd
+  - first:
+      213: 21300106
+    second: IRT01b
+  - first:
+      213: 21300108
+    second: IRT01r
+  - first:
+      213: 21300110
+    second: IRT02b
+  - first:
+      213: 21300112
+    second: IRT02r
+  - first:
+      213: 21300114
+    second: IRT03b
+  - first:
+      213: 21300116
+    second: IRT03r
+  - first:
+      213: 21300118
+    second: IRT04b
+  - first:
+      213: 21300120
+    second: IRT04r
+  - first:
+      213: 21300122
+    second: IRT05b
+  - first:
+      213: 21300124
+    second: IRT05r
+  - first:
+      213: 21300126
+    second: IRT06b
+  - first:
+      213: 21300128
+    second: IRT06r
+  - first:
+      213: 21300130
+    second: IRT07b
+  - first:
+      213: 21300132
+    second: IRT07r
+  - first:
+      213: 21300134
+    second: IRT08b
+  - first:
+      213: 21300136
+    second: IRT08r
+  - first:
+      213: 21300138
+    second: IRT09b
+  - first:
+      213: 21300140
+    second: IRT09r
+  - first:
+      213: 21300142
+    second: IRT10b
+  - first:
+      213: 21300144
+    second: IRT10r
+  - first:
+      213: 21300146
+    second: IRT076r
   externalObjects: {}
-  serializedVersion: 4
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -97,6 +243,10 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -105,9 +255,9 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
-    aniso: -1
-    mipBias: -1
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -119,18 +269,25 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
   platformSettings:
-  - buildTarget: DefaultTexturePlatform
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -139,6 +296,8 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -156,6 +315,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 02305410000000000800000000000000
+      internalID: 21300000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-1_02
       rect:
@@ -170,6 +336,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 22305410000000000800000000000000
+      internalID: 21300002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-1_03
       rect:
@@ -184,6 +357,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 42305410000000000800000000000000
+      internalID: 21300004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-1_04
       rect:
@@ -198,6 +378,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 62305410000000000800000000000000
+      internalID: 21300006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-1_05
       rect:
@@ -212,6 +399,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 82305410000000000800000000000000
+      internalID: 21300008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-1_06
       rect:
@@ -226,6 +420,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: a2305410000000000800000000000000
+      internalID: 21300010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-1_07
       rect:
@@ -240,6 +441,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: c2305410000000000800000000000000
+      internalID: 21300012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-1_08
       rect:
@@ -254,6 +462,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: e2305410000000000800000000000000
+      internalID: 21300014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-1_09
       rect:
@@ -268,6 +483,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 03305410000000000800000000000000
+      internalID: 21300016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-1_10
       rect:
@@ -282,6 +504,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 23305410000000000800000000000000
+      internalID: 21300018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-2_01
       rect:
@@ -296,6 +525,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 43305410000000000800000000000000
+      internalID: 21300020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-2_02
       rect:
@@ -310,6 +546,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 63305410000000000800000000000000
+      internalID: 21300022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-2_03
       rect:
@@ -324,6 +567,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 83305410000000000800000000000000
+      internalID: 21300024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-2_04
       rect:
@@ -338,6 +588,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: a3305410000000000800000000000000
+      internalID: 21300026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-2_05
       rect:
@@ -352,6 +609,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: c3305410000000000800000000000000
+      internalID: 21300028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-2_06
       rect:
@@ -366,6 +630,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: e3305410000000000800000000000000
+      internalID: 21300030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-2_07
       rect:
@@ -380,6 +651,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 04305410000000000800000000000000
+      internalID: 21300032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-2_08
       rect:
@@ -394,6 +672,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 24305410000000000800000000000000
+      internalID: 21300034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-2_09
       rect:
@@ -408,6 +693,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 44305410000000000800000000000000
+      internalID: 21300036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-2_10
       rect:
@@ -422,6 +714,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 64305410000000000800000000000000
+      internalID: 21300038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-3_01
       rect:
@@ -436,6 +735,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 84305410000000000800000000000000
+      internalID: 21300040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-3_02
       rect:
@@ -450,6 +756,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: a4305410000000000800000000000000
+      internalID: 21300042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-3_03
       rect:
@@ -464,6 +777,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: c4305410000000000800000000000000
+      internalID: 21300044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-3_04
       rect:
@@ -478,6 +798,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: e4305410000000000800000000000000
+      internalID: 21300046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-3_05
       rect:
@@ -492,6 +819,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 05305410000000000800000000000000
+      internalID: 21300048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-3_06
       rect:
@@ -506,6 +840,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 25305410000000000800000000000000
+      internalID: 21300050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-3_07
       rect:
@@ -520,6 +861,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 45305410000000000800000000000000
+      internalID: 21300052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-3_08
       rect:
@@ -534,6 +882,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 65305410000000000800000000000000
+      internalID: 21300054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-3_09
       rect:
@@ -548,6 +903,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 85305410000000000800000000000000
+      internalID: 21300056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-4_01
       rect:
@@ -562,6 +924,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: a5305410000000000800000000000000
+      internalID: 21300058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-4_02
       rect:
@@ -576,6 +945,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: c5305410000000000800000000000000
+      internalID: 21300060
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-4_03
       rect:
@@ -590,6 +966,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: e5305410000000000800000000000000
+      internalID: 21300062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-4_04
       rect:
@@ -604,6 +987,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 06305410000000000800000000000000
+      internalID: 21300064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-4_05
       rect:
@@ -618,6 +1008,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 26305410000000000800000000000000
+      internalID: 21300066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-4_06
       rect:
@@ -632,6 +1029,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 46305410000000000800000000000000
+      internalID: 21300068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-4_07
       rect:
@@ -646,6 +1050,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 66305410000000000800000000000000
+      internalID: 21300070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-4_08
       rect:
@@ -660,6 +1071,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 86305410000000000800000000000000
+      internalID: 21300072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-4_09
       rect:
@@ -674,6 +1092,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: a6305410000000000800000000000000
+      internalID: 21300074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-4_10
       rect:
@@ -688,6 +1113,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: c6305410000000000800000000000000
+      internalID: 21300076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRA-4_11
       rect:
@@ -702,6 +1134,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: e6305410000000000800000000000000
+      internalID: 21300078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRB-1
       rect:
@@ -716,6 +1155,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 07305410000000000800000000000000
+      internalID: 21300080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRB-1_Ed
       rect:
@@ -730,6 +1176,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 27305410000000000800000000000000
+      internalID: 21300082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRB-1_Eh
       rect:
@@ -744,6 +1197,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 47305410000000000800000000000000
+      internalID: 21300084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRB-1_Nd
       rect:
@@ -758,6 +1218,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 67305410000000000800000000000000
+      internalID: 21300086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRB-1_Nh
       rect:
@@ -772,6 +1239,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 87305410000000000800000000000000
+      internalID: 21300088
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRB-1_Sd
       rect:
@@ -786,6 +1260,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: a7305410000000000800000000000000
+      internalID: 21300090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRB-1_Sh
       rect:
@@ -800,6 +1281,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: c7305410000000000800000000000000
+      internalID: 21300092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRB-1_wd
       rect:
@@ -814,6 +1302,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: e7305410000000000800000000000000
+      internalID: 21300094
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRB-1_wh
       rect:
@@ -828,6 +1323,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 08305410000000000800000000000000
+      internalID: 21300096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRB-2
       rect:
@@ -842,6 +1344,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 28305410000000000800000000000000
+      internalID: 21300098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRB-3
       rect:
@@ -856,6 +1365,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 48305410000000000800000000000000
+      internalID: 21300100
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRB-4
       rect:
@@ -870,6 +1386,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 68305410000000000800000000000000
+      internalID: 21300102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRBgrnd
       rect:
@@ -884,6 +1407,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 88305410000000000800000000000000
+      internalID: 21300104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRT01b
       rect:
@@ -898,6 +1428,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: a8305410000000000800000000000000
+      internalID: 21300106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRT01r
       rect:
@@ -912,6 +1449,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: c8305410000000000800000000000000
+      internalID: 21300108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRT02b
       rect:
@@ -926,6 +1470,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: e8305410000000000800000000000000
+      internalID: 21300110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRT02r
       rect:
@@ -940,6 +1491,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 09305410000000000800000000000000
+      internalID: 21300112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRT03b
       rect:
@@ -954,6 +1512,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 29305410000000000800000000000000
+      internalID: 21300114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRT03r
       rect:
@@ -968,6 +1533,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 49305410000000000800000000000000
+      internalID: 21300116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRT04b
       rect:
@@ -982,6 +1554,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 69305410000000000800000000000000
+      internalID: 21300118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRT04r
       rect:
@@ -996,6 +1575,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 89305410000000000800000000000000
+      internalID: 21300120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRT05b
       rect:
@@ -1010,6 +1596,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: a9305410000000000800000000000000
+      internalID: 21300122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRT05r
       rect:
@@ -1024,6 +1617,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: c9305410000000000800000000000000
+      internalID: 21300124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRT06b
       rect:
@@ -1038,6 +1638,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: e9305410000000000800000000000000
+      internalID: 21300126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRT06r
       rect:
@@ -1052,6 +1659,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 0a305410000000000800000000000000
+      internalID: 21300128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRT07b
       rect:
@@ -1066,6 +1680,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 2a305410000000000800000000000000
+      internalID: 21300130
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRT07r
       rect:
@@ -1080,6 +1701,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 4a305410000000000800000000000000
+      internalID: 21300132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRT08b
       rect:
@@ -1094,6 +1722,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 6a305410000000000800000000000000
+      internalID: 21300134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRT08r
       rect:
@@ -1108,6 +1743,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 8a305410000000000800000000000000
+      internalID: 21300136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRT09b
       rect:
@@ -1122,6 +1764,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: aa305410000000000800000000000000
+      internalID: 21300138
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRT09r
       rect:
@@ -1136,6 +1785,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: ca305410000000000800000000000000
+      internalID: 21300140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRT10b
       rect:
@@ -1150,6 +1806,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: ea305410000000000800000000000000
+      internalID: 21300142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRT10r
       rect:
@@ -1164,6 +1827,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 0b305410000000000800000000000000
+      internalID: 21300144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: IRT076r
       rect:
@@ -1178,9 +1848,101 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 2b305410000000000800000000000000
+      internalID: 21300146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      IRA-1_07: 21300012
+      IRA-1_10: 21300018
+      IRA-2_06: 21300030
+      IRA-3_09: 21300056
+      IRA-1_02: 21300002
+      IRB-2: 21300098
+      IRA-3_02: 21300042
+      IRA-4_09: 21300074
+      IRA-1_04: 21300006
+      IRA-4_04: 21300064
+      IRB-1: 21300080
+      IRA-2_08: 21300034
+      IRA-2_04: 21300026
+      IRB-1_Eh: 21300084
+      IRT03r: 21300116
+      IRA-3_07: 21300052
+      IRA-1_09: 21300016
+      IRB-1_Sd: 21300090
+      IRA-1_08: 21300014
+      IRT08r: 21300136
+      IRT09b: 21300138
+      IRA-3_01: 21300040
+      IRA-3_06: 21300050
+      IRA-3_05: 21300048
+      IRA-1_06: 21300010
+      IRA-1_05: 21300008
+      IRA-4_11: 21300078
+      IRA-2_03: 21300024
+      IRA-3_04: 21300046
+      IRB-1_wh: 21300096
+      IRA-4_03: 21300062
+      IRA-2_02: 21300022
+      IRA-3_08: 21300054
+      IRT04r: 21300120
+      IRB-3: 21300100
+      IRB-4: 21300102
+      IRA-1_03: 21300004
+      IRA-2_09: 21300036
+      IRA-4_05: 21300066
+      IRT04b: 21300118
+      IRA-2_07: 21300032
+      IRA-4_07: 21300070
+      IRA-2_10: 21300038
+      IRT02r: 21300112
+      IRT07b: 21300130
+      IRA-2_01: 21300020
+      IRA-4_10: 21300076
+      IRT10b: 21300142
+      IRB-1_Nd: 21300086
+      IRT01r: 21300108
+      IRT03b: 21300114
+      IRT06b: 21300126
+      IRB-1_Nh: 21300088
+      IRT01b: 21300106
+      IRA-1_01: 21300000
+      IRT09r: 21300140
+      IRT05r: 21300124
+      IRT06r: 21300128
+      IRT05b: 21300122
+      IRT076r: 21300146
+      IRA-4_01: 21300058
+      IRB-1_Sh: 21300092
+      IRB-1_Ed: 21300082
+      IRT10r: 21300144
+      IRA-4_06: 21300068
+      IRA-2_05: 21300028
+      IRB-1_wd: 21300094
+      IRBgrnd: 21300104
+      IRA-4_02: 21300060
+      IRT07r: 21300132
+      IRA-3_03: 21300044
+      IRT08b: 21300134
+      IRA-4_08: 21300072
+      IRT02b: 21300110
   spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

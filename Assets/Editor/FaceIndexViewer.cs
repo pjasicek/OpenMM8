@@ -1,18 +1,16 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
-using ProBuilder.Interface;	// pb_GUI_Utility
-using ProBuilder.Core;
-using ProBuilder.EditorCore;
-using ProBuilder.MeshOperations;
-using System.Linq;				// Sum()
+using System.Linq;
+using UnityEngine.ProBuilder;
+using UnityEditor.ProBuilder;
 
 class FaceIndexViewer : EditorWindow
 {
-    [MenuItem("Tools/" + pb_Constant.PRODUCT_NAME + "/Face Index Viewer")]
+    [MenuItem("Tools/ProBuilder/Face Index Viewer")]
     static void MenuInitEditorCallbackViewer()
     {
-        EditorWindow.GetWindow<FaceIndexViewer>(false, "Face Index Viewer", true).Show();
+        GetWindow<FaceIndexViewer>(false, "Face Index Viewer", true).Show();
     }
 
     List<string> logs = new List<string>();
@@ -23,7 +21,9 @@ class FaceIndexViewer : EditorWindow
     {
         get
         {
-            return EditorGUIUtility.isProSkin ? new Color(.15f, .15f, .15f, .5f) : new Color(.8f, .8f, .8f, 1f);
+            return EditorGUIUtility.isProSkin
+                ? new Color(.15f, .15f, .15f, .5f)
+                : new Color(.8f, .8f, .8f, 1f);
         }
     }
 
@@ -31,34 +31,48 @@ class FaceIndexViewer : EditorWindow
     {
         get
         {
-            return EditorGUIUtility.isProSkin ? new Color(.3f, .3f, .3f, .5f) : new Color(.8f, .8f, .8f, 1f);
+            return EditorGUIUtility.isProSkin
+                ? new Color(.3f, .3f, .3f, .5f)
+                : new Color(.8f, .8f, .8f, 1f);
         }
     }
 
     void OnEnable()
     {
-        pb_EditorApi.AddOnSelectionUpdateListener(OnSelectionUpdate);
+        ProBuilderEditor.selectionUpdated += OnSelectionUpdate;
     }
 
     void OnDisable()
     {
-        pb_EditorApi.RemoveOnSelectionUpdateListener(OnSelectionUpdate);
+        ProBuilderEditor.selectionUpdated -= OnSelectionUpdate;
     }
 
-    private List<int> GetSelectedTriangleIndexes(pb_Object pb)
+    private List<int> GetSelectedTriangleIndexes(ProBuilderMesh pb)
     {
         List<int> triIndexes = new List<int>();
 
-        Mesh mesh = pb.gameObject.GetComponent<MeshFilter>().sharedMesh;
+        MeshFilter mf = pb.GetComponent<MeshFilter>();
+        Mesh mesh = mf != null ? mf.sharedMesh : null;
+        if (mesh == null)
+            return triIndexes;
 
-        int[] selectedFaceTris = pb.SelectedTriangles;
+        HashSet<int> selectedTriangleVertices = new HashSet<int>();
+
+        foreach (int faceIndex in pb.selectedFaceIndexes)
+        {
+            if (faceIndex < 0 || faceIndex >= pb.faces.Count)
+                continue;
+
+            foreach (int index in pb.faces[faceIndex].indexes)
+                selectedTriangleVertices.Add(index);
+        }
 
         int triangleIdx = 0;
         for (int i = 0; i < mesh.triangles.Length; i += 3, triangleIdx++)
         {
-            if (selectedFaceTris.Contains(mesh.triangles[i + 0]) &&
-                selectedFaceTris.Contains(mesh.triangles[i + 1]) &&
-                selectedFaceTris.Contains(mesh.triangles[i + 2]))
+            if (selectedTriangleVertices.Contains(mesh.triangles[i + 0]) &&
+                selectedTriangleVertices.Contains(mesh.triangles[i + 1]) &&
+                selectedTriangleVertices.Contains(mesh.triangles[i + 2]))
             {
                 triIndexes.Add(triangleIdx);
             }
@@ -67,98 +81,66 @@ class FaceIndexViewer : EditorWindow
         return triIndexes;
     }
 
-    void OnSelectionUpdate(pb_Object[] selection)
+    void OnSelectionUpdate(IEnumerable<ProBuilderMesh> selection)
     {
-        // Selected 1 face on 1 model
-        if (selection != null && selection.Length == 1 && selection[0].SelectedFaceCount == 1)
+        var selected = selection != null ? selection.ToList() : null;
+
+        if (selected != null &&
+            selected.Count == 1 &&
+            selected[0] != null &&
+            selected[0].selectedFaceCount == 1)
         {
-            pb_Object pb = selection[0];
-            Mesh mesh = pb.gameObject.GetComponent<MeshFilter>().sharedMesh;
+            ProBuilderMesh pb = selected[0];
+            MeshFilter mf = pb.GetComponent<MeshFilter>();
+            Mesh mesh = mf != null ? mf.sharedMesh : null;
+            if (mesh == null)
+                return;
 
             pb.ToMesh();
             pb.Refresh();
-            int[] selectedTriangles = pb.SelectedTriangles;
 
-            int faceIdx;
-            if (pb.FaceWithTriangle(selectedTriangles, out faceIdx))
-            {
-                logs.Clear();
+            logs.Clear();
 
-                List<int> selectedTriIdxs = GetSelectedTriangleIndexes(selection[0]);
-                string selTriStr = "";
-                foreach (int t in selectedTriIdxs)
-                {
-                    selTriStr += t + " ";
-                }
+            int faceIdx = pb.selectedFaceIndexes[0];
+            List<int> selectedTriIdxs = GetSelectedTriangleIndexes(pb);
 
-                AddLog("Face: " + faceIdx);
-                AddLog("[" + selectedTriIdxs.Count + "] Selected triangles: " + selTriStr);
-                AddLog("Mesh Triangle Count: " + mesh.triangles.Length);
-            }
-            else
-            {
-                Debug.LogError("Selected one face but cannot get its index ?!");
-            }
+            string selTriStr = "";
+            foreach (int t in selectedTriIdxs)
+                selTriStr += t + " ";
+
+            AddLog("Face: " + faceIdx);
+            AddLog("[" + selectedTriIdxs.Count + "] Selected triangles: " + selTriStr);
+            AddLog("Mesh Triangle Count: " + (mesh.triangles.Length / 3));
         }
-        else if (selection != null &&
-            selection.Length == 1 &&
-            selection[0] != null &&
-            selection[0].SelectedFaceCount > 1)
+        else if (selected != null &&
+                 selected.Count == 1 &&
+                 selected[0] != null &&
+                 selected[0].selectedFaceCount > 1)
         {
-            // Selected multiple faces on 1 model
-
-            pb_Object pb = selection[0];
+            ProBuilderMesh pb = selected[0];
             pb.ToMesh();
             pb.Refresh();
 
-            List<int> selectedTriIdxs = GetSelectedTriangleIndexes(selection[0]);
-            List<int> selectedFaces = new List<int>();
-
-            for (int faceIdx = 0; faceIdx < selection[0].faces.Length; faceIdx++)
-            {
-                if (selection[0].SelectedFaces.Contains(selection[0].faces[faceIdx]))
-                {
-                    selectedFaces.Add(faceIdx);
-                }
-            }
+            List<int> selectedTriIdxs = GetSelectedTriangleIndexes(pb);
+            List<int> selectedFaces = pb.selectedFaceIndexes.ToList();
 
             logs.Clear();
 
             string faceSel = "Selected Faces [" + selectedFaces.Count + "]: ";
             foreach (int faceIdx in selectedFaces)
-            {
                 faceSel += faceIdx + " ";
-            }
 
             string selStr = "\n";
             foreach (int t in selectedTriIdxs)
-            {
                 selStr += t + "\n";
-            }
 
             AddLog(faceSel);
-            AddLog("[" + selectedTriIdxs.Count + "]      Selected triangles: " + selStr);
+            AddLog("[" + selectedTriIdxs.Count + "] Selected triangles: " + selStr);
         }
-    }
-
-    void OnVertexMovementBegin(pb_Object[] selection)
-    {
-        AddLog("Began Moving Vertices");
-    }
-
-    void OnVertexMovementFinish(pb_Object[] selection)
-    {
-        AddLog("Finished Moving Vertices");
-    }
-
-    void OnMeshCompiled(pb_Object pb, Mesh mesh)
-    {
-        AddLog(string.Format("Mesh {0} rebuilt", pb.name));
     }
 
     void AddLog(string summary)
     {
-        //logs.Clear();
         logs.Add(summary);
         Repaint();
     }
@@ -186,12 +168,12 @@ class FaceIndexViewer : EditorWindow
         Rect r = GUILayoutUtility.GetLastRect();
         r.x = 0;
         r.y = r.y + r.height + 6;
-        r.width = this.position.width;
-        r.height = this.position.height;
+        r.width = position.width;
+        r.height = position.height;
 
         GUILayout.Space(4);
 
-        //pb_EditorGUIUtility.DrawSolidColor(r, logBackgroundColor);
+        // EditorGUI.DrawRect(r, logBackgroundColor);
 
         scroll = GUILayout.BeginScrollView(scroll);
 

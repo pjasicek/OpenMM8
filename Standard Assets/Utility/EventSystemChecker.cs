@@ -1,21 +1,36 @@
-using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class EventSystemChecker : MonoBehaviour
 {
-    //public GameObject eventSystem;
+    private void Awake()
+    {
+        EventSystem[] systems = FindObjectsOfType<EventSystem>(true);
 
-	// Use this for initialization
-	void Awake ()
-	{
-	    if(!FindObjectOfType<EventSystem>())
+        if (systems.Length == 0)
         {
-           //Instantiate(eventSystem);
             GameObject obj = new GameObject("EventSystem");
             obj.AddComponent<EventSystem>();
-            obj.AddComponent<StandaloneInputModule>().forceModuleActive = true;
+            obj.AddComponent<StandaloneInputModule>();
+            return;
         }
-	}
+
+        if (systems.Length > 1)
+        {
+            Debug.LogWarning("Multiple EventSystems found in scene.");
+
+            // Keep the first active one, remove extras.
+            bool keptOne = false;
+            foreach (EventSystem system in systems)
+            {
+                if (!keptOne)
+                {
+                    keptOne = true;
+                    continue;
+                }
+
+                Destroy(system.gameObject);
+            }
+        }
+    }
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using ProBuilder.Core;
+using System.Linq;
+using UnityEngine.ProBuilder;
 
 public enum InteractFilter
 {
@@ -17,27 +17,23 @@ abstract public class Interactable : MonoBehaviour
     [Header("Interactable")]
     public InteractSelector InteractSelector;
 
-    // For the ByTexture filter
     private MeshInfo m_MeshInfo;
-
-    private pb_Object m_pbObject;
-
-    private static long m_TotalMsConvert = 0;
+    private ProBuilderMesh m_pbObject;
 
     protected void Start()
     {
         if (InteractSelector.FilterType == InteractFilter.ByTexture)
         {
             MeshFilter meshFilter = GetComponent<MeshFilter>();
-            if (meshFilter == null || meshFilter.mesh == null)
+            if (meshFilter == null || meshFilter.sharedMesh == null)
             {
-                Debug.LogError(gameObject.name + ": InteractFilter.ByTexture was set with no MeshFilter/Mesh !");
+                Debug.LogError(gameObject.name + ": InteractFilter.ByTexture was set with no MeshFilter/Mesh!");
                 InteractSelector.FilterType = InteractFilter.DenyAll;
             }
             else
             {
                 Renderer renderer = GetComponent<Renderer>();
-                m_MeshInfo = MeshInfo.Create(meshFilter.mesh, renderer);
+                m_MeshInfo = MeshInfo.Create(meshFilter.sharedMesh, renderer);
                 if (m_MeshInfo == null)
                 {
                     Debug.LogError("Failed to initialize MeshInfo.");
@@ -47,19 +43,17 @@ abstract public class Interactable : MonoBehaviour
         }
         else if (InteractSelector.FilterType == InteractFilter.ByFaces)
         {
-            m_pbObject = GetComponent<pb_Object>();
-            Mesh mesh = null;
-            if (GetComponent<MeshFilter>() != null)
-            {
-                mesh = GetComponent<MeshFilter>().mesh;
-            }
+            m_pbObject = GetComponent<ProBuilderMesh>();
 
-            if (m_pbObject)
+            MeshFilter meshFilter = GetComponent<MeshFilter>();
+            Mesh mesh = meshFilter != null ? meshFilter.sharedMesh : null;
+
+            if (m_pbObject != null)
             {
-                if (mesh.isReadable)
+                if (mesh != null && mesh.isReadable)
                 {
                     m_pbObject.ToMesh();
-                    m_pbObject.Refresh(RefreshMask.All);
+                    m_pbObject.Refresh();
                 }
                 else
                 {
@@ -69,7 +63,7 @@ abstract public class Interactable : MonoBehaviour
             }
             else
             {
-                Debug.LogError(gameObject.name + ": Interacting by faces only available with attach pb_Object (Probuilder)");
+                Debug.LogError(gameObject.name + ": Interacting by faces only available with attached ProBuilderMesh");
                 InteractSelector.FilterType = InteractFilter.DenyAll;
             }
         }
@@ -78,23 +72,17 @@ abstract public class Interactable : MonoBehaviour
     public bool TryInteract(GameObject interacter, RaycastHit interactRay)
     {
         if (InteractSelector.FilterType == InteractFilter.DenyAll)
-        {
             return false;
-        }
 
         if (InteractSelector.FilterType == InteractFilter.ByTexture)
         {
             m_MeshInfo.DrawTriangleGizmo(interactRay.triangleIndex);
-            Debug.LogError("Clicked Triangle Index: " + interactRay.triangleIndex);
 
             Material mat = m_MeshInfo.GetMaterialAtTriangleIndex(interactRay.triangleIndex);
             if (mat == null)
-            {
                 return false;
-            }
 
-            string texName = mat.name;
-            texName = texName.ToLower().Split(' ')[0];
+            string texName = mat.name.ToLower().Split(' ')[0];
 
             bool hasTexture = false;
             foreach (string allowedTexName in InteractSelector.AllowedTextures)
@@ -107,52 +95,71 @@ abstract public class Interactable : MonoBehaviour
             }
 
             if (!hasTexture)
-            {
                 return false;
-            }
         }
         else if (InteractSelector.FilterType == InteractFilter.ByTriangles)
         {
-            // Only specified triangle(s) on this game object can be interacted with
             if (!InteractSelector.AllowedTriangles.Contains(interactRay.triangleIndex))
-            {
                 return false;
-            }
         }
         else if (InteractSelector.FilterType == InteractFilter.ByFaces)
         {
-            if (m_pbObject)
-            {
-                Mesh m = GetComponent<MeshFilter>().sharedMesh;
-                int[] tris = new int[3] {
-                    m.triangles[interactRay.triangleIndex * 3 + 0],
-                    m.triangles[interactRay.triangleIndex * 3 + 1],
-                    m.triangles[interactRay.triangleIndex * 3 + 2]
-                };
-
-                int faceIdx;
-                m_pbObject.FaceWithTriangle(tris, out faceIdx);
-
-                if (!InteractSelector.AllowedFaces.Contains(faceIdx))
-                {
-                    return false;
-                }
-            }
-            else
-            {
+            if (m_pbObject == null)
                 return false;
-            }
+
+            MeshFilter meshFilter = GetComponent<MeshFilter>();
+            Mesh m = meshFilter != null ? meshFilter.sharedMesh : null;
+            if (m == null)
+                return false;
+
+            int triBase = interactRay.triangleIndex * 3;
+            if (triBase + 2 >= m.triangles.Length)
+                return false;
+
+            int[] tris = new int[3]
+            {
+                m.triangles[triBase + 0],
+                m.triangles[triBase + 1],
+                m.triangles[triBase + 2]
+            };
+
+            int faceIdx = FindFaceIndexForTriangle(m_pbObject, tris);
+            if (faceIdx < 0)
+                return false;
+
+            if (!InteractSelector.AllowedFaces.Contains(faceIdx))
+                return false;
         }
 
         if (!CanInteract(interacter, interactRay))
-        {
             return false;
-        }
 
         return Interact(interacter, interactRay);
     }
 
+    private static int FindFaceIndexForTriangle(ProBuilderMesh pbMesh, int[] triangle)
+    {
+        var faces = pbMesh.faces;
+        if (faces == null)
+            return -1;
+
+        for (int i = 0; i < faces.Count; i++)
+        {
+            var indexes = faces[i].indexes;
+
+            bool has0 = indexes.Contains(triangle[0]);
+            bool has1 = indexes.Contains(triangle[1]);
+            bool has2 = indexes.Contains(triangle[2]);
+
+            if (has0 && has1 && has2)
+                return i;
+        }
+
+        return -1;
+    }
+
     abstract protected bool Interact(GameObject interacter, RaycastHit interactRay);
+
     virtual protected bool CanInteract(GameObject interacter, RaycastHit interactRay)
     {
         return true;
@@ -179,9 +186,7 @@ public class MeshInfo
     static public MeshInfo Create(Mesh mesh, Renderer renderer)
     {
         if (mesh == null || renderer == null)
-        {
             return null;
-        }
 
         MeshInfo mi = new MeshInfo();
 
@@ -191,9 +196,7 @@ public class MeshInfo
         mi.m_Tris = mesh.triangles;
 
         for (int i = 0; i < mesh.subMeshCount; i++)
-        {
             mi.m_SubmeshTris.Add(i, mesh.GetTriangles(i));
-        }
 
         return mi;
     }
@@ -226,12 +229,15 @@ public class MeshInfo
     {
         Vector3[] vertices = m_Mesh.vertices;
         int[] triangles = m_Mesh.triangles;
+
         Vector3 p0 = vertices[triangles[triangleIdx * 3 + 0]];
         Vector3 p1 = vertices[triangles[triangleIdx * 3 + 1]];
         Vector3 p2 = vertices[triangles[triangleIdx * 3 + 2]];
+
         p0 = m_Transform.TransformPoint(p0);
         p1 = m_Transform.TransformPoint(p1);
         p2 = m_Transform.TransformPoint(p2);
+
         Debug.DrawLine(p0, p1, Color.green, 60.0f, false);
         Debug.DrawLine(p1, p2, Color.green, 60.0f, false);
         Debug.DrawLine(p2, p0, Color.green, 60.0f, false);
