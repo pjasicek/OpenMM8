@@ -106,6 +106,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         static public void AddItem(Character chr, int itemId)
         {
             // TODO: Handle if inventory is full ?
+            Logger.LogDebug("add item: " + itemId);
             chr.Inventory.AddItem(itemId);
         }
 

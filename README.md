@@ -1,7 +1,7 @@
 # OpenMM8 - Might & Magic 8 (2001) reimplementation
 
  - This project is a Unity reimplementation of original Might & Magic 8 RPG
- - Unity 2018.1.1f1 Personal is used
+ - Unity 2022.3 LTS is now the active editor line
  - No third-party assets are currently used
 ## Current State
  - Original maps are loadable
@@ -12,3 +12,11 @@
 # In-Game screenshots
 ![alt tag](https://s9.postimg.cc/utmjrnrwv/screenshot_50.png)
 ![alt tag](https://s9.postimg.cc/6eix450bj/screenshot_51.png)
+
+## Architecture
+
+The project is being cleaned up after the Unity 2022 migration. The current architecture direction and migration rules are documented in [docs/unity-rpg-architecture.md](docs/unity-rpg-architecture.md).
+
+## Current Priority
+
+The current delivery target is 100% Dagger Wound Island playability. Architecture work should support that goal, not compete with it.

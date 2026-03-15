@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
-using Assets.OpenMM8.Scripts.Gameplay.Data;
-using UnityEngine.UI;
-using Assets.OpenMM8.Scripts.Data;
-
-using IngameDebugConsole;
 using Assets.OpenMM8.Scripts.Gameplay.Items;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
@@ -21,6 +14,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
     class GameCore : MonoBehaviour //Singleton<GameMgr>
     {
+        private static readonly string[] GlobalUiButtons =
+        {
+            "Escape",
+            "Map",
+            "Inventory",
+            "NextPlayer",
+            "Console",
+            "Spellbook",
+        };
+
         public static GameCore Instance;
 
         // States
@@ -36,10 +39,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         [Header("Sounds")]
         public AudioClip BackgroundMusic;
 
+        [Header("Debug")]
+        [SerializeField] private bool enableDebugHotkeys = true;
+
         [HideInInspector]
         public bool m_IsGamePaused = false;
 
-        public List<BaseNpc> NpcList = new List<BaseNpc>();
         public List<Monster> MonsterList = new List<Monster>();
 
         public List<Monster> NearbyMonsterList = new List<Monster>();
@@ -61,24 +66,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             GameState = GameState.Ingame;
             MapType = MapType.Outdoor;
-
-
-            //......
-            SpriteObjectRegistry.LoadSpritesheet("Decals");
-            SpriteObjectRegistry.LoadSpritesheet("RocksTreesFlowers");
-            SpriteObjectRegistry.LoadSpritesheet("SpellsProjectiles");
-            SpriteObjectRegistry.LoadSpritesheet("m401");
-            SpriteObjectRegistry.LoadSpritesheet("m409");
-            SpriteObjectRegistry.LoadSpritesheet("m413");
-            SpriteObjectRegistry.LoadSpritesheet("m417");
-            SpriteObjectRegistry.LoadSpritesheet("m421");
-            SpriteObjectRegistry.LoadSpritesheet("m549");
-
-            SpriteObject testAnim = SpriteObjectRegistry.GetSpriteObject("spell57");
-            foreach (Sprite animSprite in testAnim.BackSprites)
-            {
-                Debug.Log(animSprite.name);
-            }
         }
 
         public bool Init()
@@ -95,48 +82,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             return true;
         }
-
-        public bool PostInit()
-        {
-            AddChar(21);
-            AddChar(3);
-            AddChar(16);
-            AddChar(1);
-            
-            PlayerParty.Characters[0].Inventory.AddItem(513);
-            PlayerParty.Characters[0].Inventory.AddItem(514);
-            PlayerParty.Characters[0].Inventory.AddItem(117);
-            PlayerParty.Characters[0].Inventory.AddItem(132);
-            PlayerParty.Characters[0].Inventory.AddItem(522);
-            PlayerParty.Characters[0].Inventory.AddItem(522);
-            PlayerParty.Characters[0].Inventory.AddItem(522);
-            PlayerParty.Characters[0].Inventory.AddItem(512);
-            PlayerParty.Characters[0].Inventory.AddItem(532);
-            PlayerParty.Characters[0].Inventory.AddItem(529);
-            PlayerParty.Characters[0].Inventory.AddItem(115);
-            PlayerParty.Characters[0].Inventory.AddItem(536);
-
-            PlayerParty.Characters[0].Inventory.AddItem(151);
-            PlayerParty.Characters[0].Inventory.AddItem(517);
-
-            PlayerParty.Characters[0].Inventory.AddItem(141);
-            PlayerParty.Characters[0].Inventory.AddItem(141);
-            PlayerParty.Characters[0].Inventory.AddItem(141);
-            PlayerParty.Characters[0].Inventory.AddItem(141);
-            PlayerParty.Characters[0].Inventory.AddItem(141);
-            PlayerParty.Characters[0].Inventory.AddItem(141);
-            PlayerParty.Characters[0].Inventory.AddItem(141);
-            PlayerParty.Characters[0].Inventory.AddItem(519);
-
-            return true;
-        }
-
-        void Start()
-        {
-
-        }
-
-
         //=========================================================================================
         // This will be THE MAIN game update loop
         //=========================================================================================
@@ -172,46 +117,29 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             // 6) 
 
-            // IDEA: When game is paused then maybe UiMgr should check if it can consume the event first ?
-            if (Input.GetButtonDown("Escape"))
-            {
-                UiMgr.Instance.HandleButtonDown("Escape");
-            }
-            if (Input.GetButtonDown("Map"))
-            {
-                UiMgr.Instance.HandleButtonDown("Map");
-            }
-            if (Input.GetButtonDown("Inventory"))
-            {
-                UiMgr.Instance.HandleButtonDown("Inventory");
-            }
-            if (Input.GetButtonDown("NextPlayer"))
-            {
-                UiMgr.Instance.HandleButtonDown("NextPlayer");
-            }
-            if (Input.GetButtonDown("Console"))
-            {
-                UiMgr.Instance.HandleButtonDown("Console");
-            }
-            if (Input.GetButtonDown("Spellbook"))
-            {
-                UiMgr.Instance.HandleButtonDown("Spellbook");
-            }
-            /*if (Input.GetButtonDown("Queust"))
-            {
-                UiMgr.Instance.HandleButtonDown("Queust");
-            }
-            if (Input.GetButtonDown("Notes"))
-            {
-                UiMgr.Instance.HandleButtonDown("Notes");
-            }
-            if (Input.GetButtonDown("Rest"))
-            {
-                UiMgr.Instance.HandleButtonDown("Rest");
-            }
-            */
+            HandleGlobalUiInput();
+            UpdateInspectionState();
 
-            bool wasInspectEnabled = (m_InspectedObj != null);
+            if (enableDebugHotkeys)
+            {
+                HandleDebugHotkeys();
+            }
+        }
+
+        private void HandleGlobalUiInput()
+        {
+            foreach (string button in GlobalUiButtons)
+            {
+                if (Input.GetButtonDown(button))
+                {
+                    UiMgr.Instance.HandleButtonDown(button);
+                }
+            }
+        }
+
+        private void UpdateInspectionState()
+        {
+            bool wasInspectEnabled = m_InspectedObj != null;
             bool isInspectEnabled = false;
             Inspectable inspectedObj = null;
 
@@ -222,29 +150,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     Time.timeScale = 0;
                 }
 
-                RaycastHit hit;
-                Ray ray = UiMgr.GetCrosshairRay();
-                //ray.origin -= 100 * ray.direction.normalized;
-
                 int layerMask = ~((1 << LayerMask.NameToLayer("NpcRangeTrigger")) | (1 << LayerMask.NameToLayer("Player")));
-                if (Physics.Raycast(ray, out hit, 1000.0f, layerMask))
-                {
-                    Transform objectHit = hit.collider.transform;
-                    if (objectHit.GetComponent<Inspectable>() != null)
-                    {
-                        inspectedObj = objectHit.GetComponent<Inspectable>();
-                        isInspectEnabled = true;
-                    }
-                }
+                Ray ray = UiMgr.GetCrosshairRay();
 
-                //Debug.DrawRay(ray.origin, ray.direction, Color.green);
-            }
-            else
-            {
-                if (!m_IsGamePaused)
+                if (Physics.Raycast(ray, out RaycastHit hit, 1000.0f, layerMask))
                 {
-                    Time.timeScale = 1;
+                    inspectedObj = hit.collider.transform.GetComponent<Inspectable>();
+                    isInspectEnabled = inspectedObj != null;
                 }
+            }
+            else if (!m_IsGamePaused)
+            {
+                Time.timeScale = 1;
             }
 
             if (m_InspectedObj == null)
@@ -268,14 +185,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             m_InspectedObj = inspectedObj;
+        }
 
-            // TODO: Ingame command console
-            /*if (Input.GetKeyDown(KeyCode.Semicolon))
-            {
-                
-            }*/
-
-            if (Input.GetKeyDown(KeyCode.F2))
+        private void HandleDebugHotkeys()
+        {
+            if (Input.GetKeyDown(KeyCode.F2) && PlayerParty.Characters.Count > 0)
             {
                 PlayerParty.RemoveCharacter(PlayerParty.Characters[0]);
             }
@@ -286,7 +200,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 {
                     PlayerParty.RemoveCharacter(PlayerParty.Characters[0]);
                 }
-                AddRandChar();
+
+                PartyRosterService.AddRandomCharacter(PlayerParty);
             }
 
             if (Input.GetKeyDown(KeyCode.F3))
@@ -299,16 +214,35 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 TimeMgr.Instance.AddMinutes(12 * 60);
             }
 
-            if (Input.GetKeyDown(KeyCode.F5))
+            if (Input.GetKeyDown(KeyCode.F5) && PlayerParty.ActiveCharacter != null)
             {
-                if (PlayerParty.ActiveCharacter != null)
+                PlayerParty.ActiveCharacter.Inventory.AddItem(538);
+            }
+
+            if (Input.GetKeyDown(KeyCode.F6) && PlayerParty.ActiveCharacter != null)
+            {
+                var randomEntry = DbMgr.Instance.ItemDb.Data.ElementAt(
+                    UnityEngine.Random.Range(0, DbMgr.Instance.ItemDb.Data.Count));
+
+                PlayerParty.ActiveCharacter.Inventory.AddItem(randomEntry.Key);
+            }
+
+            if (Input.GetKeyDown(KeyCode.F11) &&
+                PlayerParty.ActiveCharacter != null &&
+                PlayerParty.ActiveCharacter.Inventory.InventoryItems.Count > 0)
+            {
+                var randomEntry = PlayerParty.ActiveCharacter.Inventory.InventoryItems.ElementAt(
+                    UnityEngine.Random.Range(0, PlayerParty.ActiveCharacter.Inventory.InventoryItems.Count));
+
+                if (randomEntry != null)
                 {
-                    PlayerParty.ActiveCharacter.Inventory.AddItem(538);
+                    PlayerParty.ActiveCharacter.Inventory.RemoveItem(randomEntry);
                 }
             }
-            if (Input.GetKeyDown(KeyCode.F6))
+
+            if (Input.GetKeyDown(KeyCode.F8) && PlayerParty.ActiveCharacter != null)
             {
-                if (PlayerParty.ActiveCharacter != null)
+                for (int i = 0; i < 100; i++)
                 {
                     var randomEntry = DbMgr.Instance.ItemDb.Data.ElementAt(
                         UnityEngine.Random.Range(0, DbMgr.Instance.ItemDb.Data.Count));
@@ -316,162 +250,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     PlayerParty.ActiveCharacter.Inventory.AddItem(randomEntry.Key);
                 }
             }
-            if (Input.GetKeyDown(KeyCode.F11))
-            {
-                if (PlayerParty.ActiveCharacter != null)
-                {
-                    var randomEntry = PlayerParty.ActiveCharacter.Inventory.InventoryItems.ElementAt(
-                        UnityEngine.Random.Range(0, PlayerParty.ActiveCharacter.Inventory.InventoryItems.Count));
-
-                    if (randomEntry != null)
-                    {
-                        PlayerParty.ActiveCharacter.Inventory.RemoveItem(randomEntry);
-                    }
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.F8))
-            {
-                if (PlayerParty.ActiveCharacter != null)
-                {
-                    for (int i = 0; i < 100; i++)
-                    {
-                        var randomEntry = DbMgr.Instance.ItemDb.Data.ElementAt(
-                        UnityEngine.Random.Range(0, DbMgr.Instance.ItemDb.Data.Count));
-
-                        PlayerParty.ActiveCharacter.Inventory.AddItem(randomEntry.Key);
-                    }
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                /*GameObject arrow = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/PlaceholderProjectile"));
-                Projectile projectile = arrow.GetComponent<Projectile>();
-
-                // Test
-                projectile.AttackInfo = new AttackInfo();
-                projectile.AttackInfo.AttackMod = 1;
-                projectile.AttackInfo.MaxDamage = 2;
-                projectile.AttackInfo.MinDamage = 1;
-                projectile.AttackInfo.DamageType = SpellElement.Physical;
-                projectile.Owner = GetParty().gameObject;
-
-                projectile.IsTargetPlayer = false;
-
-                Ray ray = UiMgr.GetCrosshairRay();
-                projectile.ShootFromParty(PlayerParty, ray.direction);*/
-            }
 
             if (Input.GetKeyDown(KeyCode.R))
             {
-                /*GameObject arrow = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/TestSpellProjectile"));
-                arrow.GetComponent<SpriteBillboardAnimator>().SetAnimation(SpriteObjectRegistry.GetSpriteObject("spell57"));
-
-                Projectile projectile = arrow.GetComponent<Projectile>();
-
-                // Test
-                projectile.AttackInfo = new AttackInfo();
-                projectile.AttackInfo.AttackMod = 1;
-                projectile.AttackInfo.MaxDamage = 2;
-                projectile.AttackInfo.MinDamage = 1;
-                projectile.AttackInfo.DamageType = SpellElement.Physical;
-                projectile.Owner = GetParty().gameObject;
-
-                projectile.IsTargetPlayer = false;
-
-                Ray ray = UiMgr.GetCrosshairRay();
-                projectile.ShootFromParty(PlayerParty, ray.direction);*/
-
                 ProjectileInfo projectileInfo = new ProjectileInfo();
                 projectileInfo.Shooter = PlayerParty.GetActiveCharacter();
                 projectileInfo.ShooterTransform = PlayerParty.transform;
-                //projectileInfo.TargetDirection = UiMgr.GetCrosshairRay().direction;
                 projectileInfo.TargetPosition = UiMgr.GetCrosshairRay().GetPoint(100.0f);
                 projectileInfo.DisplayData = DbMgr.Instance.ObjectDisplayDb.Get(6030);
                 projectileInfo.ImpactObject = DbMgr.Instance.ObjectDisplayDb.Get(6031);
 
                 Projectile.Spawn(projectileInfo);
             }
-        }
-
-        public void AddRosterNpcToParty(int rosterId)
-        {
-            if (PlayerParty.IsFull())
-            {
-                // Add to the Adventurerer's Inn
-            }
-            else
-            {
-                AddRandChar();
-            }
-        }
-
-        // This adds initial character with initial attributes and skills to party
-        // Fails if party is full
-        // TODO: Make a dedicated class for these party-invitation actions
-        public void AddChar(int characterId)
-        {
-            Character chr = new Character(characterId, PlayerParty);
-
-            StartingStatsData startingStats = DbMgr.Instance.StartingStatsDb.Get(chr.Race);
-            ClassStartingSkillsData startingSkills = DbMgr.Instance.ClassStartingSkillsDb.Get(chr.Class);
-
-            chr.Name = "Tyrkys_" + characterId;
-            chr.Level = 1;
-            chr.BirthYear = 1152; // Current is 1172
-            foreach (CharAttribute attr in Enum.GetValues(typeof(CharAttribute)))
-            {
-                if (attr == CharAttribute.None)
-                {
-                    continue;
-                }
-                chr.BaseAttributes[attr] = startingStats.DefaultStats[attr];
-            }
-
-            foreach (var skillAvailPair in startingSkills.SkillAvailabilityMap)
-            {
-                if (skillAvailPair.Value == StartingSkillAvailability.HasByDefault)
-                {
-                    chr.LearnSkill(skillAvailPair.Key);
-                    if (chr.Race == CharacterRace.Vampire)
-                    {
-                        chr.LearnSpell(SpellType.Vampire_Lifedrain);
-                    }
-                }
-            }
-            chr.LearnSkill(SkillType.FireMagic);
-            chr.LearnSkill(SkillType.WaterMagic);
-            chr.LearnSkill(SkillType.AirMagic);
-            chr.LearnSkill(SkillType.EarthMagic);
-            chr.LearnSkill(SkillType.SpiritMagic);
-            chr.LearnSkill(SkillType.MindMagic);
-            chr.LearnSkill(SkillType.BodyMagic);
-            chr.LearnSkill(SkillType.DarkMagic);
-            chr.LearnSkill(SkillType.LightMagic);
-            chr.LearnSkill(SkillType.DarkElfAbility);
-            chr.LearnSkill(SkillType.VampireAbility);
-            chr.LearnSkill(SkillType.DragonAbility);
-
-            chr.AddSKill(SkillType.Meditation, SkillMastery.Grandmaster, 20);
-
-            // Learn all spells
-            foreach (SpellType spell in Enum.GetValues(typeof(SpellType)))
-            {
-                chr.LearnSpell(spell);
-            }
-
-            //chr.LearnSkill(SkillType.Staff);
-            //chr.LearnSkill(SkillType.Blaster);
-
-            chr.CurrHitPoints = chr.GetMaxHitPoints();
-            chr.CurrSpellPoints = chr.GetMaxSpellPoints();
-            PlayerParty.AddCharacter(chr);
-        }
-
-        public void AddRandChar()
-        {
-            int characterId = UnityEngine.Random.Range(1, 28);
-            AddChar(characterId);
         }
 
         public void PressEscape()
@@ -523,17 +313,44 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         static public void ThrowItem(Transform transform, Vector3 direction, Item item)
         {
-            GameObject outdoorItem = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Objects/OutdoorItem"),
-                transform.position + (transform.forward * 2.5f), transform.rotation);
+            if (item == null)
+            {
+                Debug.LogError("Thrown item is null");
+                return;
+            }
 
-            outdoorItem.GetComponent<SpriteRenderer>().sprite = item.Data.OutdoorSprite;
-            outdoorItem.GetComponent<Lootable>().Loot.Item = item;
-            outdoorItem.GetComponent<InspectableItem>().Item = item;
+            GameObject outdoorItemPrefab = Resources.Load<GameObject>("Prefabs/Objects/OutdoorItem");
+            if (outdoorItemPrefab == null)
+            {
+                Debug.LogError("Missing prefab at Resources/Prefabs/Objects/OutdoorItem");
+                return;
+            }
+
+            GameObject outdoorItem = GameObject.Instantiate(
+                outdoorItemPrefab,
+                transform.position + (direction.normalized * 2.5f),
+                Quaternion.LookRotation(direction));
+
+            SpriteRenderer spriteRenderer = outdoorItem.GetComponent<SpriteRenderer>();
+            Lootable lootable = outdoorItem.GetComponent<Lootable>();
+            InspectableItem inspectableItem = outdoorItem.GetComponent<InspectableItem>();
+            Rigidbody rigidbody = outdoorItem.GetComponent<Rigidbody>();
+
+            if (spriteRenderer == null || lootable == null || inspectableItem == null || rigidbody == null)
+            {
+                Debug.LogError("OutdoorItem prefab is missing required components");
+                GameObject.Destroy(outdoorItem);
+                return;
+            }
+
+            spriteRenderer.sprite = item.Data.OutdoorSprite;
+            lootable.Loot.Item = item;
+            inspectableItem.Item = item;
 
             Debug.Log("[ThrowItem] Id: " + item.Data.Id);
 
-            Vector3 speed = UiMgr.GetCrosshairRay().direction * 5.0f;
-            outdoorItem.GetComponent<Rigidbody>().velocity = speed;
+            Vector3 speed = direction.normalized * 5.0f;
+            rigidbody.velocity = speed;
         }
 
         static public SpriteObject GetSpriteObject(string name, string fromSpritesheet = "")

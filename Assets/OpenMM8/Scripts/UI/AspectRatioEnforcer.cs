@@ -6,10 +6,21 @@ public class AspectRatioEnforcer : MonoBehaviour {
 
     public float m_AspectX = 4.0f;
     public float m_AspectY = 3.0f;
+    public bool m_EnforceAspect = false;
 
     // Use this for initialization
     void Start()
     {
+        Camera camera = GetComponent<Camera>();
+        if (camera == null)
+            return;
+
+        if (!m_EnforceAspect)
+        {
+            camera.rect = new Rect(0f, 0f, 1f, 1f);
+            return;
+        }
+
         // set the desired aspect ratio (the values in this example are
         // hard-coded for 16:9, but you could make them into public
         // variables instead so you can set them at design time)
@@ -22,8 +33,6 @@ public class AspectRatioEnforcer : MonoBehaviour {
         float scaleheight = windowaspect / targetaspect;
 
         // obtain camera component so we can modify its viewport
-        Camera camera = GetComponent<Camera>();
-
         // if scaled height is less than current height, add letterbox
         if (scaleheight < 1.0f)
         {

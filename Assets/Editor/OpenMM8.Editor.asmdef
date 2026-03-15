@@ -1,0 +1,20 @@
+{
+    "name": "OpenMM8.Editor",
+    "rootNamespace": "",
+    "references": [
+        "OpenMM8.Runtime",
+        "Unity.ProBuilder",
+        "Unity.ProBuilder.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

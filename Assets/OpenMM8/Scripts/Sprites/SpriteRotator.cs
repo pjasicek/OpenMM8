@@ -3,6 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Relative to camera
+public enum LookDirection
+{
+    Front,
+    FrontRight,
+    Right,
+    BackRight,
+    Back,
+    BackLeft,
+    Left,
+    FrontLeft
+};
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(SpriteBillboardAnimator))]
@@ -15,7 +27,6 @@ public class SpriteRotator : MonoBehaviour
     public float facingAngle;
 
     SpriteRenderer Renderer;
-    Animator Animator;
 
     public float RefreshRate = 50.0f;
     public bool LookLocked = false;
@@ -29,8 +40,6 @@ public class SpriteRotator : MonoBehaviour
         CameraTransform = Camera.main.transform;
 
         Renderer = GetComponent<SpriteRenderer>();
-        Animator = GetComponent<Animator>();
-        IsNpc = GetComponent<BaseNpc>() != null;
         SpriteBillboardAnimator = GetComponent<SpriteBillboardAnimator>();
 
         InvokeRepeating("AlignRotation", 0.0f, RefreshRate / 1000.0f);
@@ -128,16 +137,6 @@ public class SpriteRotator : MonoBehaviour
         // Change person to this orientation
         if (currLook != LookDir)
         {
-            if (IsNpc)
-            {
-                // Hack
-                BaseNpc.NpcState state = (BaseNpc.NpcState)Animator.GetInteger("State");
-                if (state == BaseNpc.NpcState.Attacking)
-                {
-                    return;
-                }
-            }
-
             OnLookDirectionChanged(currLook);
         }
     }

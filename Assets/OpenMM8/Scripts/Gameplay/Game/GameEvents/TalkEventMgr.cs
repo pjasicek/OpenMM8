@@ -362,7 +362,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private void AddRosterNpcToParty(int rosterId)
         {
-            GameCore.Instance.AddRosterNpcToParty(rosterId);
+            PartyRosterService.AddRosterNpcToParty(GameCore.Instance.PlayerParty, rosterId);
         }
 
         /*

@@ -1,6 +1,8 @@
 {
-    "name": "Tests",
-    "references": [],
+    "name": "OpenMM8.Tests",
+    "references": [
+        "OpenMM8.Runtime"
+    ],
     "optionalUnityReferences": [
         "TestAssemblies"
     ],
@@ -8,5 +10,11 @@
         "Editor"
     ],
     "excludePlatforms": [],
-    "allowUnsafeCode": true
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

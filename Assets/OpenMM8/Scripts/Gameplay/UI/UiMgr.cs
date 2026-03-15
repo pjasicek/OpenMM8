@@ -648,28 +648,27 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     new Vector2(Input.mousePosition.x, Input.mousePosition.y);*/
 
 
-                var rt = m_HeldItem.gameObject.GetComponent<RectTransform>();
-                Vector2 mousePixelPosUI = new Vector2();
+                RectTransform heldItemRect = m_HeldItem.GetComponent<RectTransform>();
+                RectTransform canvasRect = m_PartyCanvas.GetComponent<RectTransform>();
 
+                Vector2 screenPoint;
                 if (m_CurrUIState == null)
                 {
-                    mousePixelPosUI.Set(Constants.CrosshairScreenRelPos.x * UI_WIDTH - rt.rect.width / 2, 
-                        Constants.CrosshairScreenRelPos.y * UI_HEIGHT + rt.rect.height / 2);
+                    screenPoint = new Vector2(
+                        Constants.CrosshairScreenRelPos.x * Screen.width,
+                        Constants.CrosshairScreenRelPos.y * Screen.height);
                 }
                 else
                 {
-                    Vector2 mouseNormPos = GetMouseRatioCoord();
-                    mousePixelPosUI.Set(mouseNormPos.x * UI_WIDTH, mouseNormPos.y * UI_HEIGHT);
+                    screenPoint = Input.mousePosition;
                 }
-                
 
-                /*Vector2 outPoint;
-                RectTransformUtility.ScreenPointToLocalPointInRectangle(rt, mousePixelPosUI, null, out outPoint);
-                Debug.Log("----- Post: " + outPoint.ToString());*/
-
-                //mousePixelPosUI += outPoint;
-
-                rt.anchoredPosition = mousePixelPosUI;
+                Vector2 localPoint;
+                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                    canvasRect, screenPoint, null, out localPoint))
+                {
+                    heldItemRect.anchoredPosition = localPoint;
+                }
             }
         }
 
@@ -921,8 +920,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_HeldItem.Image.raycastTarget = false;
 
             RectTransform rt = m_HeldItem.GetComponent<RectTransform>();
-            rt.anchorMin = rt.anchorMax = Vector2.zero;
-            rt.pivot = new Vector2(0.0f, 1.0f);
+            rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f);
+            rt.pivot = new Vector2(0.5f, 0.5f);
 
             m_HeldItem.Image.sprite = item.Data.InvSprite;
             m_HeldItem.Image.SetNativeSize();

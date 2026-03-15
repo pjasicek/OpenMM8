@@ -1,4 +1,5 @@
-﻿using Assets.OpenMM8.Scripts.Gameplay.Items;
+﻿using Assets.OpenMM8.Scripts.Data;
+using Assets.OpenMM8.Scripts.Gameplay.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -1091,6 +1092,110 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     }
                 });
             }
+        }
+    }
+
+    static class PartyRosterService
+    {
+        public static Character AddCharacter(PlayerParty playerParty, int characterId)
+        {
+            Character character = CreateCharacter(playerParty, characterId);
+            playerParty.AddCharacter(character);
+            return character;
+        }
+
+        public static Character AddRandomCharacter(PlayerParty playerParty)
+        {
+            int characterId = UnityEngine.Random.Range(1, 28);
+            return AddCharacter(playerParty, characterId);
+        }
+
+        public static void AddRosterNpcToParty(PlayerParty playerParty, int rosterId)
+        {
+            if (playerParty.IsFull())
+            {
+                // Add to the Adventurerer's Inn
+                return;
+            }
+
+            // TODO: Replace this placeholder with actual roster-id based recruitment.
+            AddRandomCharacter(playerParty);
+        }
+
+        public static void SeedDebugParty(PlayerParty playerParty, IEnumerable<int> characterIds, IEnumerable<int> itemIds)
+        {
+            foreach (int characterId in characterIds)
+            {
+                AddCharacter(playerParty, characterId);
+            }
+
+            if (playerParty.Characters.Count == 0)
+            {
+                return;
+            }
+
+            foreach (int itemId in itemIds)
+            {
+                playerParty.Characters[0].Inventory.AddItem(itemId);
+            }
+        }
+
+        private static Character CreateCharacter(PlayerParty playerParty, int characterId)
+        {
+            Character character = new Character(characterId, playerParty);
+
+            StartingStatsData startingStats = DbMgr.Instance.StartingStatsDb.Get(character.Race);
+            ClassStartingSkillsData startingSkills = DbMgr.Instance.ClassStartingSkillsDb.Get(character.Class);
+
+            character.Name = "Tyrkys_" + characterId;
+            character.Level = 1;
+            character.BirthYear = 1152; // Current is 1172
+
+            foreach (CharAttribute attr in Enum.GetValues(typeof(CharAttribute)))
+            {
+                if (attr == CharAttribute.None)
+                {
+                    continue;
+                }
+
+                character.BaseAttributes[attr] = startingStats.DefaultStats[attr];
+            }
+
+            foreach (var skillAvailPair in startingSkills.SkillAvailabilityMap)
+            {
+                if (skillAvailPair.Value == StartingSkillAvailability.HasByDefault)
+                {
+                    character.LearnSkill(skillAvailPair.Key);
+                    if (character.Race == CharacterRace.Vampire)
+                    {
+                        character.LearnSpell(SpellType.Vampire_Lifedrain);
+                    }
+                }
+            }
+
+            character.LearnSkill(SkillType.FireMagic);
+            character.LearnSkill(SkillType.WaterMagic);
+            character.LearnSkill(SkillType.AirMagic);
+            character.LearnSkill(SkillType.EarthMagic);
+            character.LearnSkill(SkillType.SpiritMagic);
+            character.LearnSkill(SkillType.MindMagic);
+            character.LearnSkill(SkillType.BodyMagic);
+            character.LearnSkill(SkillType.DarkMagic);
+            character.LearnSkill(SkillType.LightMagic);
+            character.LearnSkill(SkillType.DarkElfAbility);
+            character.LearnSkill(SkillType.VampireAbility);
+            character.LearnSkill(SkillType.DragonAbility);
+
+            character.AddSKill(SkillType.Meditation, SkillMastery.Grandmaster, 20);
+
+            foreach (SpellType spell in Enum.GetValues(typeof(SpellType)))
+            {
+                character.LearnSpell(spell);
+            }
+
+            character.CurrHitPoints = character.GetMaxHitPoints();
+            character.CurrSpellPoints = character.GetMaxSpellPoints();
+            return character;
         }
     }
 }
