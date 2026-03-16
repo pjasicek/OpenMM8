@@ -298,6 +298,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             if (newHouseId == 0)
             {
                 talkProp.IsPresent = false;
+                talkProp.CurrentOffer = null;
                 talkProp.NestedTopicIds.Clear();
             }
             else

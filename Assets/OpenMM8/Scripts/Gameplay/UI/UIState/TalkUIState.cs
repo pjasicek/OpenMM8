@@ -62,6 +62,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                         TryShowNpcGreet(m_CurrTalkProp);
                         returnToGame = false;
                     }
+                    else if (m_CurrTalkProp != null && m_CurrTalkProp.CurrentOffer != null)
+                    {
+                        m_CurrTalkProp.CurrentOffer = null;
+                        RefreshNpcTalkTopics(m_CurrTalkProp);
+                        TryShowNpcGreet(m_CurrTalkProp);
+                        returnToGame = false;
+                    }
                     else if (m_CurrTalkProp != null && m_CurrTalkProp.NestedTopicIds.Count > 0)
                     {
                         // We are in the middle of conversation
@@ -284,23 +291,31 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             private void OnActiveCharacterChanged(Character chr)
             {
-                if (m_CurrTalkProp == null || m_CurrTalkProp.HouseService == null)
+                if (m_CurrTalkProp == null)
                 {
                     return;
                 }
 
-                CancelRuntimeTextInput();
-
-                if (TryShowNpcGreet(m_CurrTalkProp))
+                if (m_CurrTalkProp.HouseService != null)
                 {
-                    m_NpcTalkUI.NpcTalkObj.SetActive(true);
-                }
-                else
-                {
-                    m_NpcTalkUI.NpcTalkObj.SetActive(false);
-                }
+                    CancelRuntimeTextInput();
 
-                RefreshNpcTalkTopics(m_CurrTalkProp);
+                    if (TryShowNpcGreet(m_CurrTalkProp))
+                    {
+                        m_NpcTalkUI.NpcTalkObj.SetActive(true);
+                    }
+                    else
+                    {
+                        m_NpcTalkUI.NpcTalkObj.SetActive(false);
+                    }
+
+                    RefreshNpcTalkTopics(m_CurrTalkProp);
+                }
+                else if (m_CurrTalkProp.CurrentOffer != null)
+                {
+                    TryShowNpcGreet(m_CurrTalkProp);
+                    RefreshNpcTalkTopics(m_CurrTalkProp);
+                }
             }
 
             private void UpdateNpcTalkText(string talkText)
@@ -379,6 +394,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     {
                         talkText = TalkEventMgr.Instance.GetHouseServiceGreeting(talkProp);
                     }
+                    else if (talkProp.CurrentOffer != null)
+                    {
+                        talkText = TalkEventMgr.Instance.GetOfferMessageText(talkProp);
+                    }
                     else if (talkProp.IsNpcNews)
                     {
                         talkText = TalkEventMgr.GetCurrentNpcNews(talkProp);
@@ -409,6 +428,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 {
                     runtimeOptions = TalkEventMgr.Instance.GetHouseServiceOptions(talkProp);
                     currentTopics = null;
+                }
+                else if (talkProp.CurrentOffer != null)
+                {
+                    currentTopics = talkProp.CurrentOffer.TopicIds;
                 }
                 else if (talkProp.NestedTopicIds.Count == 0)
                 {
@@ -473,7 +496,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                             continue;
                         }
 
-                        string topic = DbMgr.Instance.NpcTopicDb.Get(topicId).Topic;
+                        string topic = TalkEventMgr.Instance.GetTopicButtonText(topicId, talkProp);
 
                         GameObject topicButton = m_NpcTalkUI.TopicButtonList[buttIdx];
 

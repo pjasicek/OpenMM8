@@ -138,7 +138,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 houseData.TypeName == "Self Guild";
 
             int baseTeachPrice = (int)((isGuild ? houseData.PriceMultiplier : houseData.SkillPriceMultiplier) * 500.0f);
-            int effectivePrice = ApplyMerchantDiscount(character, baseTeachPrice);
+            int effectivePrice = GameMechanics.ApplyMerchantDiscount(character, baseTeachPrice);
             int minimumPrice = baseTeachPrice / 3;
 
             return Math.Max(effectivePrice, minimumPrice);
@@ -171,52 +171,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return party.GetActiveCharacter() ?? party.GetFirstCharacter();
         }
 
-        private static int ApplyMerchantDiscount(Character character, int goldAmount)
-        {
-            return goldAmount * (100 - GetMerchantModifier(character)) / 100;
-        }
-
-        private static int GetMerchantModifier(Character character)
-        {
-            if (character == null || !character.HasSkill(SkillType.Merchant))
-            {
-                return 0;
-            }
-
-            int level = character.GetActualSkillLevel(SkillType.Merchant);
-            SkillMastery mastery = character.GetSkillMastery(SkillType.Merchant);
-
-            if (mastery == SkillMastery.Grandmaster)
-            {
-                return 100;
-            }
-
-            int multiplier = 0;
-            switch (mastery)
-            {
-                case SkillMastery.Normal:
-                    multiplier = 1;
-                    break;
-                case SkillMastery.Expert:
-                    multiplier = 2;
-                    break;
-                case SkillMastery.Master:
-                    multiplier = 3;
-                    break;
-                case SkillMastery.Grandmaster:
-                    multiplier = 5;
-                    break;
-            }
-
-            int bonus = multiplier * level;
-            if (bonus == 0)
-            {
-                return 0;
-            }
-
-            return Math.Min(bonus + 7, 100);
-        }
-
         private static List<HouseSkillOffer> CreateSkillOffers(IEnumerable<SkillType> skillTypes)
         {
             List<HouseSkillOffer> offers = new List<HouseSkillOffer>();
@@ -233,7 +187,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return offers;
         }
 
-        private static string SkillTypeToText(SkillType skillType)
+        public static string SkillTypeToText(SkillType skillType)
         {
             switch (skillType)
             {
@@ -246,8 +200,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 case SkillType.Bow: return "Bow";
                 case SkillType.ChainArmor: return "Chain";
                 case SkillType.DarkMagic: return "Dark Magic";
+                case SkillType.DarkElfAbility: return "Dark Elf";
                 case SkillType.Dagger: return "Dagger";
                 case SkillType.DisarmTraps: return "Disarm Traps";
+                case SkillType.DragonAbility: return "Dragon";
                 case SkillType.Dodging: return "Dodge";
                 case SkillType.EarthMagic: return "Earth Magic";
                 case SkillType.FireMagic: return "Fire Magic";
@@ -263,6 +219,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 case SkillType.Perception: return "Perception";
                 case SkillType.PlateArmor: return "Plate";
                 case SkillType.RepairItem: return "Repair";
+                case SkillType.Regeneration: return "Regeneration";
                 case SkillType.Shield: return "Shield";
                 case SkillType.Spear: return "Spear";
                 case SkillType.SpiritMagic: return "Spirit Magic";
@@ -270,6 +227,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 case SkillType.Stealing: return "Stealing";
                 case SkillType.Sword: return "Sword";
                 case SkillType.Unarmed: return "Unarmed";
+                case SkillType.VampireAbility: return "Vampire";
                 case SkillType.WaterMagic: return "Water Magic";
                 default: return skillType.ToString();
             }

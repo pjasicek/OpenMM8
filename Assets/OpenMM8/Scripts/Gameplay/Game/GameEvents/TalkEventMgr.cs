@@ -26,12 +26,69 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private TalkScene m_NpcTalkScene = new TalkScene();
 
+        private const int FirstMasteryTeacherTopicId = 300;
+        private const int LastMasteryTeacherTopicId = 416;
+        private const int MasteryTeacherLearnTopicId = 10010;
+
+        private static readonly SkillType[] MasteryTeacherSkillMap =
+        {
+            SkillType.Staff,
+            SkillType.Sword,
+            SkillType.Dagger,
+            SkillType.Axe,
+            SkillType.Spear,
+            SkillType.Bow,
+            SkillType.Mace,
+            SkillType.Blaster,
+            SkillType.Shield,
+            SkillType.LeatherArmor,
+            SkillType.ChainArmor,
+            SkillType.PlateArmor,
+            SkillType.FireMagic,
+            SkillType.AirMagic,
+            SkillType.WaterMagic,
+            SkillType.EarthMagic,
+            SkillType.SpiritMagic,
+            SkillType.MindMagic,
+            SkillType.BodyMagic,
+            SkillType.LightMagic,
+            SkillType.DarkMagic,
+            SkillType.DarkElfAbility,
+            SkillType.VampireAbility,
+            SkillType.DragonAbility,
+            SkillType.IdentifyItem,
+            SkillType.Merchant,
+            SkillType.RepairItem,
+            SkillType.Bodybuilding,
+            SkillType.Meditation,
+            SkillType.Perception,
+            SkillType.Regeneration,
+            SkillType.DisarmTraps,
+            SkillType.Dodging,
+            SkillType.Unarmed,
+            SkillType.IdentifyMonster,
+            SkillType.Armsmaster,
+            SkillType.Stealing,
+            SkillType.Alchemy,
+            SkillType.Learning
+        };
+
         // Event processing
         internal class RosterInvite
         {
             public int CharRosterId;
             public int PartyFullResponseId;
             public List<int> YesNoTopics;
+        }
+
+        private class MasteryTeacherEvaluation
+        {
+            public string DisplayText;
+            public bool IsApproved;
+            public SkillType SkillType;
+            public SkillMastery TargetMastery;
+            public int Cost;
+            public Character Character;
         }
 
         private RosterInvite m_RosterInvite = null;
@@ -134,8 +191,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 Topic = "No"
             };
 
+            NpcTopicData masteryTeacherLearn = new NpcTopicData()
+            {
+                Id = MasteryTeacherLearnTopicId,
+                TextId = 0,
+                Topic = "Learn"
+            };
+
             DbMgr.Instance.NpcTopicDb.Data.Add(yes.Id, yes);
             DbMgr.Instance.NpcTopicDb.Data.Add(no.Id, no);
+            DbMgr.Instance.NpcTopicDb.Data.Add(masteryTeacherLearn.Id, masteryTeacherLearn);
 
             return true;
         }
@@ -262,7 +327,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public bool HasGreetText(NpcTalkProperties talkProp)
         {
             return talkProp != null &&
-                (talkProp.GreetId > 0 || talkProp.HouseService != null);
+                (talkProp.GreetId > 0 || talkProp.HouseService != null || talkProp.CurrentOffer != null);
         }
 
         //=================================== Events ===================================
@@ -305,6 +370,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             GameEvents.InvokeEvent_OnNpcTalkTextChanged(message);
         }
 
+        private void SetMessage(string message)
+        {
+            GameEvents.InvokeEvent_OnNpcTalkTextChanged(message ?? string.Empty);
+        }
+
         private void SetNpcTopic(int npcId, int topicIdx, int setTopicId)
         {
             NpcTalkProperties talkProp = m_TalkPropertiesMap[npcId];
@@ -330,6 +400,17 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             GameEvents.InvokeEvent_OnNpcTalkTextChanged(greet);
         }
 
+        public string GetTopicButtonText(int topicId, NpcTalkProperties talkProp)
+        {
+            if (topicId == MasteryTeacherLearnTopicId)
+            {
+                return GetMasteryTeacherOfferText(talkProp);
+            }
+
+            NpcTopicData topicData = DbMgr.Instance.NpcTopicDb.Get(topicId);
+            return topicData != null ? topicData.Topic : string.Empty;
+        }
+
         public string GetHouseServiceGreeting(NpcTalkProperties talkProp)
         {
             if (talkProp == null || talkProp.HouseService == null)
@@ -338,6 +419,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             return talkProp.HouseService.GetGreeting(CreateHouseServiceContext(talkProp));
+        }
+
+        public string GetOfferMessageText(NpcTalkProperties talkProp)
+        {
+            if (talkProp == null || talkProp.CurrentOffer == null || talkProp.CurrentOffer.MessageTextId <= 0)
+            {
+                return string.Empty;
+            }
+
+            return DbMgr.Instance.NpcTextDb.Get(talkProp.CurrentOffer.MessageTextId)?.Text ?? string.Empty;
         }
 
         public List<HouseDialogueOption> GetHouseServiceOptions(NpcTalkProperties talkProp)
@@ -684,6 +775,20 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private void ProcessTopicClickEvent(int topicId, NpcTalkProperties talkProp)
         {
             Debug.Log("[" + GetType().Name + "] " + talkProp.Name + ": Processing TalkEvent: #" + topicId);
+
+            if (topicId == MasteryTeacherLearnTopicId)
+            {
+                ProcessMasteryTeacherLearnTopic(talkProp);
+                GameEvents.InvokeEvent_OnRefreshNpcTalk(talkProp);
+                return;
+            }
+
+            if (IsMasteryTeacherTopic(topicId))
+            {
+                OpenMasteryTeacherOffer(topicId, talkProp);
+                GameEvents.InvokeEvent_OnRefreshNpcTalk(talkProp);
+                return;
+            }
 
             switch (topicId)
             {
@@ -2612,5 +2717,462 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             // TODO: Better name. It did not need to change, but we want to refresh it.
             GameEvents.InvokeEvent_OnRefreshNpcTalk(talkProp);
         }
+
+        private void OpenMasteryTeacherOffer(int topicId, NpcTalkProperties talkProp)
+        {
+            if (talkProp == null)
+            {
+                return;
+            }
+
+            NpcTopicData topicData = DbMgr.Instance.NpcTopicDb.Get(topicId);
+            talkProp.CurrentOffer = new NpcDialogueOffer()
+            {
+                OfferType = NpcDialogueOfferType.MasteryTeacher,
+                SourceTopicId = topicId,
+                MessageTextId = topicData != null ? topicData.TextId : 0,
+                TopicIds = new List<int>() { MasteryTeacherLearnTopicId }
+            };
+
+            if (topicData != null && topicData.TextId > 0)
+            {
+                SetMessage(topicData.TextId);
+            }
+        }
+
+        private void ProcessMasteryTeacherLearnTopic(NpcTalkProperties talkProp)
+        {
+            if (talkProp == null || talkProp.CurrentOffer == null ||
+                talkProp.CurrentOffer.OfferType != NpcDialogueOfferType.MasteryTeacher ||
+                talkProp.CurrentOffer.SourceTopicId == 0)
+            {
+                return;
+            }
+
+            MasteryTeacherEvaluation evaluation = EvaluateMasteryTeacherTopic(talkProp.CurrentOffer.SourceTopicId);
+            if (evaluation == null || !evaluation.IsApproved)
+            {
+                return;
+            }
+
+            PlayerParty party = GameCore.GetParty();
+            if (party == null || evaluation.Character == null)
+            {
+                return;
+            }
+
+            party.AddGold(-evaluation.Cost);
+            SoundMgr.PlaySoundById(SoundType.FoundLoot, party.PlayerAudioSource);
+            evaluation.Character.SetSkillMastery(evaluation.SkillType, evaluation.TargetMastery);
+            evaluation.Character.PlayEventReaction(CharacterReaction.SkillMasteryIncreased);
+            talkProp.CurrentOffer = null;
+
+            SetMessage(
+                evaluation.Character.Name + " is now a " +
+                MasteryToText(evaluation.TargetMastery) + " in " +
+                HouseSkillTeaching.SkillTypeToText(evaluation.SkillType) + ".");
+        }
+
+        public string GetMasteryTeacherOfferText(NpcTalkProperties talkProp)
+        {
+            if (talkProp == null || talkProp.CurrentOffer == null ||
+                talkProp.CurrentOffer.OfferType != NpcDialogueOfferType.MasteryTeacher ||
+                talkProp.CurrentOffer.SourceTopicId == 0)
+            {
+                return string.Empty;
+            }
+
+            MasteryTeacherEvaluation evaluation = EvaluateMasteryTeacherTopic(talkProp.CurrentOffer.SourceTopicId);
+            return evaluation != null ? evaluation.DisplayText : string.Empty;
+        }
+
+        private MasteryTeacherEvaluation EvaluateMasteryTeacherTopic(int topicId)
+        {
+            Character character = GetActiveTalkCharacter();
+            if (character == null)
+            {
+                return null;
+            }
+
+            if (!TryDecodeMasteryTeacherTopic(topicId, out SkillType skillType, out SkillMastery targetMastery))
+            {
+                return null;
+            }
+
+            MasteryTeacherEvaluation evaluation = new MasteryTeacherEvaluation()
+            {
+                Character = character,
+                SkillType = skillType,
+                TargetMastery = targetMastery,
+                Cost = GetMasteryTeacherCost(skillType, targetMastery)
+            };
+
+            SkillMastery currentClassCap = GetClassSkillCap(character.Class, skillType);
+            if (currentClassCap < targetMastery)
+            {
+                CharacterClass nextPromotionClass = GameMechanics.GetNextClassPromotion(character.Class);
+                SkillMastery nextClassCap = GetClassSkillCap(nextPromotionClass, skillType);
+                if (nextPromotionClass != CharacterClass.None && nextClassCap >= targetMastery)
+                {
+                    evaluation.DisplayText =
+                        "You have to be promoted to " + CharacterClassToText(nextPromotionClass) +
+                        " to learn this skill.";
+                    return evaluation;
+                }
+
+                evaluation.DisplayText =
+                    "This skill level can not be learned by the " +
+                    CharacterClassToText(character.Class) + " class.";
+                return evaluation;
+            }
+
+            if (!character.CanAct())
+            {
+                evaluation.DisplayText = GetNpcText(123);
+                return evaluation;
+            }
+
+            if (!character.HasSkill(skillType))
+            {
+                evaluation.DisplayText = GetNpcText(132);
+                return evaluation;
+            }
+
+            Skill skill = character.Skills[skillType];
+            if (skill.Mastery >= targetMastery)
+            {
+                evaluation.DisplayText = GetNpcText(GetAlreadyHasMasteryTextId(targetMastery));
+                return evaluation;
+            }
+
+            if (!CanMeetMasteryTeacherRequirements(character, skillType, targetMastery, skill))
+            {
+                evaluation.DisplayText = GetNpcText(128);
+                return evaluation;
+            }
+
+            PlayerParty party = GameCore.GetParty();
+            if (party == null || evaluation.Cost > party.Gold)
+            {
+                evaluation.DisplayText = GetNpcText(125);
+                return evaluation;
+            }
+
+            evaluation.IsApproved = true;
+            evaluation.DisplayText =
+                "Become " + MasteryToText(targetMastery) + " in " +
+                HouseSkillTeaching.SkillTypeToText(skillType) + " for " +
+                evaluation.Cost + " gold";
+            return evaluation;
+        }
+
+        private bool CanMeetMasteryTeacherRequirements(
+            Character character,
+            SkillType skillType,
+            SkillMastery targetMastery,
+            Skill skill)
+        {
+            switch (targetMastery)
+            {
+                case SkillMastery.Expert:
+                    return skill.Level >= 4;
+
+                case SkillMastery.Master:
+                    if (skill.Level < 7 || skill.Mastery != SkillMastery.Expert)
+                    {
+                        return false;
+                    }
+
+                    switch (skillType)
+                    {
+                        case SkillType.Merchant:
+                            return character.GetBasePersonality() >= 50;
+                        case SkillType.Bodybuilding:
+                            return character.GetBaseEndurance() >= 50;
+                        case SkillType.Learning:
+                            return character.GetBaseIntellect() >= 50;
+                        default:
+                            return true;
+                    }
+
+                case SkillMastery.Grandmaster:
+                    if (skill.Level < 10 || skill.Mastery != SkillMastery.Master)
+                    {
+                        return false;
+                    }
+
+                    switch (skillType)
+                    {
+                        case SkillType.Dodging:
+                            return character.HasSkill(SkillType.Unarmed) &&
+                                character.Skills[SkillType.Unarmed].Level >= 10;
+                        case SkillType.Unarmed:
+                            return character.HasSkill(SkillType.Dodging) &&
+                                character.Skills[SkillType.Dodging].Level >= 10;
+                        default:
+                            return true;
+                    }
+            }
+
+            return false;
+        }
+
+        private Character GetActiveTalkCharacter()
+        {
+            PlayerParty party = GameCore.GetParty();
+            if (party == null)
+            {
+                return null;
+            }
+
+            return party.GetActiveCharacter() ?? party.GetFirstCharacter();
+        }
+
+        private static bool IsMasteryTeacherTopic(int topicId)
+        {
+            return topicId >= FirstMasteryTeacherTopicId && topicId <= LastMasteryTeacherTopicId;
+        }
+
+        private static bool TryDecodeMasteryTeacherTopic(int topicId, out SkillType skillType, out SkillMastery targetMastery)
+        {
+            skillType = SkillType.None;
+            targetMastery = SkillMastery.None;
+
+            if (!IsMasteryTeacherTopic(topicId))
+            {
+                return false;
+            }
+
+            int zeroBased = topicId - FirstMasteryTeacherTopicId;
+            int skillIndex = zeroBased / 3;
+            if (skillIndex < 0 || skillIndex >= MasteryTeacherSkillMap.Length)
+            {
+                return false;
+            }
+
+            skillType = MasteryTeacherSkillMap[skillIndex];
+            targetMastery = (SkillMastery)((zeroBased % 3) + 2);
+            return true;
+        }
+
+        private static int GetAlreadyHasMasteryTextId(SkillMastery mastery)
+        {
+            switch (mastery)
+            {
+                case SkillMastery.Expert: return 129;
+                case SkillMastery.Master: return 130;
+                case SkillMastery.Grandmaster: return 131;
+                default: return 128;
+            }
+        }
+
+        private static int GetMasteryTeacherCost(SkillType skillType, SkillMastery targetMastery)
+        {
+            switch (targetMastery)
+            {
+                case SkillMastery.Expert:
+                    switch (skillType)
+                    {
+                        case SkillType.Shield:
+                        case SkillType.LeatherArmor:
+                        case SkillType.ChainArmor:
+                        case SkillType.PlateArmor:
+                        case SkillType.FireMagic:
+                        case SkillType.AirMagic:
+                        case SkillType.WaterMagic:
+                        case SkillType.EarthMagic:
+                        case SkillType.SpiritMagic:
+                        case SkillType.MindMagic:
+                        case SkillType.BodyMagic:
+                        case SkillType.Merchant:
+                        case SkillType.Dodging:
+                        case SkillType.Unarmed:
+                        case SkillType.Armsmaster:
+                        case SkillType.Learning:
+                        case SkillType.Staff:
+                        case SkillType.Sword:
+                        case SkillType.Dagger:
+                        case SkillType.Axe:
+                        case SkillType.Spear:
+                        case SkillType.Bow:
+                        case SkillType.Mace:
+                        case SkillType.LightMagic:
+                        case SkillType.DarkMagic:
+                            return skillType == SkillType.Shield ||
+                                skillType == SkillType.LeatherArmor ||
+                                skillType == SkillType.ChainArmor ||
+                                skillType == SkillType.PlateArmor ||
+                                skillType == SkillType.FireMagic ||
+                                skillType == SkillType.AirMagic ||
+                                skillType == SkillType.WaterMagic ||
+                                skillType == SkillType.EarthMagic ||
+                                skillType == SkillType.SpiritMagic ||
+                                skillType == SkillType.MindMagic ||
+                                skillType == SkillType.BodyMagic
+                                ? 1000
+                                : 2000;
+                        case SkillType.IdentifyItem:
+                        case SkillType.RepairItem:
+                        case SkillType.Bodybuilding:
+                        case SkillType.Meditation:
+                        case SkillType.Perception:
+                        case SkillType.Regeneration:
+                        case SkillType.DisarmTraps:
+                        case SkillType.IdentifyMonster:
+                        case SkillType.Stealing:
+                        case SkillType.Alchemy:
+                        case SkillType.DarkElfAbility:
+                        case SkillType.VampireAbility:
+                        case SkillType.DragonAbility:
+                            return 500;
+                        default:
+                            return 0;
+                    }
+
+                case SkillMastery.Master:
+                    switch (skillType)
+                    {
+                        case SkillType.Shield:
+                        case SkillType.LeatherArmor:
+                        case SkillType.ChainArmor:
+                        case SkillType.PlateArmor:
+                            return 3000;
+                        case SkillType.FireMagic:
+                        case SkillType.AirMagic:
+                        case SkillType.WaterMagic:
+                        case SkillType.EarthMagic:
+                        case SkillType.SpiritMagic:
+                        case SkillType.MindMagic:
+                        case SkillType.BodyMagic:
+                            return 4000;
+                        case SkillType.Staff:
+                        case SkillType.Sword:
+                        case SkillType.Dagger:
+                        case SkillType.Axe:
+                        case SkillType.Spear:
+                        case SkillType.Bow:
+                        case SkillType.Mace:
+                        case SkillType.LightMagic:
+                        case SkillType.DarkMagic:
+                        case SkillType.Merchant:
+                        case SkillType.Dodging:
+                        case SkillType.Unarmed:
+                        case SkillType.Armsmaster:
+                        case SkillType.Learning:
+                            return 5000;
+                        case SkillType.IdentifyItem:
+                        case SkillType.RepairItem:
+                        case SkillType.Bodybuilding:
+                        case SkillType.Meditation:
+                        case SkillType.Perception:
+                        case SkillType.Regeneration:
+                        case SkillType.DisarmTraps:
+                        case SkillType.IdentifyMonster:
+                        case SkillType.Stealing:
+                        case SkillType.Alchemy:
+                        case SkillType.DarkElfAbility:
+                        case SkillType.VampireAbility:
+                        case SkillType.DragonAbility:
+                            return 2500;
+                        default:
+                            return 0;
+                    }
+
+                case SkillMastery.Grandmaster:
+                    switch (skillType)
+                    {
+                        case SkillType.Shield:
+                        case SkillType.LeatherArmor:
+                        case SkillType.ChainArmor:
+                        case SkillType.PlateArmor:
+                            return 7000;
+                        case SkillType.Staff:
+                        case SkillType.Sword:
+                        case SkillType.Dagger:
+                        case SkillType.Axe:
+                        case SkillType.Spear:
+                        case SkillType.Bow:
+                        case SkillType.Mace:
+                        case SkillType.FireMagic:
+                        case SkillType.AirMagic:
+                        case SkillType.WaterMagic:
+                        case SkillType.EarthMagic:
+                        case SkillType.SpiritMagic:
+                        case SkillType.MindMagic:
+                        case SkillType.BodyMagic:
+                        case SkillType.LightMagic:
+                        case SkillType.DarkMagic:
+                        case SkillType.Merchant:
+                        case SkillType.Dodging:
+                        case SkillType.Unarmed:
+                        case SkillType.Armsmaster:
+                        case SkillType.Learning:
+                            return 8000;
+                        case SkillType.IdentifyItem:
+                        case SkillType.RepairItem:
+                        case SkillType.Bodybuilding:
+                        case SkillType.Meditation:
+                        case SkillType.Perception:
+                        case SkillType.Regeneration:
+                        case SkillType.DisarmTraps:
+                        case SkillType.IdentifyMonster:
+                        case SkillType.Stealing:
+                        case SkillType.Alchemy:
+                        case SkillType.DarkElfAbility:
+                        case SkillType.VampireAbility:
+                        case SkillType.DragonAbility:
+                            return 6000;
+                        default:
+                            return 0;
+                    }
+            }
+
+            return 0;
+        }
+
+        private static SkillMastery GetClassSkillCap(CharacterClass classType, SkillType skillType)
+        {
+            if (classType == CharacterClass.None)
+            {
+                return SkillMastery.None;
+            }
+
+            ClassSkillsData classSkills = DbMgr.Instance.ClassSkillsDb.Get(classType);
+            if (classSkills == null || !classSkills.SkillTypeToSkillMasteryMap.ContainsKey(skillType))
+            {
+                return SkillMastery.None;
+            }
+
+            return classSkills.SkillTypeToSkillMasteryMap[skillType];
+        }
+
+        private static string GetNpcText(int textId)
+        {
+            NpcTextData textData = DbMgr.Instance.NpcTextDb.Get(textId);
+            return textData != null ? textData.Text : string.Empty;
+        }
+
+        private static string MasteryToText(SkillMastery mastery)
+        {
+            switch (mastery)
+            {
+                case SkillMastery.Expert: return "Expert";
+                case SkillMastery.Master: return "Master";
+                case SkillMastery.Grandmaster: return "Grandmaster";
+                default: return mastery.ToString();
+            }
+        }
+
+        private static string CharacterClassToText(CharacterClass characterClass)
+        {
+            switch (characterClass)
+            {
+                case CharacterClass.GreatWyrm: return "Great Wyrm";
+                case CharacterClass.MinotaurLord: return "Minotaur Lord";
+                case CharacterClass.WarTroll: return "War Troll";
+                default: return characterClass.ToString();
+            }
+        }
+
     }
 }

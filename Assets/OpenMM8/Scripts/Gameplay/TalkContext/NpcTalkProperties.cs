@@ -6,6 +6,21 @@ using UnityEngine;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
+    public enum NpcDialogueOfferType
+    {
+        None = 0,
+        MasteryTeacher = 1
+    }
+
+    [System.Serializable]
+    public class NpcDialogueOffer
+    {
+        public NpcDialogueOfferType OfferType = NpcDialogueOfferType.None;
+        public int SourceTopicId = 0;
+        public int MessageTextId = 0;
+        public List<int> TopicIds = new List<int>();
+    }
+
     [System.Serializable]
     public class NpcTalkProperties
     {
@@ -28,6 +43,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public bool IsVisited = false;
         public Stack<List<int>> NestedTopicIds = new Stack<List<int>>();
         public Stack<string> RuntimeMenuIds = new Stack<string>();
+        public NpcDialogueOffer CurrentOffer;
 
         [NonSerialized]
         public IHouseService HouseService;

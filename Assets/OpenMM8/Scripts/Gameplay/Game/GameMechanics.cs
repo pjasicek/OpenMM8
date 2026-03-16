@@ -254,6 +254,50 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return tier == 3 ? 3 : tier + 1;
         }
 
+        static public int ApplyMerchantDiscount(Character character, int goldAmount)
+        {
+            return goldAmount * (100 - GetMerchantModifier(character)) / 100;
+        }
+
+        static public int GetMerchantModifier(Character character)
+        {
+            if (character == null || !character.HasSkill(SkillType.Merchant))
+            {
+                return 0;
+            }
+
+            int level = character.GetActualSkillLevel(SkillType.Merchant);
+            SkillMastery mastery = character.GetSkillMastery(SkillType.Merchant);
+            if (mastery == SkillMastery.Grandmaster)
+            {
+                return 100;
+            }
+
+            int multiplier = 0;
+            switch (mastery)
+            {
+                case SkillMastery.Normal:
+                    multiplier = 1;
+                    break;
+                case SkillMastery.Expert:
+                    multiplier = 2;
+                    break;
+                case SkillMastery.Master:
+                    multiplier = 3;
+                    break;
+                case SkillMastery.Grandmaster:
+                    multiplier = 5;
+                    break;
+            }
+
+            if (multiplier == 0)
+            {
+                return 0;
+            }
+
+            return Math.Min(multiplier * level + 7, 100);
+        }
+
         /*static public SkillGroupType GetSkillGroup(SkillType skillType)
         {
             switch (skillType)

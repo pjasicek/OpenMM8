@@ -236,7 +236,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             float houseMultiplier = houseData.PriceMultiplier;
             int basePrice = (int)(houseMultiplier * houseMultiplier / 10.0f);
-            int effectivePrice = ApplyMerchantDiscount(character, basePrice);
+            int effectivePrice = GameMechanics.ApplyMerchantDiscount(character, basePrice);
             int minimumPrice = basePrice / 3;
 
             if (effectivePrice < minimumPrice)
@@ -256,7 +256,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             float houseMultiplier = houseData.PriceMultiplier;
             int basePrice = (int)(houseMultiplier * houseMultiplier * houseMultiplier / 100.0f);
-            int effectivePrice = ApplyMerchantDiscount(character, basePrice);
+            int effectivePrice = GameMechanics.ApplyMerchantDiscount(character, basePrice);
             int minimumPrice = basePrice / 3;
 
             if (effectivePrice < minimumPrice)
@@ -275,50 +275,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
 
             return (int)houseData.PriceMultiplier;
-        }
-
-        private static int ApplyMerchantDiscount(Character character, int goldAmount)
-        {
-            return goldAmount * (100 - GetMerchantModifier(character)) / 100;
-        }
-
-        private static int GetMerchantModifier(Character character)
-        {
-            if (character == null || !character.HasSkill(SkillType.Merchant))
-            {
-                return 0;
-            }
-
-            int level = character.GetActualSkillLevel(SkillType.Merchant);
-            SkillMastery mastery = character.GetSkillMastery(SkillType.Merchant);
-            if (mastery == SkillMastery.Grandmaster)
-            {
-                return 100;
-            }
-
-            int multiplier = 0;
-            switch (mastery)
-            {
-                case SkillMastery.Normal:
-                    multiplier = 1;
-                    break;
-                case SkillMastery.Expert:
-                    multiplier = 2;
-                    break;
-                case SkillMastery.Master:
-                    multiplier = 3;
-                    break;
-                case SkillMastery.Grandmaster:
-                    multiplier = 5;
-                    break;
-            }
-
-            if (multiplier == 0)
-            {
-                return 0;
-            }
-
-            return System.Math.Min(multiplier * level + 7, 100);
         }
 
         private static Character GetSelectedCharacter()

@@ -89,7 +89,7 @@ public enum CharacterReaction
     ShopHealedInTemple = 82,
     ShopDonatedInTemple = 83,
     GoodDayHouse = 84,
-    JoinedGuild_1 = 85,
+    SkillMasteryIncreased = 85,
     JoinedGuild_2 = 86,
     TrainedToNextLevel = 87,
     Unknown_88 = 88,
@@ -232,6 +232,7 @@ public enum CharacterSpeech
     SkillLearned = 78,
     TempleHeal = 82,
     TempleDonate = 83,
+    SkillMasteryIncreased = 85,
     LevelUp = 87
 }
 

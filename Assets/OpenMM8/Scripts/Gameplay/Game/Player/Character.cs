@@ -1932,6 +1932,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 case CharacterSpeech.TempleDonate:
                     SoundMgr.PlayRandomSound(VoiceData.Thanks);
                     break;
+                case CharacterSpeech.SkillMasteryIncreased:
+                    SoundMgr.PlayRandomSound(VoiceData.LearnSpell);
+                    break;
                 case CharacterSpeech.LevelUp:
                     SoundMgr.PlayRandomSound(VoiceData.Win);
                     break;
