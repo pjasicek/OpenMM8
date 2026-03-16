@@ -242,6 +242,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return currLevel * 1000;
         }
 
+        static public int GetClassTier(CharacterClass characterClass)
+        {
+            int classId = (int)characterClass;
+            if (classId < 0)
+            {
+                return 1;
+            }
+
+            int tier = classId & 3;
+            return tier == 3 ? 3 : tier + 1;
+        }
+
         /*static public SkillGroupType GetSkillGroup(SkillType skillType)
         {
             switch (skillType)

@@ -131,6 +131,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             // 6) 
 
             HandleGlobalUiInput();
+            HandleUiTextInput();
             UpdateInspectionState();
 
             if (enableDebugHotkeys)
@@ -148,6 +149,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     UiMgr.Instance.HandleButtonDown(button);
                 }
             }
+        }
+
+        private void HandleUiTextInput()
+        {
+            if (string.IsNullOrEmpty(Input.inputString))
+            {
+                return;
+            }
+
+            UiMgr.Instance.HandleTextInput(Input.inputString);
         }
 
         private void UpdateInspectionState()

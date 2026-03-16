@@ -20,6 +20,7 @@ public class VideoScene : MonoBehaviour
 
     private AudioSource m_AudioSource;
     private RawImage m_Image;
+    private bool m_IsInitialized;
 
     private VideoPlayer CreateVideoPlayer()
     {
@@ -43,12 +44,21 @@ public class VideoScene : MonoBehaviour
         return plr;
     }
 
-    // Use this for initialization
-    void Start()
+    private void EnsureInitialized()
     {
+        if (m_IsInitialized)
+        {
+            return;
+        }
+
         Application.runInBackground = true;
 
         m_AudioSource = GetComponent<AudioSource>();
+        if (m_AudioSource == null)
+        {
+            m_AudioSource = gameObject.AddComponent<AudioSource>();
+        }
+
         if (!UseAudioFromVideo)
         {
             m_AudioSource.clip = AudioToPlay;
@@ -90,6 +100,14 @@ public class VideoScene : MonoBehaviour
             // Pre-buffer
             //StartCoroutine(PrepareStart(m_VideoPlayer1));
         }
+
+        m_IsInitialized = true;
+    }
+
+    // Use this for initialization
+    void Start()
+    {
+        EnsureInitialized();
     }
 
     private void OnStarted1(VideoPlayer source)
@@ -114,6 +132,8 @@ public class VideoScene : MonoBehaviour
 
     public void Play()
     {
+        EnsureInitialized();
+
         // Already playing
         if (m_VideoPlayer1.isPlaying || m_VideoPlayer2.isPlaying)
         {
@@ -138,6 +158,8 @@ public class VideoScene : MonoBehaviour
 
     public void Stop()
     {
+        EnsureInitialized();
+
         m_AudioSource.Stop();
         if (m_VideoPlayer1.isPlaying)
         {

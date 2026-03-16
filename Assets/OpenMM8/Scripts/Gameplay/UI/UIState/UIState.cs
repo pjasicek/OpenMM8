@@ -16,6 +16,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             // Returns true if action was consumed
             abstract public bool OnActionPressed(string action);
 
+            // Raw text input received this frame.
+            virtual public bool OnTextInput(string input) { return false; }
+
             // Returns true if this state blocks game updates
             virtual public bool IsGameBlocking() { return true; }
         }

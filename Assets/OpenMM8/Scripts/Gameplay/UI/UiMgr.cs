@@ -812,6 +812,38 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return false;
         }
 
+        public bool HandleTextInput(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return false;
+            }
+
+            if (m_ConsoleUIState != null)
+            {
+                return false;
+            }
+
+            if (m_CurrUIState != null)
+            {
+                return m_CurrUIState.OnTextInput(input);
+            }
+
+            return false;
+        }
+
+        public bool BeginTalkTextInput(string prompt, string inputId, string initialValue = "")
+        {
+            TalkUIState talkUiState = m_CurrUIState as TalkUIState;
+            if (talkUiState == null)
+            {
+                return false;
+            }
+
+            talkUiState.BeginRuntimeTextInput(prompt, inputId, initialValue);
+            return true;
+        }
+
         public bool IsInGameBlockingState()
         {
             return m_CurrUIState != null && m_CurrUIState.IsGameBlocking();

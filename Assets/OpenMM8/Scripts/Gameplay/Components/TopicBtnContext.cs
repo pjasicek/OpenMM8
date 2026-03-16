@@ -9,4 +9,6 @@ public class TopicBtnContext : MonoBehaviour
 {
     public NpcTalkProperties TalkProperties;
     public int TopicId;
+    public bool IsRuntimeOption;
+    public string RuntimeOptionId;
 }

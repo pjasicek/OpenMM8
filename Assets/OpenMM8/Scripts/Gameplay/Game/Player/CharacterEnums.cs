@@ -228,7 +228,11 @@ public enum CharacterSpeech
     Yes = 42,
     Thanks = 43,
     SomeoneWasRude = 44,
-    Move = 47
+    Move = 47,
+    SkillLearned = 78,
+    TempleHeal = 82,
+    TempleDonate = 83,
+    LevelUp = 87
 }
 
 public enum Condition

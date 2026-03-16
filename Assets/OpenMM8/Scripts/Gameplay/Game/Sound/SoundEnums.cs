@@ -9,6 +9,7 @@ public enum SoundType
     Error = 27,
 
     FoundLoot = 133,
+    Heal = 135,
 
     TurnPageUp = 137,
     TurnPageDown = 138,

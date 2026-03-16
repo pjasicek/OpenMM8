@@ -12,6 +12,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         // If this field is > 0 then the data will be loaded from the .CSV file
         // Otherwise it has to be specified by hand
         public int NpcId = -1;
+        public int HouseId = -1;
 
         public string Name;
         public Sprite Avatar;
@@ -26,5 +27,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         // State
         public bool IsVisited = false;
         public Stack<List<int>> NestedTopicIds = new Stack<List<int>>();
+        public Stack<string> RuntimeMenuIds = new Stack<string>();
+
+        [NonSerialized]
+        public IHouseService HouseService;
     }
 }

@@ -1,5 +1,8 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
+using System.Linq;
 using Assets.OpenMM8.Scripts.Data;
+using Assets.OpenMM8.Scripts.Gameplay;
 
 namespace Assets.OpenMM8.Scripts.Gameplay.Data
 {
@@ -29,12 +32,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             data.SkillPriceMultiplier = ParseFloat(GetColumn(columns, 13));
             data.ValueC = GetColumn(columns, 14);
             data.GenerationIntervalDays = ParseInt(GetColumn(columns, 15));
+            data.TrainingMaxLevel = ParseTrainingMaxLevel(GetColumn(columns, 17));
             data.OpenFrom = ParseInt(GetColumn(columns, 18));
             data.OpenTo = ParseInt(GetColumn(columns, 19));
             data.ExitPictureId = ParseInt(GetColumn(columns, 20));
             data.ExitMapId = ParseInt(GetColumn(columns, 21));
             data.RestrictionQuestBit = ParseInt(GetColumn(columns, 22));
             data.EnterText = GetColumn(columns, 23);
+            data.OfferedSkills = ParseSkills(GetColumn(columns, 24));
 
             return data;
         }
@@ -68,6 +73,36 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
             }
 
             return 0.0f;
+        }
+
+        private static System.Collections.Generic.List<SkillType> ParseSkills(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return new System.Collections.Generic.List<SkillType>();
+            }
+
+            return value
+                .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(part => part.Trim())
+                .Where(part => Enum.TryParse(part, out SkillType parsedSkill) && parsedSkill != SkillType.None)
+                .Select(part => (SkillType)Enum.Parse(typeof(SkillType), part))
+                .ToList();
+        }
+
+        private static int ParseTrainingMaxLevel(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return 0;
+            }
+
+            if (string.Equals(value, "No Max", StringComparison.OrdinalIgnoreCase))
+            {
+                return int.MaxValue;
+            }
+
+            return ParseInt(value);
         }
     }
 }

@@ -660,6 +660,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             Debug.Log("Added gold");
             Gold += amount;
+            PartyUI?.Refresh();
 
             GameEvents.InvokeEvent_OnGoldChanged(Gold - amount, Gold, amount);
         }
@@ -667,6 +668,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public void AddFood(int amount)
         {
             Food += amount;
+            PartyUI?.Refresh();
         }
 
         public Character GetActiveOrFirstCharacter()
@@ -1104,6 +1106,17 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             Character character = CreateCharacter(playerParty, characterId);
             playerParty.AddCharacter(character);
+
+            if (characterId == 20)
+            {
+                character.Level = 1;
+                character.Experience = 20000;
+            }
+            else if (characterId == 3)
+            {
+                character.Level = 30;
+            }
+            
             return character;
         }
 

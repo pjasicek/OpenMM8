@@ -1355,7 +1355,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public bool CanTrainToNextLevel()
         {
-            return Experience > GameMechanics.GetTotalExperienceRequired(Level + 1);
+            return Experience >= GameMechanics.GetTotalExperienceRequired(Level + 1);
         }
 
         //=============================================================================================================
@@ -1922,6 +1922,18 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     break;
                 case CharacterSpeech.Move:
                     SoundMgr.PlayRandomSound(VoiceData.Move);
+                    break;
+                case CharacterSpeech.SkillLearned:
+                    SoundMgr.PlayRandomSound(VoiceData.LearnSpell);
+                    break;
+                case CharacterSpeech.TempleHeal:
+                    SoundMgr.PlayRandomSound(VoiceData.Thanks);
+                    break;
+                case CharacterSpeech.TempleDonate:
+                    SoundMgr.PlayRandomSound(VoiceData.Thanks);
+                    break;
+                case CharacterSpeech.LevelUp:
+                    SoundMgr.PlayRandomSound(VoiceData.Win);
                     break;
                 default:
                     break;

@@ -26,21 +26,43 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public class TalkUIState : UIState
         {
+            private const float RuntimeTextInputStatusDuration = 3600.0f;
+
             private Character m_TalkCharInitiator;
             private TalkScene m_TalkScene;
             private NpcTalkUI m_NpcTalkUI;
 
             private NpcTalkProperties m_CurrTalkProp;
             private VideoScene m_CurrVideoScene;
+            private bool m_IsRuntimeTextInputActive;
+            private string m_RuntimeTextInputId;
+            private string m_RuntimeTextInputPrompt;
+            private string m_RuntimeTextInputValue;
+            private int m_RuntimeTextInputOpenedFrame = -1;
 
             public override bool OnActionPressed(string action)
             {
                 if (action == "Escape")
                 {
+                    if (m_IsRuntimeTextInputActive)
+                    {
+                        CancelRuntimeTextInput();
+                        return true;
+                    }
+
                     bool returnToGame = true;
 
                     // Check if we are in the middle of conversation
-                    if (m_CurrTalkProp != null && m_CurrTalkProp.NestedTopicIds.Count > 0)
+                    if (m_CurrTalkProp != null &&
+                        m_CurrTalkProp.HouseService != null &&
+                        m_CurrTalkProp.RuntimeMenuIds.Count > 0)
+                    {
+                        m_CurrTalkProp.RuntimeMenuIds.Pop();
+                        RefreshNpcTalkTopics(m_CurrTalkProp);
+                        TryShowNpcGreet(m_CurrTalkProp);
+                        returnToGame = false;
+                    }
+                    else if (m_CurrTalkProp != null && m_CurrTalkProp.NestedTopicIds.Count > 0)
                     {
                         // We are in the middle of conversation
                         m_CurrTalkProp.NestedTopicIds.Pop();
@@ -71,13 +93,71 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                     if (returnToGame)
                     {
+                        if (m_TalkScene != null && m_TalkScene.IsBuilding)
+                        {
+                            TalkEventMgr.Instance.OnLeaveBuilding(m_TalkScene);
+                        }
+
                         UiMgr.Instance.ReturnToGame();
                     }
 
                     return true;
                 }
 
+                if (action == "NextPlayer" &&
+                    m_TalkScene != null &&
+                    m_TalkScene.IsBuilding &&
+                    m_CurrTalkProp != null &&
+                    m_CurrTalkProp.HouseService != null)
+                {
+                    GameCore.GetParty().SelectNextCharacter();
+                    return true;
+                }
+
                 return false;
+            }
+
+            public override bool OnTextInput(string input)
+            {
+                if (!m_IsRuntimeTextInputActive || string.IsNullOrEmpty(input))
+                {
+                    return false;
+                }
+
+                bool consumed = false;
+                foreach (char currChar in input)
+                {
+                    if (currChar == '\b')
+                    {
+                        if (!string.IsNullOrEmpty(m_RuntimeTextInputValue))
+                        {
+                            m_RuntimeTextInputValue = m_RuntimeTextInputValue.Substring(0, m_RuntimeTextInputValue.Length - 1);
+                        }
+                        consumed = true;
+                    }
+                    else if (currChar == '\n' || currChar == '\r')
+                    {
+                        if (Time.frameCount == m_RuntimeTextInputOpenedFrame)
+                        {
+                            continue;
+                        }
+
+                        SubmitRuntimeTextInput();
+                        consumed = true;
+                    }
+                    else if (char.IsDigit(currChar))
+                    {
+                        m_RuntimeTextInputValue += currChar;
+                        consumed = true;
+                    }
+                }
+
+                if (consumed && m_IsRuntimeTextInputActive)
+                {
+                    RefreshRuntimeTextInputStatus();
+                }
+
+                return consumed;
             }
 
             public override bool EnterState(object stateArgs)
@@ -92,6 +172,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 GameEvents.OnNpcTalkTextChanged += OnNpcTalkTextChanged;
                 GameEvents.OnRefreshNpcTalk += OnRefreshNpcTalk;
                 GameEvents.OnTalkWithConcreteNpc += OnTalkWithConcreteNpc;
+                GameEvents.OnActiveCharacterChanged += OnActiveCharacterChanged;
 
                 ShowTalkScene(m_TalkCharInitiator, m_TalkScene);
 
@@ -100,9 +181,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             public override void LeaveState()
             {
+                CancelRuntimeTextInput(false);
+
                 GameEvents.OnNpcTalkTextChanged -= OnNpcTalkTextChanged;
                 GameEvents.OnRefreshNpcTalk -= OnRefreshNpcTalk;
                 GameEvents.OnTalkWithConcreteNpc -= OnTalkWithConcreteNpc;
+                GameEvents.OnActiveCharacterChanged -= OnActiveCharacterChanged;
 
                 if (m_CurrVideoScene != null)
                 {
@@ -119,6 +203,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             public void ShowTalkScene(Character talkerChr, TalkScene talkScene)
             {
                 m_TalkCharInitiator = talkerChr;
+                CancelRuntimeTextInput();
 
                 SetupInitialTalkCanvas(talkScene);
 
@@ -177,6 +262,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     SetupInitialTalkCanvas(m_TalkScene);
                 }
 
+                CancelRuntimeTextInput();
                 m_CurrTalkProp = talkProp;
 
                 m_NpcTalkUI.TalkAvatar.Holder.SetActive(true);
@@ -194,6 +280,27 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                 m_NpcTalkUI.TalkAvatar.NpcNameText.text = talkProp.Name;
                 m_NpcTalkUI.TalkAvatar.Avatar.sprite = talkProp.Avatar;
+            }
+
+            private void OnActiveCharacterChanged(Character chr)
+            {
+                if (m_CurrTalkProp == null || m_CurrTalkProp.HouseService == null)
+                {
+                    return;
+                }
+
+                CancelRuntimeTextInput();
+
+                if (TryShowNpcGreet(m_CurrTalkProp))
+                {
+                    m_NpcTalkUI.NpcTalkObj.SetActive(true);
+                }
+                else
+                {
+                    m_NpcTalkUI.NpcTalkObj.SetActive(false);
+                }
+
+                RefreshNpcTalkTopics(m_CurrTalkProp);
             }
 
             private void UpdateNpcTalkText(string talkText)
@@ -268,7 +375,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 {
                     String talkText = "Oops !";
 
-                    if (talkProp.IsNpcNews)
+                    if (talkProp.HouseService != null)
+                    {
+                        talkText = TalkEventMgr.Instance.GetHouseServiceGreeting(talkProp);
+                    }
+                    else if (talkProp.IsNpcNews)
                     {
                         talkText = TalkEventMgr.GetCurrentNpcNews(talkProp);
                     }
@@ -292,8 +403,14 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                 }
 
+                List<HouseDialogueOption> runtimeOptions = null;
                 List<int> currentTopics;
-                if (talkProp.NestedTopicIds.Count == 0)
+                if (talkProp.HouseService != null)
+                {
+                    runtimeOptions = TalkEventMgr.Instance.GetHouseServiceOptions(talkProp);
+                    currentTopics = null;
+                }
+                else if (talkProp.NestedTopicIds.Count == 0)
                 {
                     currentTopics = talkProp.TopicIds;
                 }
@@ -318,32 +435,65 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
                 float totalTextHeight = 0.0f;
                 int buttIdx = 0;
-                foreach (int topicId in currentTopics)
+                if (runtimeOptions != null)
                 {
-                    // Only topic IDs > 0 are valid
-                    if (!TalkEventMgr.Instance.CanShowTopic(topicId))
+                    foreach (HouseDialogueOption option in runtimeOptions)
                     {
-                        continue;
+                        if (!option.IsEnabled)
+                        {
+                            continue;
+                        }
+
+                        GameObject topicButton = m_NpcTalkUI.TopicButtonList[buttIdx];
+
+                        topicButton.GetComponent<Text>().text = option.Text;
+                        topicButton.SetActive(true);
+
+                        float btnHeight = UiMgr.GetTextHeight(topicButton.GetComponent<Text>());
+                        topicButton.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(
+                            RectTransform.Axis.Vertical, btnHeight);
+
+                        TopicBtnContext btnCtx = topicButton.GetComponent<TopicBtnContext>();
+                        btnCtx.TalkProperties = talkProp;
+                        btnCtx.TopicId = 0;
+                        btnCtx.IsRuntimeOption = true;
+                        btnCtx.RuntimeOptionId = option.Id;
+
+                        totalTextHeight += btnHeight;
+                        buttIdx++;
                     }
+                }
+                else
+                {
+                    foreach (int topicId in currentTopics)
+                    {
+                        // Only topic IDs > 0 are valid
+                        if (!TalkEventMgr.Instance.CanShowTopic(topicId))
+                        {
+                            continue;
+                        }
 
-                    string topic = DbMgr.Instance.NpcTopicDb.Get(topicId).Topic;
+                        string topic = DbMgr.Instance.NpcTopicDb.Get(topicId).Topic;
 
-                    GameObject topicButton = m_NpcTalkUI.TopicButtonList[buttIdx];
+                        GameObject topicButton = m_NpcTalkUI.TopicButtonList[buttIdx];
 
-                    topicButton.GetComponent<Text>().text = topic;
-                    topicButton.SetActive(true);
+                        topicButton.GetComponent<Text>().text = topic;
+                        topicButton.SetActive(true);
 
-                    float btnHeight = UiMgr.GetTextHeight(topicButton.GetComponent<Text>());
-                    topicButton.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(
-                        RectTransform.Axis.Vertical, btnHeight);
+                        float btnHeight = UiMgr.GetTextHeight(topicButton.GetComponent<Text>());
+                        topicButton.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(
+                            RectTransform.Axis.Vertical, btnHeight);
 
-                    // Set up data for click delegate
-                    TopicBtnContext btnCtx = topicButton.GetComponent<TopicBtnContext>();
-                    btnCtx.TalkProperties = talkProp;
-                    btnCtx.TopicId = topicId;
+                        // Set up data for click delegate
+                        TopicBtnContext btnCtx = topicButton.GetComponent<TopicBtnContext>();
+                        btnCtx.TalkProperties = talkProp;
+                        btnCtx.TopicId = topicId;
+                        btnCtx.IsRuntimeOption = false;
+                        btnCtx.RuntimeOptionId = null;
 
-                    totalTextHeight += btnHeight;
-                    buttIdx++;
+                        totalTextHeight += btnHeight;
+                        buttIdx++;
+                    }
                 }
 
                 // 7.5px spaces between buttons
@@ -368,6 +518,58 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                     topPoint -= btnHeight / 10.0f;
                     topPoint -= spacerHeight / 10.0f;
                 }
+            }
+
+            public void BeginRuntimeTextInput(string prompt, string inputId, string initialValue = "")
+            {
+                m_IsRuntimeTextInputActive = true;
+                m_RuntimeTextInputPrompt = prompt ?? string.Empty;
+                m_RuntimeTextInputId = inputId;
+                m_RuntimeTextInputValue = initialValue ?? string.Empty;
+                m_RuntimeTextInputOpenedFrame = Time.frameCount;
+
+                if (EventSystem.current != null)
+                {
+                    EventSystem.current.SetSelectedGameObject(null);
+                }
+
+                RefreshRuntimeTextInputStatus();
+            }
+
+            private void SubmitRuntimeTextInput()
+            {
+                if (!m_IsRuntimeTextInputActive)
+                {
+                    return;
+                }
+
+                string inputId = m_RuntimeTextInputId;
+                string inputValue = m_RuntimeTextInputValue;
+
+                CancelRuntimeTextInput();
+                TalkEventMgr.Instance.ProcessRuntimeTextInput(inputId, inputValue, m_CurrTalkProp);
+            }
+
+            private void CancelRuntimeTextInput(bool clearStatusBar = true)
+            {
+                m_IsRuntimeTextInputActive = false;
+                m_RuntimeTextInputId = null;
+                m_RuntimeTextInputPrompt = string.Empty;
+                m_RuntimeTextInputValue = string.Empty;
+                m_RuntimeTextInputOpenedFrame = -1;
+
+                if (clearStatusBar)
+                {
+                    GameCore.SetStatusBarText(string.Empty);
+                }
+            }
+
+            private void RefreshRuntimeTextInputStatus()
+            {
+                GameCore.SetStatusBarText(
+                    m_RuntimeTextInputPrompt + m_RuntimeTextInputValue,
+                    true,
+                    RuntimeTextInputStatusDuration);
             }
         }
     }   

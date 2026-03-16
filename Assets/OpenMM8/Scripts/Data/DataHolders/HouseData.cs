@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Assets.OpenMM8.Scripts.Gameplay;
 
 namespace Assets.OpenMM8.Scripts.Data
 {
@@ -19,11 +21,13 @@ namespace Assets.OpenMM8.Scripts.Data
         public float SkillPriceMultiplier;
         public string ValueC;
         public int GenerationIntervalDays;
+        public int TrainingMaxLevel;
         public int OpenFrom;
         public int OpenTo;
         public int ExitPictureId;
         public int ExitMapId;
         public int RestrictionQuestBit;
         public string EnterText;
+        public List<SkillType> OfferedSkills = new List<SkillType>();
     }
 }

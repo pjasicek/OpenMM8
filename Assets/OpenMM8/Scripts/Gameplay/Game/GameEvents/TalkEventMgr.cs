@@ -80,45 +80,24 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 HouseData houseData = houseDataPair.Value;
                 TalkScene talkScene = new TalkScene();
 
+                talkScene.HouseId = houseData.Id;
                 talkScene.Location = houseData.Name;
                 talkScene.IsBuilding = true;
+                talkScene.HouseService = HouseServiceFactory.Create(houseData);
 
                 HouseAnimationData houseAnimation = null;
                 DbMgr.Instance.HouseAnimationDb.Data.TryGetValue(houseData.Id, out houseAnimation);
 
-                // This will need to be checked upon level load to prevent
-                // loading all videos unnecessarily
+                if (talkScene.HouseService != null)
+                {
+                    talkScene.TalkProperties.Add(CreateHouseServiceTalkProperties(houseData, talkScene.HouseService));
+                }
+
                 if (houseData.MapId == 1 && houseAnimation != null)
                 {
                     if (!string.IsNullOrEmpty(houseAnimation.VideoResourcePath))
                     {
-                        
-                        if (m_VideoSceneMap.ContainsKey(houseAnimation.VideoResourcePath))
-                        {
-                            // Take it from Cache
-                            talkScene.VideoScene = m_VideoSceneMap[houseAnimation.VideoResourcePath];
-                        }
-                        else
-                        {
-                            VideoClip video = Resources.Load<VideoClip>(houseAnimation.VideoResourcePath);
-                            AudioClip audio = Resources.Load<AudioClip>(houseAnimation.VideoResourcePath);
-                            if (video && audio)
-                            {
-                                GameObject videoSceneObj = (GameObject)Instantiate(Resources.Load("Prefabs/Videos/BuildingVideo"));
-                                talkScene.VideoScene = videoSceneObj.GetComponent<VideoScene>();
-                                talkScene.VideoScene.VideoToPlay = video;
-                                talkScene.VideoScene.AudioToPlay = audio;
-                                talkScene.VideoScene.enabled = true;
-                                //videoSceneObj.SetActive(false);
-
-                                // Cache it
-                                m_VideoSceneMap[houseAnimation.VideoResourcePath] = talkScene.VideoScene;
-                            }
-                            else
-                            {
-                                Logger.LogError("Failed to load: " + houseAnimation.VideoResourcePath);
-                            }
-                        }
+                        talkScene.VideoResourcePath = houseAnimation.VideoResourcePath;
                     }
                 }
 
@@ -172,8 +151,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 return;
             }
 
+            TalkScene talkScene = m_BuildingTalkSceneMap[buildingId];
+            ResetHouseServiceState(talkScene);
+            EnsureVideoSceneLoaded(talkScene);
+            OnEnterBuilding(talkScene);
+
             Character currChar = m_PlayerParty.GetMostRecoveredCharacter();
-            GameEvents.InvokeEvent_OnTalkSceneStart(currChar, m_BuildingTalkSceneMap[buildingId]);
+            GameEvents.InvokeEvent_OnTalkSceneStart(currChar, talkScene);
         }
 
         public void TalkWithNPC(int npcId)
@@ -277,7 +261,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public bool HasGreetText(NpcTalkProperties talkProp)
         {
-            return talkProp.GreetId > 0;
+            return talkProp != null &&
+                (talkProp.GreetId > 0 || talkProp.HouseService != null);
         }
 
         //=================================== Events ===================================
@@ -287,6 +272,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             if (topicBtnCtx == null || topicBtnCtx.TalkProperties == null)
             {
                 Logger.LogError("null context");
+                return;
+            }
+
+            if (topicBtnCtx.IsRuntimeOption)
+            {
+                ProcessRuntimeTopicClickEvent(topicBtnCtx.RuntimeOptionId, topicBtnCtx.TalkProperties);
                 return;
             }
 
@@ -339,6 +330,26 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             GameEvents.InvokeEvent_OnNpcTalkTextChanged(greet);
         }
 
+        public string GetHouseServiceGreeting(NpcTalkProperties talkProp)
+        {
+            if (talkProp == null || talkProp.HouseService == null)
+            {
+                return string.Empty;
+            }
+
+            return talkProp.HouseService.GetGreeting(CreateHouseServiceContext(talkProp));
+        }
+
+        public List<HouseDialogueOption> GetHouseServiceOptions(NpcTalkProperties talkProp)
+        {
+            if (talkProp == null || talkProp.HouseService == null)
+            {
+                return new List<HouseDialogueOption>();
+            }
+
+            return talkProp.HouseService.GetOptions(CreateHouseServiceContext(talkProp));
+        }
+
         private void HandleRosterJoinEvent(int rosterId, int partyFullMsgId, NpcTalkProperties talkProp)
         {
             m_RosterInvite = new RosterInvite()
@@ -369,6 +380,192 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         private void AddRosterNpcToParty(int rosterId)
         {
             PartyRosterService.AddRosterNpcToParty(GameCore.Instance.PlayerParty, rosterId);
+        }
+
+        private NpcTalkProperties CreateHouseServiceTalkProperties(HouseData houseData, IHouseService houseService)
+        {
+            string name = houseData.ProprietorName;
+            if (string.IsNullOrEmpty(name) || name == "Placeholder")
+            {
+                name = houseData.Name;
+            }
+
+            if (!string.IsNullOrEmpty(houseData.ProprietorTitle) &&
+                houseData.ProprietorTitle != "Placeholder")
+            {
+                name += ", " + houseData.ProprietorTitle;
+            }
+
+            return new NpcTalkProperties()
+            {
+                HouseId = houseData.Id,
+                Name = name,
+                Avatar = UiMgr.Instance.GetNpcAvatarSprite(houseData.PictureId),
+                HouseService = houseService
+            };
+        }
+
+        private HouseServiceContext CreateHouseServiceContext(NpcTalkProperties talkProp)
+        {
+            HouseServiceContext context = new HouseServiceContext()
+            {
+                TalkInitiator = m_PlayerParty != null ? m_PlayerParty.GetMostRecoveredCharacter() : null,
+                ProprietorTalkProperties = talkProp,
+                CurrentMenuId = talkProp != null && talkProp.RuntimeMenuIds.Count > 0
+                    ? talkProp.RuntimeMenuIds.Peek()
+                    : string.Empty
+            };
+
+            if (talkProp != null && talkProp.HouseId > 0)
+            {
+                context.HouseData = DbMgr.Instance.HouseDataDb.Get(talkProp.HouseId);
+
+                HouseAnimationData houseAnimation = null;
+                DbMgr.Instance.HouseAnimationDb.Data.TryGetValue(talkProp.HouseId, out houseAnimation);
+                context.HouseAnimationData = houseAnimation;
+            }
+
+            return context;
+        }
+
+        private void ProcessRuntimeTopicClickEvent(string optionId, NpcTalkProperties talkProp)
+        {
+            if (talkProp == null || talkProp.HouseService == null)
+            {
+                Logger.LogError("Trying to process runtime topic without house service");
+                return;
+            }
+
+            HouseServiceResult result = talkProp.HouseService.HandleOption(optionId, CreateHouseServiceContext(talkProp));
+            ApplyHouseServiceResult(result, talkProp);
+        }
+
+        public void ProcessRuntimeTextInput(string inputId, string inputText, NpcTalkProperties talkProp)
+        {
+            if (talkProp == null || talkProp.HouseService == null)
+            {
+                Logger.LogError("Trying to process runtime text input without house service");
+                return;
+            }
+
+            HouseServiceResult result = talkProp.HouseService.HandleTextInput(
+                inputId,
+                inputText,
+                CreateHouseServiceContext(talkProp));
+            ApplyHouseServiceResult(result, talkProp);
+        }
+
+        private void ApplyHouseServiceResult(HouseServiceResult result, NpcTalkProperties talkProp)
+        {
+            if (result == null)
+            {
+                return;
+            }
+
+            if (result.PopMenu && talkProp.RuntimeMenuIds.Count > 0)
+            {
+                talkProp.RuntimeMenuIds.Pop();
+            }
+
+            if (!string.IsNullOrEmpty(result.PushMenuId))
+            {
+                talkProp.RuntimeMenuIds.Push(result.PushMenuId);
+            }
+
+            if (result.StartTextInput)
+            {
+                UiMgr.Instance.BeginTalkTextInput(
+                    result.TextInputPrompt ?? string.Empty,
+                    result.TextInputId,
+                    result.TextInputInitialValue ?? string.Empty);
+            }
+
+            if (!string.IsNullOrEmpty(result.ResponseText))
+            {
+                GameEvents.InvokeEvent_OnNpcTalkTextChanged(result.ResponseText);
+            }
+
+            if (result.RefreshOptions)
+            {
+                GameEvents.InvokeEvent_OnRefreshNpcTalk(talkProp);
+            }
+
+            if (result.CloseDialogue)
+            {
+                UiMgr.Instance.ReturnToGame();
+            }
+        }
+
+        private void ResetHouseServiceState(TalkScene talkScene)
+        {
+            if (talkScene == null)
+            {
+                return;
+            }
+
+            foreach (NpcTalkProperties talkProp in talkScene.TalkProperties)
+            {
+                if (talkProp != null && talkProp.HouseService != null)
+                {
+                    talkProp.RuntimeMenuIds.Clear();
+                }
+            }
+        }
+
+        private void EnsureVideoSceneLoaded(TalkScene talkScene)
+        {
+            if (talkScene == null || string.IsNullOrEmpty(talkScene.VideoResourcePath))
+            {
+                return;
+            }
+
+            if (talkScene.VideoScene != null)
+            {
+                return;
+            }
+
+            if (m_VideoSceneMap.ContainsKey(talkScene.VideoResourcePath))
+            {
+                talkScene.VideoScene = m_VideoSceneMap[talkScene.VideoResourcePath];
+                return;
+            }
+
+            VideoClip video = Resources.Load<VideoClip>(talkScene.VideoResourcePath);
+            AudioClip audio = Resources.Load<AudioClip>(talkScene.VideoResourcePath);
+            if (video == null || audio == null)
+            {
+                Logger.LogError("Failed to load: " + talkScene.VideoResourcePath);
+                return;
+            }
+
+            GameObject videoSceneObj = (GameObject)Instantiate(Resources.Load("Prefabs/Videos/BuildingVideo"));
+            VideoScene videoScene = videoSceneObj.GetComponent<VideoScene>();
+            videoScene.VideoToPlay = video;
+            videoScene.AudioToPlay = audio;
+            videoScene.enabled = true;
+
+            talkScene.VideoScene = videoScene;
+            m_VideoSceneMap[talkScene.VideoResourcePath] = videoScene;
+        }
+
+        public void OnEnterBuilding(TalkScene talkScene)
+        {
+            if (talkScene == null || !talkScene.IsBuilding)
+            {
+                return;
+            }
+
+            SoundMgr.PlaySoundByName("enter");
+        }
+
+        public void OnLeaveBuilding(TalkScene talkScene)
+        {
+            if (talkScene == null || !talkScene.IsBuilding)
+            {
+                return;
+            }
+
+            SoundMgr.PlaySoundByName("wooddrclose");
         }
 
         /*
