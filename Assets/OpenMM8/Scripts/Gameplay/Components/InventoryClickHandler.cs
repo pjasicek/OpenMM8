@@ -45,7 +45,7 @@ public class InventoryClickHandler : MonoBehaviour, IPointerDownHandler
             int x = (int)posClick.x / InventoryUI.INVENTORY_CELL_SIZE;
             int y = (int)posClick.y / InventoryUI.INVENTORY_CELL_SIZE;
 
-            GameEvents.InvokeEvent_OnInventoryCellClicked(x, y);
+            UiMgr.Instance.HandleInventoryCellClicked(x, y);
         }
     }
 }

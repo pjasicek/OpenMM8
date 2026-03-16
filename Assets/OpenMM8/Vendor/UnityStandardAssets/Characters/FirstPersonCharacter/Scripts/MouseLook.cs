@@ -20,6 +20,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private Quaternion m_CharacterTargetRot;
         private Quaternion m_CameraTargetRot;
         private bool m_cursorIsLocked = true;
+        private bool m_DiscardNextMouseDelta;
 
         public void Init(Transform character, Transform camera)
         {
@@ -32,6 +33,20 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             float yRot = CrossPlatformInputManager.GetAxis("Mouse X") * XSensitivity;
             float xRot = CrossPlatformInputManager.GetAxis("Mouse Y") * YSensitivity;
+
+            if (m_DiscardNextMouseDelta)
+            {
+                m_CharacterTargetRot = character.localRotation;
+                m_CameraTargetRot = camera.localRotation;
+
+                if (Mathf.Abs(yRot) > Mathf.Epsilon || Mathf.Abs(xRot) > Mathf.Epsilon)
+                {
+                    m_DiscardNextMouseDelta = false;
+                }
+
+                UpdateCursorLock();
+                return;
+            }
 
             m_CharacterTargetRot *= Quaternion.Euler (0f, yRot, 0f);
             m_CameraTargetRot *= Quaternion.Euler (-xRot, 0f, 0f);
@@ -58,11 +73,17 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public void SetCursorLock(bool value)
         {
             lockCursor = value;
+            m_cursorIsLocked = value;
             if(!lockCursor)
             {//we force unlock the cursor if the user disable the cursor locking helper
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
             }
+        }
+
+        public void DiscardNextMouseDelta()
+        {
+            m_DiscardNextMouseDelta = true;
         }
 
         public void UpdateCursorLock()

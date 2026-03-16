@@ -12,7 +12,7 @@ public class DollClickHandler : MonoBehaviour, IPointerDownHandler
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            GameEvents.InvokeEvent_OnDollClicked(this);
+            UiMgr.Instance.HandleDollClicked(this);
         }
     }
 }

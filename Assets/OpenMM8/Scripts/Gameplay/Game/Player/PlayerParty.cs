@@ -436,7 +436,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             Characters.Add(character);
             
-            //GameEvents.InvokeEvent_OnCharacterJoinedParty(character, this);
 
             /*character.UI.StatsUI.Refresh();
             character.CurrHitPoints = character.GetMaxHitPoints();
@@ -457,7 +456,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
             character.UI.Destroy();
 
-            //GameEvents.InvokeEvent_OnCharacterLeftParty(character, this);
 
             if (ActiveCharacter == character)
             {
@@ -710,6 +708,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public Character GetFirstCharacter()
         {
+            if (Characters.Count == 0)
+            {
+                return null;
+            }
+
             return Characters[0];
         }
 

@@ -7,6 +7,44 @@ using UnityEngine.UI;
 
 namespace Assets.OpenMM8.Scripts
 {
+    public static class MmWorldUtil
+    {
+        private const float UnitsScale = 100.0f;
+        private const float FullTurnDegrees = 360.0f;
+        private const float FullTurnDirection = 2048.0f;
+        private const float UnityYawOffsetDegrees = 90.0f;
+
+        public static Vector3 ToMmCoordinates(Vector3 unityPosition)
+        {
+            return new Vector3(
+                -unityPosition.x * UnitsScale,
+                -unityPosition.z * UnitsScale,
+                unityPosition.y * UnitsScale);
+        }
+
+        public static Vector3 ToUnityCoordinates(Vector3 mmPosition)
+        {
+            return new Vector3(
+                -mmPosition.x / UnitsScale,
+                mmPosition.z / UnitsScale,
+                -mmPosition.y / UnitsScale);
+        }
+
+        public static float ToMmDirection(float unityYawDegrees)
+        {
+            return Mathf.Repeat(
+                (unityYawDegrees - UnityYawOffsetDegrees) / FullTurnDegrees * FullTurnDirection,
+                FullTurnDirection);
+        }
+
+        public static float ToUnityYawDegrees(float mmDirection)
+        {
+            return Mathf.Repeat(
+                mmDirection / FullTurnDirection * FullTurnDegrees + UnityYawOffsetDegrees,
+                FullTurnDegrees);
+        }
+    }
+
     public static class OpenMM8Util
     {
         // Returns a GameObject at specified scene path, e.g. /PartyCanvas/GoldFood. 

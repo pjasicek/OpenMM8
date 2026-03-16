@@ -1,7 +1,10 @@
 {
     "name": "OpenMM8.Tests",
     "references": [
-        "OpenMM8.Runtime"
+        "OpenMM8.Runtime",
+        "OpenMM8.Vendor.IngameDebugConsole",
+        "OpenMM8.Vendor.LINQtoCSV",
+        "OpenMM8.Vendor.UnityStandardAssets"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"

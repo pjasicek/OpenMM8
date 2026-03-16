@@ -21,11 +21,11 @@ public class InspectableItem : Inspectable
 
     public override void StartInspect(Character inspector)
     {
-        GameEvents.InvokeEvent_OnOutdoorItemInspectStart(Item);
+        UiMgr.Instance.HandleOutdoorItemInspectStart(Item);
     }
 
     public override void EndInspect(Character inspector)
     {
-        GameEvents.InvokeEvent_OnOutdoorItemInspectEnd(Item);
+        UiMgr.Instance.HandleOutdoorItemInspectEnd(Item);
     }
 }

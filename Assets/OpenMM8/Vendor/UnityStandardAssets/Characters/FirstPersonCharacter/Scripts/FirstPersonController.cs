@@ -255,6 +255,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_MouseLook.LookRotation (transform, m_Camera.transform);
         }
 
+        public void ResumeFromUi()
+        {
+            m_MouseLook.SetCursorLock(true);
+            m_MouseLook.DiscardNextMouseDelta();
+        }
+
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {

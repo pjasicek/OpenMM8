@@ -13,6 +13,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
     public class Award
     {
+        public int AwardId;
         public AwardType Type;
         public string Description;
     }

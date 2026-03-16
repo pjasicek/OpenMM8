@@ -1731,9 +1731,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             CharacterReactionData reactionData = DbMgr.Instance.CharacterReactionDb.Get(characterReaction);
 
+            Logger.LogDebug("reaction: " + characterReaction);
             int numSpeechVariants = reactionData.SpeechVariants.Length;
             if (numSpeechVariants > 0)
             {
+                Logger.LogDebug("here");
                 int rndSpeechIndex = UnityEngine.Random.Range(0, numSpeechVariants);
                 CharacterSpeech speechVariant = reactionData.SpeechVariants[rndSpeechIndex];
                 PlayCharacterSpeech(speechVariant);

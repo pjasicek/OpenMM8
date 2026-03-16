@@ -100,8 +100,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             public override void LeaveState()
             {
-                GameEvents.InvokeEvent_OnTalkSceneEnd(m_TalkCharInitiator, m_TalkScene);
-
                 GameEvents.OnNpcTalkTextChanged -= OnNpcTalkTextChanged;
                 GameEvents.OnRefreshNpcTalk -= OnRefreshNpcTalk;
                 GameEvents.OnTalkWithConcreteNpc -= OnTalkWithConcreteNpc;

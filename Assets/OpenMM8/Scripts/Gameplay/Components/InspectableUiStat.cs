@@ -14,12 +14,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public string Header;
         public string InfoText;
 
-        override public string GetHeader()
+        public override string GetHeader()
         {
             return Header;
         }
 
-        override public string GetInfoText()
+        public override string GetInfoText()
         {
             return InfoText;
         }

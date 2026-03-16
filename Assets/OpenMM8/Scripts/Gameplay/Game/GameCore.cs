@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
+using Assets.OpenMM8.Scripts;
 using Assets.OpenMM8.Scripts.Gameplay.Items;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
@@ -56,6 +57,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         // TODO: Get rid of this
         private Inspectable m_InspectedObj;
+        private bool m_ShowDebugCoordinates;
 
         void Awake()
         {
@@ -92,6 +94,17 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             // 1) Display pointed status object string (not sure if necessary to do that here ?)
 
             StatusTextBar.DoUpdate();
+
+            if (m_ShowDebugCoordinates && PlayerParty != null)
+            {
+                Vector3 pos = MmWorldUtil.ToMmCoordinates(PlayerParty.transform.position);
+                float rotationDegrees = PlayerParty.transform.eulerAngles.y;
+                float direction = MmWorldUtil.ToMmDirection(rotationDegrees);
+                SetStatusBarText(
+                    $"X:{pos.x:F3} Y:{pos.y:F3} Z:{pos.z:F3} Rot:{rotationDegrees:F3} Dir:{direction:F3}",
+                    true,
+                    0.1f);
+            }
 
             // 2) PROCESS INPUT - THIS HAS TO BE THE ONLY PLACE WHERE KEYBOARD INPUT IS PROCESSED
             // ProcessInput();
@@ -217,6 +230,11 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             if (Input.GetKeyDown(KeyCode.F5) && PlayerParty.ActiveCharacter != null)
             {
                 PlayerParty.ActiveCharacter.Inventory.AddItem(538);
+            }
+
+            if (Input.GetKeyDown(KeyCode.F6))
+            {
+                m_ShowDebugCoordinates = !m_ShowDebugCoordinates;
             }
 
             if (Input.GetKeyDown(KeyCode.F6) && PlayerParty.ActiveCharacter != null)

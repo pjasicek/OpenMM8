@@ -4,7 +4,10 @@
     "references": [
         "OpenMM8.Runtime",
         "Unity.ProBuilder",
-        "Unity.ProBuilder.Editor"
+        "Unity.ProBuilder.Editor",
+        "OpenMM8.Vendor.IngameDebugConsole",
+        "OpenMM8.Vendor.LINQtoCSV",
+        "OpenMM8.Vendor.UnityStandardAssets"
     ],
     "includePlatforms": [
         "Editor"

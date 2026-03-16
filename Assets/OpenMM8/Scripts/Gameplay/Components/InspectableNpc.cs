@@ -21,7 +21,7 @@ public class InspectableNpc : Inspectable
             MonsterData = Monster.Data;
         }
 
-        GameEvents.InvokeEvent_OnNpcInspectStart(inspector, Monster, MonsterData);
+        UiMgr.Instance.HandleNpcInspectStart(inspector, Monster, MonsterData);
     }
 
     public override void EndInspect(Character inspector)
@@ -31,6 +31,6 @@ public class InspectableNpc : Inspectable
             MonsterData = Monster.Data;
         }
 
-        GameEvents.InvokeEvent_OnNpcInspectEnd(inspector, Monster, MonsterData);
+        UiMgr.Instance.HandleNpcInspectEnd(inspector, Monster, MonsterData);
     }
 }

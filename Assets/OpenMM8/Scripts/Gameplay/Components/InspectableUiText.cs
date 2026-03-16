@@ -19,12 +19,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            GameEvents.InvokeEvent_OnInspectableUiTextHoverStart(this);
+            UiMgr.Instance.HandleInspectableUiTextHoverStart(this);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            GameEvents.InvokeEvent_OnInspectableUiTextHoverEnd(this);
+            UiMgr.Instance.HandleInspectableUiTextHoverEnd(this);
         }
     }
 }

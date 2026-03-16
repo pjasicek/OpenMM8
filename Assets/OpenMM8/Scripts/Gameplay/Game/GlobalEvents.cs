@@ -6,27 +6,13 @@ using System.Text;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    public delegate void DollClicked(DollClickHandler sender);
-    public delegate void CharacterAvatarClicked(Character chr);
-    public delegate void OutdoorItemInspectStart(Item item);
-    public delegate void OutdoorItemInspectEnd(Item item);
-    public delegate void NpcInspectStartDlg(Character inspector, Monster monster, MonsterData npcData);
-    public delegate void NpcInspecEndDlg(Character inspector, Monster monster, MonsterData npcData);
-    public delegate void InventoryCellClicked(int x, int y);
-    public delegate void InventoryItemHoverStart(InventoryItem inventoryItem);
-    public delegate void InventoryItemHoverEnd(InventoryItem inventoryItem);
-    public delegate void InventoryItemClicked(InventoryItem inventoryItem);
     public delegate void CharacterFinishedEvent(Character character);
     public delegate void RefreshNpcTalk(NpcTalkProperties talkProp);
     public delegate void NpcTalkTextChanged(string text);
     public delegate void TalkWithConcreteNpc(NpcTalkProperties talkProp);
-    public delegate void NpcLeavingLocation(NpcTalkProperties talkProp);
     public delegate void TalkSceneStart(Character talkerChr, TalkScene talkScene);
-    public delegate void TalkSceneEnd(Character talkerChr, TalkScene talkScene);
     public delegate void PauseGame();
     public delegate void UnpauseGame();
-    public delegate void GamePausedAction();
-    public delegate void GameUnpausedAction();
     public delegate void InitComplete();
     public delegate void MinuteElapsed(GameTime currTime);
     public delegate void HealthChanged(Character chr, int maxHealth, int currHealth, int delta);
@@ -37,17 +23,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public delegate void CharHitNpc(Character chr, AttackInfo attackInfo, AttackResult result);
     public delegate void CharGotHit(Character chr, AttackInfo attackInfo, AttackResult attackResult);
     public delegate void CharAttack(Character chr, AttackInfo attackInfo);
-    public delegate void NpcInspect(Character inspectorChr, MonsterData npcData);
-    public delegate void NpcInspectEnd();
     public delegate void ItemInspect(Character inspectorChr, ItemData itemData/*, InspectResult result*/);
-    public delegate void ItemEquip(/*Item item, EquipResult equipResult*/);
-    public delegate void ItemHold(/*Item item*/);
-    public delegate void ItemHoldEnd();
     public delegate void ItemEquipped(Character chr, Item equippedItem, Item replacedItem);
     public delegate void ItemUnequipped(Character chr, Item unequippedItem);
     public delegate void InteractedWithItem(Character chr, Item item, ItemInteractResult interactResult);
-    public delegate void CharacterJoinedParty(Character chr, PlayerParty party);
-    public delegate void CharacterLeftParty(Character chr, PlayerParty party);
     public delegate void HoverObject(HoverInfo hoverInfo);
     public delegate void GoldChanged(int oldGold, int newGold, int delta);
     public delegate void FoodChanged(int oldFood, int newFood, int delta);
@@ -57,27 +36,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     public delegate void QuestBitAdded(int questId);
     public delegate void MinimapMarkerCreatedDlg(MinimapMarker marker);
     public delegate void MinimapMarkerDestroyedDlg(MinimapMarker marker);
-    public delegate void InspectableUiTextHoverStart(InspectableUiText inspectableUiText);
-    public delegate void InspectableUiTextHoverEnd(InspectableUiText inspectableUiText);
-
-    public class GameEvents
+    public static class GameEvents
     {
-        static public event DollClicked OnDollClicked;
-        static public event CharacterAvatarClicked OnCharacterAvatarClicked;
-        static public event OutdoorItemInspectStart OnOutdoorItemInspectStart;
-        static public event OutdoorItemInspectEnd OnOutdoorItemInspectEnd;
-        static public event NpcInspectStartDlg OnNpcInspectStart;
-        static public event NpcInspecEndDlg OnNpcInspectEnd;
-        static public event InventoryCellClicked OnInventoryCellClicked;
-        static public event InventoryItemHoverStart OnInventoryItemHoverStart;
-        static public event InventoryItemHoverEnd OnInventoryItemHoverEnd;
-        static public event InventoryItemClicked OnInventoryItemClicked;
         public static event NpcTalkTextChanged OnNpcTalkTextChanged;
         public static event RefreshNpcTalk OnRefreshNpcTalk;
         public static event TalkWithConcreteNpc OnTalkWithConcreteNpc;
-        public static event NpcLeavingLocation OnNpcLeavingLocation;
         static public event TalkSceneStart OnTalkSceneStart;
-        static public event TalkSceneEnd OnTalkSceneEnd;
         static public event PauseGame OnPauseGame;
         static public event PauseGame OnUnpauseGame;
         static public event InitComplete OnInitComplete;
@@ -89,16 +53,10 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         static public event CharHitNpc OnCharHitNpc;
         static public event CharGotHit OnCharGotHit;
         static public event CharAttack OnCharAttack;
-        static public event NpcInspect OnNpcInspect;
         static public event ItemInspect OnItemInspect;
-        static public event ItemEquip OnItemEquip;
-        static public event ItemHold OnItemHold;
-        static public event ItemHoldEnd OnItemHoldEnd;
         static public event ItemEquipped OnItemEquipped;
-        static public event ItemUnequipped onItemUnequipped;
+        static public event ItemUnequipped OnItemUnequipped;
         static public event InteractedWithItem OnInteractedWithItem;
-        static public event CharacterJoinedParty OnCharacterJoinedParty;
-        static public event CharacterLeftParty OnCharacterLeftParty;
         static public event HoverObject OnHoverObject;
         static public event GoldChanged OnGoldChanged;
         static public event FoodChanged OnFoodChanged;
@@ -110,69 +68,6 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public static event CharacterFinishedEvent OnCharacterFinishedEvent;
         public static event MinuteElapsed OnMinuteElapsed;
         public static event QuestBitAdded OnQuestBitAdded;
-        public static event InspectableUiTextHoverStart OnInspectableUiTextHoverStart;
-        public static event InspectableUiTextHoverEnd OnInspectableUiTextHoverEnd;
-
-        static public void InvokeEvent_OnInspectableUiTextHoverStart(InspectableUiText inspectableUiText)
-        {
-            OnInspectableUiTextHoverStart?.Invoke(inspectableUiText);
-        }
-
-        static public void InvokeEvent_OnInspectableUiTextHoverEnd(InspectableUiText inspectableUiText)
-        {
-            OnInspectableUiTextHoverEnd?.Invoke(inspectableUiText);
-        }
-
-        static public void InvokeEvent_OnDollClicked(DollClickHandler sender)
-        {
-            OnDollClicked?.Invoke(sender);
-        }
-
-        static public void InvokeEvent_OnCharacterAvatarClicked(Character chr)
-        {
-            OnCharacterAvatarClicked?.Invoke(chr);
-        }
-
-        static public void InvokeEvent_OnOutdoorItemInspectStart(Item item)
-        {
-            OnOutdoorItemInspectStart?.Invoke(item);
-        }
-
-        static public void InvokeEvent_OnOutdoorItemInspectEnd(Item item)
-        {
-            OnOutdoorItemInspectEnd?.Invoke(item);
-        }
-
-        static public void InvokeEvent_OnNpcInspectStart(Character inspector, Monster monster, MonsterData npcData)
-        {
-            OnNpcInspectStart?.Invoke(inspector, monster, npcData);
-        }
-
-        static public void InvokeEvent_OnNpcInspectEnd(Character inspector, Monster monster, MonsterData npcData)
-        {
-            OnNpcInspectEnd(inspector, monster, npcData);
-        }
-
-        static public void InvokeEvent_OnInventoryCellClicked(int x, int y)
-        {
-            OnInventoryCellClicked?.Invoke(x, y);
-        }
-
-        static public void InvokeEvent_OnInventoryItemHoverStart(InventoryItem inventoryItem)
-        {
-            OnInventoryItemHoverStart?.Invoke(inventoryItem);
-        }
-
-        static public void InvokeEvent_OnInventoryItemHoverEnd(InventoryItem inventoryItem)
-        {
-            OnInventoryItemHoverEnd?.Invoke(inventoryItem);
-        }
-
-        static public void InvokeEvent_OnInventoryItemClicked(InventoryItem inventoryItem)
-        {
-            OnInventoryItemClicked?.Invoke(inventoryItem);
-        }
-
         static public void InvokeEvent_OnCharacterFinishedEvent(Character character)
         {
             OnCharacterFinishedEvent?.Invoke(character);
@@ -193,19 +88,9 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             OnTalkWithConcreteNpc?.Invoke(talkProp);
         }
 
-        static public void InvokeEvent_OnNpcLeavingLocation(NpcTalkProperties talkProp)
-        {
-            OnNpcLeavingLocation?.Invoke(talkProp);
-        }
-
         static public void InvokeEvent_OnTalkSceneStart(Character talkerChr, TalkScene talkScene)
         {
             OnTalkSceneStart?.Invoke(talkerChr, talkScene);
-        }
-
-        static public void InvokeEvent_OnTalkSceneEnd(Character talkerChr, TalkScene talkScene)
-        {
-            OnTalkSceneEnd?.Invoke(talkerChr, talkScene);
         }
 
         static public void InvokeEvent_OnPauseGame()
@@ -280,22 +165,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         static public void InvokeEvent_OnItemUnequipped(Character chr, Item unequippedItem)
         {
-            onItemUnequipped?.Invoke(chr, unequippedItem);
+            OnItemUnequipped?.Invoke(chr, unequippedItem);
         }
 
         static public void InvokeEvent_OnInteractedWithItem(Character chr, Item item, ItemInteractResult interactResult)
         {
             OnInteractedWithItem?.Invoke(chr, item, interactResult);
-        }
-
-        static public void InvokeEvent_OnCharacterJoinedParty(Character chr, PlayerParty party)
-        {
-            OnCharacterJoinedParty?.Invoke(chr, party);
-        }
-
-        static public void InvokeEvent_OnCharacterLeftParty(Character chr, PlayerParty party)
-        {
-            OnCharacterLeftParty?.Invoke(chr, party);
         }
 
         static public void InvokeEvent_OnHoverObject(HoverInfo hoverInfo)

@@ -16,10 +16,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Items
         public bool IsIdentified = true;
         public bool IsBroken = false;
 
-
         // Unity UI
         public Vector2Int InvCellPosition;
-
 
         //=================================================
 

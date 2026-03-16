@@ -28,7 +28,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             if (!IsHeld)
             {
-                GameEvents.InvokeEvent_OnInventoryItemHoverStart(this);
+                UiMgr.Instance.HandleInventoryItemHoverStart(this);
             }
         }
 
@@ -36,7 +36,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             if (!IsHeld)
             {
-                GameEvents.InvokeEvent_OnInventoryItemHoverEnd(this);
+                UiMgr.Instance.HandleInventoryItemHoverEnd(this);
             }
         }
 
@@ -64,7 +64,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         {
             if (!IsHeld && eventData.button == PointerEventData.InputButton.Left)
             {
-                GameEvents.InvokeEvent_OnInventoryItemClicked(this);
+                UiMgr.Instance.HandleInventoryItemClicked(this);
             }
         }
 

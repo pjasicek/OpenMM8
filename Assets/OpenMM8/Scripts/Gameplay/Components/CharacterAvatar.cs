@@ -14,8 +14,8 @@ public class CharacterAvatar : MonoBehaviour, IPointerClickHandler
             if (chr.UI.Holder == this.transform.parent.gameObject)
             {
                 GameCore.Instance.PlayerParty.SelectCharacter(chr.GetPartyIndex());
-                 
-                GameEvents.InvokeEvent_OnCharacterAvatarClicked(chr);
+
+                UiMgr.Instance.HandleCharacterAvatarClicked(chr);
             }
         }
     }

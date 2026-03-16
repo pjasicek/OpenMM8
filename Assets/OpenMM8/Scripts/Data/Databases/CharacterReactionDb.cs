@@ -51,6 +51,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay.Data
                         continue;
                     }
 
+                    Logger.LogDebug("Add variant: " + speechVariantsStr[i] + " as " + columns[3]);
                     data.SpeechVariants[i] = (CharacterSpeech)speechVariantId;
                 }
             }

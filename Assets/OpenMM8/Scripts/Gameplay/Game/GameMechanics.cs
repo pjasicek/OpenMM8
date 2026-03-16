@@ -110,7 +110,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             return reductionCoeff;
         }
 
-        static public int GetAttributeEffect(int attributeAmount)
+        public static int GetAttributeEffect(int attributeAmount)
         {
             if (attributeAmount >= 500)
             {

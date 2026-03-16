@@ -20,7 +20,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
         public NpcNewsDb NpcNewsDb = new NpcNewsDb();
         public QuestDb QuestDb = new QuestDb();
         public NpcTalkDb NpcTalkDb = new NpcTalkDb();
-        public BuildingDb BuildingDb = new BuildingDb();
+        public HouseDataDb HouseDataDb = new HouseDataDb();
+        public HouseAnimationDb HouseAnimationDb = new HouseAnimationDb();
         public ItemEquipPosDb ItemEquipPosDb = new ItemEquipPosDb();
         public ObjectDisplayDb ObjectDisplayDb = new ObjectDisplayDb();
         public SkillDescriptionDb SkillDescriptionDb = new SkillDescriptionDb();
@@ -67,7 +68,8 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             NpcNewsDb.Initialize(MM8_DATA_PATH + @"NPC_NEWS");
             QuestDb.Initialize(MM8_DATA_PATH + @"QUESTS");
             NpcTalkDb.Initialize(MM8_DATA_PATH + @"NPC", 2);
-            BuildingDb.Initialize(MM8_DATA_PATH + @"BUILDINGS");
+            HouseDataDb.Initialize(MM8_DATA_PATH + @"HOUSE_DATA", 2);
+            HouseAnimationDb.Initialize(MM8_DATA_PATH + @"HOUSE_ANIMATIONS");
             ItemEquipPosDb.Initialize(MM8_DATA_PATH + @"ITEM_EQUIP_POS");
             ObjectDisplayDb.Initialize(MM8_DATA_PATH + @"OBJECT_LIST");
             SkillDescriptionDb.Initialize(MM8_DATA_PATH + @"SKILL_DESCRIPTION", 2);

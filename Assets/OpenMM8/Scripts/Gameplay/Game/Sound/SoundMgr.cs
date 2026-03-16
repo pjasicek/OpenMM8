@@ -32,6 +32,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             GameEvents.OnUnpauseGame += OnGameUnpaused;
         }
 
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            GameEvents.OnPauseGame -= OnGamePaused;
+            GameEvents.OnUnpauseGame -= OnGameUnpaused;
+        }
+
         // Init sequence: DbMgr(1) -> GameMgr(1) -> *Mgr(1) -> GameMgr(2)
         public bool Init()
         {
@@ -73,11 +80,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public static void PlaySoundById(SoundType soundType, AudioSource audioSource = null)
         {
+            Logger.LogDebug("x1");
             PlaySoundById((int)soundType, audioSource);
         }
 
         public static void PlaySoundById(int soundId, AudioSource audioSource = null)
         {
+            Logger.LogDebug("x2");
             // 0 is not valid sound
             if (soundId == 0)
             {
@@ -102,6 +111,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public static void PlaySoundByName(string soundName, AudioSource audioSource = null)
         {
+            Logger.LogDebug("Ahoj: " + soundName);
             if (audioSource == null)
             {
                 audioSource = Instance.m_AudioSource;
@@ -130,11 +140,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         public static void PlayRandomSound(List<int> soundIds)
         {
+            Logger.LogDebug("x3");
             PlayRandomSound(soundIds, Instance.m_AudioSource);
         }
 
         public static void PlayRandomSound(List<int> soundIds, AudioSource audioSource)
         {
+            Logger.LogDebug("x4");
             if (soundIds.Count == 0)
             {
                 return;
@@ -147,11 +159,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
     
         public static AudioClip PlayRandomSound(List<AudioClip> sounds)
         {
+            Logger.LogDebug("x5");
             return PlayRandomSound(sounds, Instance.m_AudioSource);
         }
 
         public static AudioClip PlayRandomSound(List<AudioClip> sounds, AudioSource audioSource)
         {
+            Logger.LogDebug("x6");
             if (sounds.Count == 0)
             {
                 return null;

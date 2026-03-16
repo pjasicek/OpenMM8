@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.OpenMM8.Scripts.Gameplay
 {
-    class InteractableGameEvent : Interactable
+    public class InteractableGameEvent : Interactable
     {
         [Header("Event")]
         public int EventNumber;

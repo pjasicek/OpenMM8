@@ -75,30 +75,33 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 m_TalkPropertiesMap.Add(talkDataPair.Key, talkProp);
             }
 
-            foreach (var buildingDataPair in DbMgr.Instance.BuildingDb.Data)
+            foreach (var houseDataPair in DbMgr.Instance.HouseDataDb.Data)
             {
-                BuildingData bd = buildingDataPair.Value;
+                HouseData houseData = houseDataPair.Value;
                 TalkScene talkScene = new TalkScene();
 
-                talkScene.Location = bd.BuildingName;
+                talkScene.Location = houseData.Name;
                 talkScene.IsBuilding = true;
+
+                HouseAnimationData houseAnimation = null;
+                DbMgr.Instance.HouseAnimationDb.Data.TryGetValue(houseData.Id, out houseAnimation);
 
                 // This will need to be checked upon level load to prevent
                 // loading all videos unnecessarily
-                if (bd.MapId == 1)
+                if (houseData.MapId == 1 && houseAnimation != null)
                 {
-                    if (!string.IsNullOrEmpty(bd.VideoResourcePath))
+                    if (!string.IsNullOrEmpty(houseAnimation.VideoResourcePath))
                     {
                         
-                        if (m_VideoSceneMap.ContainsKey(bd.VideoResourcePath))
+                        if (m_VideoSceneMap.ContainsKey(houseAnimation.VideoResourcePath))
                         {
                             // Take it from Cache
-                            talkScene.VideoScene = m_VideoSceneMap[bd.VideoResourcePath];
+                            talkScene.VideoScene = m_VideoSceneMap[houseAnimation.VideoResourcePath];
                         }
                         else
                         {
-                            VideoClip video = Resources.Load<VideoClip>(bd.VideoResourcePath);
-                            AudioClip audio = Resources.Load<AudioClip>(bd.VideoResourcePath);
+                            VideoClip video = Resources.Load<VideoClip>(houseAnimation.VideoResourcePath);
+                            AudioClip audio = Resources.Load<AudioClip>(houseAnimation.VideoResourcePath);
                             if (video && audio)
                             {
                                 GameObject videoSceneObj = (GameObject)Instantiate(Resources.Load("Prefabs/Videos/BuildingVideo"));
@@ -109,29 +112,32 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                                 //videoSceneObj.SetActive(false);
 
                                 // Cache it
-                                m_VideoSceneMap[bd.VideoResourcePath] = talkScene.VideoScene;
+                                m_VideoSceneMap[houseAnimation.VideoResourcePath] = talkScene.VideoScene;
                             }
                             else
                             {
-                                Logger.LogError("Failed to load: " + bd.VideoResourcePath);
+                                Logger.LogError("Failed to load: " + houseAnimation.VideoResourcePath);
                             }
                         }
                     }
                 }
 
-                foreach (int npcId in bd.NpcsInsideList)
+                if (houseAnimation != null)
                 {
-                    if (m_TalkPropertiesMap.ContainsKey(npcId))
+                    foreach (int npcId in houseAnimation.NpcsInsideList)
                     {
-                        talkScene.TalkProperties.Add(m_TalkPropertiesMap[npcId]);
-                    }
-                    else
-                    {
-                        Debug.LogError(bd.BuildingName + ": TalkProprties map does not contain NPC ID: " + npcId);
+                        if (m_TalkPropertiesMap.ContainsKey(npcId))
+                        {
+                            talkScene.TalkProperties.Add(m_TalkPropertiesMap[npcId]);
+                        }
+                        else
+                        {
+                            Debug.LogError(houseData.Name + ": TalkProprties map does not contain NPC ID: " + npcId);
+                        }
                     }
                 }
 
-                m_BuildingTalkSceneMap.Add(bd.Id, talkScene);
+                m_BuildingTalkSceneMap.Add(houseData.Id, talkScene);
             }
 
             // Add Yes/No topics to the DB

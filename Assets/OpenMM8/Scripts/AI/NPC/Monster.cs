@@ -157,7 +157,6 @@ public partial class Monster : MonoBehaviour
         GameCore.Instance.MonsterList.Remove(this);
     }
 
-
     private void UpdateAnimation()
     {
         SpriteObject monsterAnim = null;
@@ -680,6 +679,21 @@ public partial class Monster : MonoBehaviour
             transform.LookAt(go.transform);
             SpriteLookRotator.AlignRotation();
         }
+    }
+
+    public void FaceInteracterForConversation(Transform interacterTransform)
+    {
+        if (interacterTransform == null)
+        {
+            return;
+        }
+
+        if (HostilityType != HostilityType.Friendly || IsEnemy())
+        {
+            return;
+        }
+
+        TurnToObject(interacterTransform.gameObject);
     }
 
     private void Update()
@@ -1709,6 +1723,22 @@ public partial class Monster : MonoBehaviour
                 Vector3 heading = target.position - monster.transform.position;
                 targetDir = heading.normalized;
                 distanceToTargetSqr = heading.sqrMagnitude;
+            }
+
+            // Really close NPCs should look at the party
+            float distanceToPartySqr = (party.transform.position - monster.transform.position).sqrMagnitude;
+            if (!monster.IsEnemy() &&
+                monster.HostilityType == HostilityType.Friendly &&
+                (monster.AIState == MonsterState.Standing ||
+                 monster.AIState == MonsterState.Walking ||
+                 monster.AIState == MonsterState.Fidgeting ||
+                 monster.AIState == MonsterState.Interacting) &&
+                distanceToPartySqr < (MAX_MELEE_DISTANCE_SQR / 2))
+            {
+                // Friendly NPCs standing very close should face the party without entering the fidget path.
+                Vector3 lookDirectionToParty = (party.transform.position - monster.transform.position).normalized;
+                monster.AI_Stand(lookDirectionToParty, 2.0f);
+                continue;
             }
 
             if (monster.HostilityType == HostilityType.Friendly ||

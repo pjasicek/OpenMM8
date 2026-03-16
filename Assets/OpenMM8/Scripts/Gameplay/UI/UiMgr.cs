@@ -87,17 +87,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
         private void Awake()
         {
-            /*GameEvents.OnCharacterJoinedParty += OnCharacterJoinedParty;
-            GameEvents.OnCharacterLeftParty += OnCharacterLeftParty;*/
             GameEvents.OnHoverObject += OnHoverObject;
 
             GameEvents.OnCharHitNpc += OnCharHitNpc;
             GameEvents.OnCharGotHit += OnCharGotHit;
             GameEvents.OnCharAttack += OnCharAttack;
             GameEvents.OnItemEquipped += OnItemEquipped;
-
-            GameEvents.OnNpcInspectStart += OnNpcInspectStart;
-            GameEvents.OnNpcInspectEnd += OnNpcInspectEnd;
 
             GameEvents.OnMinimapMarkerCreated += OnMinimapMarkerCreated;
             GameEvents.OnMinimapMarkerDestroyed += OnMinimapMarkerDestroyed;
@@ -109,20 +104,20 @@ namespace Assets.OpenMM8.Scripts.Gameplay
 
             GameEvents.OnQuestBitAdded += OnQuestBitAdded;
 
-            GameEvents.OnInventoryItemHoverStart += OnInventoryItemHoverStart;
-            GameEvents.OnInventoryItemHoverEnd += OnInventoryItemHoverEnd;
-            GameEvents.OnInventoryItemClicked += OnInventoryItemClicked;
+        }
 
-            GameEvents.OnOutdoorItemInspectStart += OnOutdoorItemInspectStart;
-            GameEvents.OnOutdoorItemInspectEnd += OnOutdoorItemInspectEnd;
-
-            GameEvents.OnInventoryCellClicked += OnInventoryCellClicked;
-            GameEvents.OnDollClicked += OnDollClicked;
-
-            GameEvents.OnCharacterAvatarClicked += OnCharacterAvatarClicked;
-
-            GameEvents.OnInspectableUiTextHoverStart += OnInspectableUiTextHoverStart;
-            GameEvents.OnInspectableUiTextHoverEnd += OnInspectableUiTextHoverEnd;
+        private void OnDisable()
+        {
+            GameEvents.OnHoverObject -= OnHoverObject;
+            GameEvents.OnCharHitNpc -= OnCharHitNpc;
+            GameEvents.OnCharGotHit -= OnCharGotHit;
+            GameEvents.OnCharAttack -= OnCharAttack;
+            GameEvents.OnItemEquipped -= OnItemEquipped;
+            GameEvents.OnMinimapMarkerCreated -= OnMinimapMarkerCreated;
+            GameEvents.OnMinimapMarkerDestroyed -= OnMinimapMarkerDestroyed;
+            GameEvents.OnTalkSceneStart -= OnTalkSceneStart;
+            GameEvents.OnCharacterFinishedEvent -= OnCharacterFinishedEvent;
+            GameEvents.OnQuestBitAdded -= OnQuestBitAdded;
         }
 
         // Init sequence: DbMgr(1) -> GameMgr(1) -> UiMgr(1) -> GameMgr(2)
@@ -882,8 +877,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             m_MinimapCloseButtonImage.enabled = false;
             m_PartyBuffsAndButtonsCanvas.enabled = true;
 
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            GameCore.GetParty().Controller.ResumeFromUi();
 
             m_HoveredItem = null;
 
@@ -980,7 +974,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             //SetPartyInfoText(hoverInfo.HoverText, false);
         }
 
-        public void OnNpcInspectStart(Character inspector, Monster monster, MonsterData monsterData)
+        public void HandleNpcInspectStart(Character inspector, Monster monster, MonsterData monsterData)
         {
             m_InspectNpcUI.Canvas.enabled = true;
             m_InspectNpcUI.NpcNameText.text = monsterData.Name;
@@ -1019,7 +1013,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
-        public void OnNpcInspectEnd(Character inspector, Monster monster, MonsterData npcData)
+        public void HandleNpcInspectEnd(Character inspector, Monster monster, MonsterData npcData)
         {
             m_InspectNpcUI.Canvas.enabled = false;
         }
@@ -1062,10 +1056,16 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 chr = GameCore.GetParty().GetFirstCharacter();
             }
 
+            if (chr == null || chr.UI == null || chr.UI.FaceOverlayAnimation == null)
+            {
+                return;
+            }
+
             SpriteAnimation FaceOverlayAnim = chr.UI.FaceOverlayAnimation;
             FaceOverlayAnim.AnimationSprites = m_QuestEffectSprites;
             FaceOverlayAnim.Play();
             chr.PlayEventReaction(CharacterReaction.QuestDone);
+            SoundMgr.PlaySoundByName("Quest");
             //chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.UI.Sprites.Smile), 1.0f);
         }
 
@@ -1077,13 +1077,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             //chr.CharFaceUpdater.SetAvatar(RandomSprite(chr.UI.Sprites.Smile), 1.0f);
         }
 
-        private void OnInventoryItemHoverStart(InventoryItem inventoryItem)
+        public void HandleInventoryItemHoverStart(InventoryItem inventoryItem)
         {
             //Debug.Log("Hovered over item: " + inventoryItem.Item.Data.Name);
             m_HoveredItem = inventoryItem.Item;
         }
 
-        private void OnInventoryItemHoverEnd(InventoryItem inventoryItem)
+        public void HandleInventoryItemHoverEnd(InventoryItem inventoryItem)
         {
             //Debug.Log("Unhovered over item: " + inventoryItem.Item.Data.Name);
             if (m_HoveredItem != null && m_HoveredItem == inventoryItem.Item)
@@ -1092,7 +1092,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
-        private void OnInventoryItemClicked(InventoryItem inventoryItem)
+        public void HandleInventoryItemClicked(InventoryItem inventoryItem)
         {
             // For item enchanting / rechargin / whatever
             if (SpellCastHelper.PendingPlayerSpell != null &&
@@ -1138,13 +1138,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
-        private void OnOutdoorItemInspectStart(Item item)
+        public void HandleOutdoorItemInspectStart(Item item)
         {
             //Debug.Log("Hovered over item: " + item.Data.Name);
             m_HoveredItem = item;
         }
 
-        private void OnOutdoorItemInspectEnd(Item item)
+        public void HandleOutdoorItemInspectEnd(Item item)
         {
             //Debug.Log("Unhovered over item: " + inventoryItem.Item.Data.Name);
             if (m_HoveredItem != null && m_HoveredItem == item)
@@ -1153,7 +1153,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
-        private void OnInventoryCellClicked(int x, int y)
+        public void HandleInventoryCellClicked(int x, int y)
         {
             // Try to place on cell
             if (m_HeldItem != null)
@@ -1195,13 +1195,13 @@ namespace Assets.OpenMM8.Scripts.Gameplay
                 else
                 {
                     // If holding an item already, just do doll clicked routine
-                    OnDollClicked(null);
+                    HandleDollClicked(null);
                 }
             }
         }
 
         // When holding an item and clicked on a doll
-        private void OnDollClicked(DollClickHandler sender)
+        public void HandleDollClicked(DollClickHandler sender)
         {
             if (!m_HeldItem)
             {
@@ -1236,7 +1236,7 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }*/
         }
 
-        private void OnCharacterAvatarClicked(Character chr)
+        public void HandleCharacterAvatarClicked(Character chr)
         {
             // Try to add item to inventory
             if (m_HeldItem != null)
@@ -1261,12 +1261,12 @@ namespace Assets.OpenMM8.Scripts.Gameplay
             }
         }
 
-        private void OnInspectableUiTextHoverStart(InspectableUiText inspectableUiText)
+        public void HandleInspectableUiTextHoverStart(InspectableUiText inspectableUiText)
         {
             m_HoveredInspectableUiText = inspectableUiText;
         }
 
-        private void OnInspectableUiTextHoverEnd(InspectableUiText inspectableUiText)
+        public void HandleInspectableUiTextHoverEnd(InspectableUiText inspectableUiText)
         {
             if (m_HoveredInspectableUiText == inspectableUiText)
             {
